@@ -14,6 +14,8 @@
     --bg-color: #0a0a0a;
     --text-color: #e0e0e0;
     --glitch-color: #ff00ff;
+    --highlight-color: #ff00ff;
+    --glow-color: rgba(255, 255, 255, 0.1);
 }
 
 * {
@@ -351,6 +353,7 @@ nav {
 }
 
 .slideshow-container {
+    width: 95%;
     max-width: 1000px;
     position: relative;
     margin: 80px auto;
@@ -510,9 +513,55 @@ footer::before {
         transform: rotate(45deg) translate(-5px, -6px);
     }
 }
+
+/*  Neon Glow Effect */
+.neon-glow {
+    text-shadow: 0 0 10px var(--highlight-color), 0 0 20px var(--highlight-color), 0 0 30px var(--highlight-color);
+    animation: neonGlow 2s linear infinite alternate;
+}
+
+@keyframes neonGlow {
+    0% {
+        text-shadow: 0 0 10px var(--highlight-color), 0 0 20px var(--highlight-color), 0 0 30px var(--highlight-color);
+    }
+    50% {
+        text-shadow: 0 0 15px var(--highlight-color), 0 0 30px var(--highlight-color), 0 0 40px var(--highlight-color);
+    }
+    100% {
+        text-shadow: 0 0 10px var(--highlight-color), 0 0 20px var(--highlight-color), 0 0 30px var(--highlight-color);
+    }
+}
+
+/*  Interactive Glow */
+.glow-on-hover {
+    transition: text-shadow 0.3s ease;
+}
+
+.glow-on-hover:hover {
+    text-shadow: 0 0 15px var(--glow-color), 0 0 30px var(--glow-color);
+}
+
+/*  Background Animation */
+.animated-bg {
+    background: linear-gradient(to right, #0a0a0a, #080808);
+    background-size: 400% 400%;
+    animation: animatedBackground 20s linear infinite;
+}
+
+@keyframes animatedBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
     </style>
 </head>
-<body>
+<body class="animated-bg">
     <header>
         <div class="container">
             <nav>
@@ -542,23 +591,23 @@ footer::before {
             <div class="glitch-effect"></div>
             <div class="rotating-cube-container">
                 <div class="rotating-cube">
-                    <div class="cube-face">VN</div>
-                    <div class="cube-face">IT</div>
-                    <div class="cube-face">VN</div>
-                    <div class="cube-face">IT</div>
-                    <div class="cube-face">VN</div>
-                    <div class="cube-face">IT</div>
+                    <div class="cube-face neon-glow">VN</div>
+                    <div class="cube-face neon-glow">IT</div>
+                    <div class="cube-face neon-glow">VN</div>
+                    <div class="cube-face neon-glow">IT</div>
+                    <div class="cube-face neon-glow">VN</div>
+                    <div class="cube-face neon-glow">IT</div>
                 </div>
             </div>
             <div class="hero-content">
-                <h1>Pioneering the Future of IT</h1>
+                <h1 class="glow-on-hover">Pioneering the Future of IT</h1>
                 <p>Vylex Nexys IT: Where innovation meets excellence. We deliver cutting-edge solutions to propel your business into the digital future.</p>
                 <a href="https://mthembuavuyile.github.io/mywebsite/#contact" class="cta-button">Initiate Contact</a>
             </div>
         </section>
 
         <section style="text-align: center;"> 
-            <h1>Avuyile Mthembu || Vylex Nexys</h1>
+            <h1 class="neon-glow">Avuyile Mthembu || Vylex Nexys</h1>
         </section>
 
 
@@ -583,7 +632,7 @@ footer::before {
 
         <section id="services" class="services">
             <div class="container">
-                <h2>Our Cutting-Edge Services</h2>
+                <h2 class="glow-on-hover">Our Cutting-Edge Services</h2>
                 <div class="service-grid">
                     <div class="service-card">
                         <h3>Cybersecurity</h3>
