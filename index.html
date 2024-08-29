@@ -7,15 +7,12 @@
     <style>
         /* style.css */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
-
 :root {
     --primary-color: #00ffff;
     --secondary-color: #ff00ff;
     --bg-color: #0a0a0a;
     --text-color: #e0e0e0;
     --glitch-color: #ff00ff;
-    --highlight-color: #ff00ff;
-    --glow-color: rgba(255, 255, 255, 0.1);
 }
 
 * {
@@ -23,7 +20,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--bg-color);
@@ -31,13 +27,11 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
 }
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
-
 header {
     position: fixed;
     top: 0;
@@ -48,14 +42,12 @@ header {
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 }
-
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
 }
-
 .logo {
     font-family: 'Orbitron', sans-serif;
     font-size: 28px;
@@ -64,12 +56,10 @@ nav {
     text-shadow: 0 0 10px var(--primary-color);
     letter-spacing: 2px;
 }
-
 .nav-links {
     display: flex;
     gap: 30px;
 }
-
 .nav-links a {
     color: var(--text-color);
     text-decoration: none;
@@ -79,7 +69,6 @@ nav {
     position: relative;
     overflow: hidden;
 }
-
 .nav-links a::before {
     content: '';
     position: absolute;
@@ -91,15 +80,12 @@ nav {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
 }
-
 .nav-links a:hover {
     color: var(--primary-color);
 }
-
 .nav-links a:hover::before {
     transform: translateX(0);
 }
-
 .hero {
     height: 100vh;
     display: flex;
@@ -108,13 +94,11 @@ nav {
     position: relative;
     overflow: hidden;
 }
-
 .hero-content {
     text-align: center;
     z-index: 1;
     max-width: 800px;
 }
-
 .hero h1 {
     font-family: 'Orbitron', sans-serif;
     font-size: 60px;
@@ -124,13 +108,11 @@ nav {
     letter-spacing: 2px;
     animation: glitchText 5s infinite;
 }
-
 .hero p {
     font-size: 20px;
     margin-bottom: 30px;
     opacity: 0.9;
 }
-
 .cta-button {
     display: inline-block;
     padding: 15px 30px;
@@ -144,7 +126,6 @@ nav {
     position: relative;
     overflow: hidden;
 }
-
 .cta-button::before {
     content: '';
     position: absolute;
@@ -163,17 +144,14 @@ nav {
     transform: rotate(45deg);
     transition: all 0.3s ease;
 }
-
 .cta-button:hover {
     background-color: var(--primary-color);
     color: var(--bg-color);
     box-shadow: 0 0 30px var(--primary-color);
 }
-
 .cta-button:hover::before {
     left: 100%;
 }
-
 .circuit-bg {
     position: absolute;
     top: 0;
@@ -187,7 +165,6 @@ nav {
     opacity: 0.1;
     animation: circuitAnimation 20s linear infinite;
 }
-
 @keyframes circuitAnimation {
     0% {
         background-position: 0 0, 30px 30px;
@@ -196,7 +173,6 @@ nav {
         background-position: 60px 60px, 90px 90px;
     }
 }
-
 .glitch-effect {
     position: absolute;
     top: 0;
@@ -209,7 +185,6 @@ nav {
     pointer-events: none;
     animation: glitchEffect 0.3s infinite;
 }
-
 @keyframes glitchEffect {
     0% {
         transform: translate(0);
@@ -230,7 +205,6 @@ nav {
         transform: translate(0);
     }
 }
-
 .rotating-cube-container {
     position: absolute;
     top: 50%;
@@ -240,7 +214,6 @@ nav {
     height: 300px;
     perspective: 1000px;
 }
-
 .rotating-cube {
     position: absolute;
     width: 100%;
@@ -248,7 +221,6 @@ nav {
     transform-style: preserve-3d;
     animation: rotateCube 20s linear infinite;
 }
-
 .cube-face {
     position: absolute;
     width: 100%;
@@ -266,24 +238,20 @@ nav {
     backface-visibility: visible;
     transition: all 0.3s ease;
 }
-
 .cube-face:nth-child(1) { transform: translateZ(150px); }
 .cube-face:nth-child(2) { transform: rotateY(180deg) translateZ(150px); }
 .cube-face:nth-child(3) { transform: rotateY(-90deg) translateZ(150px); }
 .cube-face:nth-child(4) { transform: rotateY(90deg) translateZ(150px); }
 .cube-face:nth-child(5) { transform: rotateX(-90deg) translateZ(150px); }
 .cube-face:nth-child(6) { transform: rotateX(90deg) translateZ(150px); }
-
 @keyframes rotateCube {
     0% { transform: rotateX(0deg) rotateY(0deg); }
     100% { transform: rotateX(360deg) rotateY(360deg); }
 }
-
 .services {
     padding: 100px 0;
     background: linear-gradient(to bottom, var(--bg-color), #0d0d0d);
 }
-
 .services h2 {
     font-family: 'Orbitron', sans-serif;
     font-size: 48px;
@@ -292,13 +260,11 @@ nav {
     color: var(--primary-color);
     text-shadow: 0 0 15px var(--primary-color);
 }
-
 .service-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 40px;
 }
-
 .service-card {
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
@@ -308,7 +274,6 @@ nav {
     position: relative;
     overflow: hidden;
 }
-
 .service-card::before {
     content: '';
     position: absolute;
@@ -328,24 +293,20 @@ nav {
     transition: all 0.3s ease;
     opacity: 0;
 }
-
 .service-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3);
 }
-
 .service-card:hover::before {
     opacity: 1;
     left: 100%;
 }
-
 .service-card h3 {
     font-family: 'Orbitron', sans-serif;
     font-size: 28px;
     margin-bottom: 20px;
     color: var(--primary-color);
 }
-
 .service-card p {
     font-size: 16px;
     line-height: 1.6;
@@ -353,7 +314,6 @@ nav {
 }
 
 .slideshow-container {
-    width: 95%;
     max-width: 1000px;
     position: relative;
     margin: 80px auto;
@@ -361,22 +321,18 @@ nav {
     border-radius: 15px;
     box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
 }
-
 .mySlides {
     display: none;
     width: 100%;
 }
-
 .mySlides img {
     width: 100%;
     height: auto;
     transition: transform 0.3s ease;
 }
-
 .mySlides:hover img {
     transform: scale(1.05);
 }
-
 footer {
     background-color: #080808;
     color: var(--text-color);
@@ -386,7 +342,6 @@ footer {
     position: relative;
     overflow: hidden;
 }
-
 footer::before {
     content: '';
     position: absolute;
@@ -397,7 +352,6 @@ footer::before {
     background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     animation: footerGlow 5s linear infinite;
 }
-
 @keyframes footerGlow {
     0% {
         background-position: 0% 50%;
@@ -406,7 +360,6 @@ footer::before {
         background-position: 100% 50%;
     }
 }
-
 @keyframes glitchText {
     0% {
         text-shadow: 0.05em 0 0 var(--glitch-color), -0.05em -0.025em 0 var(--primary-color),
@@ -437,33 +390,26 @@ footer::before {
             -0.025em -0.05em 0 var(--secondary-color);
     }
 }
-
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 40px;
     }
-
     .hero p {
         font-size: 18px;
     }
-
     .rotating-cube-container {
         width: 200px;
         height: 200px;
     }
-
     .service-grid {
         grid-template-columns: 1fr;
     }
-
     .services h2 {
         font-size: 36px;
     }
-
     .service-card h3 {
         font-size: 24px;
     }
-
     .nav-links {
         display: none;
         flex-direction: column;
@@ -474,15 +420,12 @@ footer::before {
         background-color: rgba(10, 10, 10, 0.9);
         padding: 20px;
     }
-
     .nav-links.active {
         display: flex;
     }
-
     .hamburger-menu {
         display: block;
     }
-
     .hamburger-icon {
         display: flex;
         flex-direction: column;
@@ -493,75 +436,67 @@ footer::before {
         border: none;
         cursor: pointer;
     }
-
     .bar {
         width: 100%;
         height: 3px;
         background-color: var(--primary-color);
         transition: 0.4s;
     }
-
     .hamburger-icon.active .bar:nth-child(1) {
         transform: rotate(-45deg) translate(-5px, 6px);
     }
-
     .hamburger-icon.active .bar:nth-child(2) {
         opacity: 0;
     }
-
     .hamburger-icon.active .bar:nth-child(3) {
         transform: rotate(45deg) translate(-5px, -6px);
     }
 }
+/* For my name Avuyile Mthembu*/
+@keyframes neon-flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        opacity: 0.9;
+    }
+}
 
-/*  Neon Glow Effect */
 .neon-glow {
-    text-shadow: 0 0 10px var(--highlight-color), 0 0 20px var(--highlight-color), 0 0 30px var(--highlight-color);
-    animation: neonGlow 2s linear infinite alternate;
+    color: #ff00ff;
+    text-shadow: 
+        0 0 5px #ff00ff,
+        0 0 10px #ff00ff,
+        0 0 20px #ff00ff,
+        0 0 40px #00ffff,
+        0 0 80px #00ffff,
+        0 0 90px #00ffff,
+        0 0 100px #00ffff;
+    animation: neon-flicker 1.5s infinite alternate;
+    background: linear-gradient(45deg, var(--bg-color) 25%, transparent 25%, transparent 75%, var(--bg-color) 75%, var(--bg-color)),
+                linear-gradient(45deg, var(--bg-color) 25%, transparent 25%, transparent 75%, var(--bg-color) 75%, var(--bg-color));
+    background-size: 20px 20px;
+    padding: 10px;
+    border-radius: 8px;
 }
 
-@keyframes neonGlow {
-    0% {
-        text-shadow: 0 0 10px var(--highlight-color), 0 0 20px var(--highlight-color), 0 0 30px var(--highlight-color);
-    }
-    50% {
-        text-shadow: 0 0 15px var(--highlight-color), 0 0 30px var(--highlight-color), 0 0 40px var(--highlight-color);
-    }
-    100% {
-        text-shadow: 0 0 10px var(--highlight-color), 0 0 20px var(--highlight-color), 0 0 30px var(--highlight-color);
-    }
+.neon-glow:hover {
+    color: #00ffff;
+    text-shadow: 
+        0 0 5px #00ffff,
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 40px #ff00ff,
+        0 0 80px #ff00ff,
+        0 0 90px #ff00ff,
+        0 0 100px #ff00ff;
+    background: linear-gradient(45deg, #ff00ff 25%, transparent 25%, transparent 75%, #ff00ff 75%, #ff00ff),
+                linear-gradient(45deg, #00ffff 25%, transparent 25%, transparent 75%, #00ffff 75%, #00ffff);
 }
 
-/*  Interactive Glow */
-.glow-on-hover {
-    transition: text-shadow 0.3s ease;
-}
-
-.glow-on-hover:hover {
-    text-shadow: 0 0 15px var(--glow-color), 0 0 30px var(--glow-color);
-}
-
-/*  Background Animation */
-.animated-bg {
-    background: linear-gradient(to right, #0a0a0a, #080808);
-    background-size: 400% 400%;
-    animation: animatedBackground 20s linear infinite;
-}
-
-@keyframes animatedBackground {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-    </style>
+</style>
 </head>
-<body class="animated-bg">
+<body>
     <header>
         <div class="container">
             <nav>
@@ -584,23 +519,22 @@ footer::before {
             </nav>
         </div>
     </header>
-
     <main>
         <section id="home" class="hero">
             <div class="circuit-bg"></div>
             <div class="glitch-effect"></div>
             <div class="rotating-cube-container">
                 <div class="rotating-cube">
-                    <div class="cube-face neon-glow">VN</div>
-                    <div class="cube-face neon-glow">IT</div>
-                    <div class="cube-face neon-glow">VN</div>
-                    <div class="cube-face neon-glow">IT</div>
-                    <div class="cube-face neon-glow">VN</div>
-                    <div class="cube-face neon-glow">IT</div>
+                    <div class="cube-face">VN</div>
+                    <div class="cube-face">IT</div>
+                    <div class="cube-face">VN</div>
+                    <div class="cube-face">IT</div>
+                    <div class="cube-face">VN</div>
+                    <div class="cube-face">IT</div>
                 </div>
             </div>
             <div class="hero-content">
-                <h1 class="glow-on-hover">Pioneering the Future of IT</h1>
+                <h1>Pioneering the Future of IT</h1>
                 <p>Vylex Nexys IT: Where innovation meets excellence. We deliver cutting-edge solutions to propel your business into the digital future.</p>
                 <a href="https://mthembuavuyile.github.io/mywebsite/#contact" class="cta-button">Initiate Contact</a>
             </div>
@@ -608,7 +542,7 @@ footer::before {
 
         <section style="text-align: center;"> 
             <h1 class="neon-glow">Avuyile Mthembu || Vylex Nexys</h1>
-        </section>
+                </section>
 
 
         <section class="slideshow-container">
@@ -632,7 +566,7 @@ footer::before {
 
         <section id="services" class="services">
             <div class="container">
-                <h2 class="glow-on-hover">Our Cutting-Edge Services</h2>
+                <h2>Our Cutting-Edge Services</h2>
                 <div class="service-grid">
                     <div class="service-card">
                         <h3>Cybersecurity</h3>
@@ -662,7 +596,6 @@ footer::before {
             </div>
         </section>
     </main>
-
     <footer>
         <p>© 2024 Vylex Nexys IT - Shaping the Future of Technology</p>
     </footer>
@@ -675,18 +608,14 @@ footer::before {
             const hamburgerMenu = document.querySelector('.hamburger-menu');
             const navLinks = document.querySelector('.nav-links');
             const hamburgerIcon = document.querySelector('.hamburger-icon');
-
             hero.addEventListener('mousemove', (e) => {
                 const x = (e.clientX - window.innerWidth / 2) / 25;
                 const y = (e.clientY - window.innerHeight / 2) / 25;
-
                 cube.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
             });
-
             window.addEventListener('scroll', () => {
                 const scrollPosition = window.scrollY;
                 const header = document.querySelector('header');
-
                 if (scrollPosition > 50) {
                     header.style.backgroundColor = 'rgba(10, 10, 10, 0.9)';
                     header.style.boxShadow = '0 5px 20px rgba(0, 255, 255, 0.1)';
@@ -695,10 +624,8 @@ footer::before {
                     header.style.boxShadow = 'none';
                 }
             });
-
             let slideIndex = 0;
             showSlides();
-
             function showSlides() {
                 let i;
                 let slides = document.getElementsByClassName("mySlides");
@@ -710,7 +637,6 @@ footer::before {
                 slides[slideIndex-1].style.display = "block";  
                 setTimeout(showSlides, 4000);
             }
-
             const serviceCards = document.querySelectorAll('.service-card');
             serviceCards.forEach(card => {
                 card.addEventListener('mouseenter', () => {
@@ -722,7 +648,6 @@ footer::before {
                     card.style.boxShadow = 'none';
                 });
             });
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -731,14 +656,12 @@ footer::before {
                     }
                 });
             }, { threshold: 0.1 });
-
             document.querySelectorAll('.service-card, .hero-content, h2').forEach(el => {
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(20px)';
                 el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(el);
             });
-
             hamburgerIcon.addEventListener('click', () => {
                 navLinks.classList.toggle('active');
                 hamburgerIcon.classList.toggle('active');
