@@ -60,6 +60,7 @@
             overflow: hidden;
             transition: all 0.3s ease;
             aspect-ratio: 1 / 1;
+            cursor: pointer;
         }
 
         .gallery-item:hover {
@@ -104,6 +105,36 @@
             font-size: 14px;
         }
 
+        /* Full screen popup styles */
+        .fullscreen-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fullscreen-popup img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .gallery-title {
                 font-size: 36px;
@@ -133,6 +164,12 @@
         <p><a href="animations.html">Animations</a></p>
     </footer>
 
+    <!-- Full screen popup -->
+    <div class="fullscreen-popup" id="fullscreenPopup">
+        <span class="close-popup" onclick="closePopup()">&times;</span>
+        <img id="popupImage" src="" alt="Full screen image">
+    </div>
+
     <script>
         const imagePaths = [
             "images/server (1).jpg",
@@ -143,6 +180,7 @@
             "images/jacket (1).jpg",
             "images/champagne.jpg",
             "images/screen (5).jpg",
+            
             "images/backpack2.jpg",
             "images/coffee (2).jpg",
             "images/jacket (2).jpg",
@@ -157,23 +195,49 @@
             "images/t-shirt (4).jpg",
             "images/jacket (3).jpg",
             "images/porsche (3).jpg",
-            "images/car (9).jpg",
+            "images/screen (10).jpg",
             "images/Vylex2.jpg",
             "images/vnit1 (5).jpg"
         ];
 
         const gallery = document.getElementById('gallery');
+        const fullscreenPopup = document.getElementById('fullscreenPopup');
+        const popupImage = document.getElementById('popupImage');
 
         function createGalleryItem(imgSrc, index) {
             const item = document.createElement('div');
             item.className = 'gallery-item';
             item.innerHTML = `<img src="${imgSrc}" alt="Project ${index + 1}" loading="lazy">`;
+            item.addEventListener('click', () => openPopup(imgSrc));
             return item;
         }
 
         // Load 25 unique images
         imagePaths.forEach((imgSrc, index) => {
             gallery.appendChild(createGalleryItem(imgSrc, index));
+        });
+
+        function openPopup(imgSrc) {
+            popupImage.src = imgSrc;
+            fullscreenPopup.style.display = 'flex';
+        }
+
+        function closePopup() {
+            fullscreenPopup.style.display = 'none';
+        }
+
+        // Close popup when clicking outside the image
+        fullscreenPopup.addEventListener('click', (e) => {
+            if (e.target === fullscreenPopup) {
+                closePopup();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
         });
     </script>
 </body>
