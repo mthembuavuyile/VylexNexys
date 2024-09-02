@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Cryptosphere - Privacy-focused tools for tech-savvy users. Empowering anonymity and security in the digital realm.">
     <title>Cryptosphere - Privacy-Focused Tools</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
 
@@ -20,6 +21,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -49,8 +51,10 @@
         header {
             background: rgba(10, 10, 10, 0.8);
             padding: 10px 0;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
             border-bottom: 1px solid var(--primary-color);
             box-shadow: 0 0 10px var(--glow-color);
@@ -60,6 +64,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .logo a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
 
         .nav-toggle {
@@ -138,7 +150,8 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            padding: 20px;
+            padding: 10px;
+            padding-top: 80px;
         }
 
         #showcase::before {
@@ -168,6 +181,9 @@
             margin-bottom: 20px;
             text-shadow: 0 0 10px var(--glow-color);
             animation: glitchEffect 5s infinite;
+            text-align: center; 
+            padding: 0 10px; 
+            box-sizing: border-box; 
         }
 
         @keyframes glitchEffect {
@@ -201,8 +217,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            z-index: 2; /* Ensure the content is above the pseudo-element */
-
+            z-index: 2; 
         }
 
         .tool::before {
@@ -225,8 +240,7 @@
             transform: rotate(45deg);
             opacity: 0.1;
             transition: all 0.3s ease;
-            z-index: 1; /* Ensure it's behind the content */
-
+            z-index: 1; 
         }
 
         .tool:hover::before {
@@ -243,16 +257,16 @@
             color: var(--primary-color);
             margin-bottom: 10px;
             font-family: 'Orbitron', sans-serif;
-            position: relative; /* Ensure it's on top of the pseudo-element */
-            z-index: 3; /* Ensure the heading is above everything else */
+            position: relative;
+            z-index: 3;
         }
 
         .tool a {
             color: var(--primary-color);
             text-decoration: none;
             transition: all 0.3s ease;
-            position: relative; /* Ensure it's clickable */
-            z-index: 3; /* Ensure it's above the pseudo-element */
+            position: relative; 
+            z-index: 3; 
         }
 
         .tool a:hover {
@@ -312,23 +326,8 @@
             }
 
             #showcase h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 4rem;
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px var(--glow-color);
-    animation: glitchEffect 5s infinite;
-    text-align: center; /* Ensure text is centered */
-    padding: 0 10px; /* Add padding to avoid text being cut off */
-    box-sizing: border-box; /* Ensure padding is included in the element's width */
-}
-
-/* Media Query for Smaller Screens */
-@media (max-width: 768px) {
-    #showcase h1 {
-        font-size: 2rem; /* Adjust font size for smaller screens */
-    }
-}
-
+                font-size: 2rem; 
+            }
 
             #showcase p {
                 font-size: 1.2rem;
@@ -340,9 +339,9 @@
     <header>
         <div class="container">
             <nav>
-                <a href="#" aria-label="Cryptosphere Home">
-                    <h1 style="font-size: 1.5rem;">Cryptosphere</h1> 
-                </a>
+                <div class="logo">
+                    <a href="#" aria-label="Cryptosphere Home">Cryptosphere</a>
+                </div>
                 <div class="nav-toggle">
                     <span></span>
                     <span></span>
@@ -362,7 +361,7 @@
         <div class="container">
             <h1>Cryptosphere</h1>
             <p>Privacy-Focused Tools for the Tech-Savvy</p>
-            <p>By MR A🎭</p>
+            <p>By MR A 🎭</p>
         </div>
     </section>
 
