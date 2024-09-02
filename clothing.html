@@ -133,6 +133,76 @@
             border-radius: 50%;
         }
 
+        #cart-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            z-index: 1100;
+            padding: 20px;
+        }
+
+        #cart-modal .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        #cart-modal .cart-item span {
+            font-size: 16px;
+        }
+
+        #cart-modal .cart-item button {
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #cart-modal .cart-item button:hover {
+            background-color: #c0392b;
+        }
+
+        #cart-modal h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #cart-modal p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #cart-modal .total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        #close-modal {
+            display: block;
+            margin: 0 auto;
+            margin-top: 20px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #close-modal:hover {
+            background-color: #2980b9;
+        }
+
         @media (max-width: 768px) {
             .shop-title {
                 font-size: 36px;
@@ -157,9 +227,17 @@
             <!-- Products will be dynamically added here -->
         </div>
     </div>
-    <div id="cart-icon">
+    <div id="cart-icon" onclick="openCart()">
         🛒
         <span id="cart-count">0</span>
+    </div>
+    <div id="cart-modal">
+        <h2>Your Cart</h2>
+        <div id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="total">Total: $<span id="cart-total">0.00</span></div>
+        <button id="close-modal" onclick="closeCart()">Close</button>
     </div>
     <footer>
         <p>&copy; 2024 VylexNexys Clothing. All rights reserved.</p>
@@ -167,52 +245,90 @@
 
     <script>
         const products = [
-    { name: "Denim Jacket", price: 79.99, image: "images/jacket (1).jpg" },
-    { name: "Denim Jacket", price: 74.99, image: "images/jacket (2).jpg" },
-    { name: "Denim Jacket", price: 84.99, image: "images/jacket (3).jpg" },
-    { name: "Backpack", price: 59.99, image: "images/backpack2.jpg" },
-    { name: "Luxury Bag", price: 199.99, image: "images/luxbag.jpg" },
-    { name: "Wallet", price: 39.99, image: "images/wallet (1).jpg" },
-    { name: "Golf T-Shirt", price: 49.99, image: "images/golfer.jpg" },
-    { name: "T-Shirt", price: 29.99, image: "images/t-shirt (4).jpg" },
-    { name: "Suede Jacket", price: 99.99, image: "images/jacket.jpg" },
-    { name: "Men's Suit", price: 249.99, image: "images/suit.jpg" },
-    { name: "Slides", price: 24.99, image: "https://mthembuavuyile.github.io/VylexNexys/images/Vylex2.jpg" },
-    { name: "Sneakers", price: 79.99, image: "https://mthembuavuyile.github.io/VylexNexys/images/vylex-nex%20(5).jpg" },
-    { name: "Sneakers", price: 89.99, image: "https://mthembuavuyile.github.io/VylexNexys/images/vylex-nex%20(6).jpg" },
-];
+            { name: "Denim Jacket1", price: 79.99, image: "images/jacket (1).jpg" },
+            { name: "Denim Jacket2", price: 74.99, image: "images/jacket (2).jpg" },
+            { name: "Denim Jacket3", price: 84.99, image: "images/jacket (3).jpg" },
+            { name: "Backpack", price: 59.99, image: "images/backpack2.jpg" },
+            { name: "Luxury Bag", price: 199.99, image: "images/luxbag.jpg" },
+            { name: "Wallet", price: 39.99, image: "images/wallet (1).jpg" },
+            { name: "Golf T-Shirt", price: 49.99, image: "images/golfer.jpg" },
+            { name: "T-Shirt", price: 29.99, image: "images/t-shirt (4).jpg" },
+            { name: "Suede Jacket", price: 99.99, image: "images/jacket.jpg" },
+            { name: "Men's Suit", price: 249.99, image: "images/suit.jpg" },
+            { name: "Slides", price: 24.99, image: "https://mthembuavuyile.github.io/VylexNexys/images/Vylex2.jpg" },
+            { name: "Sneaker 1", price: 79.99, image: "https://mthembuavuyile.github.io/VylexNexys/images/vylex-nex%20(5).jpg" },
+            { name: "Sneaker 2", price: 89.99, image: "https://mthembuavuyile.github.io/VylexNexys/images/vylex-nex%20(6).jpg" },
+            { name: "Luxury Watch", price: 299.99, image: "https://media.istockphoto.com/id/1493633024/photo/wrist-watch-t.jpg?s=612x612&w=0&k=20&c=63uO7n7SkOCuaWXmi9ETG4QShCGE1TbVrjmE0dh8644=" }
+        ];
 
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        const productGrid = document.getElementById('product-grid');
-        const cartCount = document.getElementById('cart-count');
-        let cart = [];
-
-        function createProductItem(product) {
-            const item = document.createElement('div');
-            item.className = 'product-item';
-            item.innerHTML = `
-                <img src="${product.image}" alt="${product.name}">
-                <div class="product-info">
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-price">$${product.price.toFixed(2)}</div>
-                    <button class="add-to-cart" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
-                </div>
-            `;
-            return item;
+        function renderProducts() {
+            const productGrid = document.getElementById('product-grid');
+            products.forEach((product, index) => {
+                const productItem = document.createElement('div');
+                productItem.className = 'product-item';
+                productItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <button class="add-to-cart" onclick="addToCart(${index})">Add to Cart</button>
+                    </div>
+                `;
+                productGrid.appendChild(productItem);
+            });
         }
 
-        products.forEach(product => {
-            productGrid.appendChild(createProductItem(product));
-        });
-
-        function addToCart(name, price) {
-            cart.push({ name, price });
+        function addToCart(index) {
+            const product = products[index];
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
         }
 
         function updateCartCount() {
+            const cartCount = document.getElementById('cart-count');
             cartCount.textContent = cart.length;
         }
+
+        function openCart() {
+            const cartModal = document.getElementById('cart-modal');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <span>${item.name} - $${item.price.toFixed(2)}</span>
+                    <button onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+
+            cartTotal.textContent = total.toFixed(2);
+            cartModal.style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            openCart();
+            updateCartCount();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartCount();
+        });
     </script>
 </body>
 </html>
