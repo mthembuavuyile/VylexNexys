@@ -76,6 +76,18 @@
             transition: 0.4s;
         }
 
+        .nav-toggle.active .nav-toggle span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .nav-toggle.active .nav-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active .nav-toggle span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
         .nav-menu {
             list-style-type: none;
             display: flex;
@@ -189,6 +201,8 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            z-index: 2; /* Ensure the content is above the pseudo-element */
+
         }
 
         .tool::before {
@@ -211,6 +225,8 @@
             transform: rotate(45deg);
             opacity: 0.1;
             transition: all 0.3s ease;
+            z-index: 1; /* Ensure it's behind the content */
+
         }
 
         .tool:hover::before {
@@ -227,12 +243,16 @@
             color: var(--primary-color);
             margin-bottom: 10px;
             font-family: 'Orbitron', sans-serif;
+            position: relative; /* Ensure it's on top of the pseudo-element */
+            z-index: 3; /* Ensure the heading is above everything else */
         }
 
         .tool a {
             color: var(--primary-color);
             text-decoration: none;
             transition: all 0.3s ease;
+            position: relative; /* Ensure it's clickable */
+            z-index: 3; /* Ensure it's above the pseudo-element */
         }
 
         .tool a:hover {
@@ -266,6 +286,7 @@
             100% { left: 100%; }
         }
 
+        /* Media Queries */
         @media (max-width: 768px) {
             .nav-toggle {
                 display: flex;
@@ -292,6 +313,7 @@
 
             #showcase h1 {
                 font-size: 3rem;
+                text-align: center;
             }
 
             #showcase p {
@@ -304,6 +326,9 @@
     <header>
         <div class="container">
             <nav>
+                <a href="#" aria-label="Cryptosphere Home">
+                    <h1 style="font-size: 1.5rem;">Cryptosphere</h1> 
+                </a>
                 <div class="nav-toggle">
                     <span></span>
                     <span></span>
@@ -332,70 +357,93 @@
             <h2>Our Tools</h2>
             <div class="tools-grid">
                 <div class="tool">
-                    <h3><a href="https://www.torproject.org/">Tor Browser</a></h3>
+                    <h3><a href="https://www.torproject.org/" target="_blank" rel="noopener noreferrer">Tor Browser</a></h3>
                     <p>Anonymous browsing through a network of servers, obscuring your IP and location.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://protonmail.com/">ProtonMail</a></h3>
+                    <h3><a href="https://proton.me/mail" target="_blank" rel="noopener noreferrer">ProtonMail</a></h3>
                     <p>Encrypted email service based in Switzerland for secure, private communication.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://tails.boum.org/">Tails OS</a></h3>
+                    <h3><a href="https://tails.boum.org/" target="_blank" rel="noopener noreferrer">Tails OS</a></h3>
                     <p>Live operating system focused on privacy, leaving no trace on the computer you use.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://signal.org/">Signal</a></h3>
+                    <h3><a href="https://signal.org/" target="_blank" rel="noopener noreferrer">Signal</a></h3>
                     <p>Encrypted messaging app with strong privacy protections for secure communications.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://receive-sms-online.com/">Temp-SMS Services</a></h3>
+                    <h3><a href="https://receive-smss.com/" target="_blank" rel="noopener noreferrer">Temp-SMS Services</a></h3>
                     <p>Temporary phone numbers for SMS verifications without revealing your actual number.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://mullvad.net/">Mullvad VPN</a></h3>
+                    <h3><a href="https://mullvad.net/" target="_blank" rel="noopener noreferrer">Mullvad VPN</a></h3>
                     <p>Privacy-focused VPN service with anonymous sign-up and payment options.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://www.qubes-os.org/">Qubes OS</a></h3>
+                    <h3><a href="https://www.qubes-os.org/" target="_blank" rel="noopener noreferrer">Qubes OS</a></h3>
                     <p>Security-focused OS using compartmentalization to isolate different activities.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://burnerapp.com/">BurnerApp</a></h3>
+                    <h3><a href="https://www.burnerapp.com/" target="_blank" rel="noopener noreferrer">BurnerApp</a></h3>
                     <p>Create temporary phone numbers for private calls and texts.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://bitmessage.org/">Bitmessage</a></h3>
+                    <h3><a href="https://bitmessage.org/" target="_blank" rel="noopener noreferrer">Bitmessage</a></h3>
                     <p>Decentralized, encrypted messaging system resistant to surveillance.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://cryptpad.fr/">CryptPad</a></h3>
+                    <h3><a href="https://cryptpad.fr/" target="_blank" rel="noopener noreferrer">CryptPad</a></h3>
                     <p>Encrypted, privacy-focused collaboration tool for secure document editing and storage.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://www.veracrypt.fr/">VeraCrypt</a></h3>
+                    <h3><a href="https://www.veracrypt.fr/" target="_blank" rel="noopener noreferrer">VeraCrypt</a></h3>
                     <p>Disk encryption software for creating encrypted volumes and partitions.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://www.thunderbird.net/">Thunderbird</a></h3>
+                    <h3><a href="https://www.thunderbird.net/" target="_blank" rel="noopener noreferrer">Thunderbird</a></h3>
                     <p>Open-source email client with built-in encryption capabilities.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://keybase.io/">Keybase</a></h3>
+                    <h3><a href="https://keybase.io/" target="_blank" rel="noopener noreferrer">Keybase</a></h3>
                     <p>Secure messaging and file-sharing platform with end-to-end encryption.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://silent.link/">Silent Link</a></h3>
+                    <h3><a href="https://silent.link/" target="_blank" rel="noopener noreferrer">Silent Link</a></h3>
                     <p>Anonymous eSIM service providing global mobile internet access and burner phone numbers with privacy-focused features.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://www.opennicproject.org/">OpenNIC</a></h3>
+                    <h3><a href="https://www.opennicproject.org/" target="_blank" rel="noopener noreferrer">OpenNIC</a></h3>
                     <p>Alternative DNS network to avoid censorship and tracking.</p>
                 </div>
                 <div class="tool">
-                    <h3><a href="https://www.privacytools.io/">PrivacyTools</a></h3>
+                    <h3><a href="https://www.privacytools.io/" target="_blank" rel="noopener noreferrer">PrivacyTools</a></h3>
                     <p>Comprehensive list of privacy-respecting software and services.</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>About Cryptosphere</h2>
+            <p>We are a team of privacy advocates dedicated to providing you with the tools and information you need to protect your digital footprint. In an age of increasing surveillance and data collection, we believe that everyone has the right to privacy and security online.</p>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Have questions or suggestions? We'd love to hear from you!</p>
+            <form action="#" method="post">
+                <label for="name">Your Name:</label><br>
+                <input type="text" id="name" name="name" required><br>
+                <label for="email">Your Email:</label><br>
+                <input type="email" id="email" name="email" required><br>
+                <label for="message">Your Message:</label><br>
+                <textarea id="message" name="message" required></textarea><br>
+                <input type="submit" value="Send">
+            </form>
         </div>
     </section>
 
@@ -404,37 +452,12 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const header = document.querySelector('header');
-            const navToggle = document.querySelector('.nav-toggle');
-            const navMenu = document.querySelector('.nav-menu');
-            const navLinks = document.querySelectorAll('.nav-menu a');
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
 
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    header.style.background = 'rgba(10, 10, 10, 0.9)';
-                } else {
-                    header.style.background = 'rgba(10, 10, 10, 0.8)';
-                }
-            });
-
-            navToggle.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-            });
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        navMenu.classList.remove('active');
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
         });
     </script>
 </body>
