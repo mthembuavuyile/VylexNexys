@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cryptosphere - Privacy-focused tools for tech-savvy users. Empowering anonymity and security in the digital realm.">
+    <title>Cryptosphere - Privacy-Focused Tools</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --primary-color: #00ff00;
+            --background-color: #000000;
+            --text-color: #e0e0e0;
+            --accent-color: #0a0a0a;
+            --glow-color: #00ff0055;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 50% 50%, var(--glow-color) 0%, transparent 20%),
+                repeating-linear-gradient(0deg, var(--background-color) 0px, var(--background-color) 1px, transparent 1px, transparent 5px);
+            background-size: 100% 100%, 100% 5px;
+            animation: backgroundScroll 20s linear infinite;
+        }
+
+        @keyframes backgroundScroll {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 0 0, 0 100%; }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--primary-color);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        nav li {
+            margin: 0 10px;
+        }
+
+        nav a {
+            color: var(--primary-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover::before {
+            transform: translateX(0);
+        }
+
+        nav a:hover {
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+
+        #showcase {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, var(--glow-color) 0%, transparent 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" /><path d="M0 50 L50 0 L100 50 L50 100 Z" fill="none" stroke="%2300ff00" stroke-width="0.5" /></svg>');
+            background-size: cover, 100px 100px;
+            opacity: 0.1;
+            z-index: -1;
+            animation: matrixEffect 20s linear infinite;
+        }
+
+        @keyframes matrixEffect {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        #showcase h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--glow-color);
+            animation: glitchEffect 5s infinite;
+        }
+
+        @keyframes glitchEffect {
+            0% { text-shadow: 0 0 10px var(--glow-color); }
+            25% { text-shadow: -2px 0 var(--primary-color), 2px 2px var(--glow-color); }
+            50% { text-shadow: 2px -2px var(--primary-color), -2px 2px var(--glow-color); }
+            75% { text-shadow: -2px -2px var(--primary-color), 2px 2px var(--glow-color); }
+            100% { text-shadow: 0 0 10px var(--glow-color); }
+        }
+
+        #showcase p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        #tools {
+            padding: 40px 0;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .tool {
+            background: var(--accent-color);
+            border: 1px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                var(--primary-color),
+                transparent,
+                transparent,
+                transparent
+            );
+            transform: rotate(45deg);
+            opacity: 0.1;
+            transition: all 0.3s ease;
+        }
+
+        .tool:hover::before {
+            top: -100%;
+            left: -100%;
+        }
+
+        .tool:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--glow-color);
+        }
+
+        .tool h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .tool a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .tool a:hover {
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+
+        footer {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 300%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            animation: footerGlow 5s linear infinite;
+        }
+
+        @keyframes footerGlow {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            #showcase h1 {
+                font-size: 3rem;
+            }
+
+            #showcase p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="showcase">
+        <div class="container">
+            <h1>Cryptosphere</h1>
+            <p>Privacy-Focused Tools for the Tech-Savvy</p>
+            <p>By MR A🎭</p>
+        </div>
+    </section>
+
+    <section id="tools">
+        <div class="container">
+            <h2>Our Tools</h2>
+            <div class="tools-grid">
+                <div class="tool">
+                    <h3><a href="https://www.torproject.org/">Tor Browser</a></h3>
+                    <p>Anonymous browsing through a network of servers, obscuring your IP and location.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://protonmail.com/">ProtonMail</a></h3>
+                    <p>Encrypted email service based in Switzerland for secure, private communication.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://tails.boum.org/">Tails OS</a></h3>
+                    <p>Live operating system focused on privacy, leaving no trace on the computer you use.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://signal.org/">Signal</a></h3>
+                    <p>Encrypted messaging app with strong privacy protections for secure communications.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://receive-sms-online.com/">Temp-SMS Services</a></h3>
+                    <p>Temporary phone numbers for SMS verifications without revealing your actual number.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://mullvad.net/">Mullvad VPN</a></h3>
+                    <p>Privacy-focused VPN service with anonymous sign-up and payment options.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://www.qubes-os.org/">Qubes OS</a></h3>
+                    <p>Security-focused OS using compartmentalization to isolate different activities.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://burnerapp.com/">BurnerApp</a></h3>
+                    <p>Create temporary phone numbers for private calls and texts.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://bitmessage.org/">Bitmessage</a></h3>
+                    <p>Decentralized, encrypted messaging system resistant to surveillance.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://cryptpad.fr/">CryptPad</a></h3>
+                    <p>Encrypted, privacy-focused collaboration tool for secure document editing and storage.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://www.veracrypt.fr/">VeraCrypt</a></h3>
+                    <p>Disk encryption software for creating encrypted volumes and partitions.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://www.thunderbird.net/">Thunderbird</a></h3>
+                    <p>Open-source email client with built-in encryption capabilities.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://keybase.io/">Keybase</a></h3>
+                    <p>Secure messaging and file-sharing platform with end-to-end encryption.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://silent.link/">Silent Link</a></h3>
+                    <p>Anonymous eSIM service providing global mobile internet access and burner phone numbers with privacy-focused features.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://www.opennicproject.org/">OpenNIC</a></h3>
+                    <p>Alternative DNS network to avoid censorship and tracking.</p>
+                </div>
+                <div class="tool">
+                    <h3><a href="https://www.privacytools.io/">PrivacyTools</a></h3>
+                    <p>Comprehensive list of privacy-respecting software and services.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Vylex Nexys Cryptosphere © 2024 | A Division of Vylex Nexys IT | Empowering Anonymity</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.style.background = 'rgba(10, 10, 10, 0.9)';
+                } else {
+                    header.style.background = 'rgba(10, 10, 10, 0.8)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
