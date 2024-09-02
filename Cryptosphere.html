@@ -62,18 +62,32 @@
             align-items: center;
         }
 
-        nav ul {
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .nav-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 3px 0;
+            transition: 0.4s;
+        }
+
+        .nav-menu {
             list-style-type: none;
             display: flex;
             justify-content: space-around;
             align-items: center;
         }
 
-        nav li {
+        .nav-menu li {
             margin: 0 10px;
         }
 
-        nav a {
+        .nav-menu a {
             color: var(--primary-color);
             text-decoration: none;
             text-transform: uppercase;
@@ -83,7 +97,7 @@
             overflow: hidden;
         }
 
-        nav a::before {
+        .nav-menu a::before {
             content: '';
             position: absolute;
             bottom: 0;
@@ -95,16 +109,16 @@
             transition: transform 0.3s ease;
         }
 
-        nav a:hover::before {
+        .nav-menu a:hover::before {
             transform: translateX(0);
         }
 
-        nav a:hover {
+        .nav-menu a:hover {
             text-shadow: 0 0 5px var(--glow-color);
         }
 
         #showcase {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -112,6 +126,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            padding: 20px;
         }
 
         #showcase::before {
@@ -252,6 +267,29 @@
         }
 
         @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.9);
+                padding: 20px 0;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu li {
+                margin: 10px 0;
+            }
+
             #showcase h1 {
                 font-size: 3rem;
             }
@@ -272,7 +310,7 @@
                     <span></span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="#home">Home</a></li>
+                    <li><a href="#showcase">Home</a></li>
                     <li><a href="#tools">Tools</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -368,12 +406,34 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const header = document.querySelector('header');
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 100) {
                     header.style.background = 'rgba(10, 10, 10, 0.9)';
                 } else {
                     header.style.background = 'rgba(10, 10, 10, 0.8)';
                 }
+            });
+
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        navMenu.classList.remove('active');
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
         });
     </script>
