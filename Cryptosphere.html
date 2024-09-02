@@ -312,9 +312,23 @@
             }
 
             #showcase h1 {
-                font-size: 3rem;
-                text-align: center;
-            }
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--glow-color);
+    animation: glitchEffect 5s infinite;
+    text-align: center; /* Ensure text is centered */
+    padding: 0 10px; /* Add padding to avoid text being cut off */
+    box-sizing: border-box; /* Ensure padding is included in the element's width */
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+    #showcase h1 {
+        font-size: 3rem; /* Adjust font size for smaller screens */
+    }
+}
+
 
             #showcase p {
                 font-size: 1.2rem;
@@ -448,7 +462,9 @@
     </section>
 
     <footer>
-        <p>Vylex Nexys Cryptosphere © 2024 | A Division of Vylex Nexys IT | Empowering Anonymity</p>
+        <p>Vylex Nexys Cryptosphere © 2024<br>
+        A Division of <a href="https://mthembuavuyile.github.io/VylexNexys">Vylex Nexys IT</a><br>
+        Empowering Anonymity</p>
     </footer>
 
     <script>
