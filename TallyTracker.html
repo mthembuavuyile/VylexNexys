@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tally Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #3498db;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #34495e;
+            max-width: 600px;
+            margin: 10px auto;
+            font-size: 1.1em;
+        }
+        .instructions {
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .instructions ul {
+            padding-left: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .cell {
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .cell:hover {
+            background-color: #e8f4fd;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .cell:active {
+            transform: translateY(1px);
+        }
+        .entered-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .tap-count {
+            font-size: 18px;
+            color: #e74c3c;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+        #clearButton {
+            background-color: #e74c3c;
+            color: white;
+        }
+        #clearButton:hover {
+            background-color: #c0392b;
+        }
+        #enterNumbersButton {
+            background-color: #2ecc71;
+            color: white;
+        }
+        #enterNumbersButton:hover {
+            background-color: #27ae60;
+        }
+        #numberInputModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .close:hover,
+        .close:focus {
+            color: #2c3e50;
+        }
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .input-grid input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .input-grid input:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        #saveNumbers {
+            background-color: #3498db;
+            color: white;
+            width: 100%;
+        }
+        #saveNumbers:hover {
+            background-color: #2980b9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #7f8c8d;
+        }
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer a:hover {
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Tally Tracker Grid</h1>
+        <p>A versatile counting tool for tracking various metrics, habits, or scores.</p>
+    </div>
+
+    <div class="instructions">
+        <h3>How to use:</h3>
+        <ul>
+            <li>Click "Enter Numbers" to assign labels or initial values to each cell.</li>
+            <li>Tap on a cell to increment its count.</li>
+            <li>The number of taps for each cell is displayed below the entered number.</li>
+            <li>Use the "Clear" button to reset all values and counts.</li>
+            <li>Your data is automatically saved and will be remembered when you return.</li>
+        </ul>
+    </div>
+
+    <div class="grid" id="tallyGrid"></div>
+    <div class="buttons">
+        <button id="clearButton">Clear All</button>
+        <button id="enterNumbersButton">Enter Numbers</button>
+    </div>
+
+    <div id="numberInputModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Enter Numbers or Labels</h2>
+            <div class="input-grid" id="numberInputGrid"></div>
+            <button id="saveNumbers">Save</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Created by Avuyile Mthembu | <a href="https://mthembuavuyile.github.io/mywebsite" target="_blank" rel="noopener noreferrer">Visit My Website</a></p>
+    </div>
+
+    <script>
+        const grid = document.getElementById('tallyGrid');
+        const clearButton = document.getElementById('clearButton');
+        const enterNumbersButton = document.getElementById('enterNumbersButton');
+        const modal = document.getElementById('numberInputModal');
+        const closeModal = document.getElementsByClassName('close')[0];
+        const saveNumbersButton = document.getElementById('saveNumbers');
+        const numberInputGrid = document.getElementById('numberInputGrid');
+
+        let enteredNumbers = [];
+        let tapCounts = [];
+
+        function createGrid() {
+            for (let i = 0; i < 6; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerHTML = `
+                    <div class="entered-number" data-index="${i}"></div>
+                    <div class="tap-count" data-index="${i}"></div>
+                `;
+                cell.addEventListener('click', () => incrementTapCount(i));
+                cell.addEventListener('dblclick', (e) => {
+                    e.preventDefault();
+                    decrementTapCount(i);
+                });
+                grid.appendChild(cell);
+            }
+        }
+
+        function createInputGrid() {
+            for (let i = 0; i < 6; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `input${i}`;
+                input.placeholder = `Number or Label ${i + 1}`;
+                numberInputGrid.appendChild(input);
+            }
+        }
+
+        function incrementTapCount(index) {
+            tapCounts[index]++;
+            updateDisplay();
+            saveData();
+        }
+
+        function decrementTapCount(index) {
+            if (tapCounts[index] > 0) {
+                tapCounts[index]--;
+                updateDisplay();
+                saveData();
+            }
+        }
+
+        function updateDisplay() {
+            const enteredNumberElements = document.querySelectorAll('.entered-number');
+            const tapCountElements = document.querySelectorAll('.tap-count');
+
+            for (let i = 0; i < 6; i++) {
+                enteredNumberElements[i].textContent = enteredNumbers[i] || '';
+                tapCountElements[i].textContent = tapCounts[i] ? `Taps: ${tapCounts[i]}` : '';
+            }
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all data?')) {
+                enteredNumbers = new Array(6).fill('');
+                tapCounts = new Array(6).fill(0);
+                updateDisplay();
+                saveData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('enteredNumbers', JSON.stringify(enteredNumbers));
+            localStorage.setItem('tapCounts', JSON.stringify(tapCounts));
+        }
+
+        function loadData() {
+            const savedEnteredNumbers = localStorage.getItem('enteredNumbers');
+            const savedTapCounts = localStorage.getItem('tapCounts');
+
+            if (savedEnteredNumbers) enteredNumbers = JSON.parse(savedEnteredNumbers);
+            if (savedTapCounts) tapCounts = JSON.parse(savedTapCounts);
+
+            if (!Array.isArray(enteredNumbers) || enteredNumbers.length !== 6) {
+                enteredNumbers = new Array(6).fill('');
+            }
+            if (!Array.isArray(tapCounts) || tapCounts.length !== 6) {
+                tapCounts = new Array(6).fill(0);
+            }
+
+            updateDisplay();
+        }
+
+        clearButton.addEventListener('click', clearData);
+
+        enterNumbersButton.addEventListener('click', () => {
+            modal.style.display = 'block';
+            const inputs = numberInputGrid.querySelectorAll('input');
+            inputs.forEach((input, index) => {
+                input.value = enteredNumbers[index] || '';
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        saveNumbersButton.addEventListener('click', () => {
+            const inputs = numberInputGrid.querySelectorAll('input');
+            inputs.forEach((input, index) => {
+                enteredNumbers[index] = input.value;
+            });
+            updateDisplay();
+            saveData();
+            modal.style.display = 'none';
+        });
+
+        createGrid();
+        createInputGrid();
+        loadData();
+    </script>
+</body>
+</html>
