@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodge & Survive and Speed Clicker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        canvas {
+            border: 1px solid #000;
+            background-color: #fff;
+            max-width: 100%;
+            height: auto;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        button {
+            margin: 10px 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #game-button {
+            font-size: 24px;
+            padding: 15px 30px;
+        }
+        #score, #timer {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Dodge & Survive and Speed Clicker</h1>
+        <p>Stupid game by Mr A</p>
+        <div id="dodge-survive">
+            <h2>Dodge & Survive</h2>
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <p id="dodge-score">Score: 0</p>
+            <button id="dodge-start-button">Start Dodge & Survive</button>
+        </div>
+        <div id="speed-clicker">
+            <h2>Speed Clicker</h2>
+            <button id="game-button" disabled>Click Me!</button>
+            <p id="click-score">Score: 0</p>
+            <p id="timer">Time left: 10 seconds</p>
+            <button id="click-start-button">Start Speed Clicker</button>
+        </div>
+        <button id="switch-game">Switch Game</button>
+    </div>
+    <script>
+        // Dodge & Survive Game
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let player = { x: 50, y: 50, size: 20 };
+        let obstacles = [];
+        let dodgeScore = 0;
+        let isGameRunning = false;
+
+        function gameLoop() {
+            if (!isGameRunning) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(player.x, player.y, player.size, player.size);
+
+            obstacles.forEach(obstacle => {
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.size, obstacle.size);
+            });
+
+            if (keyboard.ArrowUp && player.y > 0) player.y -= 5;
+            if (keyboard.ArrowDown && player.y + player.size < canvas.height) player.y += 5;
+            if (keyboard.ArrowLeft && player.x > 0) player.x -= 5;
+            if (keyboard.ArrowRight && player.x + player.size < canvas.width) player.x += 5;
+
+            obstacles.forEach((obstacle, index) => {
+                if (
+                    player.x < obstacle.x + obstacle.size &&
+                    player.x + player.size > obstacle.x &&
+                    player.y < obstacle.y + obstacle.size &&
+                    player.y + player.size > obstacle.y
+                ) {
+                    isGameRunning = false;
+                    alert(`Game over! Your score is ${dodgeScore}.`);
+                }
+            });
+
+            dodgeScore++;
+            document.getElementById('dodge-score').textContent = `Score: ${dodgeScore}`;
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        const keyboard = {};
+        document.addEventListener('keydown', (event) => {
+            keyboard[event.key] = true;
+        });
+        document.addEventListener('keyup', (event) => {
+            keyboard[event.key] = false;
+        });
+
+        document.getElementById('dodge-start-button').addEventListener('click', () => {
+            player = { x: 50, y: 50, size: 20 };
+            obstacles = [];
+            dodgeScore = 0;
+            document.getElementById('dodge-score').textContent = `Score: ${dodgeScore}`;
+
+            for (let i = 0; i < 10; i++) {
+                obstacles.push({
+                    x: Math.floor(Math.random() * (canvas.width - 30)),
+                    y: Math.floor(Math.random() * (canvas.height - 30)),
+                    size: 30
+                });
+            }
+
+            isGameRunning = true;
+            gameLoop();
+        });
+
+        // Speed Clicker Game
+        const gameButton = document.getElementById('game-button');
+        const clickScoreDisplay = document.getElementById('click-score');
+        const timerDisplay = document.getElementById('timer');
+        const clickStartButton = document.getElementById('click-start-button');
+
+        let clickScore = 0;
+        let timeLeft = 10;
+        let gameInterval;
+
+        function startSpeedClicker() {
+            clickScore = 0;
+            timeLeft = 10;
+            clickScoreDisplay.textContent = `Score: ${clickScore}`;
+            timerDisplay.textContent = `Time left: ${timeLeft} seconds`;
+
+            gameButton.disabled = false;
+            clickStartButton.disabled = true;
+
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `Time left: ${timeLeft} seconds`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(gameInterval);
+                    gameButton.disabled = true;
+                    clickStartButton.disabled = false;
+                    alert(`Game Over! Your final score is ${clickScore}`);
+                }
+            }, 1000);
+        }
+
+        gameButton.addEventListener('click', () => {
+            clickScore++;
+            clickScoreDisplay.textContent = `Score: ${clickScore}`;
+        });
+
+        clickStartButton.addEventListener('click', startSpeedClicker);
+
+        // Switch between games
+        const dodgeSurvive = document.getElementById('dodge-survive');
+        const speedClicker = document.getElementById('speed-clicker');
+        const switchButton = document.getElementById('switch-game');
+
+        let currentGame = 'dodge';
+
+        switchButton.addEventListener('click', () => {
+            if (currentGame === 'dodge') {
+                dodgeSurvive.style.display = 'none';
+                speedClicker.style.display = 'block';
+                currentGame = 'clicker';
+            } else {
+                dodgeSurvive.style.display = 'block';
+                speedClicker.style.display = 'none';
+                currentGame = 'dodge';
+            }
+        });
+
+        // Initially hide Speed Clicker
+        speedClicker.style.display = 'none';
+    </script>
+</body>
+</html>
