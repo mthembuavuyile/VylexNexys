@@ -90,6 +90,7 @@
 
         let gridSize, tileCount;
         let snake, apple, dx, dy, score;
+        let touchStartX, touchStartY;
 
         function initGame() {
             const containerSize = Math.min(gameContainer.clientWidth, gameContainer.clientHeight);
@@ -195,6 +196,37 @@
         document.getElementById('rightBtn').addEventListener('touchstart', () => changeDirection(1, 0));
         document.getElementById('downBtn').addEventListener('touchstart', () => changeDirection(0, 1));
 
+        // Swipe controls
+        canvas.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const dx = touchEndX - touchStartX;
+            const dy = touchEndY - touchStartY;
+
+            if (Math.abs(dx) > Math.abs(dy)) {
+                if (dx > 0) {
+                    changeDirection(1, 0); // Right
+                } else {
+                    changeDirection(-1, 0); // Left
+                }
+            } else {
+                if (dy > 0) {
+                    changeDirection(0, 1); // Down
+                } else {
+                    changeDirection(0, -1); // Up
+                }
+            }
+        });
+
         function gameLoop() {
             drawGame();
             setTimeout(gameLoop, 100);
@@ -205,10 +237,10 @@
         gameLoop();
     </script>
 
-<footer>
-    <p><a href="https://mthembuavuyile.github.io/VylexNexys/doge-survive-and-speed-clicker.html">Play doge and speed clicker</a></p>
-    <p>Game by <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys IT</a></p>
-    <p>Developed by <a href="https://avuyilemthembu.co.za">Avuyile Mthembu</a></p>
-</footer>
+    <footer>
+        <p><a href="https://mthembuavuyile.github.io/VylexNexys/doge-survive-and-speed-clicker.html">Play doge and speed clicker</a></p>
+        <p>Game by <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys IT</a></p>
+        <p>Developed by <a href="https://avuyilemthembu.co.za">Avuyile Mthembu</a></p>
+    </footer>
 </body>
 </html>
