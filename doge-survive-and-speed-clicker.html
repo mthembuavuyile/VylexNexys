@@ -1,141 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arcade Games: Dodge & Survive and Speed Clicker</title>
-    <style>
-      body {
-        font-family: "Arial", sans-serif;
-        text-align: center;
-        background-color: #1a1a2e;
-        color: #fff;
-        margin: 0;
-        padding: 20px;
-        line-height: 1.6;
-      }
-      .game-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background-color: #16213e;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-      }
-      .games-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
-      }
-      canvas {
-        border: 2px solid #e94560;
-        background-color: #0f3460;
-        max-width: 100%;
-        height: auto;
-        border-radius: 10px;
-      }
-      h1 {
-        margin-top: 0;
-        color: #e94560;
-        font-size: 2.5em;
-      }
-      h2 {
-        color: #e94560;
-      }
-      button {
-        margin: 10px 5px;
-        padding: 12px 24px;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #e94560;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
-      button:hover {
-        background-color: #d13555;
-      }
-      button:disabled {
-        background-color: #888;
-        cursor: not-allowed;
-      }
-      #game-button {
-        font-size: 24px;
-        padding: 15px 30px;
-      }
-      #score,
-      #timer,
-      #dodge-score,
-      #click-score {
-        font-size: 18px;
-        margin: 10px 0;
-        color: #e94560;
-      }
-      .game {
-        flex: 1;
-        min-width: 300px;
-        max-width: 500px;
-        margin-bottom: 30px;
-        padding: 20px;
-        background-color: #1a1a2e;
-        border-radius: 10px;
-      }
-      #high-scores {
-        margin-top: 20px;
-        font-size: 16px;
-      }
-      @media (max-width: 768px) {
-        .games-wrapper {
-          flex-direction: column;
-        }
-        .game {
-          max-width: 100%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="game-container">
-      <h1>Arcade Games</h1>
-      <p>By Vylex Nexys</p>
-      <button id="switch-game">Switch to Speed Clicker</button>
-      <div class="games-wrapper">
-        <div id="dodge-survive" class="game">
-          <h2>Dodge & Survive</h2>
-          <canvas id="gameCanvas" width="400" height="400"></canvas>
-          <p id="dodge-score">Score: 0</p>
-          <p id="dodge-high-score">High Score: 0</p>
-          <button id="dodge-start-button">Start Dodge & Survive</button>
-        </div>
-        <div id="speed-clicker" class="game" style="display: none;">
-          <h2>Speed Clicker</h2>
-          <button id="game-button" disabled>Click Me!</button>
-          <p id="click-score">Score: 0</p>
-          <p id="timer">Time left: 10 seconds</p>
-          <p id="click-high-score">High Score: 0</p>
-          <button id="click-start-button">Start Speed Clicker</button>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arcade Games: Dodge & Survive and Speed Clicker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #1a1a2e;
+      color: #fff;
+      margin: 0;
+      padding: 10px;
+      line-height: 1.4;
+    }
+    .game-container {
+      max-width: 100%;
+      margin: 0 auto;
+      background-color: #16213e;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .games-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    canvas {
+      border: 2px solid #e94560;
+      background-color: #0f3460;
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    h1 { margin: 0 0 5px; color: #e94560; font-size: 1.8em; }
+    h2 { color: #e94560; margin: 5px 0; font-size: 1.4em; }
+    button {
+      margin: 5px 2px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #e94560;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover { background-color: #d13555; }
+    button:disabled { background-color: #888; cursor: not-allowed; }
+    #game-button { font-size: 18px; padding: 10px 20px; }
+    #score, #timer, #dodge-score, #click-score {
+      font-size: 16px;
+      margin: 5px 0;
+      color: #e94560;
+    }
+    .game {
+      flex: 1;
+      min-width: 250px;
+      max-width: 400px;
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #1a1a2e;
+      border-radius: 5px;
+    }
+    #high-scores { margin-top: 10px; font-size: 14px; }
+    footer { font-size: 12px; margin-top: 10px; }
+    @media (max-width: 600px) {
+      .games-wrapper { flex-direction: column; }
+      .game { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>Arcade Games</h1>
+    <p>By Vylex Nexys</p>
+    <button id="switch-game">Switch to Speed Clicker</button>
+    <div class="games-wrapper">
+      <div id="dodge-survive" class="game">
+        <h2>Dodge & Survive</h2>
+        <canvas id="gameCanvas" width="300" height="300"></canvas>
+        <p id="dodge-score">Score: 0</p>
+        <p id="dodge-high-score">High Score: 0</p>
+        <button id="dodge-start-button">Start Dodge & Survive</button>
       </div>
-      <div id="high-scores">
-        <h3>High Scores</h3>
-        <p id="dodge-high-score-display">Dodge & Survive: 0</p>
-        <p id="click-high-score-display">Speed Clicker: 0</p>
+      <div id="speed-clicker" class="game" style="display: none;">
+        <h2>Speed Clicker</h2>
+        <button id="game-button" disabled>Click Me!</button>
+        <p id="click-score">Score: 0</p>
+        <p id="timer">Time left: 10 seconds</p>
+        <p id="click-high-score">High Score: 0</p>
+        <button id="click-start-button">Start Speed Clicker</button>
       </div>
     </div>
-
-    <footer>
-      <p>
-        Game by
-        <a href="https://mthembuavuyile.github.io/VylexNexys/"
-          >Vylex Nexys IT</a
-        >
-      </p>
-      <p>
-        Developed by <a href="https://avuyilemthembu.co.za">Avuyile Mthembu</a>
-      </p>
-    </footer>
+    <div id="high-scores">
+      <h3>High Scores</h3>
+      <p id="dodge-high-score-display">Dodge & Survive: 0</p>
+      <p id="click-high-score-display">Speed Clicker: 0</p>
+    </div>
+  </div>
+  <footer>
+    <p>Game by <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys IT</a></p>
+    <p>Developed by <a href="https://avuyilemthembu.co.za">Avuyile Mthembu</a></p>
+  </footer>
 
     <script>
       // Dodge & Survive Game
