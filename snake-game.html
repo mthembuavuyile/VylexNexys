@@ -9,59 +9,105 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #2c2c2c;
-            touch-action: none;
-        }
-        header{
-            top: 0;
-            position: fixed;
+            font-family: Arial, sans-serif;
             color: #fff;
         }
+        header {
+            text-align: center;
+            padding: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+        #gameContainer {
+            position: relative;
+            width: 90vw;
+            max-width: 600px;
+            aspect-ratio: 1 / 1;
+        }
         #gameCanvas {
+            width: 100%;
+            height: 100%;
             border: 2px solid #fff;
         }
         #score {
             position: absolute;
             top: 10px;
             left: 10px;
+            font-size: 18px;
+        }
+        #controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            margin: 0 10px;
+            font-size: 24px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
             color: #fff;
-            font-family: Arial, sans-serif;
-            font-size: 20px;
+            touch-action: manipulation;
         }
-        footer{
-            bottom: 0;
-            position:fixed;
+        footer {
+            margin-top: 20px;
+            text-align: center;
         }
-        footer a{
+        footer a {
             color: bisque;
         }
     </style>
 </head>
 <body>
     <header>
-        <H1>Snake master by Avuyile Mthembu</H1>
+        <h1>Snake Game</h1>
     </header>
-    <canvas id="gameCanvas" width="300" height="300"></canvas>
-    <div id="score">Score: 0</div>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <div id="score">Score: 0</div>
+    </div>
+    <div id="controls">
+        <button class="control-btn" id="leftBtn">←</button>
+        <button class="control-btn" id="upBtn">↑</button>
+        <button class="control-btn" id="downBtn">↓</button>
+        <button class="control-btn" id="rightBtn">→</button>
+    </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreElement = document.getElementById('score');
+        const gameContainer = document.getElementById('gameContainer');
 
-        const gridSize = 15;
-        const tileCount = canvas.width / gridSize;
+        let gridSize, tileCount;
+        let snake, apple, dx, dy, score;
 
-        let snake = [
-            {x: 10, y: 10},
-        ];
-        let apple = {x: 5, y: 5};
-        let dx = 0;
-        let dy = 0;
-        let score = 0;
+        function initGame() {
+            const containerSize = Math.min(gameContainer.clientWidth, gameContainer.clientHeight);
+            canvas.width = containerSize;
+            canvas.height = containerSize;
+            gridSize = Math.floor(containerSize / 20);
+            tileCount = canvas.width / gridSize;
+
+            resetGame();
+        }
+
+        function resetGame() {
+            snake = [{x: 10, y: 10}];
+            dx = 0;
+            dy = 0;
+            score = 0;
+            placeApple();
+        }
 
         function drawGame() {
             clearCanvas();
@@ -102,8 +148,10 @@
         }
 
         function placeApple() {
-            apple.x = Math.floor(Math.random() * tileCount);
-            apple.y = Math.floor(Math.random() * tileCount);
+            apple = {
+                x: Math.floor(Math.random() * tileCount),
+                y: Math.floor(Math.random() * tileCount)
+            };
         }
 
         function checkCollision() {
@@ -120,81 +168,47 @@
             }
         }
 
-        function resetGame() {
-            snake = [{x: 10, y: 10}];
-            dx = 0;
-            dy = 0;
-            score = 0;
-            placeApple();
-        }
-
         function updateScore() {
             scoreElement.textContent = `Score: ${score}`;
         }
 
-        document.addEventListener('keydown', changeDirection);
-        document.addEventListener('touchstart', handleTouchStart);
-        document.addEventListener('touchmove', handleTouchMove);
-
-        let touchStartX, touchStartY;
-
-        function handleTouchStart(e) {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-        }
-
-        function handleTouchMove(e) {
-            if (!touchStartX || !touchStartY) return;
-
-            let touchEndX = e.touches[0].clientX;
-            let touchEndY = e.touches[0].clientY;
-
-            let dx = touchEndX - touchStartX;
-            let dy = touchEndY - touchStartY;
-
-            if (Math.abs(dx) > Math.abs(dy)) {
-                changeDirection({key: dx > 0 ? 'ArrowRight' : 'ArrowLeft'});
-            } else {
-                changeDirection({key: dy > 0 ? 'ArrowDown' : 'ArrowUp'});
-            }
-
-            touchStartX = null;
-            touchStartY = null;
-        }
-
-        function changeDirection(e) {
-            const LEFT_KEY = 'ArrowLeft';
-            const RIGHT_KEY = 'ArrowRight';
-            const UP_KEY = 'ArrowUp';
-            const DOWN_KEY = 'ArrowDown';
-
-            if (e.key === LEFT_KEY && dx === 0) {
-                dx = -1;
-                dy = 0;
-            }
-            if (e.key === UP_KEY && dy === 0) {
-                dx = 0;
-                dy = -1;
-            }
-            if (e.key === RIGHT_KEY && dx === 0) {
-                dx = 1;
-                dy = 0;
-            }
-            if (e.key === DOWN_KEY && dy === 0) {
-                dx = 0;
-                dy = 1;
+        function changeDirection(newDx, newDy) {
+            if ((newDx === 1 && dx !== -1) || (newDx === -1 && dx !== 1) ||
+                (newDy === 1 && dy !== -1) || (newDy === -1 && dy !== 1)) {
+                dx = newDx;
+                dy = newDy;
             }
         }
+
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowLeft': changeDirection(-1, 0); break;
+                case 'ArrowUp': changeDirection(0, -1); break;
+                case 'ArrowRight': changeDirection(1, 0); break;
+                case 'ArrowDown': changeDirection(0, 1); break;
+            }
+        });
+
+        // Touch controls
+        document.getElementById('leftBtn').addEventListener('touchstart', () => changeDirection(-1, 0));
+        document.getElementById('upBtn').addEventListener('touchstart', () => changeDirection(0, -1));
+        document.getElementById('rightBtn').addEventListener('touchstart', () => changeDirection(1, 0));
+        document.getElementById('downBtn').addEventListener('touchstart', () => changeDirection(0, 1));
 
         function gameLoop() {
             drawGame();
             setTimeout(gameLoop, 100);
         }
 
+        window.addEventListener('resize', initGame);
+        initGame();
         gameLoop();
     </script>
-</body>
+
 <footer>
-    <p><a href="doge and speed clicker.html"> Play doge and speed clicker</a></p>
+    <p><a href="https://mthembuavuyile.github.io/VylexNexys/doge-survive-and-speed-clicker.html">Play doge and speed clicker</a></p>
+    <p>Game by <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys IT</a></p>
+    <p>Developed by <a href="https://avuyilemthembu.co.za">Avuyile Mthembu</a></p>
 </footer>
+</body>
 </html>
