@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Shadow Network</title>
+    <title>The Shadow Network | CMD Commands for Cybersecurity Experts</title>
+    <meta name="description" content="Explore essential CMD commands, network diagnostics, and system monitoring tools for cybersecurity professionals. Secure your Windows PC with advanced security techniques.">
+    <meta name="keywords" content="CMD commands for security, Windows CMD security tools, network diagnostics CMD, system monitoring tools, cybersecurity commands, task management CMD, Windows security tips, secure Windows PC, network security tools, advanced CMD utilities">
+    <meta name="author" content="Avuyile Mthembu">
     <style>
+
     body {
         background-color: #000;
         color: #fff;
@@ -34,6 +38,16 @@
         text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
         animation: glitch 1s infinite;
     }
+    h2 {
+    color: #2ECC71; /* Emerald green for subtler text */
+    border-bottom: 2px solid #00FF00; /* Neon green border */
+    padding-bottom: 10px;
+}
+
+h3 {
+    color: #00FFFF; /* Electric blue for secondary headings */
+    margin-top: 30px;
+}
     
     .warning {
         color: #f00;
@@ -161,6 +175,8 @@
             flex-direction: column;
         }
     }
+
+    
 </style>
 </head>
 <body>
@@ -171,6 +187,7 @@
             <p class="warning">Warning: Unauthorized Access Detected</p>
         </header>
         <main>
+            <p>Playground: &lt;/&gt;</p>
             <section class="cli">
                 <div class="terminal">
                     <div class="prompt">shadow@network:~$ </div>
@@ -202,63 +219,96 @@
                 </div>
             </section>
 
-    <h2>Useful commands for security experts</h2>
+            <h2>Useful commands for security experts</h2>
 
-    <h3>Networking Commands:</h3>
-    <ul>
-        <li>ipconfig /all - Displays detailed network configuration.</li>
-        <li>ping [ip/domain] - Tests connectivity to a specified address.</li>
-        <li>tracert [ip/domain] - Traces the route to a destination.</li>
-        <li>nslookup [domain] - Queries DNS records.</li>
-        <li>netstat -ano - Displays active network connections and listening ports.</li>
-        <li>route print - Shows the routing table.</li>
-        <li>arp -a - Displays the ARP cache, showing IP to physical address mappings.</li>
-    </ul>
-
-    <h3>Netsh WLAN Commands:</h3>
-    <ul>
-        <li>netsh wlan show networks - Displays available Wi-Fi networks.</li>
-        <li>netsh wlan show interfaces - Shows wireless network adapter information.</li>
-        <li>netsh wlan show profiles - Lists saved Wi-Fi profiles.</li>
-        <li>netsh wlan export profile folder=C:\ key=clear - Exports Wi-Fi profiles with passwords.</li>
-        <li>netsh wlan connect name="NetworkName" - Connects to a specific Wi-Fi network.</li>
-        <li>netsh wlan show all - Displays all wireless network information.</li>
-    </ul>
-
-    <h3>Other Useful CMD Commands:</h3>
-    <ul>
-        <li>tasklist - Lists running processes.</li>
-        <li>taskkill /F /IM process.exe - Forcefully terminates a process.</li>
-        <li>systeminfo - Displays detailed system information.</li>
-        <li>sfc /scannow - Scans and repairs system files.</li>
-        <li>chkdsk C: /f - Checks and repairs disk errors.</li>
-        <li>diskpart - Launches disk partitioning tool.</li>
-        <li>powercfg /energy - Generates an energy efficiency report.</li>
-        <li>driverquery - Lists installed device drivers.</li>
-        <li>wmic - Windows Management Instrumentation Command-line.</li>
-        <li>netsh advfirewall set allprofiles state off - Disables Windows Firewall (use with caution).</li>
-        <li>reg query HKLM /f password /t REG_SZ /s - Searches for stored passwords in registry.</li>
-        <li>cipher /W:C: - Securely wipes free space on drive C:.</li>
-        <li>tasklist /svc - Lists running processes and associated services.</li>
-        <li>schtasks /query /fo LIST /v - Displays detailed information about scheduled tasks.</li>
-        <li>wmic startup get command,caption - Lists programs that run at startup.</li>
-        <li>net user - Lists all user accounts on the system.</li>
-        <li>net localgroup administrators - Shows members of the administrators group.</li>
-        <li>wmic qfe list brief - Lists installed Windows updates.</li>
-        <li>whoami /all - Displays current user's privileges and group memberships.</li>
-        <li>netsh advfirewall show allprofiles - Shows Windows Firewall configuration.</li>
-        <li>wmic process get caption,executablepath,commandline - Lists running processes with full command lines.</li>
-        <li>sc query - Lists all services and their statuses.</li>
-        <li>reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run - Shows programs set to run at startup (Registry).</li>
-        <li>wevtutil qe Security /c:25 /f:text - Displays the last 25 security event log entries.</li>
-        <li>cipher /c - Shows encryption status of the current directory.</li>
-        <li>net share - Displays information about shared resources on the computer.</li>
-        <li>netsh interface ipv4 show subinterfaces - Shows detailed network interface information.</li>
-        <li>powershell "Get-WmiObject -Class Win32_Product | Select-Object Name, Version" - Lists installed software.</li>
-        <li>wmic os get osarchitecture - Shows if the system is 32-bit or 64-bit.</li>
-        <li>wmic logicaldisk get caption,description,providername - Lists disk drives and their types.</li>
-        <li>certutil -store -user my - Lists personal certificates for the current user.</li>
-        <li>gpresult /r - Shows which Group Policy settings are applied to the current user and computer.</li>
+            <h3>Networking Commands:</h3>
+            <ul>
+                <li><strong>ipconfig /all</strong> - Displays detailed network configuration.</li>
+                <li><strong>ping [ip/domain]</strong> - Tests connectivity to a specified address.</li>
+                <li><strong>tracert [ip/domain]</strong> - Traces the route to a destination.</li>
+                <li><strong>nslookup [domain]</strong> - Queries DNS records.</li>
+                <li><strong>netstat -ano</strong> - Displays active network connections and listening ports.</li>
+                <li><strong>route print</strong> - Shows the routing table.</li>
+                <li><strong>arp -a</strong> - Displays the ARP cache, showing IP to physical address mappings.</li>
+            </ul>
+        
+            <h3>Netsh WLAN Commands:</h3>
+            <ul>
+                <li><strong>netsh wlan show networks</strong> - Displays available Wi-Fi networks.</li>
+                <li><strong>netsh wlan show interfaces</strong> - Shows wireless network adapter information.</li>
+                <li><strong>netsh wlan show profiles</strong> - Lists saved Wi-Fi profiles.</li>
+                <li><strong>netsh wlan export profile folder=C:\ key=clear</strong> - Exports Wi-Fi profiles with passwords.</li>
+                <li><strong>netsh wlan connect name="NetworkName"</strong> - Connects to a specific Wi-Fi network.</li>
+                <li><strong>netsh wlan show all</strong> - Displays all wireless network information.</li>
+            </ul>
+        
+            <h3>Other Useful CMD Commands:</h3>
+            <ul>
+                <li><strong>tasklist</strong> - Lists running processes.</li>
+                <li><strong>taskkill /F /IM process.exe</strong> - Forcefully terminates a process.</li>
+                <li><strong>systeminfo</strong> - Displays detailed system information.</li>
+                <li><strong>sfc /scannow</strong> - Scans and repairs system files.</li>
+                <li><strong>chkdsk C: /f</strong> - Checks and repairs disk errors.</li>
+                <li><strong>diskpart</strong> - Launches disk partitioning tool.</li>
+                <li><strong>powercfg /energy</strong> - Generates an energy efficiency report.</li>
+                <li><strong>driverquery</strong> - Lists installed device drivers.</li>
+                <li><strong>wmic</strong> - Windows Management Instrumentation Command-line.</li>
+                <li><strong>netsh advfirewall set allprofiles state off</strong> - Disables Windows Firewall (use with caution).</li>
+                <li><strong>reg query HKLM /f password /t REG_SZ /s</strong> - Searches for stored passwords in registry.</li>
+                <li><strong>cipher /W:C:</strong> - Securely wipes free space on drive C:.</li>
+                <li><strong>tasklist /svc</strong> - Lists running processes and associated services.</li>
+                <li><strong>schtasks /query /fo LIST /v</strong> - Displays detailed information about scheduled tasks.</li>
+                <li><strong>wmic startup get command,caption</strong> - Lists programs that run at startup.</li>
+                <li><strong>net user</strong> - Lists all user accounts on the system.</li>
+                <li><strong>net localgroup administrators</strong> - Shows members of the administrators group.</li>
+                <li><strong>wmic qfe list brief</strong> - Lists installed Windows updates.</li>
+                <li><strong>whoami /all</strong> - Displays current user's privileges and group memberships.</li>
+                <li><strong>netsh advfirewall show allprofiles</strong> - Shows Windows Firewall configuration.</li>
+                <li><strong>wmic process get caption,executablepath,commandline</strong> - Lists running processes with full command lines.</li>
+                <li><strong>sc query</strong> - Lists all services and their statuses.</li>
+                <li><strong>reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run</strong> - Shows programs set to run at startup (Registry).</li>
+                <li><strong>wevtutil qe Security /c:25 /f:text</strong> - Displays the last 25 security event log entries.</li>
+                <li><strong>cipher /c</strong> - Shows encryption status of the current directory.</li>
+                <li><strong>net share</strong> - Displays information about shared resources on the computer.</li>
+                <li><strong>netsh interface ipv4 show subinterfaces</strong> - Shows detailed network interface information.</li>
+                <li><strong>powershell "Get-WmiObject -Class Win32_Product | Select-Object Name, Version"</strong> - Lists installed software.</li>
+                <li><strong>wmic os get osarchitecture</strong> - Shows if the system is 32-bit or 64-bit.</li>
+                <li><strong>wmic logicaldisk get caption,description,providername</strong> - Lists disk drives and their types.</li>
+                <li><strong>certutil -store -user my</strong> - Lists personal certificates for the current user.</li>
+                <li><strong>gpresult /r</strong> - Shows which Group Policy settings are applied to the current user and computer.</li>
+            </ul>
+        
+            <h3>Commands for Developers and Programmers:</h3>
+            <ul>
+                <li><strong>git status</strong> - Shows the status of the current Git repository.</li>
+                <li><strong>npm list</strong> - Lists installed npm packages.</li>
+                <li><strong>python --version</strong> - Displays the installed Python version.</li>
+                <li><strong>javac -version</strong> - Shows the Java compiler version.</li>
+                <li><strong>dotnet --info</strong> - Displays information about the installed .NET SDK.</li>
+                <li><strong>docker ps</strong> - Lists running Docker containers.</li>
+                <li><strong>kubectl get pods</strong> - Lists Kubernetes pods in the current context.</li>
+            </ul>
+        
+            <h3>Commands for Cybersecurity Experts:</h3>
+            <ul>
+                <li><strong>netstat -nao | findstr LISTENING</strong> - Shows all listening ports and their associated PIDs.</li>
+                <li><strong>tasklist /m</strong> - Lists all running processes and their associated DLLs.</li>
+                <li><strong>wmic process where processid="PID" get commandline</strong> - Shows the command line of a specific process.</li>
+                <li><strong>reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</strong> - Lists autorun programs in the registry.</li>
+                <li><strong>schtasks /query /fo LIST /v</strong> - Lists all scheduled tasks with details.</li>
+                <li><strong>wevtutil qe Security /c:100 /f:text</strong> - Displays the last 100 security event log entries.</li>
+            </ul>
+        
+            <h3>Commands for Checking if Machine is Hacked:</h3>
+            <ul>
+                <li><strong>netstat -ano</strong> - Look for suspicious outbound connections.</li>
+                <li><strong>tasklist /v</strong> - Check for unfamiliar processes.</li>
+                <li><strong>wmic startup list full</strong> - Examine startup programs for anything suspicious.</li>
+                <li><strong>wmic process list full</strong> - Review all running processes in detail.</li>
+                <li><strong>dir %SystemRoot%\prefetch</strong> - Check recently run programs.</li>
+                <li><strong>wevtutil qe Security /c:50 /f:text</strong> - Review recent security events.</li>
+                <li><strong>schtasks /query /fo LIST /v</strong> - Check for suspicious scheduled tasks.</li>
+            </ul>
         </main>
 
         <footer>
