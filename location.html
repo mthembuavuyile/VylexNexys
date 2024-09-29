@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Location Insights</title>
+    <title>Location Sender</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -72,22 +73,26 @@
 </head>
 <body>
     <div class="container">
-        <h1>Location Insights</h1>
-        <button onclick="getLocation()">Get Location Info</button>
+        <h1>Location Sender</h1>
+        <button onclick="getAndSendLocation()">Get Location📍🗺️</button>
         <div id="results"></div>
         <div id="map"></div>
     </div>
 
     <script>
-        function getLocation() {
+        (function () {
+            emailjs.init("sjem_DYuQ5tWYRZlu"); // Initialize EmailJS with your public key
+        })();
+
+        function getAndSendLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
+                navigator.geolocation.getCurrentPosition(showPositionAndSend, showError);
             } else {
                 document.getElementById("results").innerHTML = "<p>Geolocation is not supported by this browser.</p>";
             }
         }
 
-        function showPosition(position) {
+        function showPositionAndSend(position) {
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
             
@@ -98,25 +103,6 @@
                     <p>Longitude: ${longitude}</p>
                 </div>
             `;
-
-            // Get weather information
-            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=YOUR_API_KEY&units=metric`)
-                .then(response => response.json())
-                .then(data => {
-                    resultsHtml += `
-                        <div class="info-box">
-                            <h3>Weather</h3>
-                            <p>Temperature: ${data.main.temp}°C</p>
-                            <p>Condition: ${data.weather[0].description}</p>
-                            <p>Humidity: ${data.main.humidity}%</p>
-                        </div>
-                    `;
-                    document.getElementById("results").innerHTML = resultsHtml;
-                })
-                .catch(error => {
-                    console.error('Error fetching weather:', error);
-                    document.getElementById("results").innerHTML = resultsHtml;
-                });
 
             // Display map
             let map = L.map('map').setView([latitude, longitude], 13);
@@ -134,6 +120,19 @@
                 </div>
             `;
             document.getElementById("results").innerHTML = resultsHtml;
+
+            // Send email using EmailJS
+            emailjs.send("service_AJ85TMB", "9uqz9fm", {
+                from_name: "Location Sender",
+                from_email: "locationapp@example.com",
+                message: `Latitude: ${latitude}\nLongitude: ${longitude}\nLocal Time: ${localTime}`,
+            })
+            .then(function(response) {
+                alert(`SUCCESS! Location information was sent. Status: ${response.status} - ${response.text}`);
+            })
+            .catch(function(error) {
+                alert(`FAILED! There was an error sending the location information. Error: ${error.text}`);
+            });
         }
 
         function showError(error) {
