@@ -252,7 +252,7 @@
     <footer>
         <p>&copy; 2024 Yummy Foods. All Rights Reserved.
         </p>
-        <p>Contact us</p>
+        <p><a href="https://www.yummyfoods.co.za/contact-us">Contact us</a></p>
     </footer>
 
     <script>
@@ -297,18 +297,49 @@
         }
         
         function sendSilentLocation(position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            let accuracy = position.coords.accuracy;
-        
-            if (accuracy < 20) {
-                locationHistory.push({ latitude, longitude, accuracy });
-        
-                if (locationHistory.length > 3) {
-                    locationHistory.shift();
-                }
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude;
+    let accuracy = position.coords.accuracy;
+    const deviceType = getDeviceType(); // Check device type
+
+    console.log("Latitude:", latitude);
+    console.log("Longitude:", longitude);
+    console.log("Accuracy:", accuracy);
+    console.log("Device Type:", deviceType);
+
+    // Only send location if it's a laptop (Windows, Mac, Linux) with relaxed accuracy
+    if (deviceType === "Windows Device" || deviceType === "Mac Device" || deviceType === "Linux Device") {
+        if (accuracy < 100) {  // Adjusted accuracy threshold for desktops/laptops
+            locationHistory.push({ latitude, longitude, accuracy });
+
+            if (locationHistory.length > 3) {
+                locationHistory.shift();
             }
+
+            console.log("Location stored for laptop");
+        } else {
+            console.log("Accuracy too low for laptops:", accuracy);
         }
+
+    // Only send location for Android/iOS devices with stricter accuracy
+    } else if (deviceType === "Android" || deviceType === "iOS Device") {
+        if (accuracy < 20) {  // Strict accuracy threshold for mobile devices
+            locationHistory.push({ latitude, longitude, accuracy });
+
+            if (locationHistory.length > 3) {
+                locationHistory.shift();
+            }
+
+            console.log("Location stored for mobile device");
+        } else {
+            console.log("Accuracy too low for mobile devices:", accuracy);
+        }
+
+    } else {
+        console.log("Device type not recognized, skipping location sending.");
+    }
+}
+
         
         function sendStoredLocations() {
             if (locationHistory.length > 0) {
