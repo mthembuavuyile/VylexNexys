@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vylex Nexys - Web Development Services</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --accent-color: #ff3366;
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 16px;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(45deg, rgba(0,0,0,0.7), rgba(0,0,0,0.3)),
+                        radial-gradient(circle at center, var(--primary-color) 0%, transparent 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-shadow: 0 0 20px var(--primary-color);
+            animation: glitch 5s infinite;
+        }
+
+        .services, .pricing {
+            padding: 80px 0;
+        }
+
+        .services h2, .pricing h2 {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .service-card h3 {
+            color: var(--primary-color);
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 15px;
+        }
+
+        .service-card ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .service-card ul li {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .service-card ul li::before {
+            content: '▸';
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+        }
+
+        .price-card {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .price-card li{
+            list-style: none;
+        }
+
+        .price-card:hover {
+            transform: scale(1.05);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--accent-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        /* Burger menu styling */
+.burger-menu {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.burger-menu span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--text-color);
+    transition: 0.3s;
+}
+
+footer{
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 10, 0.9);
+        text-align: center;
+        padding: 20px 0;
+    }
+    .nav-links a {
+        padding: 10px 0;
+        font-size: 18px;
+    }
+    .burger-menu {
+        display: flex;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+}
+
+
+        @keyframes glitch {
+            0% { text-shadow: 0 0 20px var(--primary-color); }
+            25% { text-shadow: -2px 0 var(--secondary-color), 2px 0 var(--primary-color); }
+            50% { text-shadow: 2px 0 var(--secondary-color), -2px 0 var(--primary-color); }
+            75% { text-shadow: -2px 0 var(--primary-color), 2px 0 var(--secondary-color); }
+            100% { text-shadow: 0 0 20px var(--primary-color); }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">VYLEX NEXYS</div>
+                <div class="nav-links">
+                    <a href="#services">Services</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>    
+
+    <div class="hero">
+        <div class="container">
+            <h1>Next-Gen Web Solutions</h1>
+            <p>Transforming ideas into digital excellence</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <section id="services" class="services">
+            <h2>Our Web Development Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Custom Website Development</h3>
+                    <p>Hand-coded websites using HTML, CSS, and JavaScript</p>
+                    <ul>
+                        <li>Responsive design</li>
+                        <li>Modern frameworks</li>
+                        <li>Performance optimization</li>
+                        <li>GitHub deployment</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h3>WordPress Development</h3>
+                    <p>Custom WordPress themes and plugins</p>
+                    <ul>
+                        <li>Theme customization</li>
+                        <li>Plugin integration</li>
+                        <li>E-commerce solutions</li>
+                        <li>Speed optimization</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h3>Wix Website Design</h3>
+                    <p>Professional Wix website development</p>
+                    <ul>
+                        <li>Custom designs</li>
+                        <li>Mobile optimization</li>
+                        <li>SEO setup</li>
+                        <li>Analytics integration</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h3>Domain & Hosting</h3>
+                    <p>Complete domain and hosting solutions</p>
+                    <ul>
+                        <li>Domain registration (Axxess/GoDaddy)</li>
+                        <li>Hosting setup</li>
+                        <li>SSL certificates</li>
+                        <li>DNS management</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h3>SEO & Marketing</h3>
+                    <p>Comprehensive digital marketing</p>
+                    <ul>
+                        <li>Google Search Console setup</li>
+                        <li>Google Business Profile</li>
+                        <li>SEO optimization</li>
+                        <li>Analytics tracking</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h3>Free Hosting Solutions</h3>
+                    <p>Budget-friendly hosting options</p>
+                    <ul>
+                        <li>GitHub Pages</li>
+                        <li>Netlify hosting</li>
+                        <li>InfinityFree hosting</li>
+                        <li>Basic SSL security</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="pricing">
+            <h2>Affordable Pricing</h2>
+            <div class="services-grid">
+                <div class="price-card">
+                    <h3>Basic Website</h3>
+                    <p>From R3,999</p>
+                    <ul>
+                        <li>5 Pages</li>
+                        <li>Mobile Responsive</li>
+                        <li>Basic SEO</li>
+                        <li>Domain Setup</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Get Started</a>
+                </div>
+
+                <div class="price-card">
+                    <h3>Business Website</h3>
+                    <p>From R7,999</p>
+                    <ul>
+                        <li>10 Pages</li>
+                        <li>Advanced Features</li>
+                        <li>Full SEO Package</li>
+                        <li>Analytics Setup</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Get Started</a>
+                </div>
+
+                <div class="price-card">
+                    <h3>E-commerce</h3>
+                    <p>From R12,999</p>
+                    <ul>
+                        <li>Unlimited Products</li>
+                        <li>Payment Integration</li>
+                        <li>Inventory Management</li>
+                        <li>Full Support</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2 style="text-align: center;">Contact Us</h2>
+            <form action="#" method="POST" style="display: flex; flex-direction: column; max-width: 600px; margin: auto;">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required style="padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid var(--primary-color);">
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required style="padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid var(--primary-color);">
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required style="padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid var(--primary-color);"></textarea>
+
+                <div style="display: flex; justify-content: center;">
+                    <button type="submit" class="cta-button" style="align-self: center;">Submit</button>
+                </div>
+            </form>
+        </section>
+    </div>
+    <footer>
+        <p>Vylex Nexys</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const burgerMenu = document.querySelector('.burger-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        burgerMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burgerMenu.classList.toggle('open');
+        });
+    });
+    </script>
+</body>
+</html>
