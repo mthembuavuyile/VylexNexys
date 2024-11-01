@@ -1,179 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Text Analysis Suite</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <style>
-        .tool-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .animate-count {
-            animation: pulse 1s;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .sidebar-item {
-            transition: background-color 0.2s;
-        }
-        .sidebar-item:hover {
-            background-color: rgba(79, 70, 229, 0.1);
-        }
-        .sidebar-item.active {
-            background-color: rgba(79, 70, 229, 0.15);
-            border-right: 3px solid #4F46E5;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        #sidebar {
-            transition: transform 0.3s ease-in-out;
-            z-index: 50;
-        }
-        #sidebar.closed {
-            transform: translateX(-100%);
-        }
+        <!-- Primary Meta Tags -->
+        <title>Text Analysis Tools - Advanced Content Analysis Solutions</title>
+        <meta name="title" content="Text Analysis Tools - Advanced Content Analysis Solutions">
+        <meta name="description" content="Professional text analysis tools for content optimization, readability scoring, and semantic analysis. Enhance your content quality with our comprehensive suite of analysis features.">
+        <meta name="keywords" content="text analysis, content optimization, readability score, semantic analysis, content analysis tools, text analytics">
+        <meta name="author" content="Your Name or Company">
+        <meta name="robots" content="index, follow">
+        <meta name="language" content="English">
         
-        .main-content {
-            transition: margin-left 0.3s ease-in-out;
-        }
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://yourwebsite.com/text-analysis-tools">
+        <meta property="og:title" content="Text Analysis Tools - Advanced Content Analysis Solutions">
+        <meta property="og:description" content="Professional text analysis tools for content optimization, readability scoring, and semantic analysis. Enhance your content quality with our comprehensive suite of analysis features.">
+        <meta property="og:image" content="https://yourwebsite.com/path-to-your-image.jpg">
         
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0 !important;
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://yourwebsite.com/text-analysis-tools">
+        <meta property="twitter:title" content="Text Analysis Tools - Advanced Content Analysis Solutions">
+        <meta property="twitter:description" content="Professional text analysis tools for content optimization, readability scoring, and semantic analysis. Enhance your content quality with our comprehensive suite of analysis features.">
+        <meta property="twitter:image" content="https://yourwebsite.com/path-to-your-image.jpg">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="manifest" href="/site.webmanifest">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://yourwebsite.com/text-analysis-tools">
+        
+        <!-- External Resources -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://mthembuavuyile.github.io/VylexNexys/">
+        
+        <!-- Preconnect to External Domains -->
+        <link rel="preconnect" href="https://cdn.tailwindcss.com">
+        <link rel="preconnect" href="https://mthembuavuyile.github.io">
+        
+        <style>
+            .sidebar {
+                transition: transform 0.3s ease;
+                width: 16rem;
             }
-            #sidebar {
-                position: fixed;
+            .sidebar.closed {
+                transform: translateX(-100%);
             }
-            #sidebarToggle {
-                display: block !important;
-            }
-        }
-        
-        .overlay {
-            transition: opacity 0.3s ease-in-out;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        
-        @media (min-width: 769px) {
-            #sidebarToggle {
+            .overlay {
                 display: none;
+                background: rgba(0, 0, 0, 0.5);
+            }
+            .overlay.active {
+                display: block;
+            }
+            .sidebar-item.active {
+                background-color: #4F46E5;
+                color: white;
+            }
+            .animate-count {
+                animation: fadeIn 0.5s ease-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        </style>
+        
+        <!-- Structured Data -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Text Analysis Tools",
+            "description": "Professional text analysis tools for content optimization, readability scoring, and semantic analysis.",
+            "applicationCategory": "Text Analysis",
+            "operatingSystem": "Any",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
             }
         }
-    </style>
-</head>
-<body class="bg-gray-50 min-h-screen">
-    <!-- Overlay for mobile -->
-    <div id="overlay" class="overlay fixed inset-0 bg-black bg-opacity-50 z-40"></div>
-
-    <!-- Toggle Button -->
-    <button id="sidebarToggle" class="fixed top-4 left-4 z-50 p-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        </script>
+    </head>
+<body class="bg-gray-100">
+    <div id="overlay" class="overlay fixed inset-0 z-20"></div>
+    
+    <button id="sidebarToggle" class="fixed top-4 z-30 p-2 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
     </button>
 
-    <!-- Sidebar -->
-    <div id="sidebar" class="w-64 bg-white shadow-lg flex flex-col h-screen fixed">
-        <div class="p-6 border-b">
-            <h1 class="text-2xl font-bold text-indigo-600">Text Analysis</h1>
-            <p class="text-sm text-gray-600">Analysis Tools</p>
+    <nav id="sidebar" class="sidebar fixed top-0 left-0 h-full bg-white shadow-xl z-30 overflow-y-auto">
+        <div class="p-4">
+            <h1 class="text-xl font-bold text-indigo-600 mb-6">Text Analysis Tools</h1>
+            <div class="space-y-2">
+                <div class="sidebar-item active cursor-pointer p-3 rounded hover:bg-indigo-100" onclick="showTool('wordCount')">
+                    Word Counter
+                </div>
+                <div class="sidebar-item cursor-pointer p-3 rounded hover:bg-indigo-100" onclick="showTool('caseConverter')">
+                    Case Converter
+                </div>
+                <div class="sidebar-item cursor-pointer p-3 rounded hover:bg-indigo-100" onclick="showTool('textAnalyzer')">
+                    Text Analyzer
+                </div>
+                <div class="sidebar-item cursor-pointer p-3 rounded hover:bg-indigo-100" onclick="showTool('textCompare')">
+                    Text Comparison
+                </div>
+                <div class="sidebar-item cursor-pointer p-3 rounded hover:bg-indigo-100" onclick="showTool('markdownTool')">
+                    Markdown Converter
+                </div>
+                <div class="sidebar-item cursor-pointer p-3 rounded hover:bg-indigo-100" onclick="showTool('summarizer')">
+                    Text Summarizer
+                </div>
+                <div class="sidebar-item cursor-pointer p-3 rounded hover:bg-indigo-100" onclick="showTool('wordCloud')">
+                    Word Cloud
+                </div>
+            </div>
         </div>
-        <nav class="flex-1 p-4">
-            <div onclick="showTool('counter')" class="sidebar-item active p-3 rounded-md cursor-pointer mb-2 flex items-center">
-                <svg class="w-5 h-5 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
-                </svg>
-                Word Counter
-            </div>
-            <div onclick="showTool('case')" class="sidebar-item p-3 rounded-md cursor-pointer mb-2 flex items-center">
-                <svg class="w-5 h-5 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v7h7M4 11v7h7m4-7h3m-3 4h3m-6-4h.01M9 11h.01"/>
-                </svg>
-                Case Converter
-            </div>
-            <div onclick="showTool('stats')" class="sidebar-item p-3 rounded-md cursor-pointer mb-2 flex items-center">
-                <svg class="w-5 h-5 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
-                Advanced Stats
-            </div>
-        </nav>
-    </div>
+    </nav>
 
-    <!-- Main Content -->
-    <div id="mainContent" class="ml-64 flex-1 flex flex-col min-h-screen">
-        <main class="flex-1 p-8">
-            <!-- Word Counter Tool -->
-            <div id="counter" class="tool-section max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-indigo-600 mb-6">Word & Character Counter</h2>
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <textarea id="countText" class="w-full h-64 p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none" placeholder="Enter your text here..."></textarea>
-                    <button onclick="countWordsAndChars()" class="mt-4 w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors">
-                        Analyze Text
-                    </button>
-                    <div id="countResults" class="mt-4 space-y-2"></div>
-                </div>
+    <main id="mainContent" class="min-h-screen pt-16 px-4 transition-all duration-300">
+        <!-- Tool sections remain the same -->
+        <!-- Word Counter -->
+        <section id="wordCount" class="tool-section max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Word Counter</h2>
+            <textarea id="countText" class="w-full h-48 p-4 rounded border focus:ring-2 focus:ring-indigo-500 mb-4" 
+                      placeholder="Enter your text here..." oninput="countWordsAndChars()"></textarea>
+            <div id="countResults" class="space-y-2"></div>
+        </section>
+
+        <!-- Case Converter -->
+        <section id="caseConverter" class="tool-section hidden max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Case Converter</h2>
+            <textarea id="caseText" class="w-full h-48 p-4 rounded border focus:ring-2 focus:ring-indigo-500 mb-4" 
+                      placeholder="Enter your text here..."></textarea>
+            <div class="space-x-2 mb-4">
+                <button onclick="convertCase('upper')" class="bg-indigo-600 text-white px-4 py-2 rounded">UPPERCASE</button>
+                <button onclick="convertCase('lower')" class="bg-indigo-600 text-white px-4 py-2 rounded">lowercase</button>
+                <button onclick="convertCase('title')" class="bg-indigo-600 text-white px-4 py-2 rounded">Title Case</button>
+                <button onclick="convertCase('sentence')" class="bg-indigo-600 text-white px-4 py-2 rounded">Sentence case</button>
             </div>
+            <div id="caseResults" class="p-4 bg-white rounded shadow hidden"></div>
+        </section>
 
-            <!-- Case Converter Tool -->
-            <div id="case" class="tool-section max-w-3xl mx-auto hidden">
-                <h2 class="text-3xl font-bold text-indigo-600 mb-6">Case Converter</h2>
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <textarea id="caseText" class="w-full h-64 p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none" placeholder="Enter your text here..."></textarea>
-                    <div class="grid grid-cols-2 gap-3 mt-4">
-                        <button onclick="convertCase('upper')" class="bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors">UPPERCASE</button>
-                        <button onclick="convertCase('lower')" class="bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors">lowercase</button>
-                        <button onclick="convertCase('title')" class="bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors">Title Case</button>
-                        <button onclick="convertCase('sentence')" class="bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors">Sentence case</button>
-                    </div>
-                    <div id="caseResults" class="mt-4 p-4 bg-gray-50 rounded-md hidden"></div>
-                </div>
+        <!-- Text Analyzer -->
+        <section id="textAnalyzer" class="tool-section hidden max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Text Analyzer</h2>
+            <textarea id="statsText" class="w-full h-48 p-4 rounded border focus:ring-2 focus:ring-indigo-500 mb-4" 
+                      placeholder="Enter your text here..." oninput="analyzeText()"></textarea>
+            <div id="statsResults" class="space-y-2"></div>
+        </section>
+
+        <!-- Text Comparison -->
+        <section id="textCompare" class="tool-section hidden max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Text Comparison</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <textarea id="text1" class="w-full h-48 p-4 rounded border" placeholder="Enter first text..."></textarea>
+                <textarea id="text2" class="w-full h-48 p-4 rounded border" placeholder="Enter second text..."></textarea>
             </div>
+            <button onclick="compareTexts()" class="bg-indigo-600 text-white px-4 py-2 rounded mb-4">Compare Texts</button>
+            <div id="diffResults" class="p-4 bg-white rounded shadow"></div>
+        </section>
 
-            <!-- Advanced Stats Tool -->
-            <div id="stats" class="tool-section max-w-3xl mx-auto hidden">
-                <h2 class="text-3xl font-bold text-indigo-600 mb-6">Advanced Text Statistics</h2>
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <textarea id="statsText" class="w-full h-64 p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none" placeholder="Enter your text here..."></textarea>
-                    <button onclick="analyzeText()" class="mt-4 w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors">
-                        Generate Statistics
-                    </button>
-                    <div id="statsResults" class="mt-4 space-y-2"></div>
-                </div>
-            </div>
-        </main>
+        <!-- Markdown Converter -->
+        <section id="markdownTool" class="tool-section hidden max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Markdown Converter</h2>
+            <textarea id="markdownText" class="w-full h-48 p-4 rounded border mb-4" 
+                      placeholder="Enter markdown text..."></textarea>
+            <button onclick="convertMarkdown()" class="bg-indigo-600 text-white px-4 py-2 rounded mb-4">Convert to HTML</button>
+            <div id="htmlPreview" class="p-4 bg-white rounded shadow"></div>
+        </section>
 
-        <!-- Footer -->
-        <footer class="bg-white border-t py-4 px-8 text-center">
-            <p class="text-gray-600">By Vylex Nexys</p>
-        </footer>
-    </div>
+        <!-- Text Summarizer -->
+        <section id="summarizer" class="tool-section hidden max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Text Summarizer</h2>
+            <textarea id="fullText" class="w-full h-48 p-4 rounded border mb-4" 
+                      placeholder="Enter text to summarize..."></textarea>
+            <button onclick="summarizeText()" class="bg-indigo-600 text-white px-4 py-2 rounded mb-4">Generate Summary</button>
+            <div id="summary" class="p-4 bg-white rounded shadow"></div>
+        </section>
 
-    <script>
-    // Sidebar state and element references
+        <!-- Word Cloud -->
+        <section id="wordCloud" class="tool-section hidden max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Word Cloud Generator</h2>
+            <textarea id="cloudText" class="w-full h-48 p-4 rounded border mb-4" 
+                      placeholder="Enter text for word cloud..."></textarea>
+            <button onclick="generateWordCloud()" class="bg-indigo-600 text-white px-4 py-2 rounded mb-4">Generate Word Cloud</button>
+            <div id="wordCloud" class="p-4 bg-white rounded shadow text-center"></div>
+        </section>
+    </main>
+
+    <footer style="background: linear-gradient(45deg, #2c3e50, #3498db); color: white; padding: 20px 0; text-align: center; position: relative; bottom: 0; width: 100%; box-shadow: 0 -5px 15px rgba(0,0,0,0.1);">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <p style="margin: 0; font-family: 'Arial', sans-serif; font-size: 16px;">
+                <a href="https://mthembuavuyile.github.io/VylexNexys/" style="color: white; text-decoration: none; position: relative; transition: all 0.3s ease; padding: 5px 10px; border: 2px solid transparent;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='transparent'">
+                    © 2024 By Vylex Nexys
+                </a>
+            </p>
+        </div>
+    </footer>
+
+<script>
+// Constants and State Management
 let isSidebarOpen = window.innerWidth > 768;
+
+// DOM Element References
 const sidebar = document.getElementById('sidebar');
 const mainContent = document.getElementById('mainContent');
 const overlay = document.getElementById('overlay');
 const toggleButton = document.getElementById('sidebarToggle');
 
-// Function to update sidebar state
+// ============================================
+// Core Text Analysis Functions
+// ============================================
+
+/**
+ * Analyzes text readability using Flesch-Kincaid Grade Level
+ */
+function analyzeReadability(text) {
+    const words = text.trim().split(/\s+/).length;
+    const sentences = text.split(/[.!?]+\s/).length;
+    const syllables = countSyllables(text);
+    
+    const grade = 0.39 * (words/sentences) + 11.8 * (syllables/words) - 15.59;
+    
+    return {
+        grade: Math.round(grade * 10) / 10,
+        complexity: grade < 6 ? 'Easy' : grade < 12 ? 'Medium' : 'Complex',
+        avgWordLength: (text.length / words).toFixed(1),
+        avgSentenceLength: (words / sentences).toFixed(1)
+    };
+}
+
+/**
+ * Performs detailed text analysis
+ */
+function analyzeText() {
+    const text = document.getElementById('statsText').value;
+    const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0);
+    const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+    const paragraphs = text.split('\n\n').filter(para => para.trim().length > 0);
+    
+    const avgWordLength = words.reduce((sum, word) => sum + word.length, 0) / words.length || 0;
+    const avgSentenceLength = words.length / sentences.length || 0;
+    const longestWord = words.length > 0 ? words.reduce((a, b) => a.length > b.length ? a : b) : 'N/A';
+    
+    const stats = [
+        { label: 'Sentences', value: sentences.length },
+        { label: 'Paragraphs', value: paragraphs.length },
+        { label: 'Average word length', value: `${avgWordLength.toFixed(1)} characters` },
+        { label: 'Average sentence length', value: `${avgSentenceLength.toFixed(1)} words` },
+        { label: 'Longest word', value: longestWord },
+        { label: 'Reading time', value: `${Math.ceil(words.length / 200)} minute(s)` }
+    ];
+
+    document.getElementById('statsResults').innerHTML = generateStatsHTML(stats);
+}
+
+// ============================================
+// Text Comparison and Processing Functions
+// ============================================
+
+/**
+ * Compares two texts and highlights differences
+ */
+function compareTexts() {
+    const text1 = document.getElementById('text1').value;
+    const text2 = document.getElementById('text2').value;
+    
+    const words1 = text1.split(/\s+/);
+    const words2 = text2.split(/\s+/);
+    
+    let diffHTML = '';
+    const maxLength = Math.max(words1.length, words2.length);
+    
+    for(let i = 0; i < maxLength; i++) {
+        if(words1[i] !== words2[i]) {
+            diffHTML += `<span class="bg-red-200">${words1[i] || ''}</span> → <span class="bg-green-200">${words2[i] || ''}</span> `;
+        } else {
+            diffHTML += words1[i] + ' ';
+        }
+    }
+    
+    document.getElementById('diffResults').innerHTML = diffHTML;
+}
+
+/**
+ * Converts markdown to HTML
+ */
+ function convertMarkdown() {
+            const text = document.getElementById('markdownText').value;
+            let html = text
+                // Headers
+                .replace(/^#{6}\s?([^\n]+)/gm, '<h6>$1</h6>')
+                .replace(/^#{5}\s?([^\n]+)/gm, '<h5>$1</h5>')
+                .replace(/^#{4}\s?([^\n]+)/gm, '<h4>$1</h4>')
+                .replace(/^#{3}\s?([^\n]+)/gm, '<h3>$1</h3>')
+                .replace(/^#{2}\s?([^\n]+)/gm, '<h2>$1</h2>')
+                .replace(/^#{1}\s?([^\n]+)/gm, '<h1>$1</h1>')
+                // Bold
+                .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                // Italic
+                .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+                // Links
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+                // Line breaks
+                .replace(/\n/g, '<br>');
+            
+            document.getElementById('htmlPreview').innerHTML = html;
+        }
+
+// ============================================
+// Text Statistics and Counting Functions
+// ============================================
+
+/**
+ * Counts syllables in text
+ */
+function countSyllables(text) {
+    return text.toLowerCase()
+        .replace(/[^a-z]/g, '')
+        .replace(/[^aeiouy]*[aeiouy]+/g, '').length;
+}
+
+/**
+ * Counts words and characters in text
+ */
+function countWordsAndChars() {
+    const text = document.getElementById('countText').value;
+    const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+    const wordCount = words.length;
+    const charCount = text.length;
+    const charNoSpaces = text.replace(/\s/g, '').length;
+    const uniqueWords = new Set(words.map(w => w.toLowerCase())).size;
+    
+    const results = [
+        { label: 'Words', value: wordCount },
+        { label: 'Characters (with spaces)', value: charCount },
+        { label: 'Characters (without spaces)', value: charNoSpaces },
+        { label: 'Unique Words', value: uniqueWords }
+    ];
+
+    document.getElementById('countResults').innerHTML = generateResultsHTML(results);
+}
+
+// ============================================
+// Text Transformation Functions
+// ============================================
+
+/**
+ * Converts text case based on specified type
+ */
+function convertCase(type) {
+    const text = document.getElementById('caseText').value;
+    let result = '';
+    
+    switch(type) {
+        case 'upper':
+            result = text.toUpperCase();
+            break;
+        case 'lower':
+            result = text.toLowerCase();
+            break;
+        case 'title':
+            result = text.toLowerCase().split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+            break;
+        case 'sentence':
+            result = text.toLowerCase().replace(/(^\w|\.\s+\w)/gm, letter => letter.toUpperCase());
+            break;
+    }
+
+    const resultsDiv = document.getElementById('caseResults');
+    resultsDiv.textContent = result;
+    resultsDiv.classList.remove('hidden');
+}
+
+// ============================================
+// Advanced Text Analysis Functions
+// ============================================
+
+/**
+ * Checks text for potential plagiarism
+ */
+function checkPlagiarism() {
+    const text = document.getElementById('checkText').value;
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    
+    const duplicates = [];
+    for(let i = 0; i < sentences.length; i++) {
+        for(let j = i + 1; j < sentences.length; j++) {
+            if(sentences[i].trim() === sentences[j].trim()) {
+                duplicates.push(sentences[i]);
+            }
+        }
+    }
+    
+    return {
+        duplicateSentences: duplicates,
+        percentageDuplicate: (duplicates.length / sentences.length * 100).toFixed(1)
+    };
+}
+
+/**
+ * Generates text summary
+ */
+function summarizeText() {
+    const text = document.getElementById('fullText').value;
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    
+    const wordFreq = {};
+    text.toLowerCase().match(/\b\w+\b/g).forEach(word => {
+        wordFreq[word] = (wordFreq[word] || 0) + 1;
+    });
+    
+    const sentenceScores = sentences.map(sentence => ({
+        text: sentence,
+        score: sentence.toLowerCase().match(/\b\w+\b/g)
+            .reduce((score, word) => score + (wordFreq[word] || 0), 0)
+    }));
+    
+    const summary = sentenceScores
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3)
+        .map(s => s.text)
+        .join('. ');
+        
+    document.getElementById('summary').textContent = summary + '.';
+}
+
+/**
+ * Calculates word frequencies from input text
+ * @param {string} text - The input text for the word cloud
+ * @returns {Object} An object with words as keys and their frequencies as values
+ */
+ function calculateWordFrequency(text) {
+  return text.toLowerCase()
+    .match(/\b\w+\b/g)
+    .filter(word => word.length > 3)
+    .reduce((frequency, word) => {
+      frequency[word] = (frequency[word] || 0) + 1;
+      return frequency;
+    }, {});
+}
+
+/**
+ * Renders the word cloud in the DOM
+ * @param {Object} frequency - The word frequency object
+ */
+function renderWordCloud(frequency) {
+  const cloudHTML = Object.entries(frequency)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 50)
+    .map(([word, freq]) => {
+      const size = Math.max(1, Math.min(6, Math.floor(freq / 2)));
+      const bgColor = `bg-indigo-${size * 100 + 200}`;
+      const textColor = `text-indigo-${size * 100 + 800}`;
+      return `<span class="inline-block m-1 p-2 ${bgColor} ${textColor}" style="font-size: ${size * 0.5 + 0.75}rem">
+                ${word}
+              </span>`;
+    })
+    .join('');
+  document.getElementById('wordCloud').innerHTML = cloudHTML;
+}
+
+/**
+ * Generates the word cloud based on user input
+ */
+function generateWordCloud() {
+  const text = document.getElementById('cloudText').value;
+  const frequency = calculateWordFrequency(text);
+  renderWordCloud(frequency);
+}
+
+
+// ============================================
+// Sidebar and UI Management Functions
+// ============================================
+
+/**
+ * Updates sidebar state
+ */
 function updateSidebarState(isOpen) {
     isSidebarOpen = isOpen;
     
-    // Update sidebar visibility
     sidebar.classList.toggle('closed', !isOpen);
     overlay.classList.toggle('active', isOpen && window.innerWidth <= 768);
     
-    // Update main content margin
     if (window.innerWidth > 768) {
         mainContent.style.marginLeft = isOpen ? '16rem' : '0';
         toggleButton.style.left = isOpen ? '272px' : '1rem';
@@ -183,29 +505,81 @@ function updateSidebarState(isOpen) {
     }
 }
 
-// Toggle sidebar function
+/**
+ * Toggles sidebar visibility
+ */
 function toggleSidebar() {
     updateSidebarState(!isSidebarOpen);
 }
 
-// Window resize handler with debounce
+/**
+ * Shows selected tool section
+ */
+function showTool(toolId) {
+    document.querySelectorAll('.tool-section').forEach(section => {
+        section.classList.add('hidden');
+    });
+    
+    document.getElementById(toolId).classList.remove('hidden');
+    
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+    
+    if (window.innerWidth <= 768 && isSidebarOpen) {
+        toggleSidebar();
+    }
+}
+
+// ============================================
+// Helper Functions
+// ============================================
+
+/**
+ * Generates HTML for statistics display
+ */
+function generateStatsHTML(stats) {
+    return stats.map(stat => `
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+            <span class="text-gray-600">${stat.label}:</span>
+            <span class="font-semibold text-indigo-600">${stat.value}</span>
+        </div>
+    `).join('');
+}
+
+/**
+ * Generates HTML for results display
+ */
+function generateResultsHTML(results) {
+    return results.map(result => `
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded animate-count">
+            <span class="text-gray-600">${result.label}:</span>
+            <span class="font-semibold text-indigo-600">${result.value}</span>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// Event Listeners
+// ============================================
+
+// Window resize handler
 let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
         if (window.innerWidth > 768) {
-            // Ensure sidebar is visible on desktop
             if (!isSidebarOpen) {
                 updateSidebarState(true);
             }
         } else {
-            // Ensure sidebar is closed on mobile
             updateSidebarState(false);
         }
     }, 100);
 });
 
-// Event listeners
+// Button click handlers
 toggleButton.addEventListener('click', toggleSidebar);
 overlay.addEventListener('click', () => {
     if (isSidebarOpen && window.innerWidth <= 768) {
@@ -213,117 +587,15 @@ overlay.addEventListener('click', () => {
     }
 });
 
-// Handle escape key
+// Keyboard handler
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && isSidebarOpen && window.innerWidth <= 768) {
         toggleSidebar();
     }
 });
 
-// Tool switching functionality with improved mobile handling
-function showTool(toolId) {
-    // Hide all tool sections
-    document.querySelectorAll('.tool-section').forEach(section => {
-        section.classList.add('hidden');
-    });
-    
-    // Show selected tool section
-    document.getElementById(toolId).classList.remove('hidden');
-    
-    // Update sidebar active state
-    document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    event.currentTarget.classList.add('active');
-    
-    // Close sidebar on mobile after selection
-    if (window.innerWidth <= 768 && isSidebarOpen) {
-        toggleSidebar();
-    }
-}
-
-// Initialize sidebar state based on screen size
-updateSidebarState(window.innerWidth > 768);
-
-        function countWordsAndChars() {
-            const text = document.getElementById('countText').value;
-            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
-            const wordCount = words.length;
-            const charCount = text.length;
-            const charNoSpaces = text.replace(/\s/g, '').length;
-            const uniqueWords = new Set(words.map(w => w.toLowerCase())).size;
-            
-            const results = [
-                { label: 'Words', value: wordCount },
-                { label: 'Characters (with spaces)', value: charCount },
-                { label: 'Characters (without spaces)', value: charNoSpaces },
-                { label: 'Unique Words', value: uniqueWords }
-            ];
-
-            const resultsHTML = results.map(result => `
-                <div class="flex justify-between items-center p-3 bg-gray-50 rounded animate-count">
-                    <span class="text-gray-600">${result.label}:</span>
-                    <span class="font-semibold text-indigo-600">${result.value}</span>
-                </div>
-            `).join('');
-
-            document.getElementById('countResults').innerHTML = resultsHTML;
-        }
-
-        function convertCase(type) {
-            const text = document.getElementById('caseText').value;
-            let result = '';
-            
-            switch(type) {
-                case 'upper':
-                    result = text.toUpperCase();
-                    break;
-                case 'lower':
-                    result = text.toLowerCase();
-                    break;
-                case 'title':
-                    result = text.toLowerCase().split(' ')
-                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(' ');
-                    break;
-                case 'sentence':
-                    result = text.toLowerCase().replace(/(^\w|\.\s+\w)/gm, letter => letter.toUpperCase());
-                    break;
-            }
-
-            const resultsDiv = document.getElementById('caseResults');
-            resultsDiv.textContent = result;
-            resultsDiv.classList.remove('hidden');
-        }
-
-        function analyzeText() {
-            const text = document.getElementById('statsText').value;
-            const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0);
-            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
-            const paragraphs = text.split('\n\n').filter(para => para.trim().length > 0);
-            
-            const avgWordLength = words.reduce((sum, word) => sum + word.length, 0) / words.length || 0;
-            const avgSentenceLength = words.length / sentences.length || 0;
-            const longestWord = words.length > 0 ? words.reduce((a, b) => a.length > b.length ? a : b) : 'N/A';
-            
-            const stats = [
-                { label: 'Sentences', value: sentences.length },
-                { label: 'Paragraphs', value: paragraphs.length },
-                { label: 'Average word length', value: `${avgWordLength.toFixed(1)} characters` },
-                { label: 'Average sentence length', value: `${avgSentenceLength.toFixed(1)} words` },
-                { label: 'Longest word', value: longestWord },
-                { label: 'Reading time', value: `${Math.ceil(words.length / 200)} minute(s)` }
-            ];
-
-            const statsHTML = stats.map(stat => `
-                <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
-                    <span class="text-gray-600">${stat.label}:</span>
-                    <span class="font-semibold text-indigo-600">${stat.value}</span>
-                </div>
-            `).join('');
-
-            document.getElementById('statsResults').innerHTML = statsHTML;
-        }
-    </script>
+// Initialize sidebar state
+updateSidebarState(window.innerWidth > 768);    
+</script>
 </body>
 </html>
