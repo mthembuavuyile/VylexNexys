@@ -138,18 +138,18 @@
         </section>
 
         <!-- Case Converter -->
-        <section id="caseConverter" class="tool-section hidden max-w-4xl mx-auto">
-            <h2 class="text-2xl font-bold mb-4">Case Converter</h2>
-            <textarea id="caseText" class="w-full h-48 p-4 rounded border focus:ring-2 focus:ring-indigo-500 mb-4" 
-                      placeholder="Enter your text here..."></textarea>
-            <div class="space-x-2 mb-4">
-                <button onclick="convertCase('upper')" class="bg-indigo-600 text-white px-4 py-2 rounded">UPPERCASE</button>
-                <button onclick="convertCase('lower')" class="bg-indigo-600 text-white px-4 py-2 rounded">lowercase</button>
-                <button onclick="convertCase('title')" class="bg-indigo-600 text-white px-4 py-2 rounded">Title Case</button>
-                <button onclick="convertCase('sentence')" class="bg-indigo-600 text-white px-4 py-2 rounded">Sentence case</button>
-            </div>
-            <div id="caseResults" class="p-4 bg-white rounded shadow hidden"></div>
-        </section>
+<section id="caseConverter" class="tool-section hidden max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">Case Converter</h2>
+    <textarea id="caseText" class="w-full h-48 p-4 rounded border focus:ring-2 focus:ring-indigo-500 mb-4" 
+              placeholder="Enter your text here..."></textarea>
+    <div class="flex flex-wrap gap-4 mb-4">
+        <button onclick="convertCase('upper')" class="bg-indigo-600 text-white px-4 py-2 rounded">UPPERCASE</button>
+        <button onclick="convertCase('lower')" class="bg-indigo-600 text-white px-4 py-2 rounded">lowercase</button>
+        <button onclick="convertCase('title')" class="bg-indigo-600 text-white px-4 py-2 rounded">Title Case</button>
+        <button onclick="convertCase('sentence')" class="bg-indigo-600 text-white px-4 py-2 rounded">Sentence case</button>
+    </div>
+    <div id="caseResults" class="p-4 bg-white rounded shadow hidden"></div>
+</section>
 
         <!-- Text Analyzer -->
         <section id="textAnalyzer" class="tool-section hidden max-w-4xl mx-auto">
