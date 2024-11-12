@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,6 +83,31 @@
             margin-bottom: 8px;
             color: var(--text-primary);
             font-weight: 500;
+        }
+
+        .edit-button {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .edit-section {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .editable-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
         }
 
         .input-group {
@@ -263,7 +289,6 @@
     </style>
 </head>
 <body>
-
     <div id="welcomeModal" style="
         position: fixed;
         top: 0;
@@ -325,51 +350,52 @@
         <div class="card">
             <h2><i class="fas fa-coins"></i> Investment Inputs</h2>
             <form id="investmentForm">
+                <button type="button" onclick="toggleEdit()" style="margin-right: 10px;"><i class="fas fa-edit"></i> Enable Editing</button>
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Mommy Binance:</label>
                         <div class="input-group">
                             <span>R</span>
-                            <input type="number" id="mommyBinance" value="21500">
+                            <input type="number" id="mommyBinance" value="21500" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>M4G Binance:</label>
                         <div class="input-group">
                             <span>R</span>
-                            <input type="number" id="m4gBinance" value="2000">
+                            <input type="number" id="m4gBinance" value="2000" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Granny Binance:</label>
                         <div class="input-group">
                             <span>R</span>
-                            <input type="number" id="grannyBinance" value="2000">
+                            <input type="number" id="grannyBinance" value="2000" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Khanyie Binance:</label>
                         <div class="input-group">
                             <span>R</span>
-                            <input type="number" id="khanyieBinance" value="1000">
+                            <input type="number" id="khanyieBinance" value="1000" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Granny Luno:</label>
                         <div class="input-group">
                             <span>R</span>
-                            <input type="number" id="grannyLuno" value="14500">
+                            <input type="number" id="grannyLuno" value="14500" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Current Total Holdings:</label>
                         <div class="input-group">
                             <span>R</span>
-                            <input type="number" id="currentHoldings" value="41800">
+                            <input type="number" id="currentHoldings" value="41800" readonly>
                         </div>
                     </div>
                 </div>
-                <button type="submit"><i class="fas fa-calculator"></i> Calculate Returns</button>
+                <button type="submit" disabled><i class="fas fa-calculator"></i> Calculate Returns</button>
             </form>
 
             <div class="results" id="results">
@@ -420,6 +446,52 @@
             document.getElementById('welcomeModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
+        // Password protection and editing state
+let isEditMode = false;
+const PIN = "2024";
+const PASSWORD = "TheYear2024";
+
+function toggleEdit() {
+  const pinInput = prompt("Enter PIN to edit values:");
+  if (pinInput === PIN) {
+    const passwordInput = prompt("Enter password:");
+    if (passwordInput === PASSWORD) {
+      isEditMode = true;
+      enableInputs();
+      alert("Edit mode enabled");
+    } else {
+      alert("Incorrect password");
+    }
+  } else {
+    alert("Incorrect PIN");
+  }
+}
+
+function enableInputs() {
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.removeAttribute('readonly');
+  });
+  // Enable the calculate button
+  const calculateBtn = document.querySelector('#investmentForm button[type="submit"]');
+  calculateBtn.disabled = false;
+}
+
+function disableInputs() {
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.setAttribute('readonly', true);
+  });
+  // Disable the calculate button
+  const calculateBtn = document.querySelector('#investmentForm button[type="submit"]');
+  calculateBtn.disabled = true;
+}
+
+// Add to existing script
+window.onload = function() {
+    disableInputs(); // Keep this to disable inputs on load
+    updateHistoryDisplay(); // Load initial data
+  }
         
         // Store historical data
         let investmentHistory = [];
@@ -570,5 +642,43 @@
         // Initial load of history from localStorage
         updateHistoryDisplay();
     </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
 </body>
 </html>
