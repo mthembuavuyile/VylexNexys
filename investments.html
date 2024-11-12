@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Crypto Investment Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --success-color: #16a34a;
+            --danger-color: #dc2626;
+            --background-color: #f1f5f9;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            padding: 20px;
+            background: var(--background-color);
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+        }
+
+        .card {
+            background: var(--card-background);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group span {
+            position: absolute;
+            left: 12px;
+            color: var(--text-secondary);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 12px 10px 30px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .results {
+            margin-top: 25px;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .summary-card h4 {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .profit {
+            color: var(--success-color) !important;
+        }
+
+        .loss {
+            color: var(--danger-color) !important;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .portfolio {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .coin {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+
+        .coin:hover {
+            transform: translateY(-2px);
+            background: #f1f5f9;
+        }
+
+        .coin i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .portfolio {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+
+        .history-entry {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .history-date {
+            font-weight: 600;
+        }
+
+        .history-values {
+            display: flex;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcomeModal" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    ">
+        <div style="
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        ">
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;">Welcome, this is our Investment Journey</h2>
+            <p style="margin-bottom: 15px;">This is a private investment tracking platform for our family members who participated in our collective crypto investment journey that began in December 2023.</p>
+            
+            <h3 style="color: var(--text-primary); margin: 15px 0;">Our Investment Timeline:</h3>
+            <ul style="margin-bottom: 20px; padding-left: 20px;">
+                <li style="margin-bottom: 10px;">December 2023: Initial investment near market peak, driven by Bitcoin halving event anticipation</li>
+                <li style="margin-bottom: 10px;">Early 2024: Experienced market volatility due to Mt. Gox Bitcoin releases, German gov selling, and US election uncertainty</li>
+                <li style="margin-bottom: 10px;">Mid-2024: Portfolio experienced a significant drawdown (around R10,000 total loss)</li>
+                <li style="margin-bottom: 10px;">November 5, 2024: Market boost following US presidential election</li>
+                <li style="margin-bottom: 10px;">November 11, 2024: Recovery to near break-even point, with some assets still below purchase price</li>
+            </ul>
+            
+            <p style="margin-bottom: 15px;"><strong>Important Notes:</strong></p>
+            <ul style="margin-bottom: 20px; padding-left: 20px;">
+                <li>All profits are shared equally based on investment proportion</li>
+                <li>Displayed amounts are before trading fees</li>
+                <li>Portfolio success achieved through DCA (Dollar Cost Averaging) and diversification</li>
+            </ul>
+            
+            <button onclick="closeModal()" style="
+                background: var(--primary-color);
+                color: white;
+                padding: 12px 24px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                width: 100%;
+            ">I Understand - Show My Investment Details</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-chart-line"></i> Family Crypto Investment Tracker</h1>
+            <p>Track and manage your family's cryptocurrency investments</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-coins"></i> Investment Inputs</h2>
+            <form id="investmentForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Mommy Binance:</label>
+                        <div class="input-group">
+                            <span>R</span>
+                            <input type="number" id="mommyBinance" value="21500">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>M4G Binance:</label>
+                        <div class="input-group">
+                            <span>R</span>
+                            <input type="number" id="m4gBinance" value="2000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Granny Binance:</label>
+                        <div class="input-group">
+                            <span>R</span>
+                            <input type="number" id="grannyBinance" value="2000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Khanyie Binance:</label>
+                        <div class="input-group">
+                            <span>R</span>
+                            <input type="number" id="khanyieBinance" value="1000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Granny Luno:</label>
+                        <div class="input-group">
+                            <span>R</span>
+                            <input type="number" id="grannyLuno" value="14500">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Current Total Holdings:</label>
+                        <div class="input-group">
+                            <span>R</span>
+                            <input type="number" id="currentHoldings" value="41800">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit"><i class="fas fa-calculator"></i> Calculate Returns</button>
+            </form>
+
+            <div class="results" id="results">
+                <!-- Results will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-wallet"></i> Top Portfolio Holdings</h2>
+            <div class="portfolio">
+                <div class="coin"><i class="fab fa-bitcoin"></i>BTC</div>
+                <div class="coin"><i class="fab fa-ethereum"></i>ETH</div>
+                <div class="coin"><i class="fas fa-coins"></i>SOL</div>
+                <div class="coin"><i class="fas fa-dog"></i>DOGE</div>
+                <div class="coin"><i class="fas fa-coins"></i>XRP</div>
+                <div class="coin"><i class="fas fa-coins"></i>ADA</div>
+                <div class="coin"><i class="fas fa-coins"></i>BNB</div>
+                <div class="coin"><i class="fas fa-mountain"></i>AVAX</div>
+                <div class="coin"><i class="fas fa-dog"></i>SHIB</div>
+                <div class="coin"><i class="fas fa-link"></i>LINK</div>
+                <div class="coin"><i class="fas fa-dragon"></i>FLOKI</div>
+                <div class="coin"><i class="fas fa-university"></i>UNI</div>
+                <div class="coin"><i class="fas fa-dot-circle"></i>DOT</div>
+                <div class="coin"><i class="fas fa-frog"></i>PEPE</div>
+                <div class="coin"><i class="fas fa-dog"></i>BONK</div>
+                <div class="coin"><i class="fas fa-poll"></i>POL</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-history"></i> Profit/Loss History</h2>
+            <div id="historyList">
+                <!-- History list will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeModal() {
+            document.getElementById('welcomeModal').style.display = 'none';
+        }
+
+        // Prevent scrolling when modal is open
+        document.body.style.overflow = 'hidden';
+        
+        // Enable scrolling when modal is closed
+        function closeModal() {
+            document.getElementById('welcomeModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Store historical data
+        let investmentHistory = [];
+
+        // Load history from localStorage
+        function loadHistory() {
+            return JSON.parse(localStorage.getItem('investmentHistory') || '[]');
+        }
+
+        // Save history to localStorage
+        function saveHistory(history) {
+            localStorage.setItem('investmentHistory', JSON.stringify(history));
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('en-ZA', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Update history display
+        function updateHistoryDisplay() {
+            const history = loadHistory();
+            const historyList = document.getElementById('historyList');
+            
+            historyList.innerHTML = history.sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map(entry => `
+                    <div class="history-entry">
+                        <span class="history-date">${formatDate(entry.date)}</span>
+                        <div class="history-values">
+                            <span>Holdings: R${entry.currentHoldings.toFixed(2)}</span>
+                            <span class="${entry.profit >= 0 ? 'profit' : 'loss'}">
+                                ${entry.profit >= 0 ? '+' : ''}R${entry.profit.toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        document.getElementById('investmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get input values
+            const mommyBinance = parseFloat(document.getElementById('mommyBinance').value) || 0;
+            const m4gBinance = parseFloat(document.getElementById('m4gBinance').value) || 0;
+            const grannyBinance = parseFloat(document.getElementById('grannyBinance').value) || 0;
+            const khanyieBinance = parseFloat(document.getElementById('khanyieBinance').value) || 0;
+            const grannyLuno = parseFloat(document.getElementById('grannyLuno').value) || 0;
+            const currentHoldings = parseFloat(document.getElementById('currentHoldings').value) || 0;
+
+            // Calculate totals
+            const totalBinance = mommyBinance + m4gBinance + grannyBinance + khanyieBinance;
+            const totalLuno = grannyLuno;
+            const totalInvested = totalBinance + totalLuno;
+            const profit = currentHoldings - totalInvested;
+            const profitPercentage = ((currentHoldings - totalInvested) / totalInvested * 100).toFixed(2);
+
+            // Save to history
+            const history = loadHistory();
+            history.push({
+                date: new Date().toISOString(),
+                totalInvested,
+                currentHoldings,
+                profit
+            });
+            saveHistory(history);
+
+            // Calculate individual profits
+            const calculateShare = (investment) => (investment / totalInvested) * profit;
+            const calculateROI = (investment, profitShare) => ((profitShare / investment) * 100).toFixed(2);
+
+            const mommyProfit = calculateShare(mommyBinance);
+            const m4gProfit = calculateShare(m4gBinance);
+            const grannyProfit = calculateShare(grannyBinance + grannyLuno);
+            const khanyieProfit = calculateShare(khanyieBinance);
+
+            // Generate results HTML
+            const resultsHTML = `
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <h4>Total Invested</h4>
+                        <div class="value">R${totalInvested.toFixed(2)}</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Current Holdings</h4>
+                        <div class="value">R${currentHoldings.toFixed(2)}</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Total Profit/Loss</h4>
+                        <div class="value ${profit >= 0 ? 'profit' : 'loss'}">
+                            R${profit.toFixed(2)}
+                            <small style="display: block; font-size: 14px;">(${profitPercentage}%)</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-table">
+                    <h3>Individual Profits</h3>
+                    <table>
+                        <tr>
+                            <th>Person</th>
+                            <th>Investment</th>
+                            <th>Profit Share</th>
+                            <th>ROI</th>
+                            <th>Total Value</th>
+                        </tr>
+                        <tr>
+                            <td>Mommy</td>
+                            <td>R${mommyBinance.toFixed(2)}</td>
+                            <td class="${mommyProfit >= 0 ? 'profit' : 'loss'}">R${mommyProfit.toFixed(2)}</td>
+                            <td>${calculateROI(mommyBinance, mommyProfit)}%</td>
+                            <td>R${(mommyBinance + mommyProfit).toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td>M4G</td>
+                            <td>R${m4gBinance.toFixed(2)}</td>
+                            <td class="${m4gProfit >= 0 ? 'profit' : 'loss'}">R${m4gProfit.toFixed(2)}</td>
+                            <td>${calculateROI(m4gBinance, m4gProfit)}%</td>
+                            <td>R${(m4gBinance + m4gProfit).toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td>Granny</td>
+                            <td>R${(grannyBinance + grannyLuno).toFixed(2)}</td>
+                            <td class="${grannyProfit >= 0 ? 'profit' : 'loss'}">R${grannyProfit.toFixed(2)}</td>
+                            <td>${calculateROI(grannyBinance + grannyLuno, grannyProfit)}%</td>
+                            <td>R${(grannyBinance + grannyLuno + grannyProfit).toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td>Khanyie</td>
+                            <td>R${khanyieBinance.toFixed(2)}</td>
+                            <td class="${khanyieProfit >= 0 ? 'profit' : 'loss'}">R${khanyieProfit.toFixed(2)}</td>
+                            <td>${calculateROI(khanyieBinance, khanyieProfit)}%</td>
+                            <td>R${(khanyieBinance + khanyieProfit).toFixed(2)}</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+
+            document.getElementById('results').innerHTML = resultsHTML;
+            updateHistoryDisplay(); // Update history display after calculations
+        });
+
+        // Initial load of history from localStorage
+        updateHistoryDisplay();
+    </script>
+</body>
+</html>
