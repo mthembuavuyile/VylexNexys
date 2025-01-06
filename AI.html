@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #fff;
+      border-right: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .sidebar-header h1 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #4f46e5;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+    }
+
+    .sidebar-nav ul li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar-nav ul li a {
+      text-decoration: none;
+      color: #6b7280;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar-nav ul li a:hover {
+      color: #4f46e5;
+    }
+
+    .sidebar-nav ul li a svg {
+      margin-right: 10px;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-header {
+      padding: 20px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .main-header h1 {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .main-header input {
+      padding: 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 5px;
+      width: 250px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #4f46e5;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h1>Vylex Nexys</h1>
+    </div>
+    <div class="sidebar-nav">
+      <ul>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Workflows</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="main">
+    <header class="main-header">
+      <h1>AI Platform Dashboard</h1>
+      <input type="text" placeholder="Search...">
+    </header>
+    <div class="main-content">
+      <div class="card">
+        <h2>Welcome to the Dashboard</h2>
+        <p>Manage your workflow, view analytics, and interact with the platform features.</p>
+      </div>
+      <div class="card">
+        <h2>Stats</h2>
+        <p>Here you can view your platform statistics and usage data.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
