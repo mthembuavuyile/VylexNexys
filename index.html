@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vylex Nexys IT - Software Development Redefined</title>
-    <link rel="stylesheet" href="main.css">
+    <meta name="description" content="VylexNexys - Pioneering Innovation & Technology Solutions. Experts in web, software, and enterprise tech solutions to propel your business into the future.">
+    <meta name="keywords" content="VylexNexys, IT Corporation, web development, software development, technology solutions, innovation, tech services">
+    <meta name="author" content="VylexNexys">
+    <title>VylexNexys - Innovation & Technology Solutions</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <header>
         <div class="container">
             <nav>
@@ -17,11 +19,10 @@
                 <div class="nav-links">
                     <a href="#home">Home</a>
                     <a href="#services">Services</a>
-                    <a href="#team">Team</a>
-                    <a href="#contact">Contact</a>
+                    <a href="contact.html">Contact</a>
                 </div>
                 <div class="hamburger-menu">
-                    <button class="hamburger-icon" type="button">
+                    <button class="hamburger-icon">
                         <span class="bar"></span>
                         <span class="bar"></span>
                         <span class="bar"></span>
@@ -31,191 +32,47 @@
         </div>
     </header>
 
-    <main>
-        <section id="home" class="hero">
-            <div class="circuit-bg"></div> 
-            <div class="glitch-effect"></div> 
-            <div class="rotating-cube-container">
-                <div class="rotating-cube">
-                    <div class="cube-face">Web</div> 
-                    <div class="cube-face">Android</div> 
-                    <div class="cube-face">Vylex</div> 
-                    <div class="cube-face">Systems</div> 
-                    <div class="cube-face">Software</div> 
-                    <div class="cube-face">Nexys</div> 
-                </div>
-            </div>
-            <div class="hero-content">
-                <h1>Vylex Nexys IT</h1>
-                <h2>Pioneering the Future of IT</h2>
-                <p>Where innovation meets excellence. We deliver cutting-edge software solutions to propel your business into the digital future.</p>
-                <a href="https://mthembuavuyile.github.io/mywebsite/index.html" class="cta-button">Initiate Contact</a> 
-            </div>
-        </section>
+    <section class="hero" id="home">
+        <h1>Transforming Ideas into Reality</h1>
+        <p>We specialize in creating cutting-edge solutions across mobile, web, and enterprise platforms, delivering innovation that drives business success.</p>
+        <button class="cta-button">Explore Our Solutions</button>
+    </section>
 
-        
+    <section class="features" id="services">
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+            </svg>
+            <h3 class="feature-title">Mobile Apps</h3>
+            <p class="feature-desc">Creating powerful, user-friendly mobile applications with cutting-edge Android technologies</p>
+        </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            <h3 class="feature-title">Web Solutions</h3>
+            <p class="feature-desc">Building responsive, modern websites and web applications that deliver exceptional user experiences</p>
+        </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+            </svg>
+            <h3 class="feature-title">Custom Tools</h3>
+            <p class="feature-desc">Developing specialized software tools and utilities to streamline your business processes</p>
+        </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <h3 class="feature-title">Security Solutions</h3>
+            <p class="feature-desc">Implementing robust security measures to protect your digital assets and data</p>
+        </div>
+    </section>
 
-        <section class="slideshow-container">
-            <div class="mySlides fade">
-                <img src="images/vnit1 (1).jpg" alt="Cyberpunk logo 1">
-            </div>
-            <div class="mySlides fade">
-                <img src="images/vnit1 (2).jpg" alt="Cyberpunk logo 2">
-            </div>
-            <div class="mySlides fade">
-                <img src="images/vnit1 (3).jpg" alt="Cyberpunk logo 3">
-            </div>
-            <div class="mySlides fade">
-                <img src="images/vnit1 (4).jpg" alt="Cyberpunk logo 4">
-            </div>
-            <div class="mySlides fade">
-                <img src="images/vnit1 (5).jpg" alt="Cyberpunk logo 5">
-            </div>
-        </section>
+    <footer class="footer">
+        © 2025 VylexNexys. All rights reserved.
+    </footer>
 
-        <section id="services" class="services">
-            <div class="container">
-                <h2>Our Cutting-Edge Services</h2>
-                <div class="service-grid">
-                    <div class="service-card">
-                        <h3>Web Development</h3>
-                        <p>Crafting responsive and dynamic web applications using the latest technologies.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Android App Development</h3>
-                        <p>Building innovative and user-friendly Android applications for mobile devices.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Software Development</h3>
-                        <p>Creating custom software solutions tailored to meet your unique business needs.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Systems Development</h3>
-                        <p>Designing and implementing robust systems to streamline your operations.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Website Development</h3>
-                        <p>Developing stunning and functional websites to enhance your online presence.</p>
-                        <a href="webdevelopment.html" style="color: rgb(118, 142, 206); text-decoration: none;">Learn More</a>
-
-                    </div>
-                    <div class="service-card">
-                        <h3>API Integration</h3>
-                        <p>Seamlessly connecting your software with third-party services and platforms.</p>
-                    </div>
-                </div>
-                <div style="text-align: center; padding: 5px;">
-                    <button style="background-color: #ff00ff; padding: 15px 30px; margin-top: 30px; font-size: 20px;">
-                        <a href="nexys-gallery.html" style="color: white; text-decoration: none;">Visit Project Gallery</a> 
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section id="team" class="team">
-            <div class="container">
-                <h2>Meet The Founder</h2> 
-                <div class="team-member">
-                    <img src="images/avuyile-mthembu.jpg" alt="Avuyile Mthembu" class="member-image">
-                    <h3 class="member-name">Avuyile Mthembu</h3>
-                    <p class="member-role">CEO & Lead Developer</p>
-                    <p class="member-bio">Visionary leader with a passion for innovative software solutions and cutting-edge development techniques.</p>
-                    <br>
-                    <p><a href="https://avuyilemthembu.co.za/" style="color: rgb(57, 255, 255);">avuyilemthembu.co.za</a></p>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact">
-            <footer>
-                <p>© 2024 Vylex Nexys IT - Shaping the Future of Software Development</p>
-            </footer>
-        </section>
-
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const hero = document.querySelector('.hero');
-            const cubeContainer = document.querySelector('.rotating-cube-container');
-            const cube = document.querySelector('.rotating-cube');
-            const hamburgerMenu = document.querySelector('.hamburger-menu');
-            const navLinks = document.querySelector('.nav-links');
-            const hamburgerIcon = document.querySelector('.hamburger-icon');
-
-            // Rotating Cube on Mousemove
-            hero.addEventListener('mousemove', (e) => {
-                const x = (e.clientX - window.innerWidth / 2) / 25;
-                const y = (e.clientY - window.innerHeight / 2) / 25;
-                cube.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-            });
-
-            // Header Background Change on Scroll 
-            window.addEventListener('scroll', () => {
-                const scrollPosition = window.scrollY;
-                const header = document.querySelector('header');
-                if (scrollPosition > 50) { 
-                    header.style.backgroundColor = 'rgba(10, 10, 10, 0.9)';
-                    header.style.boxShadow = '0 5px 20px rgba(0, 255, 255, 0.1)'; 
-                } else {
-                    header.style.backgroundColor = 'rgba(10, 10, 10, 0.8)';
-                    header.style.boxShadow = 'none';
-                }
-            });
-
-            // Slideshow Functionality
-            let slideIndex = 0;
-            showSlides();
-
-            function showSlides() {
-                let i;
-                let slides = document.getElementsByClassName("mySlides");
-                for (i = 0; i < slides.length; i++) {
-                    slides[i].style.display = "none";  
-                }
-                slideIndex++;
-                if (slideIndex > slides.length) {slideIndex = 1}    
-                slides[slideIndex-1].style.display = "block";  
-                setTimeout(showSlides, 4000); 
-            }
-
-            // Service Card Hover Effects
-            const serviceCards = document.querySelectorAll('.service-card');
-            serviceCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-10px) scale(1.05)'; 
-                    card.style.boxShadow = '0 20px 40px rgba(0, 255, 255, 0.3)'; 
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0) scale(1)'; 
-                    card.style.boxShadow = 'none'; 
-                });
-            });
-
-            // Intersection Observer for Fade-In Effect
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)'; 
-                    }
-                });
-            }, { threshold: 0.1 }); 
-
-            document.querySelectorAll('.service-card, .hero-content, h2').forEach(el => {
-                el.style.opacity = '0'; 
-                el.style.transform = 'translateY(20px)'; 
-                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease'; 
-                observer.observe(el); 
-            });
-
-            // Hamburger Menu Toggle
-            hamburgerIcon.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                hamburgerIcon.classList.toggle('active'); 
-            });
-        });
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
