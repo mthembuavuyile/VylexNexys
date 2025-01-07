@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vylex Nexys AI Agent - Your personal AI assistant to enhance productivity.">
+    <meta property="og:title" content="Vylex Nexys AI Agent">
+    <meta property="og:description" content="Experience the future of productivity with our advanced AI agent.">
+    <meta property="og:image" content="path-to-your-image.jpg">
+    <meta property="og:url" content="https://www.vylexnexys.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vylex Nexys AI Agent">
+    <meta name="twitter:description" content="Your personal AI assistant to enhance productivity.">
+    <meta name="twitter:image" content="path-to-your-image.jpg">
+    <title>AI Agent</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .message-container {
+            scroll-behavior: smooth;
+        }
+
+        .message-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .message-container::-webkit-scrollbar-thumb {
+            background-color: rgba(59, 130, 246, 0.5);
+            border-radius: 3px;
+        }
+
+        .message-container::-webkit-scrollbar-track {
+            background-color: rgba(17, 24, 39, 0.1);
+        }
+
+        /* Burger Menu Styles */
+        .burger {
+            display: none;
+            cursor: pointer;
+            z-index: 100;
+            position: relative;
+        }
+
+        .burger-line {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px;
+            transition: all 0.3s ease;
+            transform-origin: 1px;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 70%;
+            background-color: rgba(17, 24, 39, 0.95);
+            padding-top: 5rem;
+            transition: 0.3s;
+            z-index: 99;
+            backdrop-filter: blur(8px);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu ul {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .mobile-menu a {
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .burger.active .burger-line:nth-child(1) {
+            transform: rotate(45deg) translate(0px, -2px);
+        }
+
+        .burger.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger.active .burger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(-2px, 3px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+        <!-- Navigation -->
+        <nav class="container mx-auto p-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="brain" class="w-8 h-8 text-blue-400"></i>
+                    <span class="text-xl font-bold">Vylex Nexys</span>
+                </div>
+                <div class="nav-links hidden md:flex items-center space-x-8">
+                    <a href="#features" class="hover:text-blue-400">Features</a>
+                    <a href="#demo" class="hover:text-blue-400">Try Demo</a>
+                    <a href="#pricing" class="hover:text-blue-400">Pricing</a>
+                    <button class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg">
+                        Get Started
+                    </button>
+                </div>
+                <div class="burger">
+                    <div class="burger-line"></div>
+                    <div class="burger-line"></div>
+                    <div class="burger-line"></div>
+                </div>
+                <div class="mobile-menu">
+                    <ul class="list-none">
+                        <li><a href="#features" class="hover:text-blue-400">Features</a></li>
+                        <li><a href="#demo" class="hover:text-blue-400">Try Demo</a></li>
+                        <li><a href="#pricing" class="hover:text-blue-400">Pricing</a></li>
+                        <li>
+                            <button class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg">
+                                Get Started
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Hero Section -->
+        <section class="container mx-auto px-6 py-20 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-8">
+                Your Personal AI Assistant
+            </h1>
+            <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+                Experience the future of productivity with our advanced AI agent.
+                Powered by cutting-edge technology to help you accomplish more.
+            </p>
+            <button class="bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-lg text-lg font-semibold">
+                Start Free Trial
+            </button>
+        </section>
+        <!-- Features Section -->
+        <section id="features" class="container mx-auto px-6 py-20">
+            <h2 class="text-3xl font-bold text-center mb-16">Key Features</h2>
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center">
+                    <div class="flex justify-center mb-4">
+                        <i data-lucide="message-circle" class="w-12 h-12 text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Natural Conversations</h3>
+                    <p class="text-gray-300">
+                        Engage in fluid, context-aware conversations that feel natural and human-like.
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="flex justify-center mb-4">
+                        <i data-lucide="zap" class="w-12 h-12 text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Lightning Fast</h3>
+                    <p class="text-gray-300">
+                        Get instant responses powered by our optimized AI infrastructure.
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="flex justify-center mb-4">
+                        <i data-lucide="shield" class="w-12 h-12 text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Secure & Private</h3>
+                    <p class="text-gray-300">
+                        Your data is encrypted and protected with enterprise-grade security.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Demo Section -->
+        <section id="demo" class="container mx-auto px-6 py-20">
+            <h2 class="text-3xl font-bold text-center mb-16">Try It Now</h2>
+            <div class="max-w-2xl mx-auto bg-gray-800 rounded-lg shadow-xl p-6">
+                <div id="messageContainer" class="message-container space-y-4 mb-4 h-64 overflow-y-auto">
+                    <div class="flex justify-start">
+                        <div class="max-w-[80%] rounded-lg p-3 bg-gray-700">
+                            Hello! How can I help you today?
+                        </div>
+                    </div>
+                </div>
+                <form id="chatForm" class="flex gap-2">
+                    <input type="text" id="userInput" placeholder="Type your message..."
+                        class="flex-1 bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 rounded-lg p-2">
+                        <i data-lucide="send" class="w-6 h-6"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+        <!-- Pricing Section -->
+        <section id="pricing" class="container mx-auto px-6 py-20">
+            <h2 class="text-3xl font-bold text-center mb-16">Pricing Plans</h2>
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="bg-gray-800 rounded-lg p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-4">Basic</h3>
+                    <div class="text-3xl font-bold mb-6">$9</div>
+                    <ul class="space-y-3 mb-6">
+                        <li>1,000 messages/month</li>
+                        <li>Basic support</li>
+                        <li>Standard response time</li>
+                    </ul>
+                    <button class="w-full bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg">
+                        Get Started
+                    </button>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-4">Pro</h3>
+                    <div class="text-3xl font-bold mb-6">$29</div>
+                    <ul class="space-y-3 mb-6">
+                        <li>Unlimited messages</li>
+                        <li>Priority support</li>
+                        <li>Advanced features</li>
+                    </ul>
+                    <button class="w-full bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg">
+                        Get Started
+                    </button>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-4">Enterprise</h3>
+                    <div class="text-3xl font-bold mb-6">Custom</div>
+                    <ul class="space-y-3 mb-6">
+                        <li>Custom solutions</li>
+                        <li>24/7 support</li>
+                        <li>Dedicated account manager</li>
+                    </ul>
+                    <button class="w-full bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- Footer -->
+        <footer class="container mx-auto px-6 py-12 text-center text-gray-400">
+            <p>© 2025 VylexNexys AI-Agent. All rights reserved.</p>
+        </footer>
+    </div>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Burger Menu Functionality
+        const burger = document.querySelector('.burger');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+        // Chat functionality
+        const chatForm = document.getElementById('chatForm');
+        const userInput = document.getElementById('userInput');
+        const messageContainer = document.getElementById('messageContainer');
+        const HUGGING_FACE_API_KEY = "hf_YOUR_API_KEY"; // Replace with your API Key
+        const HUGGING_FACE_API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base";
+
+
+        async function getChatbotResponse(message) {
+            addMessage('Our AI models are currently down. Please check back soon as we work to fix the issue.', false);
+            try {
+                const response = await fetch(HUGGING_FACE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${HUGGING_FACE_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        inputs: message
+                    })
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API Error ${response.status}: ${errorData.error || "Unknown error"}`);
+                }
+                const data = await response.json();
+                if (data && data.length > 0 && data[0].generated_text) {
+                    return data[0].generated_text;
+                } else {
+                    throw new Error("Unexpected response format.");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                return "I'm sorry, I encountered an error. Please try again.";
+            }
+        }
+
+        function addMessage(content, isUser) {
+            //Remove the loading message if present
+            const loadingMessage = messageContainer.querySelector('.loading-message');
+            if (loadingMessage){
+                messageContainer.removeChild(loadingMessage);
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = `max-w-[80%] rounded-lg p-3 ${
+                isUser ? 'bg-blue-500' : 'bg-gray-700'
+            }`;
+
+            // Add a class to identify loading message for removal
+            if (content === 'Loading...'){
+                messageContent.classList.add('loading-message')
+            }
+            
+            messageContent.textContent = content;
+            messageDiv.appendChild(messageContent);
+            messageContainer.appendChild(messageDiv);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = userInput.value.trim();
+            if (!message) return;
+            // Add user message
+            addMessage(message, true);
+            userInput.value = '';
+            // Get AI response
+            const response = await getChatbotResponse(message);
+            addMessage(response, false);
+        });
+    </script>
+</body>
+</html>
