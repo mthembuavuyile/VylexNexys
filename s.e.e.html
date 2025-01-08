@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #FFD700, #FFA500);
@@ -17,7 +18,7 @@
             --card-bg: rgba(255,215,0,0.05);
             --card-border: rgba(255,215,0,0.1);
         }
-        
+
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -50,7 +51,7 @@
            width: min(90%, 1200px);
            margin-inline: auto;
         }
-        
+
         /* Header Styles */
         .header {
             position: fixed;
@@ -62,7 +63,7 @@
             backdrop-filter: blur(10px);
             padding: 1rem 0;
         }
-        
+
         .header .container {
             display: flex;
             justify-content: space-between;
@@ -80,6 +81,7 @@
             flex-direction: column;
             cursor: pointer;
             z-index: 1001;
+            background: transparent;
         }
 
         .burger-line {
@@ -146,7 +148,7 @@
             opacity: 0.1;
             animation: rotate 60s linear infinite;
         }
-        
+
         @keyframes rotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -184,7 +186,7 @@
         section p {
             margin-bottom: 1.5rem;
         }
-        
+
        /* Card Styles */
         .card {
             background: var(--card-bg);
@@ -210,7 +212,7 @@
              margin-bottom: 1rem;
             color: var(--accent-color);
         }
-       
+
        .program-card ul li {
             margin-bottom: .75rem;
             margin-left: 1rem;
@@ -228,52 +230,75 @@
             margin-bottom: 1rem;
            color: var(--accent-color);
          }
-        /* Contact Form */
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+         /* Contact Form - Removed from here */
 
-       .contact-form input,
-        .contact-form textarea {
-             width: 100%;
-            padding: 1rem;
-            margin-bottom: 1rem;
-           border-radius: 8px;
-            border: 1px solid var(--card-border);
-            background: rgba(255,255,255,0.05);
-            color: var(--text-color);
-            font-family: inherit;
-        }
-
-        .contact-form button {
-             background: var(--primary-gradient);
-            color: var(--bg-color);
-            border: none;
-           padding: 1rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: opacity .3s ease;
-             font-family: inherit;
-        }
-
-        .contact-form button:hover {
-            opacity: 0.8;
-        }
-        .contact-form p {
-             margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        /* Footer */
-        footer {
-             padding: 2rem 0;
-            background: rgba(0,0,0,0.8);
+          /* Footer */
+        .footer {
+           padding: 3rem 0;
+            background: rgba(0,0,0,0.95);
             text-align: center;
             margin-top: 4rem;
-            font-size: 0.9rem;
         }
+
+        .footer-content {
+           display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-text {
+             font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .footer-verse {
+            font-style: italic;
+           color: var(--accent-color);
+             margin: 1rem 0;
+        }
+
+        .social-links {
+             display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+           transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+             background: rgba(255, 215, 0, 0.1);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+             background: var(--primary-gradient);
+           color: var(--bg-color);
+        }
+
+        .contact-info {
+            display: flex;
+             flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+             margin-top: 1rem;
+        }
+
+        .contact-item {
+           display: flex;
+             align-items: center;
+            gap: 0.5rem;
+            color: var(--text-color);
+        }
+
+       .contact-item i {
+            color: var(--accent-color);
+        }
+
 
         /* Mobile Menu Styles */
         @media (max-width: 768px) {
@@ -321,7 +346,7 @@
                  font-size: 1.5rem;
             }
         }
-        
+
         /* Animations */
         @keyframes slideIn {
             from {
@@ -342,108 +367,191 @@
                  opacity: 1;
              }
         }
+          /* Contact Form Styles - Moved here */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-color);
+            font-family: inherit;
+        }
+
+        .contact-form button {
+            background: var(--primary-gradient);
+            color: var(--bg-color);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity .3s ease;
+             font-family: inherit;
+        }
+
+        .contact-form button:hover {
+            opacity: 0.8;
+        }
+        .contact-form p {
+             margin-bottom: 1rem;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <a href="#" >
+            <a href="#home" aria-label="Go to homepage">
                 <img src="s.e.e-logo.png" alt="S.E.E Logo" class="logo">
             </a>
 
-            <div class="nav-burger">
+            <button class="nav-burger" aria-label="Toggle navigation menu">
                 <div class="burger-line"></div>
                 <div class="burger-line"></div>
                 <div class="burger-line"></div>
-            </div>
+            </button>
 
             <nav>
                 <ul>
-                    <li><a href="#home">Home</a></li>
+                   <li><a href="#home">Home</a></li>
                     <li><a href="#vision">Vision</a></li>
                     <li><a href="#programs">Programs</a></li>
                     <li><a href="#initiatives">Initiatives</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                      <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <div class="hero" id="home">
-        <div class="container">
-        <h1>Ye Are the Light of the World</h1>
-        <h2>A Chosen Generation</h2>
-        </div>
-    </div>
-
-    <section id="vision" >
-        <div class="container">
-        <h2>Our Vision</h2>
-        <p>To be a leading youth development organization, recognized for our innovative programs, passionate team, and commitment to empowering young people. We envision a future where all young people have access to opportunities, resources, and support to thrive and reach their full potential.</p>
-        </div>
-    </section>
-
-    <section id="programs">
-        <div class="container">
-        <h2>Our Programs</h2>
-        <div class="programs-grid">
-            <div class="program-card card">
-                <h3>Academic Support</h3>
-                <ul>
-                    <li>NSFAS Applications</li>
-                    <li>CAO Applications</li>
-                    <li>TVET College Applications</li>
-                    <li>Exam Prayer Sessions</li>
-                    <li>Exam Care Packages</li>
-                </ul>
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>Ye Are the Light of the World</h1>
+                <h2>A Chosen Generation</h2>
             </div>
-            <div class="program-card card">
-                <h3>Development Programs</h3>
-                <ul>
-                    <li>Academic Camps with Tutors</li>
-                    <li>Safe Transportation</li>
-                    <li>Cross-night Programmes</li>
-                    <li>Computer Literacy</li>
-                    <li>Sports Tournaments</li>
-                </ul>
-            </div>
-        </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="initiatives">
+         <section id="vision">
+             <div class="container">
+             <h2>Our Vision</h2>
+               <p>To be a leading youth development organization, recognized for our innovative programs, passionate team, and commitment to empowering young people. We envision a future where all young people have access to opportunities, resources, and support to thrive and reach their full potential.</p>
+            </div>
+         </section>
+
+
+       <section id="programs">
+             <div class="container">
+                 <h2>Our Programs</h2>
+                 <div class="programs-grid">
+                     <div class="program-card card">
+                         <h3>Academic Support</h3>
+                          <ul>
+                               <li>NSFAS Applications</li>
+                               <li>CAO Applications</li>
+                               <li>TVET College Applications</li>
+                               <li>Exam Prayer Sessions</li>
+                               <li>Exam Care Packages</li>
+                           </ul>
+                     </div>
+                     <div class="program-card card">
+                         <h3>Development Programs</h3>
+                           <ul>
+                               <li>Academic Camps with Tutors</li>
+                               <li>Safe Transportation</li>
+                               <li>Cross-night Programmes</li>
+                               <li>Computer Literacy</li>
+                               <li>Sports Tournaments</li>
+                            </ul>
+                     </div>
+                   </div>
+              </div>
+        </section>
+
+        <section id="initiatives">
+             <div class="container">
+                 <h2>Our Initiatives</h2>
+                <div class="initiatives-grid">
+                    <div class="initiative-card card">
+                        <h3>Leadership Development</h3>
+                        <p>Our board members lead by example with strong educational qualifications and commitment to excellence. We foster leadership through mentorship, training, and practical experience.</p>
+                    </div>
+                     <div class="initiative-card card">
+                        <h3>Community Impact</h3>
+                         <p>Focused on rural development through sustainable projects and educational initiatives. We believe in creating lasting change through empowerment and education.</p>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+             <div class="container">
+                <h2>Contact Us</h2>
+                <div class="contact-form">
+                     <p>Have any questions or want to get involved? Fill out the form below:</p>
+                    <form>
+                         <input type="text" placeholder="Your Name" required>
+                         <input type="email" placeholder="Your Email" required>
+                         <textarea placeholder="Your Message" rows="5" required></textarea>
+                         <button type="submit">Send Message</button>
+                     </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
         <div class="container">
-        <h2>Our Initiatives</h2>
-        <div class="initiatives-grid">
-            <div class="initiative-card card">
-                <h3>Leadership Development</h3>
-                <p>Our board members lead by example with strong educational qualifications and commitment to excellence. We foster leadership through mentorship, training, and practical experience.</p>
-            </div>
-            <div class="initiative-card card">
-                <h3>Community Impact</h3>
-                <p>Focused on rural development through sustainable projects and educational initiatives. We believe in creating lasting change through empowerment and education.</p>
-            </div>
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>© 2025 Sandanezwe Embodiment of Excellence. All Rights Reserved.</p>
+                </div>
+                <p class="footer-verse">"I can do all things through Christ who strengthens me" (Philippians 4:13)</p>
+                 <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+27 123 456 789</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>064 878 4287</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@see.org</span>
+                    </div>
+                   <div class="contact-item">
+                         <i class="fas fa-map-marker-alt"></i>
+                         <span>Sandanezwe Rural Area</span>
+                     </div>
+                </div>
+                <div class="social-links">
+                    <a href="mailto:info@see.org" class="social-link" title="Email" aria-label="Send us an email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://instagram.com/see" class="social-link" title="Instagram" aria-label="Visit our Instagram profile">
+                       <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://facebook.com/see" class="social-link" title="Facebook" aria-label="Visit our Facebook profile">
+                        <i class="fab fa-facebook-f"></i>
+                   </a>
+                   <a href="https://wa.me/27648784287" class="social-link" title="WhatsApp" aria-label="Contact us on WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+             </div>
         </div>
-    </section>
-    </div>
+    </footer>
 
-    <section id="contact">
-       <div class="container">
-        <h2>Contact Us</h2>
-        <div class="contact-form">
-            <form>
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-            <p>Send a greeting message via WhatsApp to 064 878 4287</p>
-            <p>Email: info@see.org</p>
-            <p>Phone: +27 123 456 789</p>
-            <p>Location: Sandanezwe Rural Area</p>
-        </div>
-       </div>
-    </section>
     <script>
         const burger = document.querySelector('.nav-burger');
         const nav = document.querySelector('nav');
@@ -454,7 +562,7 @@
             burgerLines.forEach(line => line.classList.toggle('active'));
         });
 
-         // Smooth scroll for navigation links
+        // Smooth scroll for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -470,29 +578,22 @@
             document.querySelector('.hero').style.transform = `translateY(${scrolled * 0.5}px)`;
         });
 
-        // Intersection Observer for fade-in animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
+      // Intersection Observer for fade-in animations
+       const observer = new IntersectionObserver((entries) => {
+           entries.forEach(entry => {
+               if (entry.isIntersecting) {
                     entry.target.style.opacity = 1;
                     entry.target.style.transform = 'translateY(0)';
                 }
             });
-        });
+       });
 
         document.querySelectorAll('section').forEach((section) => {
-            section.style.opacity = 0;
-            section.style.transform = 'translateY(50px)';
+           section.style.opacity = 0;
+           section.style.transform = 'translateY(50px)';
             section.style.transition = 'all 0.5s ease-out';
-            observer.observe(section);
-        });
+           observer.observe(section);
+       });
     </script>
-
-    <footer>
-         <div class="container">
-         <p>"I can do all things through Christ who strengthens me" (Philippians 4:13)</p>
-        <p>© 2025 Sandanezwe Embodiment of Excellence. All Rights Reserved.</p>
-         </div>
-    </footer>
 </body>
 </html>
