@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.E.E - Sandanezwe Embodiment of Excellence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #FFD700, #FFA500);
+            --secondary-gradient: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+            --text-color: #fff;
+            --accent-color: #ffd700;
+            --bg-color: #000;
+            --card-bg: rgba(255,215,0,0.05);
+            --card-border: rgba(255,215,0,0.1);
+        }
+        
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+           width: min(90%, 1200px);
+           margin-inline: auto;
+        }
+        
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+        }
+        
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo {
+             max-height: 50px;
+             width: auto;
+        }
+
+        .nav-burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .burger-line {
+            width: 25px;
+            height: 3px;
+            background: var(--accent-color);
+            margin: 2px;
+            transition: 0.4s;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            color: var(--accent-color);
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: var(--secondary-gradient);
+            padding: 7rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+       .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="gold" stroke-width="0.5"/></svg>');
+            opacity: 0.1;
+            animation: rotate 60s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: slideIn 1s ease-out;
+             max-width: 100%; /* Added max-width */
+        }
+
+        .hero h2 {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            animation: fadeIn 2s ease-out;
+             max-width: 100%;
+        }
+
+        /* Generic Section Styles */
+        section {
+           padding: 5rem 0;
+        }
+
+        section h2 {
+           text-align: center;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        section p {
+            margin-bottom: 1.5rem;
+        }
+        
+       /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(255,215,0,0.1);
+        }
+
+        /* Programs Grid */
+       .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .program-card h3 {
+             margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+       
+       .program-card ul li {
+            margin-bottom: .75rem;
+            margin-left: 1rem;
+            list-style-type: disc;
+        }
+        /* Initiatives Grid */
+
+         .initiatives-grid {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+         }
+
+         .initiative-card h3 {
+            margin-bottom: 1rem;
+           color: var(--accent-color);
+         }
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+       .contact-form input,
+        .contact-form textarea {
+             width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+           border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-color);
+            font-family: inherit;
+        }
+
+        .contact-form button {
+             background: var(--primary-gradient);
+            color: var(--bg-color);
+            border: none;
+           padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity .3s ease;
+             font-family: inherit;
+        }
+
+        .contact-form button:hover {
+            opacity: 0.8;
+        }
+        .contact-form p {
+             margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+             padding: 2rem 0;
+            background: rgba(0,0,0,0.8);
+            text-align: center;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .nav-burger {
+                display: flex;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 75%;
+                background: rgba(0,0,0,0.95);
+                backdrop-filter: blur(10px);
+                transition: 0.5s;
+                padding: 5rem 2rem;
+            }
+
+            nav.active {
+                right: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .burger-line.active:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .burger-line.active:nth-child(2) {
+                opacity: 0;
+            }
+
+            .burger-line.active:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            .hero h1 {
+                 font-size: 2.5rem;
+            }
+            .hero h2 {
+                 font-size: 1.5rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+         @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+             to {
+                 opacity: 1;
+             }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="#" >
+                <img src="s.e.e-logo.png" alt="S.E.E Logo" class="logo">
+            </a>
+
+            <div class="nav-burger">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#vision">Vision</a></li>
+                    <li><a href="#programs">Programs</a></li>
+                    <li><a href="#initiatives">Initiatives</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero" id="home">
+        <div class="container">
+        <h1>Ye Are the Light of the World</h1>
+        <h2>A Chosen Generation</h2>
+        </div>
+    </div>
+
+    <section id="vision" >
+        <div class="container">
+        <h2>Our Vision</h2>
+        <p>To be a leading youth development organization, recognized for our innovative programs, passionate team, and commitment to empowering young people. We envision a future where all young people have access to opportunities, resources, and support to thrive and reach their full potential.</p>
+        </div>
+    </section>
+
+    <section id="programs">
+        <div class="container">
+        <h2>Our Programs</h2>
+        <div class="programs-grid">
+            <div class="program-card card">
+                <h3>Academic Support</h3>
+                <ul>
+                    <li>NSFAS Applications</li>
+                    <li>CAO Applications</li>
+                    <li>TVET College Applications</li>
+                    <li>Exam Prayer Sessions</li>
+                    <li>Exam Care Packages</li>
+                </ul>
+            </div>
+            <div class="program-card card">
+                <h3>Development Programs</h3>
+                <ul>
+                    <li>Academic Camps with Tutors</li>
+                    <li>Safe Transportation</li>
+                    <li>Cross-night Programmes</li>
+                    <li>Computer Literacy</li>
+                    <li>Sports Tournaments</li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <section id="initiatives">
+        <div class="container">
+        <h2>Our Initiatives</h2>
+        <div class="initiatives-grid">
+            <div class="initiative-card card">
+                <h3>Leadership Development</h3>
+                <p>Our board members lead by example with strong educational qualifications and commitment to excellence. We foster leadership through mentorship, training, and practical experience.</p>
+            </div>
+            <div class="initiative-card card">
+                <h3>Community Impact</h3>
+                <p>Focused on rural development through sustainable projects and educational initiatives. We believe in creating lasting change through empowerment and education.</p>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <section id="contact">
+       <div class="container">
+        <h2>Contact Us</h2>
+        <div class="contact-form">
+            <form>
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <p>Send a greeting message via WhatsApp to 064 878 4287</p>
+            <p>Email: info@see.org</p>
+            <p>Phone: +27 123 456 789</p>
+            <p>Location: Sandanezwe Rural Area</p>
+        </div>
+       </div>
+    </section>
+    <script>
+        const burger = document.querySelector('.nav-burger');
+        const nav = document.querySelector('nav');
+        const burgerLines = document.querySelectorAll('.burger-line');
+
+        burger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            burgerLines.forEach(line => line.classList.toggle('active'));
+        });
+
+         // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+       // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelector('.hero').style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('section').forEach((section) => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(50px)';
+            section.style.transition = 'all 0.5s ease-out';
+            observer.observe(section);
+        });
+    </script>
+
+    <footer>
+         <div class="container">
+         <p>"I can do all things through Christ who strengthens me" (Philippians 4:13)</p>
+        <p>© 2025 Sandanezwe Embodiment of Excellence. All Rights Reserved.</p>
+         </div>
+    </footer>
+</body>
+</html>
