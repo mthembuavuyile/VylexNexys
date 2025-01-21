@@ -7,72 +7,145 @@
     <meta name="keywords" content="VylexNexys, IT Corporation, web development, software development, technology solutions, innovation, tech services">
     <meta name="author" content="VylexNexys">
     <title>VylexNexys - Innovation & Technology Solutions</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
     <header>
         <div class="container">
             <nav>
                 <div class="logo">
-                    <h4>Vylex Nexys IT</h4>
+                    <h4>VylexNexys</h4>
                 </div>
                 <div class="nav-links">
                     <a href="#home">Home</a>
                     <a href="#services">Services</a>
-                    <a href="contact.html">Contact</a>
+                    <a href="#about">About</a>
+                     <a href="portfolio.html">Portfolio</a>
+                    <a href="solutions.html">Solutions</a>
+                    <a href="#contact">Contact</a>
                 </div>
-                <div class="hamburger-menu">
-                    <button class="hamburger-icon">
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </button>
-                </div>
+                <button class="hamburger-menu">
+                  <div class="hamburger-icon">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                  </div>
+                </button>
             </nav>
         </div>
-    </header>
+    </header>    
 
-    <section class="hero" id="home">
-        <h1>Transforming Ideas into Reality</h1>
-        <p>We specialize in creating cutting-edge solutions across mobile, web, and enterprise platforms, delivering innovation that drives business success.</p>
-        <button class="cta-button">Explore Our Solutions</button>
-    </section>
-
-    <section class="features" id="services">
-        <div class="feature-card">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
-            </svg>
-            <h3 class="feature-title">Mobile Apps</h3>
-            <p class="feature-desc">Creating powerful, user-friendly mobile applications with cutting-edge Android technologies</p>
-        </div>
-        <div class="feature-card">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-            </svg>
-            <h3 class="feature-title">Web Solutions</h3>
-            <p class="feature-desc">Building responsive, modern websites and web applications that deliver exceptional user experiences</p>
-        </div>
-        <div class="feature-card">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
-            </svg>
-            <h3 class="feature-title">Custom Tools</h3>
-            <p class="feature-desc">Developing specialized software tools and utilities to streamline your business processes</p>
-        </div>
-        <div class="feature-card">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
-            <h3 class="feature-title">Security Solutions</h3>
-            <p class="feature-desc">Implementing robust security measures to protect your digital assets and data</p>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Transforming Ideas into Digital Reality</h1>
+            <p>Innovative technology solutions for the modern business landscape</p>
+            <a href="#contact" class="cta-button">Get Started</a>
         </div>
     </section>
 
-    <footer class="footer">
-        © 2025 VylexNexys. All rights reserved.
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-code service-icon"></i>
+                    <h3>Web Development</h3>
+                    <p>Custom websites and web applications built with modern technologies.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-mobile-alt service-icon"></i>
+                    <h3>Mobile Development</h3>
+                    <p>Native and cross-platform mobile applications for iOS and Android.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-cloud service-icon"></i>
+                    <h3>Cloud Solutions</h3>
+                    <p>Scalable cloud infrastructure and deployment services.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-shield-alt service-icon"></i>
+                    <h3>Cybersecurity</h3>
+                    <p>Advanced security solutions to protect your data and systems.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-gamepad service-icon"></i>
+                    <h3>Game Development</h3>
+                    <p>Interactive and immersive gaming experiences for all platforms.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-plug service-icon"></i>
+                    <h3>API & Integration</h3>
+                    <p>Streamlined API development and system integration services.</p>
+                </div>
+            </div>
+        </div>
+    </section>    
+
+   <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+             <div class="contact-wrapper">
+             <div class="contact-details">
+                <p>Ready to take the next step? Contact us today and let's build something amazing together.</p>
+                <div class="contact-info">
+                   <p><i class="fas fa-envelope"></i> vylexnexys@oulook.com</p>
+                   <p><i class="fas fa-phone"></i> 064-878-4287</p>
+                </div>
+            </div>
+            <form class="contact-form">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" required placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" required placeholder="Your Email">
+                </div>
+                <div class="form-group">
+                  <label for="message">Message</label>
+                  <textarea id="message" rows="5" required placeholder="Your Message"></textarea>
+                </div>
+                 <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+            </div>
+        </div>
+    </section>
+     
+   <footer class="footer">
+        <div class="container">
+             <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <p>VylexNexys is a leading technology solutions provider, dedicated to delivering innovative digital solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                     <p><a href="services.html">Services</a></p>
+                     <p><a href="products.html">Products</p></a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: vylexnexys@oulook.com</p>
+                    <p>Phone: 064-878-4287</p>
+                </div>
+            </div>
+
+            
+            <div class="social-links">
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+           </div>
+
+           <p style="margin-top: 2rem; text-align: center;" >© 2025 VylexNexys. All rights reserved.</p>
+
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="scripts/main.js"></script>
+        
 </body>
 </html>
