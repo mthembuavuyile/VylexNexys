@@ -217,10 +217,11 @@ nav {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    
 }
 
 .service-card {
@@ -235,6 +236,8 @@ nav {
     flex-direction: column; /* Make it a flex container */
     align-items: center; /* Center icons and text horizontally */
     text-align: center; /* Align text */
+    width: 100%; /* Ensure full width */
+
 }
 
 .service-icon {
@@ -502,15 +505,23 @@ nav {
     
     .services-grid {
         grid-template-columns: 1fr; /* Ensure single column layout */
+        padding: 0 0.5rem; /* Reduced padding on mobile */
         gap: 1.5rem; /* Optional: reduce the gap between cards */
     }
     .service-card {
-        width: 95%; /* Adjust the width to take up more horizontal space */
-        margin: 0 auto; /* Center the cards horizontally */
-        padding: 1.5rem; /* Optional: reduce padding to fit more content */
+        width: 100%; /* Full width on mobile */
+        margin: 0; /* Remove margin */
+        padding: 2rem 1.5rem; /* Adjusted padding */
     }
     .contact-form {
          margin: 0;
+    }
+
+    .hero-content,
+    .contact-wrapper,
+    .footer-content {
+        width: 100%;
+        padding: 0 1rem;
     }
 }
 
