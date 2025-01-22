@@ -499,8 +499,15 @@ nav {
     .hamburger-menu {
         display: block;
     }
+    
     .services-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Ensure single column layout */
+        gap: 1.5rem; /* Optional: reduce the gap between cards */
+    }
+    .service-card {
+        width: 95%; /* Adjust the width to take up more horizontal space */
+        margin: 0 auto; /* Center the cards horizontally */
+        padding: 1.5rem; /* Optional: reduce padding to fit more content */
     }
     .contact-form {
          margin: 0;
