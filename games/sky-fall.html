@@ -2,392 +2,368 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyFall - Catch the Falling Objects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cosmic Catch - Space Dodge Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #00a3ff;
+            --secondary-color: #ff3366;
+            --background-dark: #0a0a1e;
+            --background-medium: #16213e;
+            --text-color: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            touch-action: none;
+        }
+
+        html, body {
+            height: 100%;
+            overscroll-behavior: contain;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-medium) 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a1e 0%, #16213e 100%);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            color: #fff;
+            color: var(--text-color);
             overflow: hidden;
         }
 
-        a {
-            background: linear-gradient(45deg, #ff3366, #00a3ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        a:hover {
-            transform: scale(1.1);
-            filter: brightness(1.2);
-        }
-
         .game-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 9/16;
+            max-height: 100vh;
             position: relative;
-            padding: 25px;
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.4),
-                        inset 0 0 15px rgba(255, 255, 255, 0.1);
-            width: 90vw;
-            max-width: 900px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
-       #gameCanvas {
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-            width: 100%; /* Make the canvas fill the container width */
-            height: 60vh; /* Set the height of the canvas, you can adjust as needed */
-            max-height: 600px; /* Add max height */
-            display: block;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-            transition: border-color 0.3s ease;
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            cursor: none;
         }
 
-        #gameCanvas:hover {
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-
-        .game-header {
+        .game-overlay {
             position: absolute;
-            top: -90px;
+            top: 0;
             left: 0;
-            right: 0;
+            width: 100%;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
+            z-index: 10;
+            pointer-events: none;
         }
 
-        .company-logo {
-            font-size: 32px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff3366, #00a3ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 2px 2px 15px rgba(255, 51, 102, 0.3);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from {
-                filter: drop-shadow(0 0 2px rgba(255, 51, 102, 0.6));
-            }
-            to {
-                filter: drop-shadow(0 0 10px rgba(0, 163, 255, 0.6));
-            }
-        }
-
-        .stats-container {
+        .game-stats {
             display: flex;
             gap: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px 25px;
-            border-radius: 30px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
-        #scoreDisplay, #levelDisplay {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 18px;
-            font-weight: 500;
-            color: #fff;
-            text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
-            transition: all 0.3s ease;
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        #scoreDisplay:hover, #levelDisplay:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
+        .game-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .game-controls {
+        .game-over-modal {
             position: absolute;
-            bottom: -45px;
+            top: 0;
             left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
-        }
-
-        .footer {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            text-align: center;
-            padding: 15px 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            text-align: center;
         }
 
-        .footer p {
-            margin: 5px 0;
-            font-size: 14px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
+        .game-over-modal h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
         }
 
-        .footer p:hover {
-            transform: scale(1.05);
-            color: rgba(255, 255, 255, 0.9);
+        .game-over-modal p {
+            font-size: 24px;
+            margin-bottom: 30px;
         }
 
-        @media (max-width: 768px) {
-            .game-container {
-                width: 95vw;
-                padding: 15px;
-            }
+        .restart-button {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
 
-            .game-header {
-                top: -80px;
-            }
-
-            .company-logo {
-                font-size: 28px;
-            }
-
-            .stats-container {
-                padding: 8px 20px;
-            }
-
-            #scoreDisplay, #levelDisplay {
-                font-size: 16px;
-                padding: 6px 15px;
-            }
-
-            .game-controls {
-                font-size: 13px;
-            }
+        .restart-button:active {
+            transform: scale(0.95);
         }
 
         @media (max-width: 480px) {
-            .company-logo {
-                font-size: 24px;
+            .game-container {
+                max-width: 100%;
+                border-radius: 0;
+                aspect-ratio: 9/16;
             }
 
-            .stats-container {
+            .game-title {
+                font-size: 20px;
+            }
+
+            .game-stats {
                 gap: 10px;
             }
 
-            #scoreDisplay, #levelDisplay {
+            .stat-box {
+                padding: 8px 12px;
                 font-size: 14px;
-                padding: 5px 12px;
+            }
+
+            .game-over-modal h2 {
+                font-size: 28px;
+            }
+
+            .game-over-modal p {
+                font-size: 18px;
+            }
+
+            .restart-button {
+                padding: 12px 25px;
+                font-size: 16px;
             }
         }
     </style>
 </head>
 <body>
     <div class="game-container">
-        <div class="game-header">
-            <div class="company-logo">SkyFall</div>
-            <div class="stats-container">
-                <div id="scoreDisplay">Score: 0</div>
-                <div id="levelDisplay">Level: 1</div>
+        <div class="game-overlay">
+            <div class="game-title">Cosmic Catch</div>
+            <div class="game-stats">
+                <div class="stat-box" id="scoreDisplay">Score: 0</div>
+                <div class="stat-box" id="levelDisplay">Level: 1</div>
             </div>
         </div>
         <canvas id="gameCanvas"></canvas>
-        <div class="game-controls">Use mouse or touch to move the basket</div>
+        <div class="game-over-modal" id="gameOverModal">
+            <h2>Game Over!</h2>
+            <p id="finalScoreDisplay">Your Score: 0</p>
+            <button class="restart-button" id="restartButton">Restart Game</button>
+        </div>
     </div>
-    <div class="footer">
-        <p>BY <a href="https://mthembuavuyile.github.io/VylexNexys/">VYLEX NEXYS™</a></p>
-        <p>INNOVATION THROUGH PLAY</p>
-    </div>
+
     <script>
-        class Game {
+        class CosmicCatchGame {
             constructor(canvas) {
                 this.canvas = canvas;
                 this.ctx = canvas.getContext('2d');
-                this.score = 0;
-                this.level = 1;
-                this.basket = new Basket(this.canvas);
-                this.items = [];
-                this.itemSpeed = 2;
-                this.gameRunning = true;
-
-                this.scoreDisplay = document.getElementById('scoreDisplay');
-                this.levelDisplay = document.getElementById('levelDisplay');
-
                 this.setupCanvas();
+                this.initializeGame();
                 this.setupEventListeners();
-                this.update();
             }
 
-           setupCanvas() {
+            initializeGame() {
+                this.score = 0;
+                this.level = 1;
+                this.gameOver = false;
+                this.items = [];
+                this.itemSpeed = 3;
+                this.itemSpawnInterval = 1000;
+                this.lastSpawnTime = 0;
+
+                this.basket = {
+                    width: 80,
+                    height: 20,
+                    x: this.canvas.width / 2 - 40,
+                    y: this.canvas.height - 40,
+                    color: 'linear'
+                };
+
+                document.getElementById('scoreDisplay').textContent = `Score: ${this.score}`;
+                document.getElementById('levelDisplay').textContent = `Level: ${this.level}`;
+                document.getElementById('gameOverModal').style.display = 'none';
+            }
+
+            setupCanvas() {
                 this.canvas.width = this.canvas.offsetWidth;
                 this.canvas.height = this.canvas.offsetHeight;
-                 // Adjust canvas height based on the viewport height
-                const viewportHeight = window.innerHeight;
-                const maxHeight =  600;
-                this.canvas.height = Math.min(viewportHeight * 0.6, maxHeight); // Adjust the factor as needed
-                this.basket.updatePosition();
             }
 
             setupEventListeners() {
-                window.addEventListener('resize', () => {
-                    this.setupCanvas();
-                    this.render();
-                });
-                this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-                this.canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+                window.addEventListener('resize', () => this.setupCanvas());
+                
+                // Mobile touch events
+                this.canvas.addEventListener('touchstart', this.handleTouch.bind(this), { passive: false });
+                this.canvas.addEventListener('touchmove', this.handleTouch.bind(this), { passive: false });
+
+                // Mouse events
+                this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+
+                // Restart button
+                document.getElementById('restartButton').addEventListener('click', () => this.restartGame());
+            }
+
+            handleTouch(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = this.canvas.getBoundingClientRect();
+                this.updateBasketPosition(touch.clientX - rect.left);
             }
 
             handleMouseMove(e) {
                 const rect = this.canvas.getBoundingClientRect();
-                this.basket.x = e.clientX - rect.left - this.basket.width / 2;
-                this.basket.clampPosition();
+                this.updateBasketPosition(e.clientX - rect.left);
             }
 
-            handleTouchMove(e) {
-                e.preventDefault();
-                const rect = this.canvas.getBoundingClientRect();
-                const touch = e.touches[0];
-                this.basket.x = touch.clientX - rect.left - this.basket.width / 2;
-                this.basket.clampPosition();
-            }
-
-            calculateLevel() {
-                return Math.floor(this.score / 10) + 1;
+            updateBasketPosition(x) {
+                this.basket.x = Math.max(0, Math.min(x - this.basket.width / 2, this.canvas.width - this.basket.width));
             }
 
             createItem() {
-                const x = Math.random() * (this.canvas.width - Item.SIZE);
-                const colors = ['#ff3366', '#00a3ff', '#00ff88', '#ffcc00', '#ff66cc'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                this.items.push(new Item(x, 0, color));
+                const x = Math.random() * (this.canvas.width - 30);
+                const isGood = Math.random() < 0.7;
+                return {
+                    x,
+                    y: -30,
+                    size: 30,
+                    speed: this.itemSpeed,
+                    color: isGood ? 'lime' : 'red',
+                    isGood
+                };
+            }
+
+            drawBasket() {
+                const gradient = this.ctx.createLinearGradient(
+                    this.basket.x, this.basket.y, 
+                    this.basket.x + this.basket.width, this.basket.y + this.basket.height
+                );
+                gradient.addColorStop(0, '#00a3ff');
+                gradient.addColorStop(1, '#ff3366');
+
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(this.basket.x, this.basket.y, this.basket.width, this.basket.height);
+            }
+
+            drawItems() {
+                this.items.forEach(item => {
+                    this.ctx.beginPath();
+                    this.ctx.fillStyle = item.color;
+                    this.ctx.arc(item.x + item.size/2, item.y + item.size/2, item.size/2, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
             }
 
             update() {
-                if (!this.gameRunning) return;
+                if (this.gameOver) return;
+
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-                const newLevel = this.calculateLevel();
+                // Update level and difficulty
+                const newLevel = Math.floor(this.score / 10) + 1;
                 if (newLevel !== this.level) {
                     this.level = newLevel;
-                    this.itemSpeed = 2 + (this.level - 1) * 0.5;
-                    this.levelDisplay.textContent = `Level: ${this.level}`;
+                    this.itemSpeed += 0.5;
+                    this.itemSpawnInterval = Math.max(500, 1000 - (this.level - 1) * 100);
+                    document.getElementById('levelDisplay').textContent = `Level: ${this.level}`;
                 }
 
-                this.basket.draw(this.ctx);
+                // Spawn items
+                const currentTime = Date.now();
+                if (currentTime - this.lastSpawnTime > this.itemSpawnInterval) {
+                    this.items.push(this.createItem());
+                    this.lastSpawnTime = currentTime;
+                }
 
+                // Update and draw items
                 this.items = this.items.filter(item => {
-                    item.y += this.itemSpeed;
-                    item.draw(this.ctx);
+                    item.y += item.speed;
+
+                    // Check collision
                     if (
-                        item.y + Item.SIZE > this.basket.y && item.y < this.basket.y + this.basket.height &&
-                        item.x + Item.SIZE > this.basket.x && item.x < this.basket.x + this.basket.width
+                        item.y + item.size > this.basket.y &&
+                        item.y < this.basket.y + this.basket.height &&
+                        item.x + item.size > this.basket.x &&
+                        item.x < this.basket.x + this.basket.width
                     ) {
-                        this.score++;
-                        this.scoreDisplay.textContent = `Score: ${this.score}`;
-                        return false;
-                    } else if (item.y > this.canvas.height) {
+                        if (item.isGood) {
+                            this.score++;
+                            document.getElementById('scoreDisplay').textContent = `Score: ${this.score}`;
+                        } else {
+                            this.gameOver = true;
+                        }
                         return false;
                     }
-                    return true;
+
+                    // Remove items that go off screen
+                    return item.y < this.canvas.height;
                 });
 
-                if (Math.random() < 0.02 + (this.level - 1) * 0.005) {
-                    this.createItem();
+                // Draw game objects
+                this.drawBasket();
+                this.drawItems();
+
+                // Game over check
+                if (this.gameOver) {
+                    this.showGameOver();
+                    return;
                 }
 
                 requestAnimationFrame(() => this.update());
             }
-        }
 
-        class Item {
-            static SIZE = 20;
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.color = color;
+            showGameOver() {
+                document.getElementById('finalScoreDisplay').textContent = `Your Score: ${this.score}`;
+                document.getElementById('gameOverModal').style.display = 'flex';
             }
 
-            draw(ctx) {
-                const gradient = ctx.createRadialGradient(
-                    this.x + Item.SIZE / 2, this.y + Item.SIZE / 2, 0,
-                    this.x + Item.SIZE / 2, this.y + Item.SIZE / 2, Item.SIZE / 2
-                );
-                gradient.addColorStop(0, this.color);
-                gradient.addColorStop(1, this.color + '88');
+            restartGame() {
+                this.initializeGame();
+                this.update();
+            }
 
-                ctx.fillStyle = gradient;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x + Item.SIZE / 2, this.y + Item.SIZE / 2, Item.SIZE / 2, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowBlur = 0;
+            start() {
+                this.update();
             }
         }
 
-        class Basket {
-            constructor(canvas) {
-                this.canvas = canvas;
-                this.width = 60;
-                this.height = 20;
-                this.x = canvas.width / 2 - this.width / 2;
-                this.y = canvas.height - 30;
-            }
-
-            updatePosition() {
-                this.x = this.canvas.width / 2 - this.width / 2;
-                this.y = this.canvas.height - 30;
-            }
-
-            clampPosition() {
-                this.x = Math.max(0, Math.min(this.canvas.width - this.width, this.x));
-            }
-
-            draw(ctx) {
-                const gradient = ctx.createLinearGradient(this.x, this.y, this.x + this.width, this.y + this.height);
-                gradient.addColorStop(0, '#ff3366');
-                gradient.addColorStop(1, '#00a3ff');
-
-                ctx.fillStyle = gradient;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#00a3ff';
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-                ctx.shadowBlur = 0;
-            }
-        }
-
-        const game = new Game(document.getElementById('gameCanvas'));
+        const canvas = document.getElementById('gameCanvas');
+        const game = new CosmicCatchGame(canvas);
+        game.start();
     </script>
 </body>
 </html>
