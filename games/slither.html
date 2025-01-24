@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Slither snake game | Vylex Nexys</title>
+    <style>
+        :root {
+            --primary-color: #22c55e;
+            --secondary-color: #f59e0b;
+            --background-color: #18181b;
+            --surface-color: #27272a;
+            --text-color: #f4f4f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .game-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-container {
+            position: relative;
+            width: min(90vw, 600px);
+            aspect-ratio: 1;
+            background: var(--surface-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .game-stats {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            border-radius: 0.5rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .controls {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            max-width: 240px;
+        }
+
+        .control-btn {
+            aspect-ratio: 1;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .control-btn:active {
+            background: var(--primary-color);
+            transform: scale(0.95);
+        }
+
+        .game-button {
+            margin-top: 1.5rem;
+            padding: 0.75rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .game-button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--surface-color);
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 90vw;
+            width: 400px;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .game-over {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .game-over.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                display: grid;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <header class="game-header">
+        <h1 class="game-title">Slither </h1>
+    </header>
+
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="game-stats">
+            <div id="score">Score: 0</div>
+            <div id="highScore">Best: 0</div>
+        </div>
+        <div class="game-over">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem">Game Over!</h2>
+            <p style="font-size: 1.25rem; margin-bottom: 2rem">Score: <span id="finalScore">0</span></p>
+            <button class="game-button" onclick="startGame()">Play Again</button>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="leftBtn">←</button>
+        <button class="control-btn" id="upBtn">↑</button>
+        <button class="control-btn" id="downBtn">↓</button>
+        <button class="control-btn" id="rightBtn">→</button>
+    </div>
+
+    <button class="game-button" id="startButton">Start Game</button>
+
+    <div class="modal" id="instructionsModal">
+        <div class="modal-content">
+            <h2 class="modal-title">How to Play</h2>
+            <div class="modal-text">
+                <p>🎮 Use arrow keys or touch controls to move</p>
+                <p>🍎 Collect red apples to grow longer</p>
+                <p>✨ Golden apples give bonus points</p>
+                <p>⚡ Speed increases as you grow</p>
+                <p>❌ Avoid walls and yourself</p>
+            </div>
+            <button class="game-button" onclick="closeInstructions()">Got it!</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Slither🐍. Developed by <a href="https://vylexnexys.co.za" target="_blank" rel="noopener">Vylex Nexys</a></p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const highScoreElement = document.getElementById('highScore');
+        const startButton = document.getElementById('startButton');
+
+        let gridSize, tileCount;
+        let snake, apple, goldenApple, dx, dy, score, highScore;
+        let gameRunning = false;
+        let goldenAppleTimeout;
+        let lastRenderTime = 0;
+        let gameSpeed = 100;
+
+        highScore = localStorage.getItem('snakeHighScore') || 0;
+        highScoreElement.textContent = `Best: ${highScore}`;
+
+        function initGame() {
+            const containerSize = Math.min(canvas.parentElement.clientWidth, canvas.parentElement.clientHeight);
+            canvas.width = containerSize;
+            canvas.height = containerSize;
+            gridSize = Math.floor(containerSize / 20);
+            tileCount = Math.floor(canvas.width / gridSize);
+
+            resetGame();
+            requestAnimationFrame(drawGame);
+        }
+
+        function resetGame() {
+            snake = [{x: Math.floor(tileCount/2), y: Math.floor(tileCount/2)}];
+            dx = 0;
+            dy = 0;
+            score = 0;
+            gameSpeed = 100;
+            placeApple();
+            goldenApple = null;
+            document.querySelector('.game-over').classList.remove('active');
+            updateScore();
+        }
+
+        function drawGame(currentTime) {
+            if (!gameRunning) return;
+
+            window.requestAnimationFrame(drawGame);
+
+            const secondsSinceLastRender = (currentTime - lastRenderTime) / 1000;
+            if (secondsSinceLastRender < 1 / (1000 / gameSpeed)) return;
+
+            lastRenderTime = currentTime;
+
+            moveSnake();
+            if (checkCollision()) {
+                endGame();
+                return;
+            }
+
+            clearCanvas();
+            drawSnake();
+            drawApple();
+            if (goldenApple) drawGoldenApple();
+        }
+
+        function moveSnake() {
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            snake.unshift(head);
+
+            if (head.x === apple.x && head.y === apple.y) {
+                score += 1;
+                gameSpeed = Math.min(gameSpeed + 2, 200);
+                placeApple();
+                if (Math.random() < 0.1) spawnGoldenApple();
+                updateScore();
+            } else if (goldenApple && head.x === goldenApple.x && head.y === goldenApple.y) {
+                score += 5;
+                clearTimeout(goldenAppleTimeout);
+                goldenApple = null;
+                updateScore();
+            } else {
+                snake.pop();
+            }
+        }
+
+        function checkCollision() {
+            const head = snake[0];
+            
+            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+                return true;
+            }
+
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface-color');
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawSnake() {
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+            snake.forEach((segment, index) => {
+                const brightness = 1 - (index / snake.length) * 0.6;
+                ctx.fillStyle = `hsl(142, 70%, ${60 * brightness}%)`;
+                ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 1, gridSize - 1);
+            });
+        }
+
+        function placeApple() {
+            do {
+                apple = {
+                    x: Math.floor(Math.random() * tileCount),
+                    y: Math.floor(Math.random() * tileCount)
+                };
+            } while (snake.some(segment => segment.x === apple.x && segment.y === apple.y));
+        }
+
+        function drawApple() {
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(
+                (apple.x * gridSize) + gridSize/2,
+                (apple.y * gridSize) + gridSize/2,
+                gridSize/2 - 1,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+        }
+
+        function spawnGoldenApple() {
+            do {
+                goldenApple = {
+                    x: Math.floor(Math.random() * tileCount),
+                    y: Math.floor(Math.random() * tileCount)
+                };
+            } while (
+                snake.some(segment => segment.x === goldenApple.x && segment.y === goldenApple.y) ||
+                (apple.x === goldenApple.x && apple.y === goldenApple.y)
+            );
+
+            goldenAppleTimeout = setTimeout(() => {
+                goldenApple = null;
+            }, 5000);
+        }
+
+        function drawGoldenApple() {
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.arc(
+                (goldenApple.x * gridSize) + gridSize/2,
+                (goldenApple.y * gridSize) + gridSize/2,
+                gridSize/2 - 1,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+        }
+
+        function updateScore() {
+            scoreElement.textContent = `Score: ${score}`;
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('snakeHighScore', highScore);
+                highScoreElement.textContent = `Best: ${highScore}`;
+            }
+        }
+
+        function endGame() {
+            gameRunning = false;
+            document.querySelector('.game-over').classList.add('active');
+            document.getElementById('finalScore').textContent = score;
+        }
+
+        function startGame() {
+            gameRunning = true;
+            initGame();
+        }
+
+        function handleKeyDown(e) {
+            if (!gameRunning) return;
+
+            switch(e.key) {
+                case 'ArrowUp':
+                    if (dy === 0) { dx = 0; dy = -1; }
+                    break;
+                case 'ArrowDown':
+                    if (dy === 0) { dx = 0; dy = 1; }
+                    break;
+                case 'ArrowLeft':
+                    if (dx === 0) { dx = -1; dy = 0; }
+                    break;
+                case 'ArrowRight':
+                    if (dx === 0) { dx = 1; dy = 0; }
+                    break;
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown);
+        startButton.addEventListener('click', startGame);
+
+        // Mobile controls
+        ['up', 'down', 'left', 'right'].forEach(direction => {
+            document.getElementById(`${direction}Btn`).addEventListener('click', () => {
+                if (!gameRunning) return;
+                
+                switch(direction) {
+                    case 'up':
+                        if (dy === 0) { dx = 0; dy = -1; }
+                        break;
+                    case 'down':
+                        if (dy === 0) { dx = 0; dy = 1; }
+                        break;
+                    case 'left':
+                        if (dx === 0) { dx = -1; dy = 0; }
+                        break;
+                    case 'right':
+                        if (dx === 0) { dx = 1; dy = 0; }
+                        break;
+                }
+            });
+        });
+
+        // Show instructions on first visit
+        if (!localStorage.getItem('hasPlayedBefore')) {
+            document.getElementById('instructionsModal').classList.add('active');
+            localStorage.setItem('hasPlayedBefore', 'true');
+        }
+
+        function closeInstructions() {
+            document.getElementById('instructionsModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
