@@ -163,39 +163,6 @@
                 font-size: 1.5rem;
             }
         }
-
-        /* Mobile controls */
-        .mobile-controls {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none;
-            gap: 1rem;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 1rem;
-            border-radius: 1rem;
-            backdrop-filter: blur(5px);
-        }
-
-        @media (max-width: 768px) {
-            .mobile-controls {
-                display: flex;
-            }
-        }
-
-        .control-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            display: grid;
-            place-items: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
     </style>
 </head>
 
@@ -215,12 +182,6 @@
 
         <div class="game-container">
             <canvas id="gameCanvas"></canvas>
-            <div class="mobile-controls">
-                <div class="control-btn" onclick="handleControl('ArrowLeft')">←</div>
-                <div class="control-btn" onclick="handleControl('ArrowUp')">↑</div>
-                <div class="control-btn" onclick="handleControl('ArrowDown')">↓</div>
-                <div class="control-btn" onclick="handleControl('ArrowRight')">→</div>
-            </div>
         </div>
 
         <div class="overlay">
@@ -228,8 +189,7 @@
             <h2>Game Over!</h2>
             <p style="margin-bottom: 2rem; font-size: 1.2rem">Final Score: <span id="finalScore">0</span></p>
             <button class="big-btn" onclick="startGame()">Play Again</button>
-            <p>Developed By Vylex Nexys</p>
-
+            <p>Swipe to control the snake</p>
         </div>
     </div>
 
@@ -259,6 +219,47 @@
             GRID_SIZE = Math.min(30, Math.floor(Math.min(canvas.width, canvas.height) / 20));
             CELL_SIZE = Math.min(canvas.width, canvas.height) / GRID_SIZE;
         }
+
+        function handleSwipe(e) {
+            if (!touchStartX || !touchStartY) return;
+
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+
+            // Require minimum swipe distance to trigger direction change
+            const minSwipeDistance = 30;
+
+            if (Math.abs(deltaX) < minSwipeDistance && Math.abs(deltaY) < minSwipeDistance) return;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // Horizontal swipe
+                handleControl(deltaX > 0 ? 'ArrowRight' : 'ArrowLeft');
+            } else {
+                // Vertical swipe
+                handleControl(deltaY > 0 ? 'ArrowDown' : 'ArrowUp');
+            }
+
+            touchStartX = null;
+            touchStartY = null;
+        }
+
+        canvas.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        canvas.addEventListener('touchend', handleSwipe);
+        canvas.addEventListener('touchcancel', () => {
+            touchStartX = null;
+            touchStartY = null;
+        });
+
+        // Rest of the code remains exactly the same as in your original version
+        // Including all the drawing functions, game logic, etc.
+        // Just copy all the remaining functions here
 
         function drawSnakeSegment(x, y, isHead, direction) {
             const radius = CELL_SIZE / 2;
@@ -313,7 +314,6 @@
             ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
             ctx.fill();
 
-            // Add shine effect
             ctx.fillStyle = 'rgba(255,255,255,0.3)';
             ctx.beginPath();
             ctx.arc(centerX - radius / 3, centerY - radius / 3, radius / 4, 0, Math.PI * 2);
@@ -324,7 +324,6 @@
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface');
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw grid (optional)
             ctx.strokeStyle = 'rgba(255,255,255,0.05)';
             for (let i = 0; i < GRID_SIZE; i++) {
                 for (let j = 0; j < GRID_SIZE; j++) {
@@ -398,14 +397,8 @@
         }
 
         function checkCollision(head) {
-            for (let i = 1; i < snake.length; i++) {
-                if (head.x === snake[i].x && head.y === snake[i].y) {
-                    return true;
-                }
-            }
-            return false;
+            return snake.some((segment, index) => index > 0 && head.x === segment.x && head.y === segment.y);
         }
-
 
         function spawnFood() {
             let newFood;
@@ -424,7 +417,7 @@
             finalScoreDisplay.textContent = score;
 
             if (score > best) {
-              best = score;
+                best = score;
                 localStorage.setItem('snakeBestScore', best);
                 bestDisplay.textContent = `Best: ${best}`;
             }
@@ -437,15 +430,15 @@
 
         function update() {
             if (!isPaused) {
-              moveSnake();
+                moveSnake();
             }
             draw();
         }
 
-         function startGame() {
+        function startGame() {
             overlay.classList.remove('active');
             snake = [{ x: Math.floor(GRID_SIZE / 2), y: Math.floor(GRID_SIZE / 2) }];
-            direction = { x: 1, y: 0 }; // Start moving right
+            direction = { x: 1, y: 0 };
             nextDirection = { x: 1, y: 0 };
             score = 0;
             speedMultiplier = 1;
@@ -458,8 +451,7 @@
 
             if (gameLoop) clearInterval(gameLoop);
             gameLoop = setInterval(update, baseSpeed / speedMultiplier);
-          }
-
+        }
 
         document.addEventListener('keydown', e => handleControl(e.key));
 
