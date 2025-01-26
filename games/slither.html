@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Slither Snake Game</title>
     <style>
+        /* CSS Variables */
         :root {
             --primary: #4ade80;
             --secondary: #22c55e;
@@ -13,6 +14,7 @@
             --surface: #2a2a2a;
         }
 
+        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -27,75 +29,107 @@
             color: #fff;
             font-family: 'Segoe UI', system-ui, sans-serif;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Game Container Styles */
         .game-wrapper {
             position: relative;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            max-width: 800px;
+            height: 95vh;
             display: flex;
             flex-direction: column;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
 
+        .game-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--surface);
+            overflow: hidden;
+            z-index: 20;
+            position: relative;
+        }
+
+        canvas {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+        }
+
+        /* Header and Stats Styles */
         .header {
-            padding: 1rem;
+            padding: 0.5rem 1rem;
             background: rgba(0, 0, 0, 0.3);
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             backdrop-filter: blur(5px);
+            z-index: 10;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .stats {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
         }
 
         .stat-box {
             background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 1rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.75rem;
             font-weight: 600;
-            min-width: 120px;
+            flex: 1;
+            min-width: 80px;
+            max-width: 150px;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        /* Controls Styles */
         .controls {
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
             display: flex;
+            justify-content: center;
             gap: 0.5rem;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .btn {
             background: var(--primary);
             color: #fff;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 0.5rem;
             cursor: pointer;
             font-weight: 600;
             transition: transform 0.2s;
+            min-width: 100px;
+            font-size: 0.9rem;
         }
 
         .btn:active {
             transform: scale(0.95);
         }
 
-        .game-container {
-            flex: 1;
-            position: relative;
-            background: var(--surface);
-            overflow: hidden;
-        }
-
-        canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
+        /* Overlay Styles */
         .overlay {
-            position: absolute;
+            position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.85);
             display: flex;
@@ -106,6 +140,7 @@
             pointer-events: none;
             transition: 0.3s;
             backdrop-filter: blur(5px);
+            z-index: 30;
         }
 
         .overlay.active {
@@ -114,18 +149,20 @@
         }
 
         .overlay h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
             background: linear-gradient(45deg, var(--primary), #60a5fa);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-align: center;
         }
 
         .overlay h2 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 1rem;
             color: #fff;
+            text-align: center;
         }
 
         .big-btn {
@@ -133,11 +170,13 @@
             color: #fff;
             border: none;
             padding: 1rem 2rem;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             border-radius: 2rem;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
+            min-width: 180px;
+            text-align: center;
         }
 
         .big-btn:hover {
@@ -145,14 +184,27 @@
             box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
         }
 
+        /* Responsive Styles */
         @media (max-width: 768px) {
             .header {
                 padding: 0.5rem;
             }
 
             .stat-box {
-                min-width: 90px;
-                font-size: 0.9rem;
+                min-width: 70px;
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .controls {
+                padding: 0.4rem;
+                gap: 0.3rem;
+            }
+
+            .btn {
+                padding: 0.4rem 0.8rem;
+                min-width: 80px;
+                font-size: 0.8rem;
             }
 
             .overlay h1 {
@@ -160,12 +212,11 @@
             }
 
             .overlay h2 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
             }
         }
     </style>
 </head>
-
 <body>
     <div class="game-wrapper">
         <header class="header">
@@ -174,22 +225,23 @@
                 <div class="stat-box" id="best">Best: 0</div>
                 <div class="stat-box" id="speed">Speed: 1x</div>
             </div>
-            <div class="controls">
-                <button class="btn" onclick="togglePause()" id="pauseBtn">Pause</button>
-                <button class="btn" onclick="resetGame()">Reset</button>
-            </div>
         </header>
 
         <div class="game-container">
             <canvas id="gameCanvas"></canvas>
         </div>
 
+        <div class="controls">
+            <button class="btn" onclick="togglePause()" id="pauseBtn">Pause</button>
+            <button class="btn" onclick="resetGame()">Reset</button>
+        </div>
+
         <div class="overlay">
             <h1>Snake Game</h1>
             <h2>Game Over!</h2>
-            <p style="margin-bottom: 2rem; font-size: 1.2rem">Final Score: <span id="finalScore">0</span></p>
+            <p style="margin-bottom: 2rem; font-size: 1.2rem; text-align: center">Final Score: <span id="finalScore">0</span></p>
             <button class="big-btn" onclick="startGame()">Play Again</button>
-            <p>Swipe to control the snake</p>
+            <p style="margin-top: 1rem; text-align: center">Swipe to control the snake</p>
         </div>
     </div>
 
@@ -213,12 +265,29 @@
         const speedDisplay = document.getElementById('speed');
 
         function initCanvas() {
-            const container = canvas.parentElement;
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
-            GRID_SIZE = Math.min(30, Math.floor(Math.min(canvas.width, canvas.height) / 20));
-            CELL_SIZE = Math.min(canvas.width, canvas.height) / GRID_SIZE;
-        }
+    const container = canvas.parentElement;
+    const size = Math.min(container.clientWidth, container.clientHeight);
+    
+    // Make the canvas a perfect square
+    canvas.width = size;
+    canvas.height = size;
+    
+    // Center the canvas in the container
+    canvas.style.position = 'absolute';
+    canvas.style.left = '50%';
+    canvas.style.top = '50%';
+    canvas.style.transform = 'translate(-50%, -50%)';
+    
+    // Calculate grid and cell sizes
+    GRID_SIZE = Math.min(30, Math.floor(size / 20));
+    CELL_SIZE = size / GRID_SIZE;
+}
+
+// Add resize handler to maintain centering
+window.addEventListener('resize', () => {
+    initCanvas();
+    draw(); // Redraw the game state after resize
+});
 
         function handleSwipe(e) {
             if (!touchStartX || !touchStartY) return;
