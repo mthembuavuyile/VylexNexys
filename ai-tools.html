@@ -62,7 +62,8 @@
     <div class="container">
         <header>
             <h1>AI Tools Explorer</h1>
-            <p>Discover the latest AI tools for productivity and daily life</p>
+            <br>
+            <p>Explore cutting-edge AI tools for coding, research, creativity, productivity, and more.</p>
             <p>By <strong>Vylex Nexys</strong></p>
             <button id="modeToggle" aria-label="Toggle dark/light mode">Toggle Mode 🌓</button>
         </header>
@@ -72,12 +73,12 @@
                    aria-label="Search AI tools" class="search-input">
             <div class="category-buttons" role="navigation" aria-label="Category filters">
                 <button class="category-button active-button" data-category="all">All Tools</button>
-                <button class="category-button" data-category="ai-assistants">AI Assistants & Chatbots</button>
-                <button class="category-button" data-category="development">Development & Code</button>
-                <button class="category-button" data-category="creative">Creative & Media</button>
-                <button class="category-button" data-category="search-research">Search & Research</button>
-                <button class="category-button" data-category="education">Education & Learning</button>
-                <button class="category-button" data-category="productivity">Productivity & Tools</button>
+                <button class="category-button" data-category="conversational-ai">Conversational AI</button>
+                <button class="category-button" data-category="ai-coding-development">AI Coding & Development</button>
+                <button class="category-button" data-category="ai-image-media">AI Image & Media Generation</button>
+                <button class="category-button" data-category="ai-research-knowledge">AI Research & Knowledge</button>
+                <button class="category-button" data-category="ai-learning-writing">AI Learning & Writing</button>
+                <button class="category-button" data-category="ai-productivity-utilities">AI Productivity & Utilities</button>
             </div>
         </div>
         
@@ -114,141 +115,151 @@
 
     <script>
         const toolsData = [
-            // AI Assistants & Chatbots
-            { name: "ChatGPT", company: "OpenAI", category: "ai-assistants", url: "https://chatgpt.com/" },
-            { name: "Claude", company: "Anthropic", category: "ai-assistants", url: "https://claude.ai/new" },
-            { name: "Grok", company: "X (formerly Twitter)", category: "ai-assistants", url: "https://twitter.com/i/grok" },
-            { name: "Poe", company: "Quora", category: "ai-assistants", url: "https://poe.com/" },
-            { name: "DeepSeek Chat", company: "DeepSeek", category: "ai-assistants", url: "https://chat.deepseek.com/" },
-            { name: "Qwen Chat", company: "Alibaba", category: "ai-assistants", url: "https://chat.qwenlm.ai/" },
-            { name: "Gemini", company: "Google", category: "ai-assistants", url: "https://gemini.google.com" },
-        
-            // Development & Code
-            { name: "GitHub Copilot", company: "Microsoft", category: "development", url: "https://github.com/copilot" },
-            { name: "Ghostwriter", company: "Replit", category: "development", url: "https://replit.com/" },
-            { name: "Microsoft Copilot", company: "Microsoft", category: "development", url: "https://copilot.microsoft.com/" },
-            { name: "Hugging Face", company: "Hugging Face", category: "development", url: "https://huggingface.co/" },
-            { name: "LLaMA", company: "Meta", category: "development", url: "https://www.meta.ai/" },
-            { name: "Cohere", company: "Cohere", category: "development", url: "https://dashboard.cohere.com/playground/chat" },
-            { name: "Mistral AI", company: "Mistral", category: "development", url: "https://www.mistral.ai/" },
-        
-            // Creative & Media
-            { name: "DALL-E 3", company: "OpenAI", category: "creative", url: "https://openai.com/index/dall-e-3/" },
-            { name: "Ideogram", company: "Ideogram AI", category: "creative", url: "https://ideogram.ai/login" },
-            { name: "Midjourney", company: "Midjourney", category: "creative", url: "https://midjourney.com/" },
-            { name: "Stable Diffusion", company: "Stability AI", category: "creative", url: "https://stability.ai/" },
-            { name: "Civitai", company: "Civitai", category: "creative", url: "https://civitai.com/" },
-            { name: "Google ImageFX", company: "Google", category: "creative", url: "https://aitestkitchen.withgoogle.com/tools/image-fx" },
-            { name: "Canva", company: "Canva Pty Ltd", category: "creative", url: "https://www.canva.com/" },
-        
-            // Search & Research
-            { name: "Phind", company: "Phind", category: "search-research", url: "https://www.phind.com/" },
-            { name: "Perplexity", company: "Perplexity AI", category: "search-research", url: "https://www.perplexity.ai/" },
-            { name: "Elicit", company: "Ought", category: "search-research", url: "https://elicit.org/" },
-            { name: "AlphaFold", company: "DeepMind", category: "search-research", url: "https://alphafold.ebi.ac.uk/" },
-        
-            // Education & Learning
-            { name: "freeCodeCamp", company: "freeCodeCamp Inc.", category: "education", url: "https://www.freecodecamp.org/" },
-            { name: "SoloLearn", company: "SoloLearn Inc.", category: "education", url: "https://www.sololearn.com/" },
-            { name: "Duolingo", company: "Duolingo Inc.", category: "education", url: "https://www.duolingo.com/" },
-            { name: "QuillBot", company: "QuillBot Inc.", category: "education", url: "https://quillbot.com/paraphrasing-tool" },
-        
-            // Productivity & Tools
-            { name: "Gamma", company: "Gamma", category: "productivity", url: "https://gamma.app/" },
-            { name: "Google AI Studio", company: "Google", category: "productivity", url: "https://aistudio.google.com/app/prompts/new_chat" },
-            { name: "OpenAI Playground", company: "OpenAI", category: "productivity", url: "https://platform.openai.com/playground/chat" }
-        ];
-        const toolsGrid = document.getElementById('toolsGrid');
-        const searchInput = document.getElementById('searchInput');
-        const categoryButtons = document.querySelectorAll('.category-button');
-        const modeToggle = document.getElementById('modeToggle');
-        const body = document.body;
-        const modal = document.getElementById('toolModal');
-        const modalClose = document.querySelector('.close');
-        const noResults = document.getElementById('noResults');
-        const backToTop = document.getElementById('backToTop');
+    // Conversational AI
+    { name: "ChatGPT", company: "OpenAI", category: "conversational-ai", url: "https://chatgpt.com/" },
+    { name: "Claude", company: "Anthropic", category: "conversational-ai", url: "https://claude.ai/new" },
+    { name: "Grok", company: "X (formerly Twitter)", category: "conversational-ai", url: "https://twitter.com/i/grok" },
+    { name: "Poe", company: "Quora", category: "conversational-ai", url: "https://poe.com/" },
+    { name: "DeepSeek Chat", company: "DeepSeek", category: "conversational-ai", url: "https://chat.deepseek.com/" },
+    { name: "Qwen Chat", company: "Alibaba", category: "conversational-ai", url: "https://chat.qwenlm.ai/" },
+    { name: "Gemini", company: "Google", category: "conversational-ai", url: "https://gemini.google.com" },
 
-        function createToolCard(tool) {
-            return `
-                <div class="tool-card" tabindex="0" role="button" aria-label="View details for ${tool.name}">
-                    <div class="tool-name">${tool.name}</div>
-                    <div class="tool-company">${tool.company}</div>
-                    <div class="tool-category">${tool.category}</div>
-                    <span class="tool-details-icon" aria-label="View details for ${tool.name}"></span>
-                </div>
-            `;
-        }
+    // AI Coding & Development
+    { name: "GitHub Copilot", company: "Microsoft", category: "ai-coding-development", url: "https://github.com/copilot" },
+    { name: "Ghostwriter", company: "Replit", category: "ai-coding-development", url: "https://replit.com/" },
+    { name: "Microsoft Copilot", company: "Microsoft", category: "ai-coding-development", url: "https://copilot.microsoft.com/" },
+    { name: "Hugging Face", company: "Hugging Face", category: "ai-coding-development", url: "https://huggingface.co/" },
+    { name: "LLaMA", company: "Meta", category: "ai-coding-development", url: "https://www.meta.ai/" },
+    { name: "Cohere", company: "Cohere", category: "ai-coding-development", url: "https://dashboard.cohere.com/playground/chat" },
+    { name: "Mistral AI", company: "Mistral", category: "ai-coding-development", url: "https://www.mistral.ai/" },
 
-        function renderTools(tools) {
-            toolsGrid.innerHTML = tools.map(createToolCard).join('');
-            noResults.style.display = tools.length === 0 ? 'block' : 'none';
-            addToolCardListeners(tools);
-        }
+    // AI Image & Media Generation
+    { name: "DALL-E 3", company: "OpenAI", category: "ai-image-media", url: "https://openai.com/index/dall-e-3/" },
+    { name: "Ideogram", company: "Ideogram AI", category: "ai-image-media", url: "https://ideogram.ai/login" },
+    { name: "Midjourney", company: "Midjourney", category: "ai-image-media", url: "https://midjourney.com/" },
+    { name: "Stable Diffusion", company: "Stability AI", category: "ai-image-media", url: "https://stability.ai/" },
+    { name: "Civitai", company: "Civitai", category: "ai-image-media", url: "https://civitai.com/" },
+    { name: "Google ImageFX", company: "Google", category: "ai-image-media", url: "https://aitestkitchen.withgoogle.com/tools/image-fx" },
+    { name: "Canva", company: "Canva Pty Ltd", category: "ai-image-media", url: "https://www.canva.com/" },
 
-        function filterTools() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const activeCategory = document.querySelector('.category-button.active-button').dataset.category;
-            
-            const filteredTools = toolsData.filter(tool => {
-                const matchesSearch = tool.name.toLowerCase().includes(searchTerm) ||
-                                      tool.company.toLowerCase().includes(searchTerm) ||
-                                      tool.category.toLowerCase().includes(searchTerm);
-                const matchesCategory = activeCategory === 'all' || tool.category.toLowerCase() === activeCategory;
-                return matchesSearch && matchesCategory;
-            });
+    // AI Research & Knowledge
+    { name: "Phind", company: "Phind", category: "ai-research-knowledge", url: "https://www.phind.com/" },
+    { name: "Perplexity", company: "Perplexity AI", category: "ai-research-knowledge", url: "https://www.perplexity.ai/" },
+    { name: "Elicit", company: "Ought", category: "ai-research-knowledge", url: "https://elicit.org/" },
+    { name: "AlphaFold", company: "DeepMind", category: "ai-research-knowledge", url: "https://alphafold.ebi.ac.uk/" },
 
-            renderTools(filteredTools);
-        }
+    // AI Learning & Writing
+    { name: "freeCodeCamp", company: "freeCodeCamp Inc.", category: "ai-learning-writing", url: "https://www.freecodecamp.org/" },
+    { name: "SoloLearn", company: "SoloLearn Inc.", category: "ai-learning-writing", url: "https://www.sololearn.com/" },
+    { name: "Duolingo", company: "Duolingo Inc.", category: "ai-learning-writing", url: "https://www.duolingo.com/" },
+    { name: "QuillBot", company: "QuillBot Inc.", category: "ai-learning-writing", url: "https://quillbot.com/paraphrasing-tool" },
 
-        function addToolCardListeners(tools) {
-            const toolCards = document.querySelectorAll('.tool-card');
-            toolCards.forEach((card, index) => {
-                card.querySelector('.tool-details-icon').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    showToolDetails(tools[index]);
-                });
-                card.addEventListener('click', () => showToolDetails(tools[index]));
-                card.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        showToolDetails(tools[index]);
-                    }
-                });
-            });
-        }
+    // AI Productivity & Utilities
+    { name: "Gamma", company: "Gamma", category: "ai-productivity-utilities", url: "https://gamma.app/" },
+    { name: "Google AI Studio", company: "Google", category: "ai-productivity-utilities", url: "https://aistudio.google.com/app/prompts/new_chat" },
+    { name: "OpenAI Playground", company: "OpenAI", category: "ai-productivity-utilities", url: "https://platform.openai.com/playground/chat" }
+];
+const toolsGrid = document.getElementById('toolsGrid');
+const searchInput = document.getElementById('searchInput');
+const categoryButtons = document.querySelectorAll('.category-button');
+const modeToggle = document.getElementById('modeToggle');
+const body = document.body;
+const modal = document.getElementById('toolModal');
+const modalClose = document.querySelector('.close');
+const noResults = document.getElementById('noResults');
+const backToTop = document.getElementById('backToTop');
 
-        function showToolDetails(tool) {
-            document.getElementById('modalToolName').textContent = tool.name;
-            document.getElementById('modalToolCompany').textContent = tool.company;
-            document.getElementById('modalToolCategory').textContent = tool.category;
-            document.getElementById('modalToolLink').href = tool.url;
-            modal.style.display = 'block';
-        }
+function createToolCard(tool) {
+    return `
+        <div class="tool-card" tabindex="0" role="button" aria-label="View details for ${tool.name}">
+            <div class="tool-name">${tool.name}</div>
+            <div class="tool-company">${tool.company}</div>
+            <div class="tool-category">${tool.category}</div>
+            <span class="tool-details-icon" aria-label="View details for ${tool.name}"></span>
+        </div>
+    `;
+}
 
-        searchInput.addEventListener('input', filterTools);
+function renderTools(tools) {
+    toolsGrid.innerHTML = tools.map(createToolCard).join('');
+    noResults.style.display = tools.length === 0 ? 'block' : 'none';
+    addToolCardListeners(tools);
+}
 
-        categoryButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                categoryButtons.forEach(btn => btn.classList.remove('active-button'));
-                this.classList.add('active-button');
-                localStorage.setItem('category', this.dataset.category);
-                filterTools();
-            });
+function filterTools() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const activeCategory = document.querySelector('.category-button.active-button').dataset.category;
+    
+    const filteredTools = toolsData.filter(tool => {
+        const matchesSearch = tool.name.toLowerCase().includes(searchTerm) ||
+                            tool.company.toLowerCase().includes(searchTerm) ||
+                            tool.category.toLowerCase().includes(searchTerm);
+        const matchesCategory = activeCategory === 'all' || tool.category.toLowerCase() === activeCategory;
+        return matchesSearch && matchesCategory;
+    });
+
+    renderTools(filteredTools);
+}
+
+function addToolCardListeners(tools) {
+    const toolCards = document.querySelectorAll('.tool-card');
+    toolCards.forEach((card, index) => {
+        card.querySelector('.tool-details-icon').addEventListener('click', (e) => {
+            e.stopPropagation();
+            showToolDetails(tools[index]);
         });
-
-        modeToggle.addEventListener('click', function() {
-            body.classList.toggle('light-mode');
-            localStorage.setItem('mode', body.classList.contains('light-mode') ? 'light' : 'dark');
-        });
-
-        modalClose.onclick = function() {
-            modal.style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
+        card.addEventListener('click', () => showToolDetails(tools[index]));
+        card.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                showToolDetails(tools[index]);
             }
-        }
+        });
+    });
+}
+
+function showToolDetails(tool) {
+    document.getElementById('modalToolName').textContent = tool.name;
+    document.getElementById('modalToolCompany').textContent = tool.company;
+    document.getElementById('modalToolCategory').textContent = tool.category;
+    document.getElementById('modalToolLink').href = tool.url;
+    modal.style.display = 'block';
+}
+
+// Event Listeners
+searchInput.addEventListener('input', filterTools);
+
+categoryButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        categoryButtons.forEach(btn => btn.classList.remove('active-button'));
+        this.classList.add('active-button');
+        localStorage.setItem('category', this.dataset.category);
+        filterTools();
+    });
+});
+
+// Theme Toggle Implementation
+modeToggle.addEventListener('click', function() {
+    body.classList.toggle('light-theme');
+    localStorage.setItem('mode', body.classList.contains('light-theme') ? 'light' : 'dark');
+});
+
+// Initialize theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('mode') === 'light') {
+        body.classList.add('light-theme');
+    }
+});
+
+// Modal event handlers
+modalClose.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
 
         window.addEventListener('scroll', function() {
             if (window.pageYOffset > 300) {
