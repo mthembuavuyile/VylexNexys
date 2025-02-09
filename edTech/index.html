@@ -1,1 +1,139 @@
-html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vylex Nexys - AI-Driven EdTech Platform</title>
+    
+    <!-- Link Preview Meta Tags -->
+    <meta property="og:title" content="Vylex Nexys - AI-Driven EdTech Platform">
+    <meta property="og:description" content="Revolutionize your learning experience with Vylex Nexys, the cutting-edge AI-powered educational technology platform.">
+    <meta property="og:image" content="https://mthembuavuyile.github.io/EdTech/images/AI-learning-background.jpg">
+    <meta property="og:url" content="https://mthembuavuyile.github.io/EdTech/">
+    <meta property="og:type" content="website">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Vylex Nexys is an innovative AI-driven EdTech platform that personalizes learning experiences, adapts to individual needs, and fosters engagement through interactive content.">
+    <meta name="keywords" content="AI education, EdTech, personalized learning, adaptive learning, interactive education, Vylex Nexys">
+    <meta name="author" content="Vylex Nexys">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="images/AI-learning-background.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div class="coming-soon-overlay">
+        <div class="coming-soon-content">
+            <h2>Coming Soon</h2>
+            <p>Vylex Nexys EdTech is under development. This is just a teaser of what's to come!</p>
+            <button class="btn" onclick="closeOverlay()">Explore Teaser</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div id="branding">
+                    <h1><span class="highlight">Vylex Nexys</span> EdTech</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="https://avuyilemthembu.co.za/Artificial-Intelligence.html">AI Tools</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="burger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="showcase">
+        <div class="container">
+            <h1>AI-Driven Education for All</h1>
+            <p>Personalized learning paths in STEM subjects, accessible anytime, anywhere.</p>
+            <a href="#" class="btn" onclick="startLearning()">Start Learning</a>
+        </div>
+    </section>
+
+    <section id="about" class="container">
+        <div class="card">
+            <h2>About Vylex Nexys EdTech</h2>
+            <p>Our platform leverages AI to create tailored learning experiences for students in under-resourced areas, focusing on critical STEM subjects. Join us in revolutionizing education for everyone.</p>
+            <p><a href="about.html" class="btn">More about us</a></p>
+        </div>
+    </section>
+
+    <section id="courses" class="container">
+        <div class="card">
+            <h2>Explore Our Courses</h2>
+            <p>We offer interactive lessons and quizzes in Mathematics, Science, Engineering, and Technology, designed to help students excel at their own pace.</p>
+            <a href="courses.html" class="btn">View Courses</a>
+        </div>
+    </section>
+
+    <section id="ai-tools" class="container">
+        <h2>Explore AI Tools</h2>
+        <p><a href="https://avuyilemthembu.co.za/Artificial-Intelligence.html" class="btn">Discover our full range of AI tools</a></p>
+
+        <div class="ai-tools">
+            <div class="ai-tool">
+                <h4>ChatGPT (OpenAI)</h4>
+                <p>A powerful language model for natural conversations and text generation.</p>
+            </div>
+            <div class="ai-tool">
+                <h4>Claude (Anthropic)</h4>
+                <p>An AI assistant focused on safety and beneficial outcomes.</p>
+            </div>
+            <div class="ai-tool">
+                <h4>Gemini (Google DeepMind)</h4>
+                <p>A versatile AI model with multimodal capabilities.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container">
+        <div class="card">
+            <h2>Contact Us</h2>
+            <p>Have questions or want to collaborate? Reach out to us!</p>
+            <form>
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" required></textarea>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <nav>
+            <a href="index.html">Home</a> |
+            <a href="about.html">About</a> |
+            <a href="courses.html">Courses</a> |
+            <a href="tools/calculator.html">Calculator</a> |
+            <a href="whitepaper.html">Whitepaper</a> |
+            <a href="contact.html">Contact</a>
+        </nav>
+    
+        <p>Copyright &copy; 2024 <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys</a>. All Rights Reserved.</p>
+    </footer>
+
+    <script src="scripts/common-scripts.js"></script>
+
+    <script>
+        function startLearning() {
+            alert("Welcome to Vylex Nexys EdTech! Your personalized learning journey is about to begin.");
+            window.location.href = 'courses.html';
+        }
+
+        function closeOverlay() {
+            document.querySelector('.coming-soon-overlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
