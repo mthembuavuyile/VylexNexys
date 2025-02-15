@@ -87,7 +87,10 @@
                     Search
                 </button>
             </div>
-            <div id="searchHistory"></div>
+            <button onclick="openSearchHistory()" class="search-btn">
+                <i class="fas fa-history"></i>
+                History
+            </button>
         </div>
 
         <div id="loading" class="loading">
@@ -107,6 +110,18 @@
             </div>
 
             <div class="result-card">
+                <h3><i class="fas fa-volume-up"></i> Pronunciation</h3>
+                <div id="pronunciation"></div>
+                <div class="pronunciation-player">
+                    <select id="voiceSelect" class="voice-select"></select>
+                    <button class="play-btn" onclick="playPronunciation()">
+                        <i class="fas fa-play"></i> 
+                    </button>
+                    <span id="phonetic"></span>
+                </div>
+            </div>
+
+            <div class="result-card">
                 <h3><i class="fas fa-music"></i> Rhymes</h3>
                 <ul id="rhymeList" class="result-list"></ul>
             </div>
@@ -119,18 +134,6 @@
             <div class="result-card">
                 <h3><i class="fas fa-book-open"></i> Usage Examples</h3>
                 <div id="examples" class="examples"></div>
-            </div>
-
-            <div class="result-card">
-                <h3><i class="fas fa-volume-up"></i> Pronunciation</h3>
-                <div id="pronunciation"></div>
-                <div class="pronunciation-player">
-                    <select id="voiceSelect" class="voice-select"></select>
-                    <button class="play-btn" onclick="playPronunciation()">
-                        <i class="fas fa-play"></i> 
-                    </button>
-                    <span id="phonetic"></span>
-                </div>
             </div>
         </div>
     </main>

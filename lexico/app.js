@@ -14,7 +14,6 @@ const ThemeManager = {
     },
 
     init() {
-        // Load saved theme from localStorage
         const savedTheme = localStorage.getItem('theme') || 'light';
         this.applyTheme(savedTheme);
     },
@@ -44,6 +43,8 @@ const NavigationManager = {
 
     toggleMenu() {
         const nav = document.getElementById('nav');
+        if (!nav) return;
+        
         nav.classList.toggle('active');
         
         if (nav.classList.contains('active') && !document.querySelector('.close-menu')) {
@@ -60,9 +61,9 @@ const NavigationManager = {
             const nav = document.getElementById('nav');
             const hamburger = document.querySelector('.hamburger');
             
-            if (nav.classList.contains('active') && 
+            if (nav?.classList.contains('active') && 
                 !nav.contains(e.target) && 
-                !hamburger.contains(e.target)) {
+                !hamburger?.contains(e.target)) {
                 this.toggleMenu();
             }
         });
@@ -79,12 +80,19 @@ const WordDataManager = {
         this.loading = document.getElementById('loading');
         this.error = document.getElementById('error');
         this.setupEventListeners();
+        this.initializeHistory();
+    },
+
+    initializeHistory() {
+        if (!localStorage.getItem('lexicoSearchHistory')) {
+            localStorage.setItem('lexicoSearchHistory', JSON.stringify([]));
+        }
     },
 
     async translateWord(word, targetLang) {
         try {
             const response = await axios.get(
-                `https://api.mymemory.translated.net/get?q=${word}&langpair=en|${targetLang}`
+                `https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|${encodeURIComponent(targetLang)}`
             );
             return response.data.responseData.translatedText;
         } catch (error) {
@@ -99,13 +107,17 @@ const WordDataManager = {
             'examples', 'pronunciation', 'phonetic'
         ];
         elements.forEach(id => {
-            document.getElementById(id).innerHTML = '';
+            const element = document.getElementById(id);
+            if (element) element.innerHTML = '';
         });
-        this.error.style.display = 'none';
+        if (this.error) this.error.style.display = 'none';
     },
 
     async fetchWordData() {
-        const word = document.getElementById('wordInput').value.toLowerCase().trim();
+        const wordInput = document.getElementById('wordInput');
+        if (!wordInput) return;
+
+        const word = wordInput.value.toLowerCase().trim();
         
         this.resetResults();
 
@@ -114,23 +126,24 @@ const WordDataManager = {
             return;
         }
 
-        this.loading.style.display = 'block';
+        if (this.loading) this.loading.style.display = 'block';
 
         try {
             const response = await this.fetchFromWordsAPI(word);
+            this.saveToHistory(word);
             this.displayResults(response);
             await this.fetchAndDisplayRhymes(word);
         } catch (error) {
             this.showError('Word not found or error occurred');
             console.error('Error:', error);
         } finally {
-            this.loading.style.display = 'none';
+            if (this.loading) this.loading.style.display = 'none';
         }
     },
 
     async fetchFromWordsAPI(word) {
         const settings = {
-            url: `https://wordsapiv1.p.rapidapi.com/words/${word}`,
+            url: `https://wordsapiv1.p.rapidapi.com/words/${encodeURIComponent(word)}`,
             method: 'GET',
             headers: {
                 'x-rapidapi-key': this.apiKey,
@@ -144,7 +157,7 @@ const WordDataManager = {
     async fetchAndDisplayRhymes(word) {
         try {
             const response = await $.ajax({
-                url: `https://wordsapiv1.p.rapidapi.com/words/${word}/rhymes`,
+                url: `https://wordsapiv1.p.rapidapi.com/words/${encodeURIComponent(word)}/rhymes`,
                 method: 'GET',
                 headers: {
                     'x-rapidapi-key': this.apiKey,
@@ -153,8 +166,7 @@ const WordDataManager = {
             });
 
             const rhymeList = document.getElementById('rhymeList');
-            if (response.rhymes && response.rhymes.all) {
-                // Filter out rhymes that are too dissimilar
+            if (rhymeList && response.rhymes?.all) {
                 const relevantRhymes = this.filterRelevantRhymes(word, response.rhymes.all);
                 relevantRhymes.forEach(rhyme => {
                     const li = document.createElement('li');
@@ -168,12 +180,9 @@ const WordDataManager = {
     },
 
     filterRelevantRhymes(originalWord, rhymes) {
-        // Filter rhymes based on similarity to the original word
         return rhymes.filter(rhyme => {
-            // Remove rhymes that are just the original word with a prefix
             if (rhyme.endsWith(originalWord)) return false;
             
-            // Calculate the common ending length
             let commonEndingLength = 0;
             for (let i = 1; i <= Math.min(originalWord.length, rhyme.length); i++) {
                 if (originalWord.slice(-i) === rhyme.slice(-i)) {
@@ -183,16 +192,22 @@ const WordDataManager = {
                 }
             }
 
-            // Require at least 2 characters of common ending
-            // and the rhyme should not be more than twice the length of the original word
             return commonEndingLength >= 2 && rhyme.length <= originalWord.length * 2;
-        }).slice(0, 10); // Limit to 10 rhymes
+        }).slice(0, 10);
     },
 
     displayResults(data) {
-        // Display definitions
+        this.displayDefinitions(data);
+        this.displaySynonyms(data);
+        this.displayEtymology(data);
+        this.displayExamples(data);
+        this.displayPronunciation(data);
+        this.displayPhonetic(data);
+    },
+
+    displayDefinitions(data) {
         const definitionList = document.getElementById('definitionList');
-        if (data.results) {
+        if (definitionList && data.results) {
             data.results.forEach(result => {
                 if (result.definition) {
                     const li = document.createElement('li');
@@ -201,10 +216,11 @@ const WordDataManager = {
                 }
             });
         }
+    },
 
-        // Display synonyms
+    displaySynonyms(data) {
         const synonymList = document.getElementById('synonymList');
-        if (data.results) {
+        if (synonymList && data.results) {
             const synonyms = new Set();
             data.results.forEach(result => {
                 if (result.synonyms) {
@@ -217,27 +233,28 @@ const WordDataManager = {
                 synonymList.appendChild(li);
             });
         }
+    },
 
-        // Display etymology
+    displayEtymology(data) {
         const etymology = document.getElementById('etymology');
-    if (data.etymology) {
-        // Handle single etymology
-        if (typeof data.etymology === 'string') {
-            etymology.textContent = data.etymology;
-        }
-        // Handle multiple etymologies
-        else if (Array.isArray(data.etymology)) {
-            etymology.innerHTML = data.etymology
-                .map(etym => `<p>${etym}</p>`)
-                .join('');
-        }
-    } else {
-        etymology.textContent = 'Etymology not available';
-    }
+        if (!etymology) return;
 
-        // Display examples
+        if (data.etymology) {
+            if (typeof data.etymology === 'string') {
+                etymology.textContent = data.etymology;
+            } else if (Array.isArray(data.etymology)) {
+                etymology.innerHTML = data.etymology
+                    .map(etym => `<p>${etym}</p>`)
+                    .join('');
+            }
+        } else {
+            etymology.textContent = 'Etymology not available';
+        }
+    },
+
+    displayExamples(data) {
         const examples = document.getElementById('examples');
-        if (data.results) {
+        if (examples && data.results) {
             data.results.forEach(result => {
                 if (result.examples) {
                     result.examples.forEach(example => {
@@ -249,16 +266,20 @@ const WordDataManager = {
                 }
             });
         }
+    },
 
-        // Display pronunciation
-        if (data.pronunciation) {
-            document.getElementById('pronunciation').textContent = 
-                typeof data.pronunciation === 'string' ? data.pronunciation : data.pronunciation.all;
+    displayPronunciation(data) {
+        const pronunciation = document.getElementById('pronunciation');
+        if (pronunciation && data.pronunciation) {
+            pronunciation.textContent = typeof data.pronunciation === 'string' 
+                ? data.pronunciation 
+                : data.pronunciation.all;
         }
+    },
 
-        // Display phonetic
-        if (data.results) {
-            const phonetic = document.getElementById('phonetic');
+    displayPhonetic(data) {
+        const phonetic = document.getElementById('phonetic');
+        if (phonetic && data.results) {
             data.results.forEach(result => {
                 if (result.phonetic) {
                     phonetic.textContent = result.phonetic;
@@ -268,16 +289,39 @@ const WordDataManager = {
     },
 
     showError(message) {
-        this.error.textContent = message;
-        this.error.style.display = 'block';
+        if (this.error) {
+            this.error.textContent = message;
+            this.error.style.display = 'block';
+        }
+    },
+
+    saveToHistory(word) {
+        let history = JSON.parse(localStorage.getItem('lexicoSearchHistory'));
+        
+        const newSearch = {
+            word: word,
+            timestamp: new Date().toLocaleString()
+        };
+        
+        history = history.filter(item => item.word.toLowerCase() !== word.toLowerCase());
+        history.unshift(newSearch);
+        
+        if (history.length > 50) {
+            history = history.slice(0, 50);
+        }
+        
+        localStorage.setItem('lexicoSearchHistory', JSON.stringify(history));
     },
 
     setupEventListeners() {
-        document.getElementById('wordInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.fetchWordData();
-            }
-        });
+        const wordInput = document.getElementById('wordInput');
+        if (wordInput) {
+            wordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.fetchWordData();
+                }
+            });
+        }
     }
 };
 
@@ -295,8 +339,9 @@ const SpeechManager = {
     populateVoiceList() {
         this.voices = window.speechSynthesis.getVoices();
         const voiceSelect = document.getElementById('voiceSelect');
-        voiceSelect.innerHTML = '';
+        if (!voiceSelect) return;
 
+        voiceSelect.innerHTML = '';
         this.voices.forEach((voice, index) => {
             const option = new Option(`${voice.name} (${voice.lang})`, index);
             voiceSelect.options.add(option);
@@ -304,14 +349,20 @@ const SpeechManager = {
     },
 
     playPronunciation() {
-        const word = document.getElementById('wordInput').value;
+        const wordInput = document.getElementById('wordInput');
+        if (!wordInput) return;
+
+        const word = wordInput.value;
         
         if (!word) {
             alert('Please enter a word');
             return;
         }
 
-        const voiceIndex = document.getElementById('voiceSelect').value;
+        const voiceSelect = document.getElementById('voiceSelect');
+        if (!voiceSelect) return;
+
+        const voiceIndex = voiceSelect.value;
         const utterance = new SpeechSynthesisUtterance(word);
         
         if (this.voices[voiceIndex]) {
@@ -326,6 +377,109 @@ const SpeechManager = {
     }
 };
 
+function openSearchHistory() {
+    const historyWindow = window.open('', 'Lexico Search History', 'width=500,height=600');
+    const history = JSON.parse(localStorage.getItem('lexicoSearchHistory'));
+    
+    const historyContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Lexico - Search History</title>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                    background-color: var(--bg-color, #ffffff);
+                    color: var(--text-color, #333333);
+                }
+                .history-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                }
+                .clear-btn {
+                    background-color: #dc3545;
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+                .history-list {
+                    list-style: none;
+                    padding: 0;
+                }
+                .history-item {
+                    padding: 15px;
+                    border-bottom: 1px solid #ddd;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+                }
+                .history-item:hover {
+                    background-color: #f5f5f5;
+                }
+                .word {
+                    font-weight: bold;
+                    color: #2c3e50;
+                }
+                .timestamp {
+                    color: #666;
+                    font-size: 0.8em;
+                    margin-top: 5px;
+                }
+                .no-history {
+                    text-align: center;
+                    color: #666;
+                    padding: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="history-header">
+                <h2><i class="fas fa-history"></i> Search History</h2>
+                <button class="clear-btn" onclick="clearHistory()">
+                    <i class="fas fa-trash"></i> Clear History
+                </button>
+            </div>
+            ${history.length > 0 ? `
+                <ul class="history-list">
+                    ${history.map(item => `
+                        <li class="history-item" onclick="searchWord('${item.word}')">
+                            <div class="word">${item.word}</div>
+                            <div class="timestamp">${item.timestamp}</div>
+                        </li>
+                    `).join('')}
+                </ul>
+            ` : `
+                <div class="no-history">
+                    <i class="fas fa-search"></i>
+                    <p>No search history yet</p>
+                </div>
+            `}
+            <script>
+                function clearHistory() {
+                    if (confirm('Are you sure you want to clear all search history?')) {
+                        window.opener.localStorage.setItem('lexicoSearchHistory', JSON.stringify([]));
+                        window.location.reload();
+                    }
+                }
+                
+                function searchWord(word) {
+                    window.opener.document.getElementById('wordInput').value = word;
+                    window.opener.fetchWordData();
+                }
+            </script>
+        </body>
+        </html>
+    `;
+    
+    historyWindow.document.write(historyContent);
+    historyWindow.document.close();
+}
+
 // Initialize everything when the document is loaded
 document.addEventListener('DOMContentLoaded', () => {
     ThemeManager.init();
@@ -338,4 +492,5 @@ document.addEventListener('DOMContentLoaded', () => {
     window.toggleMenu = () => NavigationManager.toggleMenu();
     window.fetchWordData = () => WordDataManager.fetchWordData();
     window.playPronunciation = () => SpeechManager.playPronunciation();
+    window.openSearchHistory = openSearchHistory;
 });
