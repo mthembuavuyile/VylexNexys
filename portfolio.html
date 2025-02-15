@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development Portfolio</title>
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --secondary: #EC4899;
+            --accent: #06B6D4;
+            --dark: #1F2937;
+            --darker: #111827;
+            --light: #F3F4F6;
+            --text-color: #9CA3AF;
+            --transition: all 0.3s ease;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: min(1200px, 100% - 2rem);
+            margin-inline: auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            text-align: center;
+            margin-block: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(8px);
+            transition: var(--transition);
+        }
+
+        .logo h4 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: var(--transition);
+        }
+
+        .logo h4:hover {
+            transform: scale(1.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding-block: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .portfolio-item {
+            background: var(--dark);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .portfolio-content {
+            padding: 1.5rem;
+        }
+
+        .portfolio-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .portfolio-description {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .portfolio-link:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
+                url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger-menu {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h4>Portfolio</h4>
+            </div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Web Development Portfolio</h1>
+            <p>Showcasing a diverse collection of web projects ranging from business websites to educational platforms
+                and interactive applications.</p>
+        </div>
+    </section>
+
+    <main class="container" id="portfolio">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="portfolio-grid">
+            <!-- Business Website -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1753194976/photo/pool-floats-in-a-pool.jpg?s=612x612&w=0&k=20&c=OENVKpjCAgeJ67TPy-KfVIj09nCjPMkqZk91ulCI3Uc="
+                    alt="Andrews Swimming Pool Services" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Andrews Swimming Pool Services</h3>
+                    <p class="portfolio-description">Business website for professional swimming pool services and
+                        maintenance.</p>
+                    <a href="https://mthembuavuyile.github.io/AndrewsSwimmingPoolServices/" class="portfolio-link">View
+                        Project</a>
+                </div>
+            </div>
+
+            <!-- Luxury Shutters -->
+            <div class="portfolio-item">
+                <img src="https://luxuryshuttersandblinds.co.za/assets/images/shutters/lsbshutter%20(1).jpg"
+                    alt="Luxury Shutters and Blinds" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Luxury Shutters and Blinds</h3>
+                    <p class="portfolio-description">Window treatment solutions website based in Durban.</p>
+                    <a href="https://luxuryshuttersandblinds.co.za/" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Global Dictionary -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/465205551/photo/definition-in-dictionary.jpg?s=612x612&w=0&k=20&c=u5GWQjHvwfv6fBWWIypGC3OX3-3YuNm4lCcwjykMa1g="
+                    alt="Global Dictionary" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Global Dictionary</h3>
+                    <p class="portfolio-description">Collaborative platform for sharing words and definitions from
+                        different cultures.</p>
+                    <a href="https://mthembuavuyile.github.io/globaldictionary/" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Game Lab -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1078377006/photo/little-boy-playing-a-mobile-game-against-his-sister.jpg?s=612x612&w=0&k=20&c=hvmeV8NniGwxMaH-irP-7Me6QV_TfT1ZxlXcTakKhLM="
+                    alt="Game Lab" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Game Lab</h3>
+                    <p class="portfolio-description">Collection of interactive web games and entertainment.</p>
+                    <a href="https://vylexnexys.co.za/games/" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- EdTech Platform -->
+            <div class="portfolio-item">
+                <img src="https://github.com/mthembuavuyile/VylexNexys/blob/main/edTech/images/AI-learning-background.jpg?raw=true"
+                    alt="EdTech STEM" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">EdTech STEM Platform</h3>
+                    <p class="portfolio-description">Educational tools and resources for high school STEM subjects.</p>
+                    <a href="https://vylexnexys.co.za/edTech" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Financial Tracking -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1834383492/vector/financial-planning-investment-growth-strategy-or-money-management-for-retirement-goal-budget.jpg?s=612x612&w=0&k=20&c=1BKXZax1tq2DabVpNb-LMvY0M5kKywmqyDtq48a4PjA="
+                    alt="VyTrack" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">VyTrack</h3>
+                    <p class="portfolio-description">Financial management and budgeting application.</p>
+                    <a href="https://vylexnexys.co.za/vyTrack" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Language Learning -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1249792109/vector/book-textbook-school-books-vector-icon.jpg?s=612x612&w=0&k=20&c=oaaFxaqmPSZjxczB3cX7z7RlJXyiVncqd_oputW4S_c="
+                    alt="Lexico" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Lexico</h3>
+                    <p class="portfolio-description">English language learning platform with pronunciation guides and
+                        resources.</p>
+                    <a href="https://vylexnexys.co.za/lexico/" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Personal Website -->
+            <div class="portfolio-item">
+                <img src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg" alt="Avuyile Mthembu Personal Website"
+                    class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Avuyile Mthembu - Personal Website</h3>
+                    <p class="portfolio-description">Personal website showcasing skills, projects, and more.</p>
+                    <a href="https://avuyilemthembu.co.za" class="portfolio-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Vylex Nexys Startup -->
+            <div class="portfolio-item">
+                <img src="https://vylexnexys.co.za/assets/images/vylex.jpg" alt="Vylex Nexys Startup"
+                    class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Vylex Nexys - Startup</h3>
+                    <p class="portfolio-description">A technology startup focused on web development solutions.</p>
+                    <a href="https://vylexnexys.co.za" class="portfolio-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- AI Tools Aggregator -->
+            <div class="portfolio-item">
+                <img src="https://your-image-source.com/your-image.jpg" alt="AI Tools Aggregator"
+                    class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">AI Tools Aggregator</h3>
+                    <p class="portfolio-description">A platform to discover and access a variety of AI tools.</p>
+                    <a href="https://vylexnexys.co.za/ai-tools" class="portfolio-link">Visit Project</a>
+                </div>
+            </div>
+
+            <!-- NoteMaster -->
+            <div class="portfolio-item">
+                <img src="https://your-image-source.com/your-image.jpg" alt="NoteMaster" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">NoteMaster</h3>
+                    <p class="portfolio-description">Write, bookmark, and delete notes with Markdown support.</p>
+                    <a href="https://vylexnexys.co.za/noteMaster" class="portfolio-link">Visit Project</a>
+                </div>
+            </div>
+
+            <!-- Text Analysis Tool -->
+            <div class="portfolio-item">
+                <img src="https://your-image-source.com/your-image.jpg" alt="Text Analysis Tool"
+                    class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Text Analysis Tool</h3>
+                    <p class="portfolio-description">Professional text analysis and content optimization suite offering
+                        word counting, case conversion, readability scoring, and markdown tools.</p>
+                    <a href="https://vylexnexys.co.za/edTech/tools/advanced-text-analysis.html"
+                        class="portfolio-link">Visit Tool</a>
+                </div>
+            </div>
+
+            <!-- Math Function Visualizer -->
+            <div class="portfolio-item">
+                <img src="https://your-image-source.com/your-image.jpg" alt="Math Function Visualizer"
+                    class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Math Function Visualizer</h3>
+                    <p class="portfolio-description">An interactive tool to visualize and explore math functions in
+                        real-time.</p>
+                    <a href="https://vylexnexys.co.za/Math-Function-Visualizer.html" class="portfolio-link">Visit
+                        Tool</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="contact" style="background: var(--dark); padding: 2rem 0; margin-top: 4rem; text-align: center;">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p style="color: var(--text-color);">Interested in working together? Let's connect!</p>
+            <!-- Add your contact information or form here -->
+        </div>
+    </footer>
+</body>
+
+</html>
