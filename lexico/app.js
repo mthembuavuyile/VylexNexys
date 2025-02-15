@@ -71,259 +71,280 @@ const NavigationManager = {
 };
 
 // Word Data Management
-const WordDataManager = {
-    apiKey: 'f5078a0212mshb1fa8580c4e1506p1b5d08jsn8fde9b6fb27a',
-    loading: null,
-    error: null,
+// API Configuration
+const API_CONFIG = {
+    WORDS_API: {
+        KEY: 'f5078a0212mshb1fa8580c4e1506p1b5d08jsn8fde9b6fb27a',
+        BASE_URL: 'https://wordsapiv1.p.rapidapi.com/words',
+        HEADERS: {
+            'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+            'x-rapidapi-key': 'f5078a0212mshb1fa8580c4e1506p1b5d08jsn8fde9b6fb27a'
+        }
+    },
+    WIKTIONARY: {
+        BASE_URL: 'https://en.wiktionary.org/w/api.php'
+    },
+    MYMEMORY: {
+        BASE_URL: 'https://api.mymemory.translated.net/get'
+    }
+};
 
-    init() {
-        this.loading = document.getElementById('loading');
-        this.error = document.getElementById('error');
-        this.setupEventListeners();
-        this.initializeHistory();
+// API Service Layer
+const ApiService = {
+    async fetchFromWordsAPI(word, endpoint = '') {
+        const response = await fetch(
+            `${API_CONFIG.WORDS_API.BASE_URL}/${encodeURIComponent(word)}${endpoint}`,
+            { headers: API_CONFIG.WORDS_API.HEADERS }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`WordsAPI Error: ${response.status}`);
+        }
+        
+        return response.json();
     },
 
-    initializeHistory() {
-        if (!localStorage.getItem('lexicoSearchHistory')) {
-            localStorage.setItem('lexicoSearchHistory', JSON.stringify([]));
+    async fetchFromWiktionary(word) {
+        const response = await fetch(
+            `${API_CONFIG.WIKTIONARY.BASE_URL}?action=query&format=json&prop=extracts&titles=${encodeURIComponent(word)}&origin=*`
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Wiktionary Error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        const pages = data.query.pages;
+        const pageId = Object.keys(pages)[0];
+        
+        if (!pages[pageId].extract) {
+            throw new Error('No definition found');
+        }
+        
+        return pages[pageId].extract;
+    },
+
+    async translate(word, targetLang) {
+        const response = await fetch(
+            `${API_CONFIG.MYMEMORY.BASE_URL}?q=${encodeURIComponent(word)}&langpair=en|${encodeURIComponent(targetLang)}`
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Translation Error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.responseData.translatedText;
+    }
+};
+
+// History Manager
+const HistoryManager = {
+    MAX_HISTORY_ITEMS: 50,
+    STORAGE_KEY: 'lexicoSearchHistory',
+
+    initialize() {
+        if (!localStorage.getItem(this.STORAGE_KEY)) {
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify([]));
         }
     },
 
-    async translateWord(word, targetLang) {
-        try {
-            const response = await axios.get(
-                `https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|${encodeURIComponent(targetLang)}`
-            );
-            return response.data.responseData.translatedText;
-        } catch (error) {
-            console.error('Translation error:', error);
-            return 'Translation failed';
-        }
+    save(word) {
+        let history = this.getHistory();
+        const newSearch = {
+            word: word,
+            timestamp: new Date().toISOString()
+        };
+        
+        history = history.filter(item => item.word.toLowerCase() !== word.toLowerCase());
+        history.unshift(newSearch);
+        history = history.slice(0, this.MAX_HISTORY_ITEMS);
+        
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(history));
     },
 
-    resetResults() {
-        const elements = [
-            'definitionList', 'synonymList', 'rhymeList', 'etymology',
-            'examples', 'pronunciation', 'phonetic'
-        ];
-        elements.forEach(id => {
-            const element = document.getElementById(id);
-            if (element) element.innerHTML = '';
+    getHistory() {
+        return JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || [];
+    }
+};
+
+// Display Manager
+const DisplayManager = {
+    displayDefinitions(data, element) {
+        if (!element || !data.results) return;
+        
+        element.innerHTML = data.results
+            .filter(result => result.definition)
+            .map(result => `<li>${result.definition}</li>`)
+            .join('');
+    },
+
+    displaySynonyms(data, element) {
+        if (!element || !data.results) return;
+        
+        const synonyms = new Set();
+        data.results.forEach(result => {
+            if (result.synonyms) {
+                result.synonyms.forEach(synonym => synonyms.add(synonym));
+            }
         });
-        if (this.error) this.error.style.display = 'none';
+        
+        element.innerHTML = Array.from(synonyms)
+            .map(synonym => `<li>${synonym}</li>`)
+            .join('');
+    },
+
+    displayRhymes(rhymes, element, originalWord) {
+        if (!element || !rhymes) return;
+        
+        const filteredRhymes = this.filterRelevantRhymes(originalWord, rhymes)
+            .map(rhyme => `<li>${rhyme}</li>`)
+            .join('');
+            
+        element.innerHTML = filteredRhymes;
+    },
+
+    filterRelevantRhymes(originalWord, rhymes) {
+        return rhymes
+            .filter(rhyme => {
+                if (rhyme.endsWith(originalWord)) return false;
+                
+                let commonEndingLength = 0;
+                for (let i = 1; i <= Math.min(originalWord.length, rhyme.length); i++) {
+                    if (originalWord.slice(-i) === rhyme.slice(-i)) {
+                        commonEndingLength = i;
+                    } else {
+                        break;
+                    }
+                }
+                
+                return commonEndingLength >= 2 && rhyme.length <= originalWord.length * 2;
+            })
+            .slice(0, 10);
+    },
+
+    displayWiktionaryResult(data, element) {
+        if (!element) return;
+        const cleanedHTML = data.replace(/<[^>]+>/g, '');
+        element.innerHTML = `<li>${cleanedHTML}</li>`;
+    }
+};
+
+// Main Word Data Manager
+const WordDataManager = {
+    elements: {},
+
+    async init() {
+        this.cacheElements();
+        this.setupEventListeners();
+        HistoryManager.initialize();
+    },
+
+    cacheElements() {
+        const elementIds = [
+            'wordInput', 'loading', 'error', 'definitionList', 
+            'synonymList', 'rhymeList', 'etymology', 'examples', 
+            'pronunciation', 'phonetic'
+        ];
+        
+        elementIds.forEach(id => {
+            this.elements[id] = document.getElementById(id);
+        });
+    },
+
+    setupEventListeners() {
+        if (this.elements.wordInput) {
+            this.elements.wordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.fetchWordData();
+                }
+            });
+        }
     },
 
     async fetchWordData() {
-        const wordInput = document.getElementById('wordInput');
-        if (!wordInput) return;
-
-        const word = wordInput.value.toLowerCase().trim();
+        const word = this.elements.wordInput?.value.toLowerCase().trim();
         
-        this.resetResults();
-
         if (!word) {
             this.showError('Please enter a word to search');
             return;
         }
 
-        if (this.loading) this.loading.style.display = 'block';
+        this.resetResults();
+        this.showLoading(true);
 
         try {
-            const response = await this.fetchFromWordsAPI(word);
-            this.saveToHistory(word);
-            this.displayResults(response);
+            const wordData = await ApiService.fetchFromWordsAPI(word);
+            HistoryManager.save(word);
+            
+            this.displayResults(wordData);
             await this.fetchAndDisplayRhymes(word);
+            
         } catch (error) {
-            this.showError('Word not found or error occurred');
-            console.error('Error:', error);
-        } finally {
-            if (this.loading) this.loading.style.display = 'none';
-        }
-    },
-
-    async fetchFromWordsAPI(word) {
-        const settings = {
-            url: `https://wordsapiv1.p.rapidapi.com/words/${encodeURIComponent(word)}`,
-            method: 'GET',
-            headers: {
-                'x-rapidapi-key': this.apiKey,
-                'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com'
+            console.warn('Falling back to Wiktionary...');
+            
+            try {
+                const wiktionaryData = await ApiService.fetchFromWiktionary(word);
+                DisplayManager.displayWiktionaryResult(wiktionaryData, this.elements.definitionList);
+            } catch (wikiError) {
+                this.showError('Word not found in any source.');
+                console.error(wikiError);
             }
-        };
-
-        return $.ajax(settings);
+        } finally {
+            this.showLoading(false);
+        }
     },
 
     async fetchAndDisplayRhymes(word) {
         try {
-            const response = await $.ajax({
-                url: `https://wordsapiv1.p.rapidapi.com/words/${encodeURIComponent(word)}/rhymes`,
-                method: 'GET',
-                headers: {
-                    'x-rapidapi-key': this.apiKey,
-                    'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com'
-                }
-            });
-
-            const rhymeList = document.getElementById('rhymeList');
-            if (rhymeList && response.rhymes?.all) {
-                const relevantRhymes = this.filterRelevantRhymes(word, response.rhymes.all);
-                relevantRhymes.forEach(rhyme => {
-                    const li = document.createElement('li');
-                    li.textContent = rhyme;
-                    rhymeList.appendChild(li);
-                });
+            const rhymeData = await ApiService.fetchFromWordsAPI(word, '/rhymes');
+            if (rhymeData.rhymes?.all) {
+                DisplayManager.displayRhymes(
+                    rhymeData.rhymes.all,
+                    this.elements.rhymeList,
+                    word
+                );
             }
         } catch (error) {
             console.error('Error fetching rhymes:', error);
         }
     },
 
-    filterRelevantRhymes(originalWord, rhymes) {
-        return rhymes.filter(rhyme => {
-            if (rhyme.endsWith(originalWord)) return false;
-            
-            let commonEndingLength = 0;
-            for (let i = 1; i <= Math.min(originalWord.length, rhyme.length); i++) {
-                if (originalWord.slice(-i) === rhyme.slice(-i)) {
-                    commonEndingLength = i;
-                } else {
-                    break;
-                }
-            }
-
-            return commonEndingLength >= 2 && rhyme.length <= originalWord.length * 2;
-        }).slice(0, 10);
-    },
-
     displayResults(data) {
-        this.displayDefinitions(data);
-        this.displaySynonyms(data);
-        this.displayEtymology(data);
-        this.displayExamples(data);
-        this.displayPronunciation(data);
-        this.displayPhonetic(data);
+        DisplayManager.displayDefinitions(data, this.elements.definitionList);
+        DisplayManager.displaySynonyms(data, this.elements.synonymList);
+        
+        // Additional display methods can be added here as needed
     },
 
-    displayDefinitions(data) {
-        const definitionList = document.getElementById('definitionList');
-        if (definitionList && data.results) {
-            data.results.forEach(result => {
-                if (result.definition) {
-                    const li = document.createElement('li');
-                    li.textContent = result.definition;
-                    definitionList.appendChild(li);
-                }
-            });
-        }
-    },
-
-    displaySynonyms(data) {
-        const synonymList = document.getElementById('synonymList');
-        if (synonymList && data.results) {
-            const synonyms = new Set();
-            data.results.forEach(result => {
-                if (result.synonyms) {
-                    result.synonyms.forEach(synonym => synonyms.add(synonym));
-                }
-            });
-            synonyms.forEach(synonym => {
-                const li = document.createElement('li');
-                li.textContent = synonym;
-                synonymList.appendChild(li);
-            });
-        }
-    },
-
-    displayEtymology(data) {
-        const etymology = document.getElementById('etymology');
-        if (!etymology) return;
-
-        if (data.etymology) {
-            if (typeof data.etymology === 'string') {
-                etymology.textContent = data.etymology;
-            } else if (Array.isArray(data.etymology)) {
-                etymology.innerHTML = data.etymology
-                    .map(etym => `<p>${etym}</p>`)
-                    .join('');
-            }
-        } else {
-            etymology.textContent = 'Etymology not available';
-        }
-    },
-
-    displayExamples(data) {
-        const examples = document.getElementById('examples');
-        if (examples && data.results) {
-            data.results.forEach(result => {
-                if (result.examples) {
-                    result.examples.forEach(example => {
-                        const exampleDiv = document.createElement('div');
-                        exampleDiv.className = 'example-card';
-                        exampleDiv.textContent = `"${example}"`;
-                        examples.appendChild(exampleDiv);
-                    });
-                }
-            });
-        }
-    },
-
-    displayPronunciation(data) {
-        const pronunciation = document.getElementById('pronunciation');
-        if (pronunciation && data.pronunciation) {
-            pronunciation.textContent = typeof data.pronunciation === 'string' 
-                ? data.pronunciation 
-                : data.pronunciation.all;
-        }
-    },
-
-    displayPhonetic(data) {
-        const phonetic = document.getElementById('phonetic');
-        if (phonetic && data.results) {
-            data.results.forEach(result => {
-                if (result.phonetic) {
-                    phonetic.textContent = result.phonetic;
-                }
-            });
+    showLoading(show = true) {
+        if (this.elements.loading) {
+            this.elements.loading.style.display = show ? 'block' : 'none';
         }
     },
 
     showError(message) {
-        if (this.error) {
-            this.error.textContent = message;
-            this.error.style.display = 'block';
+        if (this.elements.error) {
+            this.elements.error.textContent = message;
+            this.elements.error.style.display = 'block';
         }
     },
 
-    saveToHistory(word) {
-        let history = JSON.parse(localStorage.getItem('lexicoSearchHistory'));
+    resetResults() {
+        Object.entries(this.elements).forEach(([id, element]) => {
+            if (element && id !== 'wordInput' && id !== 'loading') {
+                element.innerHTML = '';
+            }
+        });
         
-        const newSearch = {
-            word: word,
-            timestamp: new Date().toLocaleString()
-        };
-        
-        history = history.filter(item => item.word.toLowerCase() !== word.toLowerCase());
-        history.unshift(newSearch);
-        
-        if (history.length > 50) {
-            history = history.slice(0, 50);
-        }
-        
-        localStorage.setItem('lexicoSearchHistory', JSON.stringify(history));
-    },
-
-    setupEventListeners() {
-        const wordInput = document.getElementById('wordInput');
-        if (wordInput) {
-            wordInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    this.fetchWordData();
-                }
-            });
+        if (this.elements.error) {
+            this.elements.error.style.display = 'none';
         }
     }
 };
+
+// Initialize the application
+WordDataManager.init();
 
 // Speech Synthesis Management
 const SpeechManager = {
