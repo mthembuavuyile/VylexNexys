@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteMaster Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="app-title">NoteMaster Pro</div>
+            <button class="btn btn-primary" id="newNoteBtn">
+                <i class="fas fa-plus"></i>
+                New Note
+            </button>
+            <div class="sidebar-buttons">
+                <button class="btn" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    Toggle Theme
+                </button>
+                <button class="btn" data-filter="all">
+                    <i class="fas fa-notes-medical"></i>
+                    All Notes
+                </button>
+                <button class="btn" data-filter="favorites">
+                    <i class="fas fa-star"></i>
+                    Favorites
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="app-header">
+                <button class="mobile-menu-btn" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-bar" placeholder="Search notes..." id="searchInput">
+                </div>
+            </header>
+
+            <div class="notes-grid" id="notesGrid">
+                <!-- Notes will be dynamically inserted here -->
+            </div>
+        </main>
+    </div>
+
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">New Note</h2>
+            </div>
+            <form id="noteForm">
+                <input type="hidden" id="noteId">
+                <div class="form-group">
+                    <label class="form-label" for="title">Title</label>
+                    <input type="text" id="title" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="content">Content (Markdown supported)</label>
+                    <textarea id="content" class="form-input" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="tags">Tags (comma-separated)</label>
+                    <input type="text" id="tags" class="form-input">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelNote">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Note</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <button class="fab" id="fab">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <script src="app.js"></script>
+</body>
+</html>
