@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Math Function Visualizer | Vylex Nexys EdTech</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <link rel="stylesheet" href="../styles/styles.css">
+  <style>
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    #branding h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: white;
+    }
+    .highlight {
+      color: var(--accent-color);
+    }
+    main {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
+      padding: 2rem;
+    }
+    h1, h2 {
+      color: var(--primary-color);
+      text-align: center;
+    }
+    #chart-svg {
+      width: 100%;
+      height: 400px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .slider-container {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+    .slider-label {
+      min-width: 120px;
+    }
+    select, input[type="range"] {
+      margin: 0 10px;
+    }
+    button {
+      background-color: var(--accent-color);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #c73d17;
+    }
+    @media screen and (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .burger {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div id="branding">
+          <h1><span class="highlight">Vylex Nexys</span> EdTech</h1>
+        </div>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../courses.html">Courses</a></li>
+          <li><a href="../https://avuyilemthembu.co.za/Artificial-Intelligence.html">AI Tools</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+        <div class="burger">
+          <div class="line1"></div>
+          <div class="line2"></div>
+          <div class="line3"></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Interactive Math Function Visualizer</h1>
+    <div id="chart-svg"></div>
+    <div class="controls">
+      <div class="control-group">
+        <label for="function-select">Select Function:</label>
+        <select id="function-select">
+          <option value="linear">Linear (y = mx + b)</option>
+          <option value="quadratic">Quadratic (y = ax² + bx + c)</option>
+          <option value="sine">Sine (y = a * sin(bx + c) + d)</option>
+          <option value="exponential">Exponential (y = a * e^(bx) + c)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <div class="slider-container">
+          <span class="slider-label">Parameter a:</span>
+          <input type="range" id="param-a" min="-5" max="5" step="0.1" value="1">
+          <span id="param-a-value">1</span>
+        </div>
+        <div class="slider-container">
+          <span class="slider-label">Parameter b:</span>
+          <input type="range" id="param-b" min="-5" max="5" step="0.1" value="0">
+          <span id="param-b-value">0</span>
+        </div>
+        <div class="slider-container">
+          <span class="slider-label">Parameter c:</span>
+          <input type="range" id="param-c" min="-5" max="5" step="0.1" value="0">
+          <span id="param-c-value">0</span>
+        </div>
+        <div class="slider-container">
+          <span class="slider-label">Parameter d:</span>
+          <input type="range" id="param-d" min="-5" max="5" step="0.1" value="0">
+          <span id="param-d-value">0</span>
+        </div>
+      </div>
+      <button id="reset-button">Reset</button>
+    </div>
+  </main>
+  <footer>
+    <nav>
+        <a href="../index.html">Home</a> |
+        <a href="../about.html">About</a> |
+        <a href="../courses.html">Courses</a> |
+        <a href="calculator.html">Calculator</a> |
+        <a href="../whitepaper.html">Whitepaper</a> |
+        <a href="../contact.html">Contact</a>
+    </nav>
+
+    <p>Copyright &copy; 2024 <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys</a>. All Rights Reserved.</p>
+</footer>
+
+  <script src="../scripts/common-scripts.js"></script>
+
+  <script>
+    const chartMargin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const chartWidth = 760 - chartMargin.left - chartMargin.right;
+    const chartHeight = 400 - chartMargin.top - chartMargin.bottom;
+
+    const chartSvg = d3.select("#chart-svg")
+      .append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("viewBox", `0 0 ${chartWidth + chartMargin.left + chartMargin.right} ${chartHeight + chartMargin.top + chartMargin.bottom}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+      .append("g")
+        .attr("transform", `translate(${chartMargin.left},${chartMargin.top})`);
+
+    const xAxisScale = d3.scaleLinear().domain([-5, 5]).range([0, chartWidth]);
+    const yAxisScale = d3.scaleLinear().domain([-5, 5]).range([chartHeight, 0]);
+
+    const line = d3.line()
+      .x(d => xAxisScale(d.x))
+      .y(d => yAxisScale(d.y));
+
+    chartSvg.append("g")
+      .attr("class", "x-axis")
+      .attr("transform", `translate(0,${chartHeight/2})`)
+      .call(d3.axisBottom(xAxisScale));
+
+    chartSvg.append("g")
+      .attr("class", "y-axis")
+      .attr("transform", `translate(${chartWidth/2},0)`)
+      .call(d3.axisLeft(yAxisScale));
+
+    chartSvg.append("g")
+      .attr("class", "grid")
+      .attr("transform", `translate(0,${chartHeight})`)
+      .call(d3.axisBottom(xAxisScale)
+        .tickSize(-chartHeight)
+        .tickFormat("")
+      );
+
+    chartSvg.append("g")
+      .attr("class", "grid")
+      .call(d3.axisLeft(yAxisScale)
+        .tickSize(-chartWidth)
+        .tickFormat("")
+      );
+
+    function updateChart() {
+      const functionType = document.getElementById("function-select").value;
+      const a = parseFloat(document.getElementById("param-a").value);
+      const b = parseFloat(document.getElementById("param-b").value);
+      const c = parseFloat(document.getElementById("param-c").value);
+      const d = parseFloat(document.getElementById("param-d").value);
+
+      let data;
+      switch (functionType) {
+        case "linear":
+          data = d3.range(-5, 5, 0.1).map(x => ({ x, y: a * x + b }));
+          break;
+        case "quadratic":
+          data = d3.range(-5, 5, 0.1).map(x => ({ x, y: a * x * x + b * x + c }));
+          break;
+        case "sine":
+          data = d3.range(-5, 5, 0.1).map(x => ({ x, y: a * Math.sin(b * x + c) + d }));
+          break;
+        case "exponential":
+          data = d3.range(-5, 5, 0.1).map(x => ({ x, y: a * Math.exp(b * x) + c }));
+          break;
+      }
+
+      chartSvg.selectAll("path.function").remove();
+      chartSvg.append("path")
+        .datum(data)
+        .attr("class", "function")
+        .attr("d", line)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2);
+    }
+
+    function updateSliders() {
+      const functionType = document.getElementById("function-select").value;
+      const sliders = document.querySelectorAll(".slider-container");
+      sliders.forEach(slider => {
+        const param = slider.querySelector("input").id.split("-")[1];
+        slider.style.display = functionType.includes(param) ? "flex" : "none";
+      });
+    }
+
+    document.getElementById("reset-button").addEventListener("click", () => {
+      document.getElementById("function-select").value = "linear";
+      document.getElementById("param-a").value = 1;
+      document.getElementById("param-b").value = 0;
+      document.getElementById("param-c").value = 0;
+      document.getElementById("param-d").value = 0;
+      updateSliders();
+      updateChart();
+    });
+
+    document.getElementById("function-select").addEventListener("change", () => {
+      updateSliders();
+      updateChart();
+    });
+
+    ['a', 'b', 'c', 'd'].forEach(param => {
+      document.getElementById(`param-${param}`).addEventListener("input", e => {
+        document.getElementById(`param-${param}-value`).textContent = e.target.value;
+        updateChart();
+      });
+    });
+
+    updateSliders();
+    updateChart();
+
+    // Mobile menu toggle
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('.nav-links');
+    burger.addEventListener('click', () => {
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    });
+  </script>
+</body>
+</html>
