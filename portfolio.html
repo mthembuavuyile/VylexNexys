@@ -4,8 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Development Portfolio</title>
+    
+    <!-- Title (Keep it concise & relevant) -->
+    <title>Web Development Portfolio | Vylex Nexys</title>
+
+    <!-- Meta Description (Essential for SEO) -->
+    <meta name="description" content="Explore the web development portfolio of Vylex Nexys, showcasing a variety of projects, products, and services tailored for businesses and individuals.">
+
+    <!-- Keywords (Not as relevant today, but can help) -->
+    <meta name="keywords" content="web development, Vylex Nexys, portfolio, websites, digital solutions, custom web design, frontend development, backend development">
+
+    <!-- Author -->
+    <meta name="author" content="Vylex Nexys">
+
+    <!-- Open Graph Meta Tags (For social media sharing) -->
+    <meta property="og:title" content="Web Development Portfolio | Vylex Nexys">
+    <meta property="og:description" content="Explore the web development portfolio of Vylex Nexys, featuring innovative web solutions.">
+    <meta property="og:image" content="URL_TO_YOUR_IMAGE">
+    <meta property="og:url" content="URL_TO_YOUR_WEBSITE">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card (For Twitter sharing) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Web Development Portfolio | Vylex Nexys">
+    <meta name="twitter:description" content="Discover the web development expertise of Vylex Nexys, delivering high-quality digital solutions.">
+    <meta name="twitter:image" content="URL_TO_YOUR_IMAGE">
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <style>
+
         :root {
             --primary: #8B5CF6;
             --secondary: #EC4899;
@@ -116,6 +145,36 @@
             width: 100%;
         }
 
+        /* Hamburger Menu */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 0.4rem;
+            cursor: pointer;
+        }
+
+        .hamburger-menu div {
+            width: 30px;
+            height: 3px;
+            background-color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .nav-active {
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: rgba(17, 24, 39, 0.95);
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
         /* Portfolio Grid */
         .portfolio-grid {
             display: grid;
@@ -210,7 +269,23 @@
             }
 
             .hamburger-menu {
-                display: block;
+                display: flex;
+            }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                position: absolute;
+                top: 4rem;
+                right: 2rem;
+                background-color: rgba(17, 24, 39, 0.95);
+                padding: 2rem;
+                border-radius: 0.5rem;
+            }
+
+            .nav-links.active a {
+                font-size: 1.25rem;
             }
         }
     </style>
@@ -222,10 +297,15 @@
             <div class="logo">
                 <h4>Portfolio</h4>
             </div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#portfolio">Portfolio</a>
-                <a href="#contact">Contact</a>
+            <div class="hamburger-menu" id="hamburger-menu">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
             </div>
         </nav>
     </header>
@@ -324,8 +404,8 @@
 
             <!-- Personal Website -->
             <div class="portfolio-item">
-                <img src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg" alt="Avuyile Mthembu Personal Website"
-                    class="portfolio-image">
+                <img src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg"
+                    alt="Avuyile Mthembu Personal Website" class="portfolio-image">
                 <div class="portfolio-content">
                     <h3 class="portfolio-title">Avuyile Mthembu - Personal Website</h3>
                     <p class="portfolio-description">Personal website showcasing skills, projects, and more.</p>
@@ -346,8 +426,8 @@
 
             <!-- AI Tools Aggregator -->
             <div class="portfolio-item">
-                <img src="https://your-image-source.com/your-image.jpg" alt="AI Tools Aggregator"
-                    class="portfolio-image">
+                <img src="https://media.istockphoto.com/id/1976099664/photo/artificial-intelligence-processor-concept-ai-big-data-array.jpg?s=612x612&w=0&k=20&c=rTtWP9ywxZM_BygzURikdoWRHnO4ohD73Z-RDAg_u8M="
+                    alt="AI Tools Aggregator" class="portfolio-image">
                 <div class="portfolio-content">
                     <h3 class="portfolio-title">AI Tools Aggregator</h3>
                     <p class="portfolio-description">A platform to discover and access a variety of AI tools.</p>
@@ -357,7 +437,8 @@
 
             <!-- NoteMaster -->
             <div class="portfolio-item">
-                <img src="https://your-image-source.com/your-image.jpg" alt="NoteMaster" class="portfolio-image">
+                <img src="https://media.istockphoto.com/id/482585407/vector/edit-file-flat-icon.jpg?s=612x612&w=0&k=20&c=1SItGaEoPhmPG4_hbBhHikRAfzXR0wQxI86lWzOi3yk="
+                    alt="NoteMaster" class="portfolio-image">
                 <div class="portfolio-content">
                     <h3 class="portfolio-title">NoteMaster</h3>
                     <p class="portfolio-description">Write, bookmark, and delete notes with Markdown support.</p>
@@ -367,8 +448,8 @@
 
             <!-- Text Analysis Tool -->
             <div class="portfolio-item">
-                <img src="https://your-image-source.com/your-image.jpg" alt="Text Analysis Tool"
-                    class="portfolio-image">
+                <img src="https://media.istockphoto.com/id/2081202005/vector/concept-of-education-knowledge-book-library-reference-literature-and-books-online-library.jpg?s=612x612&w=0&k=20&c=nvz0RT1MX3psgTsiAft97TwWlvyGwQp1HnXrdTpeHxQ="
+                    alt="Text Analysis Tool" class="portfolio-image">
                 <div class="portfolio-content">
                     <h3 class="portfolio-title">Text Analysis Tool</h3>
                     <p class="portfolio-description">Professional text analysis and content optimization suite offering
@@ -380,26 +461,41 @@
 
             <!-- Math Function Visualizer -->
             <div class="portfolio-item">
-                <img src="https://your-image-source.com/your-image.jpg" alt="Math Function Visualizer"
-                    class="portfolio-image">
+                <img src="https://media.istockphoto.com/id/1183952376/photo/graph-of-parabola.jpg?s=612x612&w=0&k=20&c=UVjUogRTlplABWoQVIenaorNUkicZdEo3ODFEXGivk8="
+                    alt="Math Function Visualizer" class="portfolio-image">
                 <div class="portfolio-content">
                     <h3 class="portfolio-title">Math Function Visualizer</h3>
                     <p class="portfolio-description">An interactive tool to visualize and explore math functions in
                         real-time.</p>
-                    <a href="https://vylexnexys.co.za/Math-Function-Visualizer.html" class="portfolio-link">Visit
+                    <a href="https://vylexnexys.co.za/edTech/tools/Math-Function-Visualizer.html"
+                        class="portfolio-link">Visit
                         Tool</a>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer id="contact" style="background: var(--dark); padding: 2rem 0; margin-top: 4rem; text-align: center;">
+    <footer class="footer">
         <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <p style="color: var(--text-color);">Interested in working together? Let's connect!</p>
-            <!-- Add your contact information or form here -->
+            <div class="footer-section">
+                <h4>Get in touch</h4>
+                <p><a href="contact.html">Contact Page</a></p>
+                <p><a href="index.html">Home Page</a></p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <p>Email: vylexnexys@outlook.com</p>
+                <p>Phone: 064-878-4287</p>
+            </div>
+        </div>
+
+        <p style="margin-top: 2rem; text-align: center;">© 2025 VylexNexys. All rights reserved.</p>
         </div>
     </footer>
+
+
+    <script src="scripts/main.js"></script>
 </body>
 
 </html>
