@@ -108,6 +108,10 @@ nav ul li a:hover {
     transition: all 0.3s ease;
 }
 
+a{
+    text-decoration: none;
+}
+
 /* Showcase */
 #showcase {
     min-height: 400px;
