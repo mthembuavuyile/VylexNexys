@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Title (Keep it concise & relevant) -->
     <title>Web Development Portfolio | Vylex Nexys</title>
 
     <!-- Meta Description (Essential for SEO) -->
-    <meta name="description" content="Explore the web development portfolio of Vylex Nexys, showcasing a variety of projects, products, and services tailored for businesses and individuals.">
+    <meta name="description"
+        content="Explore the web development portfolio of Vylex Nexys, showcasing a variety of projects, products, and services tailored for businesses and individuals.">
 
     <!-- Keywords (Not as relevant today, but can help) -->
-    <meta name="keywords" content="web development, Vylex Nexys, portfolio, websites, digital solutions, custom web design, frontend development, backend development">
+    <meta name="keywords"
+        content="web development, Vylex Nexys, portfolio, websites, digital solutions, custom web design, frontend development, backend development">
 
     <!-- Author -->
     <meta name="author" content="Vylex Nexys">
 
     <!-- Open Graph Meta Tags (For social media sharing) -->
     <meta property="og:title" content="Web Development Portfolio | Vylex Nexys">
-    <meta property="og:description" content="Explore the web development portfolio of Vylex Nexys, featuring innovative web solutions.">
+    <meta property="og:description"
+        content="Explore the web development portfolio of Vylex Nexys, featuring innovative web solutions.">
     <meta property="og:image" content="URL_TO_YOUR_IMAGE">
     <meta property="og:url" content="URL_TO_YOUR_WEBSITE">
     <meta property="og:type" content="website">
@@ -27,14 +29,14 @@
     <!-- Twitter Card (For Twitter sharing) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Web Development Portfolio | Vylex Nexys">
-    <meta name="twitter:description" content="Discover the web development expertise of Vylex Nexys, delivering high-quality digital solutions.">
+    <meta name="twitter:description"
+        content="Discover the web development expertise of Vylex Nexys, delivering high-quality digital solutions.">
     <meta name="twitter:image" content="URL_TO_YOUR_IMAGE">
 
     <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <style>
-
         :root {
             --primary: #8B5CF6;
             --secondary: #EC4899;
@@ -108,72 +110,6 @@
             transform: scale(1.05);
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 2rem;
-            position: relative;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            padding-block: 0.5rem;
-            transition: var(--transition);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hamburger Menu */
-        .hamburger-menu {
-            display: none;
-            flex-direction: column;
-            gap: 0.4rem;
-            cursor: pointer;
-        }
-
-        .hamburger-menu div {
-            width: 30px;
-            height: 3px;
-            background-color: var(--light);
-            transition: all 0.3s ease;
-        }
-
-        .nav-active {
-            display: block;
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: rgba(17, 24, 39, 0.95);
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-        }
 
         /* Portfolio Grid */
         .portfolio-grid {
@@ -262,6 +198,137 @@
             margin: 0 auto;
         }
 
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Enhanced Hamburger Menu */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 0.4rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .hamburger-menu:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .hamburger-menu div {
+            width: 25px;
+            height: 2px;
+            background-color: var(--light);
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        }
+
+        /* Improved Hamburger Animation */
+        .hamburger-menu.active div:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        .hamburger-menu.active div:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+
+        .hamburger-menu.active div:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        /* Enhanced Mobile Menu */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 75%;
+                max-width: 300px;
+                background: var(--darker);
+                flex-direction: column;
+                padding: 6rem 2rem;
+                transition: 0.3s ease-in-out;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-links.active {
+                right: 0;
+                display: flex;
+            }
+
+            .hamburger-menu {
+                display: flex;
+                z-index: 1001;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                padding: 1rem;
+                width: 100%;
+                text-align: center;
+                border-radius: 0.5rem;
+                transition: background-color 0.3s ease;
+            }
+
+            .nav-links a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            /* Overlay when mobile menu is active */
+            .menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+                z-index: 999;
+            }
+
+            .menu-overlay.active {
+                display: block;
+            }
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-links {
@@ -287,6 +354,20 @@
             .nav-links.active a {
                 font-size: 1.25rem;
             }
+        }
+
+        footer {
+            background: var(--dark);
+            color: var(--light);
+            text-align: left;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
         }
     </style>
 </head>
@@ -481,6 +562,7 @@
                 <h4>Get in touch</h4>
                 <p><a href="contact.html">Contact Page</a></p>
                 <p><a href="index.html">Home Page</a></p>
+                <p><a href="about.html">About</a></p>
             </div>
 
             <div class="footer-section">

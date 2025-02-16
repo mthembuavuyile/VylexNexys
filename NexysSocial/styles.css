@@ -39,6 +39,10 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .logo {
@@ -49,6 +53,7 @@ body {
     font-size: 1.5rem;
     color: var(--primary);
     text-decoration: none;
+    margin-bottom: 2px;
 }
 
 .logo-icon {
@@ -61,6 +66,14 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+}
+
+.logo-subtext {
+    font-size: 0.7rem;
+    color: rgba(20, 16, 27, 0.7);
+    margin-top: -2px;
+    margin-left: 40px; /* This aligns the subtext with the text after the icon */
+    text-transform: lowercase;
 }
 
 .main-content {

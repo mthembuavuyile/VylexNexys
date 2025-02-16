@@ -10,59 +10,87 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2563eb;
-            --primary-light: #3b82f6;
-            --secondary-color: #0f172a;
-            --accent-color: #f97316;
-            --bg-color: #f8fafc;
-            --text-color: #334155;
-            --card-bg: #ffffff;
+            --primary: #8B5CF6;
+            --secondary: #EC4899;
+            --accent: #06B6D4;
+            --dark: #1F2937;
+            --darker: #111827;
+            --light: #F3F4F6;
+            --text-color: #9CA3AF;
             --transition: all 0.3s ease;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
         }
 
+        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--darker);
+            color: var(--light);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            color: white;
-            padding: 4rem 2rem;
+        .container {
+            width: min(1200px, 100% - 2rem);
+            margin-inline: auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
             text-align: center;
-            position: relative;
-            overflow: hidden;
+            margin-block: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed; /* Fixed header */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(17, 24, 39, 0.95); /* Dark background with transparency */
+            backdrop-filter: blur(8px); /* Apply blur effect */
+            padding: 1.5rem 2rem; /* Reduced header padding */
+            transition: all 0.3s ease;
         }
 
         header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
+            font-size: 1.75rem; /* Adjusted font size to match logo size in example */
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: var(--transition);
+            margin-bottom: 0; /* Removed margin-bottom */
         }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        header h1:hover {
+            transform: scale(1.05);
         }
+
 
         main {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 6rem 2rem 4rem; /* Adjusted top padding to account for fixed header */
         }
 
         .tools-grid {
@@ -73,41 +101,36 @@
         }
 
         .tool-card {
-            background: var(--card-bg);
+            background: var(--dark); /* Darker card background */
             border-radius: 1rem;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Stronger shadow for dark theme */
             transition: var(--transition);
         }
 
         .tool-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); /* Stronger hover shadow */
         }
 
         .tool-card a {
-            color: var(--primary-color);
+            color: var(--accent); /* Accent color for links */
             text-decoration: none;
             font-weight: 500;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: color 0.3s ease; /* Smooth color transition */
         }
 
         .tool-card a:hover {
-            color: var(--accent-color);
+            color: var(--secondary); /* Secondary color on hover */
         }
 
-        .section-title {
-            font-size: 2rem;
-            color: var(--secondary-color);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
 
         footer {
-            background-color: var(--secondary-color);
-            color: white;
+            background-color: var(--dark); /* Darker footer background */
+            color: var(--text-color); /* Lighter text color for footer */
             padding: 3rem 2rem;
             margin-top: 4rem;
         }
@@ -123,7 +146,7 @@
         }
 
         .footer-nav a {
-            color: white;
+            color: var(--light); /* Light color for footer links */
             text-decoration: none;
             margin: 0 1rem;
             transition: var(--transition);
@@ -131,34 +154,38 @@
         }
 
         .footer-nav a:hover {
-            color: var(--accent-color);
+            color: var(--accent); /* Accent color on hover */
         }
 
         .copyright {
-            color: #94a3b8;
+            color: var(--text-color); /* Adjusted copyright color */
         }
 
         .copyright a {
-            color: white;
+            color: var(--light); /* Light color for copyright link */
             text-decoration: none;
             transition: var(--transition);
         }
 
         .copyright a:hover {
-            color: var(--accent-color);
+            color: var(--accent); /* Accent color on hover */
         }
 
         @media (max-width: 768px) {
             header {
-                padding: 3rem 1rem;
+                padding: 1rem; /* Adjusted header padding for smaller screens */
             }
 
             header h1 {
-                font-size: 2rem;
+                font-size: 1.5rem; /* Adjusted header font size for smaller screens */
             }
 
             main {
-                padding: 2rem 1rem;
+                padding: 8rem 1rem 2rem; /* Adjusted main padding for smaller screens and fixed header */
+            }
+
+            .section-title {
+                font-size: 1.75rem; /* Adjusted section title size for smaller screens */
             }
 
             .footer-nav a {
@@ -170,70 +197,79 @@
 </head>
 <body>
     <header>
-        <h1>edTech directory</h1>
+        <div class="container">
+            <h1>edTech directory</h1>
+        </div>
     </header>
 
     <main>
-        <h2 class="section-title">Explore Our Products and Tools</h2>
-        <div class="tools-grid">
-            <div class="tool-card">
-                <a href="edTech/tools/calculator.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="8" x2="16" y1="10" y2="10"/><line x1="8" x2="16" y1="14" y2="14"/><line x1="8" x2="16" y1="18" y2="18"/></svg>
-                    Calculator
-                </a>
-            </div>
-            <div class="tool-card">
-                <a href="lexico/index.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-                    Dictionary
-                </a>
-            </div>
-            <div class="tool-card">
-                <a href="edTech/courses.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-                    STEM Courses
-                </a>
-            </div>
-            <div class="tool-card">
-                <a href="vyTrack/index.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    Finance Budgeting Tool
-                </a>
-            </div>
-            <div class="tool-card">
-                <a href="edTech/tools/Math-Function-Visualizer.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 12h18"/></svg>
-                    Function Visualizer
-                </a>
-            </div>
-            <div class="tool-card">
-                <a href="edTech/apscalculator.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 20v-4"/><path d="M9 20v-8"/><path d="M13 20v-12"/><path d="M17 20v-16"/></svg>
-                    APS Score Calculator
-                </a>
-            </div>
-            <div class="tool-card">
-                <a href="noteMaster/index.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    NoteMaster
-                </a>
-            </div>
-            <div class="tool-card">
-                <a href="ai-tools.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12 2.5 2.5"/><path d="m2 12 10-10"/></svg>
-                    AI Tools Aggregator
-                </a>
+        <div class="container">
+            <h2 class="section-title">Explore Our Products and Tools</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <a href="edTech/tools/calculator.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="8" x2="16" y1="10" y2="10"/><line x1="8" x2="16" y1="14" y2="14"/><line x1="8" x2="16" y1="18" y2="18"/></svg>
+                        Calculator
+                    </a>
+                </div>
+                <div class="tool-card">
+                    <a href="lexico/index.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                        Dictionary
+                    </a>
+                </div>
+                <div class="tool-card">
+                    <a href="edTech/courses.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                        STEM Courses
+                    </a>
+                </div>
+                <div class="tool-card">
+                    <a href="vyTrack/index.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        Finance Budgeting Tool
+                    </a>
+                </div>
+                <div class="tool-card">
+                    <a href="edTech/tools/Math-Function-Visualizer.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 12h18"/></svg>
+                        Function Visualizer
+                    </a>
+                </div>
+                <div class="tool-card">
+                    <a href="edTech/apscalculator.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 20v-4"/><path d="M9 20v-8"/><path d="M13 20v-12"/><path d="M17 20v-16"/></svg>
+                        APS Score Calculator
+                    </a>
+                </div>
+                <div class="tool-card">
+                    <a href="noteMaster/index.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        NoteMaster
+                    </a>
+                </div>
+                <div class="tool-card">
+                    <a href="ai-tools.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12 2.5 2.5"/><path d="m2 12 10-10"/></svg>
+                        AI Tools Aggregator
+                    </a>
+                </div>
             </div>
         </div>
     </main>
 
     <footer>
-        <div class="footer-content">
-            <nav class="footer-nav">
-                <a href="index.html">Home</a>
-                <a href="contact.html">Contact</a>
-            </nav>
-            <p class="copyright">Copyright &copy; 2025 <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys</a>. All Rights Reserved.</p>
+        <div class="container">
+            <div class="footer-content">
+                <nav class="footer-nav">
+                    <a href="index.html">Home</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="about.html">About</a>
+                    <a href="pricing.html">Pricing</a>
+
+                </nav>
+                <p class="copyright">Copyright © 2025 <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys</a>. All Rights Reserved.</p>
+            </div>
         </div>
     </footer>
 </body>
