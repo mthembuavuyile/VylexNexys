@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexysSocial - Connect and Share | Vylex Nexys</title>
+    <meta name="description" content="NexysSocial is a social platform by Vylex Nexys where users can connect, share posts, and interact with others. Join now and express your thoughts!">
+    <meta name="keywords" content="social platform, NexysSocial, Vylex Nexys, social media, posts, online community">
+    <meta property="og:title" content="NexysSocial - Connect and Share | Vylex Nexys">
+    <meta property="og:description" content="Join NexysSocial, a platform by Vylex Nexys to connect with others and share your thoughts.">
+    <meta property="og:image" content="image.jpg">
+    <meta property="og:url" content="https://vylexnexys.co.za/nexysnet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <span class="logo-icon">N</span>
+                NexysSocial
+            </a>
+            <a href="https://vylexnexys.co.za" class="website-link">vylexnexys.co.za</a>
+            <div class="avatar" id="userAvatar">JS</div>
+        </div>
+    </header>
+
+    <div id="usernameModal" class="username-modal">
+        <div class="username-modal-content">
+            <span class="close-button" id="closeModal">×</span>
+            <h4>Set Your Name</h4>
+            <input type="text" id="userNameInput" placeholder="Your Name">
+            <button id="saveUserName">Save Name</button>
+            <a href="policy.html" class="policy-link">Policy, Disclaimer & Rules ↗</a>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <section class="create-post">
+            <textarea class="post-input" id="postContent" placeholder="What's on your mind?"></textarea>
+            <input type="text" class="image-input" id="postImageURL" placeholder="Image URL (Optional)">
+            <div class="post-actions">
+                <div class="post-attachments">
+                    <button class="attachment-btn">📸 Upload Photo (Coming Soon!)</button>
+                </div>
+                <button class="post-btn" id="submitPost">Post</button>
+            </div>
+        </section>
+
+        <section class="feed" id="posts">
+            <!-- Posts will be loaded here by JavaScript -->
+        </section>
+    </main>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
