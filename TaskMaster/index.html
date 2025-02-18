@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - Your Tasks</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .gradient-navbar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        .todo-item {
+            transition: all 0.3s ease;
+        }
+        .todo-item:hover {
+            transform: translateX(5px);
+        }
+        .empty-state {
+            opacity: 0.7;
+        }
+        .priority-high { border-left: 4px solid #ef4444; }
+        .priority-medium { border-left: 4px solid #f59e0b; }
+        .priority-low { border-left: 4px solid #10b981; }
+        .completed { opacity: 0.7; text-decoration: line-through; }
+        @media (max-width: 768px) {
+            .mobile-user {
+                background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 0.5rem;
+                text-align: center;
+                z-index: 40;
+            }
+            /* Add padding to main content to prevent overlap */
+            body {
+                padding-top: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="gradient-navbar text-white shadow-md">
+        <!-- Mobile Username Banner -->
+        <div class="mobile-user md:hidden">
+            <span>Welcome, </span>
+            <span id="userNameMobile" class="font-semibold"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-check-circle text-2xl"></i>
+                <h1 class="text-2xl font-bold">TaskMaster</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-2">
+                    <span>Welcome, </span>
+                    <span id="userName" class="font-semibold"></span>
+                </div>
+                <button id="logoutBtn" class="bg-white text-indigo-600 py-1 px-4 rounded-md hover:bg-gray-100 transition duration-300">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <!-- Task Statistics -->
+        <div class="max-w-2xl mx-auto mb-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-gray-500">Total Tasks</h3>
+                    <p id="totalTasks" class="text-2xl font-bold text-indigo-600">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-gray-500">Completed</h3>
+                    <p id="completedTasks" class="text-2xl font-bold text-green-600">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-gray-500">Pending</h3>
+                    <p id="pendingTasks" class="text-2xl font-bold text-yellow-600">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-gray-500">Overdue</h3>
+                    <p id="overdueTasks" class="text-2xl font-bold text-red-600">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="todoSection" class="max-w-2xl mx-auto">
+            <!-- Search Bar -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="relative">
+                    <input type="text" id="searchInput" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                           placeholder="Search tasks...">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Add Todo Form -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Add New Task</h2>
+                <div class="space-y-4">
+                    <div>
+                        <input id="todoInput" type="text" placeholder="What do you need to do?"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <select id="prioritySelect" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="low">Low Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <input type="date" id="dueDateInput" 
+                               class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button id="addTodoBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">
+                            <i class="fas fa-plus mr-2"></i>Add Task
+                        </button>
+                    </div>
+                </div>
+                <p id="errorMessage" class="text-red-500 mt-2 hidden"></p>
+            </div>
+
+            <!-- Todo List -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Your Tasks</h2>
+                    <select id="filterSelect" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="all">All Tasks</option>
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <ul id="todoList" class="space-y-3">
+                    <!-- Todo items will be inserted here -->
+                </ul>
+                <div id="emptyState" class="hidden text-center py-8 empty-state">
+                    <i class="fas fa-clipboard-list text-5xl text-gray-300 mb-3"></i>
+                    <p class="text-gray-500">No tasks yet. Add a new task to get started!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-4">
+        <div class="container mx-auto px-4 text-center">
+            <p>TaskMaster © 2025. <a href="https://vylexnexys.co.za" class="underline">By Vylex Nexys</a> All rights reserved.</p>
+        </div>
+    </footer>
+
+    
+    <script type="module">
+        // Firebase imports
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, orderBy, updateDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyAnEO8oaqwEJzq9yiDnlyCY1qGlGqQt9Es",
+    authDomain: "to-do-list-6ce28.firebaseapp.com",
+    projectId: "to-do-list-6ce28",
+    storageBucket: "to-do-list-6ce28.firebasestorage.app",
+    messagingSenderId: "1029497276623",
+    appId: "1:1029497276623:web:1840e90ebcb2b6f4a68fba",
+    measurementId: "G-2CGRDCJ3WS"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// DOM Elements
+const logoutBtn = document.getElementById('logoutBtn');
+const userName = document.getElementById('userName');
+const userNameMobile = document.getElementById('userNameMobile');
+const todoInput = document.getElementById('todoInput');
+const addTodoBtn = document.getElementById('addTodoBtn');
+const todoList = document.getElementById('todoList');
+const errorMessage = document.getElementById('errorMessage');
+const emptyState = document.getElementById('emptyState');
+const searchInput = document.getElementById('searchInput');
+const prioritySelect = document.getElementById('prioritySelect');
+const dueDateInput = document.getElementById('dueDateInput');
+const filterSelect = document.getElementById('filterSelect');
+const totalTasks = document.getElementById('totalTasks');
+const completedTasks = document.getElementById('completedTasks');
+const pendingTasks = document.getElementById('pendingTasks');
+const overdueTasks = document.getElementById('overdueTasks');
+
+// Stats tracking
+let statistics = {
+    total: 0,
+    completed: 0,
+    pending: 0,
+    overdue: 0
+};
+
+// Check authentication state
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        userName.textContent = user.displayName || user.email;
+        userNameMobile.textContent = user.displayName || user.email;
+        loadTodos(user.uid);
+    } else {
+        window.location.href = 'login.html';
+    }
+});
+
+// Error handling functions
+function displayError(message) {
+    errorMessage.textContent = message;
+    errorMessage.classList.remove('hidden');
+}
+
+function clearError() {
+    errorMessage.textContent = '';
+    errorMessage.classList.add('hidden');
+}
+
+// Sign out handler
+logoutBtn.addEventListener('click', async () => {
+    try {
+        await signOut(auth);
+    } catch (error) {
+        console.error('Sign-out error:', error);
+        displayError(`Sign-out failed: ${error.message}`);
+    }
+});
+
+// Add new todo
+addTodoBtn.addEventListener('click', async () => {
+    const text = todoInput.value.trim();
+    const priority = prioritySelect.value;
+    const dueDate = dueDateInput.value;
+
+    if (!text) {
+        displayError('Please enter a task description');
+        return;
+    }
+
+    if (!dueDate) {
+        displayError('Please select a due date');
+        return;
+    }
+
+    try {
+        await addDoc(collection(db, 'todos'), {
+            text,
+            userId: auth.currentUser.uid,
+            createdAt: new Date().toISOString(),
+            completed: false,
+            priority,
+            dueDate,
+        });
+        todoInput.value = '';
+        dueDateInput.value = '';
+        prioritySelect.value = 'low';
+        clearError();
+    } catch (error) {
+        console.error('Error adding todo:', error);
+        displayError(`Error adding todo: ${error.message}`);
+    }
+});
+
+// Handle enter key on input
+todoInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        addTodoBtn.click();
+    }
+});
+
+// Update statistics
+function updateStatistics(todos) {
+    const now = new Date();
+    
+    statistics = todos.reduce((stats, todo) => {
+        stats.total++;
+        if (todo.completed) {
+            stats.completed++;
+        } else {
+            stats.pending++;
+            if (new Date(todo.dueDate) < now) {
+                stats.overdue++;
+            }
+        }
+        return stats;
+    }, {
+        total: 0,
+        completed: 0,
+        pending: 0,
+        overdue: 0
+    });
+
+    totalTasks.textContent = statistics.total;
+    completedTasks.textContent = statistics.completed;
+    pendingTasks.textContent = statistics.pending;
+    overdueTasks.textContent = statistics.overdue;
+}
+
+// Create todo item element
+function createTodoElement(doc) {
+    const todo = doc.data();
+    const li = document.createElement('li');
+    li.className = 'todo-item flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 mb-2';
+
+    // Priority indicator
+    const priorityColor = {
+        low: 'bg-green-500',
+        medium: 'bg-yellow-500',
+        high: 'bg-red-500'
+    };
+
+    // Create the main content container
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'flex items-center flex-grow';
+
+    // Checkbox
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = todo.completed;
+    checkbox.className = 'mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500';
+    
+    // Text and details container
+    const textContainer = document.createElement('div');
+    textContainer.className = 'flex flex-col';
+    
+    const textSpan = document.createElement('span');
+    textSpan.className = `text-lg ${todo.completed ? 'line-through text-gray-500' : ''}`;
+    textSpan.textContent = todo.text;
+
+    const detailsSpan = document.createElement('span');
+    detailsSpan.className = 'text-sm text-gray-500';
+    const dueDate = new Date(todo.dueDate).toLocaleDateString();
+    detailsSpan.textContent = `Due: ${dueDate} • Priority: ${todo.priority}`;
+
+    textContainer.appendChild(textSpan);
+    textContainer.appendChild(detailsSpan);
+
+    // Priority indicator
+    const priorityIndicator = document.createElement('span');
+    priorityIndicator.className = `w-3 h-3 rounded-full ${priorityColor[todo.priority]} mr-2`;
+
+    // Delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'text-red-500 hover:text-red-700 ml-4 transition duration-300';
+    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+
+    // Assemble the elements
+    contentDiv.appendChild(priorityIndicator);
+    contentDiv.appendChild(checkbox);
+    contentDiv.appendChild(textContainer);
+    
+    li.appendChild(contentDiv);
+    li.appendChild(deleteBtn);
+
+    // Event listeners
+    checkbox.addEventListener('change', async () => {
+        try {
+            await updateDoc(doc.ref, {
+                completed: checkbox.checked
+            });
+            textSpan.className = `text-lg ${checkbox.checked ? 'line-through text-gray-500' : ''}`;
+        } catch (error) {
+            console.error('Error updating todo:', error);
+            displayError(`Error updating todo: ${error.message}`);
+        }
+    });
+
+    deleteBtn.addEventListener('click', async () => {
+        try {
+            await deleteDoc(doc.ref);
+        } catch (error) {
+            console.error('Error deleting todo:', error);
+            displayError(`Error deleting todo: ${error.message}`);
+        }
+    });
+
+    return li;
+}
+
+// Load and filter todos
+function loadTodos(userId) {
+    const q = query(
+        collection(db, 'todos'),
+        where('userId', '==', userId),
+        orderBy('createdAt', 'desc')
+    );
+
+    onSnapshot(q, (snapshot) => {
+        let todos = [];
+        snapshot.forEach(doc => {
+            todos.push({ ...doc.data(), id: doc.id });
+        });
+
+        updateStatistics(todos);
+
+        // Apply filters
+        const filterValue = filterSelect.value;
+        const searchText = searchInput.value.toLowerCase();
+
+        const filteredTodos = todos.filter(todo => {
+            const matchesFilter = filterValue === 'all' ||
+                (filterValue === 'active' && !todo.completed) ||
+                (filterValue === 'completed' && todo.completed);
+            
+            const matchesSearch = todo.text.toLowerCase().includes(searchText);
+            
+            return matchesFilter && matchesSearch;
+        });
+
+        // Update UI
+        todoList.innerHTML = '';
+        
+        if (filteredTodos.length === 0) {
+            emptyState.classList.remove('hidden');
+        } else {
+            emptyState.classList.add('hidden');
+            filteredTodos.forEach(todo => {
+                const docRef = doc(db, 'todos', todo.id);
+                todoList.appendChild(createTodoElement({ ref: docRef, data: () => todo }));
+            });
+        }
+    }, (error) => {
+        console.error("Error loading todos:", error);
+        displayError(`Error loading todos: ${error.message}`);
+    });
+}
+
+// Search and filter event listeners
+searchInput.addEventListener('input', () => {
+    const userId = auth.currentUser?.uid;
+    if (userId) loadTodos(userId);
+});
+
+filterSelect.addEventListener('change', () => {
+    const userId = auth.currentUser?.uid;
+    if (userId) loadTodos(userId);
+});
+
+// Set minimum date for due date input to today
+const today = new Date().toISOString().split('T')[0];
+dueDateInput.min = today;
+    </script>
+</body>
+</html>
