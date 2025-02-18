@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            .container-wrapper {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <div class="container-wrapper flex md:flex-row flex-col items-center max-w-5xl w-full gap-8">
+
+        <!-- Login Card -->
+        <div class="glass-card md:w-1/2 w-full max-w-md p-8 shadow-2xl">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-white mb-2">TaskMaster</h1>
+                <p class="text-white opacity-80">A simple tool for everyday tasks</p>
+                <p>BY AVUYILE MTHEMBU</p>
+            </div>
+
+            <div id="authSection" class="flex flex-col items-center">
+                <button id="loginBtn" class="w-full flex items-center justify-center bg-white text-gray-700 py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 mb-4">
+                    <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google logo" class="mr-3 h-5 w-5">
+                    Sign in with Google
+                </button>
+                <p id="errorMessage" class="text-red-300 mt-4 text-center hidden"></p>
+                <p class="text-white opacity-70 text-sm mt-6 text-center">
+                    By signing in, you agree to our Terms of Service and Privacy Policy.
+                </p>
+                
+                <div class="mt-8 p-4 border border-white border-opacity-20 rounded-lg">
+                    <h3 class="text-white text-center font-semibold mb-2">What TaskMaster Offers:</h3>
+                    <ul class="text-white opacity-80 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-green-300 mr-2"></i> Clean, approachable interface</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-300 mr-2"></i> Basic cloud backup (requires internet connection)</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-300 mr-2"></i> Free tier with core features</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+        <!-- App Information Section -->
+        <div class="md:w-1/2 w-full text-white">
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold mb-4">Welcome to TaskMaster</h1>
+                <p class="text-xl opacity-90">A straightforward task management tool designed to help you organize your daily activities.</p>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="feature-card p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-2xl mr-3 text-green-300"></i>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">Simple Task Management</h3>
+                            <p class="opacity-80">Create and organize tasks with basic categories and priority levels to help structure your work.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-card p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-bell text-2xl mr-3 text-yellow-300"></i>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">Basic Reminders</h3>
+                            <p class="opacity-80">Set due dates and receive notifications for upcoming deadlines (requires notification permissions).</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-card p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-chart-line text-2xl mr-3 text-blue-300"></i>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">Basic Progress Tracking</h3>
+                            <p class="opacity-80">View simple statistics about completed tasks and current workload to help maintain momentum.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center md:text-left">
+                <p class="italic opacity-90">"TaskMaster helped me organize my daily tasks better." - Sarah K.</p>
+            </div>
+        </div>
+    </div>
+
+        
+        
+
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAnEO8oaqwEJzq9yiDnlyCY1qGlGqQt9Es",
+            authDomain: "to-do-list-6ce28.firebaseapp.com",
+            projectId: "to-do-list-6ce28",
+            storageBucket: "to-do-list-6ce28.firebasestorage.app",
+            messagingSenderId: "1029497276623",
+            appId: "1:1029497276623:web:1840e90ebcb2b6f4a68fba",
+            measurementId: "G-2CGRDCJ3WS"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Check if user is already signed in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Redirect to the main page
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Function to display error messages
+        function displayError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+
+        // Login button event listener
+        loginBtn.addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+                // Redirect will happen automatically through onAuthStateChanged
+            } catch (error) {
+                console.error('Sign-in error:', error);
+                displayError(`Sign-in failed: ${error.message}`);
+            }
+        });
+    </script>
+</body>
+</html>
