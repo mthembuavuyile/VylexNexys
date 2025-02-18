@@ -1,382 +1,655 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Next-gen AI chatbot powered by Mistal - Experience intelligent conversations with our Web3-ready chatbot interface">
-    <meta name="keywords" content="AI chatbot, Web3, Mistal, intelligent chat, DialoGPT, conversational AI">
-    <meta name="author" content="Avuyile Mthembu">
-    <meta name="theme-color" content="#2d3436">
-    <meta property="og:title" content="Web3 AI Chatbot">
-    <meta property="og:description" content="Experience next-generation AI conversations with our Web3-ready chatbot interface">
+
+    <!-- Title (Keep it concise & relevant) -->
+    <title>Web Development Portfolio | Vylex Nexys</title>
+
+    <!-- Meta Description (Essential for SEO) -->
+    <meta name="description"
+        content="Explore the web development portfolio of Vylex Nexys, showcasing a variety of projects, products, and services tailored for businesses and individuals.">
+
+    <!-- Keywords (Not as relevant today, but can help) -->
+    <meta name="keywords"
+        content="web development, Vylex Nexys, portfolio, websites, digital solutions, custom web design, frontend development, backend development">
+
+    <!-- Author -->
+    <meta name="author" content="Vylex Nexys">
+
+    <!-- Open Graph Meta Tags (For social media sharing) -->
+    <meta property="og:title" content="Web Development Portfolio | Vylex Nexys">
+    <meta property="og:description"
+        content="Explore the web development portfolio of Vylex Nexys, featuring innovative web solutions.">
+    <meta property="og:image" content="URL_TO_YOUR_IMAGE">
+    <meta property="og:url" content="URL_TO_YOUR_WEBSITE">
     <meta property="og:type" content="website">
-    <title>Stupid Chatbot</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
+
+    <!-- Twitter Card (For Twitter sharing) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Web Development Portfolio | Vylex Nexys">
+    <meta name="twitter:description"
+        content="Discover the web development expertise of Vylex Nexys, delivering high-quality digital solutions.">
+    <meta name="twitter:image" content="URL_TO_YOUR_IMAGE">
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #6c5ce7, #a363d9);
-            --secondary-gradient: linear-gradient(135deg, #0984e3, #00cec9);
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --text-primary: #2d3436;
-            --text-secondary: #636e72;
+            --primary: #8B5CF6;
+            --secondary: #EC4899;
+            --accent: #06B6D4;
+            --dark: #1F2937;
+            --darker: #111827;
+            --light: #F3F4F6;
+            --text-color: #9CA3AF;
+            --transition: all 0.3s ease;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            min-height: 100vh;
-            background: linear-gradient(45deg, #dfe6e9 0%, #b2bec3 100%);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .header {
-            width: 100%;
-            max-width: 800px;
+        .container {
+            width: min(1200px, 100% - 2rem);
+            margin-inline: auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
             text-align: center;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--primary-gradient);
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            background: var(--primary-gradient);
+            margin-block: 3rem;
+            background: var(--gradient);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(8px);
+            transition: var(--transition);
+        }
+
+        .logo h4 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: var(--transition);
+        }
+
+        .logo h4:hover {
+            transform: scale(1.05);
+        }
+
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .portfolio-item {
+            background: var(--dark);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .portfolio-content {
+            padding: 1.5rem;
+        }
+
+        .portfolio-title {
+            font-size: 1.25rem;
             margin-bottom: 0.5rem;
+            color: var(--light);
         }
 
-        .header p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .chatbox {
-            max-width: 800px;
-            width: 100%;
-            height: 500px;
-            border: 1px solid var(--glass-border);
-            overflow-y: auto;
-            padding: 2rem;
-            margin: 20px auto;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .message {
-            margin: 1rem 0;
-            padding: 1rem 1.5rem;
-            border-radius: 20px;
-            max-width: 80%;
-            word-wrap: break-word;
-            animation: messageSlide 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        @keyframes messageSlide {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .user-message {
-            background: var(--primary-gradient);
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-        }
-
-        .bot-message {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            border-bottom-left-radius: 4px;
-            backdrop-filter: blur(5px);
-        }
-
-        .input-container {
-            max-width: 800px;
-            width: 100%;
-            margin: 20px auto;
-            display: flex;
-            gap: 1rem;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-        }
-
-        #userInput {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: 2px solid var(--glass-border);
-            border-radius: 12px;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.9);
-            transition: all 0.3s ease;
-        }
-
-        #userInput:focus {
-            outline: none;
-            border-color: #6c5ce7;
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
-        }
-
-        button {
-            padding: 1rem 2rem;
-            background: var(--secondary-gradient);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 156, 255, 0.2);
-        }
-
-        #typing {
-            color: var(--text-secondary);
-            font-style: italic;
-            display: none;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-
-        #status {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 1rem;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
+        .portfolio-description {
+            color: var(--text-color);
             margin-bottom: 1rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
         }
 
+        .portfolio-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .portfolio-link:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
+                url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Enhanced Hamburger Menu */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 0.4rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .hamburger-menu:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .hamburger-menu div {
+            width: 25px;
+            height: 2px;
+            background-color: var(--light);
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        }
+
+        /* Improved Hamburger Animation */
+        .hamburger-menu.active div:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        .hamburger-menu.active div:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+
+        .hamburger-menu.active div:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        /* Enhanced Mobile Menu */
         @media (max-width: 768px) {
-            .header {
-                margin: 10px;
-            }
-            
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .chatbox {
-                height: 400px;
-                margin: 10px;
-                padding: 1rem;
-            }
-
-            .input-container {
-                margin: 10px;
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 75%;
+                max-width: 300px;
+                background: var(--darker);
                 flex-direction: column;
+                padding: 6rem 2rem;
+                transition: 0.3s ease-in-out;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
             }
 
-            button {
-                width: 100%;
+            .nav-links.active {
+                right: 0;
+                display: flex;
             }
+
+            .hamburger-menu {
+                display: flex;
+                z-index: 1001;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                padding: 1rem;
+                width: 100%;
+                text-align: center;
+                border-radius: 0.5rem;
+                transition: background-color 0.3s ease;
+            }
+
+            .nav-links a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            /* Overlay when mobile menu is active */
+            .menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+                z-index: 999;
+            }
+
+            .menu-overlay.active {
+                display: block;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger-menu {
+                display: flex;
+            }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                position: absolute;
+                top: 4rem;
+                right: 2rem;
+                background-color: rgba(17, 24, 39, 0.95);
+                padding: 2rem;
+                border-radius: 0.5rem;
+            }
+
+            .nav-links.active a {
+                font-size: 1.25rem;
+            }
+        }
+
+        footer {
+            background: var(--dark);
+            color: var(--light);
+            text-align: left;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
         }
     </style>
 </head>
+
 <body>
-    <div class="header">
-        <h1>AS-Artificial Stupidity Model</h1>
-        <p>🤖 Your friendly neighborhood not-so-smart chatbot 💀</p>
+    <header>
+        <nav>
+            <div class="logo">
+                <h4>Portfolio</h4>
+            </div>
+            <div class="hamburger-menu" id="hamburger-menu">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Web Development Portfolio</h1>
+            <p>Showcasing a diverse collection of web projects ranging from business websites to educational platforms
+                and interactive applications.</p>
+        </div>
+    </section>
+
+    <main class="container" id="portfolio">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="portfolio-grid">
+            <!-- Business Website -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1753194976/photo/pool-floats-in-a-pool.jpg?s=612x612&w=0&k=20&c=OENVKpjCAgeJ67TPy-KfVIj09nCjPMkqZk91ulCI3Uc="
+                    alt="Andrews Swimming Pool Services" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Andrews Swimming Pool Services</h3>
+                    <p class="portfolio-description">Business website for professional swimming pool services and
+                        maintenance.</p>
+                    <a href="https://mthembuavuyile.github.io/AndrewsSwimmingPoolServices/" class="portfolio-link">View
+                        Project</a>
+                </div>
+            </div>
+
+            <!-- Luxury Shutters -->
+            <div class="portfolio-item">
+                <img src="https://luxuryshuttersandblinds.co.za/assets/images/shutters/lsbshutter%20(1).jpg"
+                    alt="Luxury Shutters and Blinds" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Luxury Shutters and Blinds</h3>
+                    <p class="portfolio-description">Window treatment solutions website based in Durban.</p>
+                    <a href="https://luxuryshuttersandblinds.co.za/" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Global Dictionary -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/465205551/photo/definition-in-dictionary.jpg?s=612x612&w=0&k=20&c=u5GWQjHvwfv6fBWWIypGC3OX3-3YuNm4lCcwjykMa1g="
+                    alt="Global Dictionary" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Global Dictionary</h3>
+                    <p class="portfolio-description">Collaborative platform for sharing words and definitions from
+                        different cultures.</p>
+                    <a href="https://mthembuavuyile.github.io/globaldictionary/" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Game Lab -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1078377006/photo/little-boy-playing-a-mobile-game-against-his-sister.jpg?s=612x612&w=0&k=20&c=hvmeV8NniGwxMaH-irP-7Me6QV_TfT1ZxlXcTakKhLM="
+                    alt="Game Lab" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Game Lab</h3>
+                    <p class="portfolio-description">Collection of interactive web games and entertainment.</p>
+                    <a href="https://vylexnexys.co.za/games/" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- EdTech Platform -->
+            <div class="portfolio-item">
+                <img src="https://github.com/mthembuavuyile/VylexNexys/blob/main/edTech/images/AI-learning-background.jpg?raw=true"
+                    alt="EdTech STEM" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">EdTech STEM Platform</h3>
+                    <p class="portfolio-description">Educational tools and resources for high school STEM subjects.</p>
+                    <a href="https://vylexnexys.co.za/edTech" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Financial Tracking -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1834383492/vector/financial-planning-investment-growth-strategy-or-money-management-for-retirement-goal-budget.jpg?s=612x612&w=0&k=20&c=1BKXZax1tq2DabVpNb-LMvY0M5kKywmqyDtq48a4PjA="
+                    alt="VyTrack" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">VyTrack</h3>
+                    <p class="portfolio-description">Financial management and budgeting application.</p>
+                    <a href="https://vylexnexys.co.za/vyTrack" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Language Learning -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1249792109/vector/book-textbook-school-books-vector-icon.jpg?s=612x612&w=0&k=20&c=oaaFxaqmPSZjxczB3cX7z7RlJXyiVncqd_oputW4S_c="
+                    alt="Lexico" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Lexico</h3>
+                    <p class="portfolio-description">English language learning platform with pronunciation guides and
+                        resources.</p>
+                    <a href="https://vylexnexys.co.za/lexico/" class="portfolio-link">View Project</a>
+                </div>
+            </div>
+
+            <!-- Personal Website -->
+            <div class="portfolio-item">
+                <img src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg"
+                    alt="Avuyile Mthembu Personal Website" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Avuyile Mthembu - Personal Website</h3>
+                    <p class="portfolio-description">Personal website showcasing skills, projects, and more.</p>
+                    <a href="https://avuyilemthembu.co.za" class="portfolio-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Vylex Nexys Startup -->
+            <div class="portfolio-item">
+                <img src="https://vylexnexys.co.za/assets/images/vylex.jpg" alt="Vylex Nexys Startup"
+                    class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Vylex Nexys - Startup</h3>
+                    <p class="portfolio-description">A technology startup focused on web development solutions.</p>
+                    <a href="https://vylexnexys.co.za" class="portfolio-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- AI Tools Aggregator -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1976099664/photo/artificial-intelligence-processor-concept-ai-big-data-array.jpg?s=612x612&w=0&k=20&c=rTtWP9ywxZM_BygzURikdoWRHnO4ohD73Z-RDAg_u8M="
+                    alt="AI Tools Aggregator" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">AI Tools Aggregator</h3>
+                    <p class="portfolio-description">A platform to discover and access a variety of AI tools.</p>
+                    <a href="https://vylexnexys.co.za/ai-tools" class="portfolio-link">Visit Project</a>
+                </div>
+            </div>
+
+            <!-- NoteMaster -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/482585407/vector/edit-file-flat-icon.jpg?s=612x612&w=0&k=20&c=1SItGaEoPhmPG4_hbBhHikRAfzXR0wQxI86lWzOi3yk="
+                    alt="NoteMaster" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">NoteMaster</h3>
+                    <p class="portfolio-description">Write, bookmark, and delete notes with Markdown support.</p>
+                    <a href="https://vylexnexys.co.za/noteMaster" class="portfolio-link">Visit Project</a>
+                </div>
+            </div>
+
+            <!-- Text Analysis Tool -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/2081202005/vector/concept-of-education-knowledge-book-library-reference-literature-and-books-online-library.jpg?s=612x612&w=0&k=20&c=nvz0RT1MX3psgTsiAft97TwWlvyGwQp1HnXrdTpeHxQ="
+                    alt="Text Analysis Tool" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Text Analysis Tool</h3>
+                    <p class="portfolio-description">Professional text analysis and content optimization suite offering
+                        word counting, case conversion, readability scoring, and markdown tools.</p>
+                    <a href="https://vylexnexys.co.za/edTech/tools/advanced-text-analysis.html"
+                        class="portfolio-link">Visit Tool</a>
+                </div>
+            </div>
+
+            <!-- Math Function Visualizer -->
+            <div class="portfolio-item">
+                <img src="https://media.istockphoto.com/id/1183952376/photo/graph-of-parabola.jpg?s=612x612&w=0&k=20&c=UVjUogRTlplABWoQVIenaorNUkicZdEo3ODFEXGivk8="
+                    alt="Math Function Visualizer" class="portfolio-image">
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Math Function Visualizer</h3>
+                    <p class="portfolio-description">An interactive tool to visualize and explore math functions in
+                        real-time.</p>
+                    <a href="https://vylexnexys.co.za/edTech/tools/Math-Function-Visualizer.html"
+                        class="portfolio-link">Visit
+                        Tool</a>
+                </div>
+            </div>
+
+            
+
+<!-- AJ Vehicle Registration -->
+<div class="portfolio-item">
+    <img src="https://media.istockphoto.com/id/137925358/photo/vehicle-form.jpg?s=612x612&w=0&k=20&c=LTMvqbFx-rzJn_fVJbdiViazVobHTd2rdwgTw9WROis=" 
+        alt="AJ Vehicle Registration" class="portfolio-image">
+    <div class="portfolio-content">
+        <h3 class="portfolio-title">AJ Vehicle Registration</h3>
+        <p class="portfolio-description">A tool for vehicle license renewal, COR, and more in Durban.</p>
+        <a href="https://mthembuavuyile.github.io/Aj-Vehicle-Registration/" class="portfolio-link">Visit Tool</a>
     </div>
+</div>
 
-    <div id="status">Initializing bot...</div>
-    
-    <div id="chatbox" class="chatbox">
-        <div class="bot-message message">
-            Hi! I'm a humble little chatbot built by Avuyile Mthembu. Right now, my brain is about as powerful as a potato 🥔, but soon, I'll be powered by Mistal! Hopefully, that means fewer dumb answers and more genius moments... fingers crossed! 🤖✨  
-        </div>        
-        <div id="typing" class="message">typing...</div>
+<!-- NexyBot -->
+<div class="portfolio-item">
+    <img src="https://plus.unsplash.com/premium_photo-1677094310919-d0361465d3be?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hhdCUyMGJvdHxlbnwwfHwwfHx8MA%3D%3D" 
+        alt="NexyBot" class="portfolio-image">
+    <div class="portfolio-content">
+        <h3 class="portfolio-title">NexyBot</h3>
+        <p class="portfolio-description">A lightweight chatbot with basic conversational capabilities.</p>
+        <a href="https://vylexnexys.co.za/nexybot.html" class="portfolio-link">Visit Tool</a>
     </div>
-    
-    <div class="input-container">
-        <input type="text" id="userInput" placeholder="Type your message...">
-        <button onclick="sendMessage()">Send</button>
+</div>
+
+<!-- Movie Explorer -->
+<div class="portfolio-item">
+    <img src="https://media.istockphoto.com/id/1977237765/photo/empty-cinema-theatre-seats.jpg?s=612x612&w=0&k=20&c=mX14gi3SHbwE3Ko0tBVGYHvtunpsQNTuU1VaQU6WmPY=" 
+        alt="Movie Explorer" class="portfolio-image">
+    <div class="portfolio-content">
+        <h3 class="portfolio-title">Movie Explorer</h3>
+        <p class="portfolio-description">Find and explore movies with ease.</p>
+        <a href="movie-explorer.html" class="portfolio-link">Visit Tool</a>
     </div>
-    <script>
-        // Replace with your API key from Hugging Face
-        const API_KEY = "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";
-        const API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium";
+</div>
 
-        let isFirstMessage = true;
-        let conversationHistory = [];
-        let isProcessing = false;
-        const statusDiv = document.getElementById("status");
-        const maxHistoryLength = 10; // Maximum number of messages to keep in history
+<!-- Photo Editor -->
+<div class="portfolio-item">
+    <img src="https://media.istockphoto.com/id/2164592611/vector/thin-line-stroked-color-icon-image-of-snapshot-photos-for-memory-from-travel-world.jpg?s=612x612&w=0&k=20&c=R2rV76SwUHsXFZzknWk4vMZQNDmtgSqztsHApw429J4=" 
+        alt="Photo Editor" class="portfolio-image">
+    <div class="portfolio-content">
+        <h3 class="portfolio-title">Photo Editor</h3>
+        <p class="portfolio-description">A basic photo editor with light, blur, and exposure adjustments.</p>
+        <a href="https://vylexnexys.co.za/photo-editor/index.html" class="portfolio-link">Visit Tool</a>
+    </div>
+</div>
 
-        function appendMessage(message, isUser) {
-            const chatbox = document.getElementById("chatbox");
-            const messageDiv = document.createElement("div");
-            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            messageDiv.textContent = message;
-            
-            // Add message to history
-            conversationHistory.push({ text: message, isUser: isUser });
-            
-            // Keep only the last 10 messages
-            if (conversationHistory.length > maxHistoryLength) {
-                conversationHistory = conversationHistory.slice(-maxHistoryLength);
-            }
+<!-- Task Manager -->
+<div class="portfolio-item">
+    <img src="https://media.istockphoto.com/id/1492645918/photo/survey-form-concept-businessman-using-laptops-do-online-checklist-surveys-questionnaire-with.jpg?s=612x612&w=0&k=20&c=lqbzWDBLxqRe99kOz2GwfWDRzkVduf2BvUzn1NBGh7Q=" 
+        alt="Task Manager" class="portfolio-image">
+    <div class="portfolio-content">
+        <h3 class="portfolio-title">Task Manager</h3>
+        <p class="portfolio-description">Manage tasks efficiently with TaskMaster.</p>
+        <a href="https://vylexnexys.co.za/TaskMaster/login.html" class="portfolio-link">Visit Tool</a>
+    </div>
+</div>
 
-            chatbox.insertBefore(messageDiv, document.getElementById("typing"));
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
+<!-- QR Code Processor -->
+<div class="portfolio-item">
+    <img src="https://media.istockphoto.com/id/1896032076/vector/hand-holding-mobile-phone-in-the-process-of-scanning-qr-code-concept-flat-illustration.jpg?s=612x612&w=0&k=20&c=rSWGjzGYBo6DfBFy38iLBxBYOYPg-t0UABYW5rUwLFs=" 
+        alt="QR Code Processor" class="portfolio-image">
+    <div class="portfolio-content">
+        <h3 class="portfolio-title">QR Code Processor</h3>
+        <p class="portfolio-description">Generate and process QR codes with ease.</p>
+        <a href="https://vylexnexys.co.za/qr-code-processor/qr-code-generator.html" class="portfolio-link">Visit Tool</a>
+    </div>
+</div>
 
-        function showTyping(show) {
-            const typing = document.getElementById("typing");
-            typing.style.display = show ? "block" : "none";
-            const chatbox = document.getElementById("chatbox");
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
 
-        async function checkModelStatus() {
-            try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${API_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ inputs: "Hello" })
-                });
-                
-                const data = await response.json();
-                
-                if (data.error && data.error.includes("loading")) {
-                    statusDiv.textContent = "Model is loading... Please wait.";
-                    setTimeout(checkModelStatus, 5000);
-                } else {
-                    statusDiv.textContent = "Model is ready!";
-                    setTimeout(() => {
-                        statusDiv.style.display = "none";
-                    }, 2000);
-                }
-            } catch (error) {
-                statusDiv.textContent = "Error connecting to the model";
-                statusDiv.className = "error";
-                console.error("Error:", error);
-            }
-        }
 
-        async function sendMessage() {
-            if (isProcessing) return;
-            
-            const userInput = document.getElementById("userInput");
-            const message = userInput.value.trim();
-            
-            if (!message) return;
-            
-            isProcessing = true;
-            userInput.value = "";
-            appendMessage(message, true);
-            showTyping(true);
+        </div>
+    </main>
 
-            if (isFirstMessage) {
-                checkModelStatus();
-                isFirstMessage = false;
-            }
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section">
+                <h4>Get in touch</h4>
+                <p><a href="contact.html">Contact Page</a></p>
+                <p><a href="index.html">Home Page</a></p>
+                <p><a href="about.html">About</a></p>
+            </div>
 
-            try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${API_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        inputs: message,
-                        past_user_inputs: conversationHistory
-                            .filter(msg => msg.isUser)
-                            .map(msg => msg.text)
-                            .slice(-5),
-                        generated_responses: conversationHistory
-                            .filter(msg => !msg.isUser)
-                            .map(msg => msg.text)
-                            .slice(-5)
-                    })
-                });
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <p>Email: vylexnexys@outlook.com</p>
+                <p>Phone: 064-878-4287</p>
+            </div>
+        </div>
 
-                const data = await response.json();
-                showTyping(false);
+        <p style="margin-top: 2rem; text-align: center;">© 2025 VylexNexys. All rights reserved.</p>
+        </div>
+    </footer>
 
-                if (data.error) {
-                    if (data.error.includes("loading")) {
-                        appendMessage("Still loading... Please try again in a moment.", false);
-                        checkModelStatus();
-                    } else {
-                        appendMessage("Oops! I had a little hiccup. Could you try again?", false);
-                    }
-                    return;
-                }
 
-                const botResponse = Array.isArray(data) ? data[0].generated_text : "I'm having trouble understanding. Could you rephrase that?";
-                appendMessage(botResponse, false);
-
-            } catch (error) {
-                showTyping(false);
-                appendMessage("Connection error. Please try again later!", false);
-                console.error("Error:", error);
-            } finally {
-                isProcessing = false;
-            }
-        }
-
-        document.getElementById("userInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
-        });
-
-        // Initial model status check
-        checkModelStatus();
-    </script>
+    <script src="scripts/main.js"></script>
 </body>
+
 </html>
