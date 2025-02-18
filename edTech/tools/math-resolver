@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vylexnexys Advanced Math Resolver & Computational Engine</title> <!-- SEO-Optimized Title -->
+
+    <meta name="description" content="Vylexnexys Advanced Math Resolver - A powerful computational engine and expression analyzer for solving complex mathematical problems with ease.">
+    <meta name="keywords" content="math resolver, computational engine, math utility, expression analyzer, advanced math tool, solve equations online, mathematical computations">
+    <meta name="author" content="Vylexnexys">
+    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+
+        /* Existing Styles - No significant changes needed, well structured */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calculator-btn {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: all 0.2s;
+            cursor: pointer; /* Improve UX for buttons */
+        }
+
+        .history-item {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .theme-light {
+            --bg-primary: #ffffff;
+            --text-primary: #1a202c;
+            --button-primary: #4299e1;
+            --button-secondary: #e2e8f0;
+        }
+
+        .theme-dark {
+            --bg-primary: #1a202c;
+            --text-primary: #ffffff;
+            --button-primary: #2b6cb0;
+            --button-secondary: #2d3748;
+        }
+
+        @media (max-width: 640px) {
+            .calculator-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="theme-light transition-colors duration-200">
+    <div class="min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Vylexnexys Advanced Expression Analyzer</h1> <!-- Branded Header -->
+                        <p class="text-sm text-gray-500 dark:text-gray-300">Perform complex calculations with ease.</p>
+                    </div>
+                    <button onclick="toggleTheme()" aria-label="Toggle Dark Mode" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"> <!-- Aria label for accessibility -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Main Calculator Interface -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <!-- Expression Input -->
+                        <div>
+                            <label for="expression" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expression</label> <!-- Added for attribute for label association -->
+                            <div class="relative">
+                                <input type="text" id="expression"
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                                    placeholder="Enter mathematical expression" aria-label="Mathematical Expression"> <!-- Aria label for accessibility -->
+                                <button onclick="clearInput()" aria-label="Clear Expression" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"> <!-- Aria label for accessibility -->
+                                    ⨉
+                                </button>
+                            </div>
+                            <div id="expression-error" class="text-red-500 text-sm mt-1"></div>
+                        </div>
+
+                        <!-- Operation Selection -->
+                        <div>
+                            <label for="operation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Operation</label> <!-- Added for attribute for label association -->
+                            <select id="operation" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" aria-label="Select Operation"> <!-- Aria label for accessibility -->
+                                <optgroup label="Basic Operations">
+                                    <option value="simplify">Simplify</option>
+                                    <option value="factor">Factor</option>
+                                    <option value="derive">Derivative</option>
+                                    <option value="integrate">Integral</option>
+                                </optgroup>
+                                <optgroup label="Advanced Operations">
+                                    <option value="zeroes">Find Zeros</option>
+                                    <option value="tangent">Tangent Line</option>
+                                    <option value="area">Area Under Curve</option>
+                                </optgroup>
+                                <optgroup label="Trigonometric Functions">
+                                    <option value="cos">Cosine</option>
+                                    <option value="sin">Sine</option>
+                                    <option value="tan">Tangent</option>
+                                    <option value="arccos">Arc Cosine</option>
+                                    <option value="arcsin">Arc Sine</option>
+                                    <option value="arctan">Arc Tangent</option>
+                                </optgroup>
+                                <optgroup label="Other Functions">
+                                    <option value="abs">Absolute Value</option>
+                                    <option value="log">Logarithm</option>
+                                    <option value="sqrt">Square Root</option> <!-- Explicit Square Root in Operations -->
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- Quick Input Buttons -->
+                        <div class="calculator-grid">
+                            <button onclick="insertSymbol('+')" class="calculator-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" aria-label="Add">+</button> <!-- Aria labels for accessibility -->
+                            <button onclick="insertSymbol('-')" class="calculator-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" aria-label="Subtract">-</button>
+                            <button onclick="insertSymbol('*')" class="calculator-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" aria-label="Multiply">×</button>
+                            <button onclick="insertSymbol('/')" class="calculator-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" aria-label="Divide">÷</button>
+                            <button onclick="insertSymbol('x')" class="calculator-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" aria-label="Variable x">x</button>
+                            <button onclick="insertSymbol('^')" class="calculator-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" aria-label="Power">^</button>
+                            <button onclick="insertSymbol('sqrt')" class="calculator-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" aria-label="Square Root">√</button>
+                            <button onclick="insertSymbol('pi')" class="calculator-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" aria-label="Pi">π</button>
+                        </div>
+
+                        <!-- Calculate Button -->
+                        <button onclick="calculate()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg transition-colors" aria-label="Calculate"> <!-- Aria label for accessibility -->
+                            Calculate
+                        </button>
+                    </div>
+
+                    <!-- Results and History Section -->
+                    <div class="space-y-4">
+                        <div id="result" class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg min-h-[100px] break-words"></div>
+
+                        <div class="border-t dark:border-gray-700 pt-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-lg font-semibold dark:text-white">Calculation History</h3>
+                                <button onclick="clearHistory()" class="text-blue-600 hover:text-blue-700 text-sm" aria-label="Clear History">Clear History</button> <!-- Clear History Button -->
+                            </div>
+                            <div id="history" class="space-y-2 max-h-[200px] overflow-y-auto">
+                                 <!-- History items will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!-- Footer with Vylexnexys Link -->
+            <footer class="mt-6 text-center text-gray-500 dark:text-gray-400">
+                <p>© 2025 <a href="https://vylexnexys.co.za" class="hover:text-blue-600 dark:hover:text-blue-400">Vylexnexys</a>. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        let history = [];
+        let isDarkMode = false;
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('theme-dark');
+            document.body.classList.toggle('theme-light');
+        }
+
+        function insertSymbol(symbol) {
+            const expressionInput = document.getElementById('expression');
+            const cursorPos = expressionInput.selectionStart;
+            const currentValue = expressionInput.value;
+
+            expressionInput.value = currentValue.slice(0, cursorPos) + symbol + currentValue.slice(cursorPos);
+            expressionInput.focus();
+            expressionInput.setSelectionRange(cursorPos + symbol.length, cursorPos + symbol.length);
+        }
+
+        function clearInput() {
+            document.getElementById('expression').value = '';
+            document.getElementById('expression-error').textContent = '';
+        }
+
+        function addToHistory(expression, operation, result) {
+            history.unshift({ expression, operation, result, timestamp: new Date() });
+            if (history.length > 10) history.pop();
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = history.map((item, index) => `
+                <div class="history-item p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                    <div class="text-sm text-gray-600 dark:text-gray-400">
+                        ${item.operation}: ${item.expression}
+                    </div>
+                    <div class="font-medium dark:text-white">${item.result}</div>
+                    <div class="text-xs text-gray-500">
+                        ${new Date(item.timestamp).toLocaleTimeString()}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function clearHistory() { // Clear History Function
+            history = [];
+            updateHistoryDisplay();
+        }
+
+        function calculate() {
+            const expression = document.getElementById('expression').value;
+            const operation = document.getElementById('operation').value;
+            const resultDiv = document.getElementById('result');
+            const expressionErrorDiv = document.getElementById('expression-error');
+
+            resultDiv.textContent = 'Calculating...';
+            expressionErrorDiv.textContent = '';
+
+            if (!expression) {
+                expressionErrorDiv.textContent = "Please enter a mathematical expression.";
+                resultDiv.textContent = '';
+                return;
+            }
+
+            resultDiv.innerHTML = `
+                <div class="animate-pulse">
+                    <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/2"></div>
+                </div>
+            `;
+
+            const apiUrl = `https://newton.now.sh/api/v2/${operation}/${encodeURIComponent(expression)}`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.result === undefined) {
+                        throw new Error('Invalid response from server');
+                    }
+                    const result = `${data.result}`;
+                    resultDiv.textContent = result;
+                    addToHistory(expression, operation, result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultDiv.textContent = `Error: ${error.message}. Please check your expression and try again.`;
+                });
+        }
+
+        // Handle Enter key
+        document.getElementById('expression').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculate();
+            }
+        });
+    </script>
+</body>
+</html>
