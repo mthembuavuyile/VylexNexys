@@ -321,38 +321,25 @@ body {
             <p class="text-center text-gray-600 mb-6">Test your knowledge of the Rainbow Nation!</p>
 
             <div class="flex justify-center mb-8">
-                <!-- Enhanced SVG flag with better animation -->
-                <div class="h-40 w-40 bg-contain bg-center bg-no-repeat relative overflow-hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" class="w-full h-full drop-shadow-md">
+                <!-- Updated flag to match the header flag style -->
+                <div class="h-40 w-40 relative flag-wave sa-flag">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 90 60" class="w-full h-full drop-shadow-md">
+                        <title>Flag of South Africa</title>
                         <defs>
-                            <linearGradient id="flag-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#007A3D" stop-opacity="1"/>
-                                <stop offset="50%" stop-color="#007A3D" stop-opacity="0.9"/>
-                                <stop offset="100%" stop-color="#007A3D" stop-opacity="1"/>
-                            </linearGradient>
-                            <linearGradient id="red-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#E03C31" stop-opacity="1"/>
-                                <stop offset="50%" stop-color="#E03C31" stop-opacity="0.9"/>
-                                <stop offset="100%" stop-color="#E03C31" stop-opacity="1"/>
-                            </linearGradient>
-                            <linearGradient id="blue-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#001E6A" stop-opacity="1"/>
-                                <stop offset="50%" stop-color="#001E6A" stop-opacity="0.9"/>
-                                <stop offset="100%" stop-color="#001E6A" stop-opacity="1"/>
-                            </linearGradient>
-                            <linearGradient id="yellow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#FFB612" stop-opacity="1"/>
-                                <stop offset="50%" stop-color="#FFB612" stop-opacity="0.9"/>
-                                <stop offset="100%" stop-color="#FFB612" stop-opacity="1"/>
-                            </linearGradient>
+                         <clipPath id="main-t">
+                          <path d="m0 0 45 30L0 60z"/>
+                         </clipPath>
+                         <clipPath id="main-f">
+                          <path d="m0 0h90v60H0z"/>
+                         </clipPath>
                         </defs>
-                        <path fill="url(#red-gradient)" d="M0,133.3c0,0,200-100,400-100s400,100,400,100v133.3H0V133.3z"/>
-                        <path fill="url(#blue-gradient)" d="M0,533.3c0,0,200,100,400,100s400-100,400-100V400H0V533.3z"/>
-                        <path fill="url(#flag-gradient)" d="M0,133.3h800V400H0V133.3z"/>
-                        <path fill="#000000" d="M0,400H800V533.3H0V400z"/>
-                        <path fill="url(#yellow-gradient)" d="M300,133.3L0,400V134.3L300,133.3z"/>
-                        <path fill="#FFFFFF" d="M350,133.3L50,400V133.3H350z"/>
-                        <path fill="#000000" d="M300,133.3L0,400v133.3L300,400l0,133.3h50L50,400v133.3h-50L300,533.3h50L350,400h50V133.3H300z"/>
+                        <path fill="#E03C31" d="m0 0h90v30H45z"/>
+                        <path fill="#001489" d="m0 60h90V30H45z"/>
+                        <g clip-path="url(#main-f)" fill="none">
+                         <path stroke="#FFF" stroke-width="20" d="m90 30H45L0 0v60l45-30"/>
+                         <path fill="#000" stroke="#ffb81c" stroke-width="20" clip-path="url(#main-t)" d="m0 0 45 30L0 60"/>
+                         <path stroke="#007749" stroke-width="12" d="m0 0 45 30h45M0 60l45-30"/>
+                        </g>
                     </svg>
                     <!-- Flag shimmer overlay -->
                     <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
@@ -542,980 +529,33 @@ body {
         </div>
     </div>
 </div>
+<!-- QUIiz questions database -->
 
+<div id="confetti-container" class="fixed inset-0 pointer-events-none z-50"></div>
 
+<script src="css/sa-quiz-database.js"></script>
     <script>
-        // Quiz questions database
-        const quizQuestions = [
-            {
-                question: "What big mountain is the focus point of sunny Cape Town?",
-                answer: "Table Mountain",
-                options: ["Table Mountain", "Lion's Head", "Devil's Peak", "Signal Hill"],
-                category: "landmarks"
-            },
-            {
-                question: "Two oceans join at the southern point of South Africa. What are they called?",
-                answer: "Atlantic Ocean and Indian Ocean",
-                options: ["Atlantic Ocean and Indian Ocean", "Pacific Ocean and Indian Ocean", "Atlantic Ocean and Southern Ocean", "Indian Ocean and Arctic Ocean"],
-                category: "geography"
-            },
-            {
-                question: "What is South Africa's biggest desert called?",
-                answer: "The Kalahari Desert",
-                options: ["The Kalahari Desert", "The Namib Desert", "The Karoo", "The Sahara Desert"],
-                category: "geography"
-            },
-            {
-                question: "How many provinces does South Africa have?",
-                answer: "Nine",
-                options: ["Nine", "Seven", "Eight", "Ten"],
-                category: "geography"
-            },
-            {
-                question: "The name of South Africa's capital city starts with a 'P'. What's it called?",
-                answer: "Pretoria",
-                options: ["Pretoria", "Port Elizabeth", "Pietermaritzburg", "Paarl"],
-                category: "geography"
-            },
-            {
-                question: "What is the longest river in South Africa called?",
-                answer: "The Orange River",
-                options: ["The Orange River", "The Limpopo River", "The Vaal River", "The Tugela River"],
-                category: "geography"
-            },
-            {
-                question: "Where is Durban located? Which province?",
-                answer: "KwaZulu-Natal",
-                options: ["KwaZulu-Natal", "Eastern Cape", "Western Cape", "Gauteng"],
-                category: "geography"
-            },
-            {
-                question: "In which provinces can you find the Kruger National Park?",
-                answer: "Limpopo and Mpumalanga",
-                options: ["Limpopo and Mpumalanga", "Gauteng and North West", "Free State and Mpumalanga", "Limpopo and North West"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the name of the mountain next to Table Mountain?",
-                answer: "Lion's Head",
-                options: ["Lion's Head", "Devil's Peak", "Signal Hill", "Twelve Apostles"],
-                category: "landmarks"
-            },
-            {
-                question: "Name the smallest province in South Africa.",
-                answer: "Gauteng",
-                options: ["Gauteng", "Western Cape", "KwaZulu-Natal", "Free State"],
-                category: "geography"
-            },
-            {
-                question: "In which province can you find the most vineyards?",
-                answer: "Western Cape",
-                options: ["Western Cape", "Northern Cape", "Eastern Cape", "Gauteng"],
-                category: "landmarks"
-            },
-            {
-                question: "Which city is also known as 'The Friendly City'?",
-                answer: "Gqeberha (Port Elizabeth)",
-                options: ["Gqeberha (Port Elizabeth)", "Bloemfontein", "Durban", "Cape Town"],
-                category: "geography"
-            },
-            {
-                question: "Which is the largest province we have in South Africa?",
-                answer: "Northern Cape",
-                options: ["Northern Cape", "Eastern Cape", "Western Cape", "Free State"],
-                category: "geography"
-            },
-            {
-                question: "Which ocean do we find along the west coast of South Africa? (it's freezing cold!)",
-                answer: "Atlantic Ocean",
-                options: ["Atlantic Ocean", "Indian Ocean", "Southern Ocean", "Pacific Ocean"],
-                category: "geography"
-            },
-            {
-                question: "In which province can we find Kimberley?",
-                answer: "Northern Cape",
-                options: ["Northern Cape", "Free State", "North West", "Eastern Cape"],
-                category: "geography"
-            },
-            {
-                question: "Which animal is known for its long neck?",
-                answer: "Giraffe",
-                options: ["Giraffe", "Elephant", "Zebra", "Kudu"],
-                category: "animals"
-            },
-            {
-                question: "What animal has long tusks and a trunk?",
-                answer: "Elephant",
-                options: ["Elephant", "Rhino", "Hippo", "Warthog"],
-                category: "animals"
-            },
-            {
-                question: "What kind of flightless big bird can be found in South Africa?",
-                answer: "Ostrich",
-                options: ["Ostrich", "Penguin", "Emu", "Kiwi"],
-                category: "animals"
-            },
-            {
-                question: "Which horse-like animal has black-and-white stripes and can be found in grasslands and savanna woodlands?",
-                answer: "Zebra",
-                options: ["Zebra", "Wildebeest", "Kudu", "Impala"],
-                category: "animals"
-            },
-            {
-                question: "What curious little animal can be found on its hind legs looking around?",
-                answer: "Meerkat",
-                options: ["Meerkat", "Mongoose", "Squirrel", "Dassie"],
-                category: "animals"
-            },
-            {
-                question: "Name South Africa's national animal.",
-                answer: "Springbok",
-                options: ["Springbok", "Lion", "Leopard", "Elephant"],
-                category: "animals"
-            },
-            {
-                question: "Who is fondly known as the 'King of the Jungle'?",
-                answer: "Lion",
-                options: ["Lion", "Elephant", "Leopard", "Rhino"],
-                category: "animals"
-            },
-            {
-                question: "Which flightless bird can be found around the coasts of PE and Boulders Beach in Cape Town?",
-                answer: "Penguin",
-                options: ["Penguin", "Ostrich", "Seagull", "Albatross"],
-                category: "animals"
-            },
-            {
-                question: "What do we call the animal that looks like a big pig with tusks?",
-                answer: "Warthog",
-                options: ["Warthog", "Wild Boar", "Bush Pig", "Peccary"],
-                category: "animals"
-            },
-            {
-                question: "What do we call the super fast big cat?",
-                answer: "Cheetah",
-                options: ["Cheetah", "Leopard", "Lion", "Caracal"],
-                category: "animals"
-            },
-            {
-                question: "What do we call the animal that has a hard shell?",
-                answer: "Tortoise",
-                options: ["Tortoise", "Pangolin", "Armadillo", "Hedgehog"],
-                category: "animals"
-            },
-            {
-                question: "What is the name of South Africa's national bird?",
-                answer: "Blue Crane",
-                options: ["Blue Crane", "Secretary Bird", "African Fish Eagle", "African Penguin"],
-                category: "animals"
-            },
-            {
-                question: "What do we call the big predator fish found in South African waters?",
-                answer: "Great White Shark",
-                options: ["Great White Shark", "Tiger Shark", "Hammerhead Shark", "Whale Shark"],
-                category: "animals"
-            },
-            {
-                question: "Name the South African frog that can make really loud croaking sounds.",
-                answer: "Bullfrog",
-                options: ["Bullfrog", "Tree Frog", "Rain Frog", "Marsh Frog"],
-                category: "animals"
-            },
-            {
-                question: "Which animal do we also refer to as the 'River Horse'?",
-                answer: "Hippopotamus",
-                options: ["Hippopotamus", "Crocodile", "Water Buffalo", "Otter"],
-                category: "animals"
-            },
-            {
-                question: "Which famous South African do we fondly call 'Madiba'?",
-                answer: "Nelson Mandela",
-                options: ["Nelson Mandela", "Desmond Tutu", "Thabo Mbeki", "Cyril Ramaphosa"],
-                category: "culture"
-            },
-            {
-                question: "What do we call the festival where we celebrate cultures and people, on 24 September?",
-                answer: "Heritage Day",
-                options: ["Heritage Day", "Freedom Day", "Youth Day", "Human Rights Day"],
-                category: "culture"
-            },
-            {
-                question: "What are traditional clay and grass homes called?",
-                answer: "Rondavels",
-                options: ["Rondavels", "Kraals", "Huts", "Lapa"],
-                category: "culture"
-            },
-            {
-                question: "For which sport did South Africa win the World Cup in 1995, 2007, 2019, and 2023?",
-                answer: "Rugby",
-                options: ["Rugby", "Cricket", "Soccer", "Field Hockey"],
-                category: "culture"
-            },
-            {
-                question: "What is the South African favourite dessert, also known as sticky pudding, called?",
-                answer: "Malva Pudding",
-                options: ["Malva Pudding", "Koeksisters", "Melktert", "Peppermint Crisp Tart"],
-                category: "culture"
-            },
-            {
-                question: "How many colours does the South African flag have?",
-                answer: "Six colours",
-                options: ["Six colours", "Five colours", "Seven colours", "Four colours"],
-                category: "culture"
-            },
-            {
-                question: "Where was Nelson Mandela born?",
-                answer: "Mvezo",
-                options: ["Mvezo", "Soweto", "Qunu", "Cape Town"],
-                category: "culture"
-            },
-            {
-                question: "What holiday is celebrated on the 16th of December?",
-                answer: "Day of Reconciliation",
-                options: ["Day of Reconciliation", "Freedom Day", "Youth Day", "Heritage Day"],
-                category: "culture"
-            },
-            {
-                question: "Who was the first democratic president of South Africa?",
-                answer: "Nelson Mandela",
-                options: ["Nelson Mandela", "Thabo Mbeki", "F.W. de Klerk", "Desmond Tutu"],
-                category: "culture"
-            },
-            {
-                question: "Where is the prison where Nelson Mandela was incarcerated?",
-                answer: "Robben Island",
-                options: ["Robben Island", "Alcatraz", "Pollsmoor Prison", "Constitution Hill"],
-                category: "landmarks"
-            },
-            {
-                question: "Who was the famous Zulu king who fought against British and Boer forces?",
-                answer: "King Shaka Zulu",
-                options: ["King Shaka Zulu", "King Cetshwayo", "King Dingane", "King Zwelithini"],
-                category: "culture"
-            },
-            {
-                question: "What does 'Ubuntu' mean?",
-                answer: "'I am, because you are'/ Humanity towards others",
-                options: ["'I am, because you are'/ Humanity towards others", "'Freedom for all'", "'Unity in diversity'", "'Strength in numbers'"],
-                category: "culture"
-            },
-            {
-                question: "What traditional South African clothing is made of beautiful bright beads?",
-                answer: "Zulu beadwork",
-                options: ["Zulu beadwork", "Shweshwe", "Kente cloth", "Dashiki"],
-                category: "culture"
-            },
-            {
-                question: "Where did the gold rush of South Africa take place?",
-                answer: "Kimberley (The Big Hole)",
-                options: ["Kimberley (The Big Hole)", "Johannesburg", "Durban", "Cape Town"],
-                category: "landmarks"
-            },
-            {
-                question: "What do we call the South African dish that is made with spiced mince and baked with an egg topping?",
-                answer: "Bobotie",
-                options: ["Bobotie", "Potjiekos", "Bunny Chow", "Boerewors"],
-                category: "culture"
-            },
-            {
-                question: "How many official languages does South Africa have?",
-                answer: "Twelve",
-                options: ["Twelve", "Eleven", "Nine", "Ten"],
-                category: "languages"
-            },
-            {
-                question: "What does 'Sawubona' mean in isiZulu?",
-                answer: "Hello",
-                options: ["Hello", "Goodbye", "Thank you", "Welcome"],
-                category: "languages"
-            },
-            {
-                question: "What are the three most spoken languages in Cape Town and the Western Cape?",
-                answer: "English, Xhosa and Afrikaans",
-                options: ["English, Xhosa and Afrikaans", "English, Zulu and Afrikaans", "English, Sotho and Afrikaans", "English, Tswana and Xhosa"],
-                category: "languages"
-            },
-            {
-                question: "Which South African languages have clicks in them?",
-                answer: "isiXhosa and isiZulu",
-                options: ["isiXhosa and isiZulu", "Afrikaans and English", "Sepedi and Setswana", "Venda and Tsonga"],
-                category: "languages"
-            },
-            {
-                question: "Which language does 'dankie' come from?",
-                answer: "Afrikaans",
-                options: ["Afrikaans", "isiZulu", "Sesotho", "isiXhosa"],
-                category: "languages"
-            },
-            {
-                question: "How do you say 'hello' in isiXhosa?",
-                answer: "Molo",
-                options: ["Molo", "Dumela", "Sawubona", "Avuxeni"],
-                category: "languages"
-            },
-            {
-                question: "In which language does 'Nkosi' mean 'thank you'?",
-                answer: "isiZulu",
-                options: ["isiZulu", "isiXhosa", "Sesotho", "Setswana"],
-                category: "languages"
-            },
-            {
-                question: "What language is mostly spoken by the Venda people?",
-                answer: "Tshivenda",
-                options: ["Tshivenda", "Xitsonga", "Siswati", "isiNdebele"],
-                category: "languages"
-            },
-            {
-                question: "Which language is South Africa's twelfth?",
-                answer: "Sign Language",
-                options: ["Sign Language", "English", "Afrikaans", "isiZulu"],
-                category: "languages"
-            },
-            {
-                question: "Which language is the most spoken in South Africa?",
-                answer: "isiZulu",
-                options: ["isiZulu", "English", "Afrikaans", "isiXhosa"],
-                category: "languages"
-            },
-            {
-                question: "How do you say 'family' in Setswana?",
-                answer: "Lelapa",
-                options: ["Lelapa", "Umndeni", "Familia", "Gesin"],
-                category: "languages"
-            },
-            {
-                question: "What language is mostly spoken in Bloemfontein?",
-                answer: "Afrikaans",
-                options: ["Afrikaans", "English", "Sesotho", "isiXhosa"],
-                category: "languages"
-            },
-            {
-                question: "How do you say 'school' in Sesotho?",
-                answer: "Sekolo",
-                options: ["Sekolo", "Isikole", "Skool", "Sikolo"],
-                category: "languages"
-            },
-            {
-                question: "Which language does 'Bayete' come from?",
-                answer: "isiZulu",
-                options: ["isiZulu", "isiXhosa", "Sesotho", "Setswana"],
-                category: "languages"
-            },
-            {
-                question: "Which South African language is mostly spoken in Mpumalanga?",
-                answer: "Sesotho",
-                options: ["Sesotho", "Siswati", "isiZulu", "isiNdebele"],
-                category: "languages"
-            },
-            {
-                question: "Which South African city do we also call 'City of Gold'?",
-                answer: "Johannesburg",
-                options: ["Johannesburg", "Pretoria", "Durban", "Cape Town"],
-                category: "landmarks"
-            },
-            {
-                question: "Name the big canyon in South Africa, which is also one of the largest in the world.",
-                answer: "Blyde River Canyon",
-                options: ["Blyde River Canyon", "Fish River Canyon", "Oribi Gorge", "Waterval Boven"],
-                category: "landmarks"
-            },
-            {
-                question: "What is South Africa's national flower?",
-                answer: "The King Protea",
-                options: ["The King Protea", "The Strelitzia", "The African Daisy", "The Barberton Daisy"],
-                category: "culture"
-            },
-            {
-                question: "What is South Africa's national fish?",
-                answer: "Galjoen",
-                options: ["Galjoen", "Yellowtail", "Snoek", "Kingklip"],
-                category: "animals"
-            },
-            {
-                question: "What is the name of the world-famous park where you can see the Big Five animals?",
-                answer: "Kruger National Park",
-                options: ["Kruger National Park", "Addo Elephant Park", "Pilanesberg Game Reserve", "Hluhluwe-iMfolozi Park"],
-                category: "landmarks"
-            },
-            {
-                question: "Where can you find the colourful houses in Cape Town?",
-                answer: "Bo-Kaap houses",
-                options: ["Bo-Kaap houses", "District Six", "Woodstock", "Camps Bay"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the name of South Africa's national tree?",
-                answer: "Real Yellowwood",
-                options: ["Real Yellowwood", "Baobab", "Acacia", "Jacaranda"],
-                category: "culture"
-            },
-            {
-                question: "What is South Africa's nickname?",
-                answer: "The Rainbow Nation",
-                options: ["The Rainbow Nation", "The Motherland", "The Cradle of Humankind", "The Golden Land"],
-                category: "culture"
-            },
-            {
-                question: "What is the name of the famous soccer stadium that looks like a calabash?",
-                answer: "FNB Stadium (Soccer City)",
-                options: ["FNB Stadium (Soccer City)", "Cape Town Stadium", "Ellis Park Stadium", "Moses Mabhida Stadium"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the name of the longest highway in South Africa?",
-                answer: "The N2",
-                options: ["The N2", "The N1", "The N3", "The N4"],
-                category: "landmarks"
-            },
-            {
-                question: "What animal is on South Africa's national rugby team jersey?",
-                answer: "Springbok",
-                options: ["Springbok", "Lion", "Protea", "Eagle"],
-                category: "culture"
-            },
-            {
-                question: "What South African city is known for gold mining?",
-                answer: "Johannesburg",
-                options: ["Johannesburg", "Kimberley", "Pretoria", "Bloemfontein"],
-                category: "landmarks"
-            },
-            {
-                question: "What South African city is known for being very windy?",
-                answer: "Gqeberha (Port Elizabeth)",
-                options: ["Gqeberha (Port Elizabeth)", "Cape Town", "Durban", "East London"],
-                category: "geography"
-            },
-            {
-                question: "Name the South African island that is a UNESCO World Heritage Site.",
-                answer: "Robben Island",
-                options: ["Robben Island", "Dassen Island", "Seal Island", "Bird Island"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the South African dish made with maize meal called?",
-                answer: "Pap",
-                options: ["Pap", "Mealie bread", "Umngqusho", "Samp"],
-                category: "culture"
-            },
-            {
-                question: "What is a South African barbecue called?",
-                answer: "Braai",
-                options: ["Braai", "Shisa nyama", "Barbie", "Potjie"],
-                category: "culture"
-            },
-            {
-                question: "What do we call the festival where people dress up in costumes and march in Cape Town for the new year?",
-                answer: "Cape Minstrel Carnival/Kaapse Klopse",
-                options: ["Cape Minstrel Carnival/Kaapse Klopse", "Cape Town Carnival", "New Year's Festival", "Tweede Nuwe Jaar"],
-                category: "culture"
-            },
-            {
-                question: "Which national park is famous for its penguin residents?",
-                answer: "Table Mountain National Park (Boulders Beach)",
-                options: ["Table Mountain National Park (Boulders Beach)", "Garden Route National Park", "West Coast National Park", "Agulhas National Park"],
-                category: "landmarks"
-            },
-            {
-                question: "Where can you find the world's fifth-largest aquarium?",
-                answer: "Durban (The Ushaka Marine World)",
-                options: ["Durban (The Ushaka Marine World)", "Cape Town (Two Oceans Aquarium)", "Port Elizabeth (Bayworld)", "Johannesburg (Monte Casino Bird Park)"],
-                category: "landmarks"
-            },
-            // Add more questions to reach 300 total
-            // Here are 200+ more questions that can be added...
-            {
-                question: "What is the highest mountain in South Africa?",
-                answer: "Mafadi",
-                options: ["Mafadi", "Table Mountain", "Drakensberg", "Mount Kilimanjaro"],
-                category: "geography"
-            },
-            {
-                question: "Which flower turns the Northern Cape into a colorful carpet each spring?",
-                answer: "Namaqualand Daisies",
-                options: ["Namaqualand Daisies", "Proteas", "Cosmos", "Freesias"],
-                category: "landmarks"
-            },
-            {
-                question: "Which South African city is known as 'The City of Roses'?",
-                answer: "Bloemfontein",
-                options: ["Bloemfontein", "Pretoria", "Kimberley", "Pietermaritzburg"],
-                category: "geography"
-            },
-            {
-                question: "Which famous fossils were discovered in the Cradle of Humankind?",
-                answer: "Early human ancestors (Australopithecus)",
-                options: ["Early human ancestors (Australopithecus)", "Dinosaurs", "Marine reptiles", "Woolly mammoths"],
-                category: "landmarks"
-            },
-            {
-                question: "Which animal is referred to as 'The Silent Hunter'?",
-                answer: "Leopard",
-                options: ["Leopard", "Lion", "Cheetah", "Hyena"],
-                category: "animals"
-            },
-            {
-                question: "Which native South African plant is used to make rooibos tea?",
-                answer: "Aspalathus linearis",
-                options: ["Aspalathus linearis", "Cyclopia", "Camellia sinensis", "Protea"],
-                category: "culture"
-            },
-            {
-                question: "What is South Africa's most famous wine region called?",
-                answer: "Stellenbosch",
-                options: ["Stellenbosch", "Franschhoek", "Constantia", "Paarl"],
-                category: "landmarks"
-            },
-            {
-                question: "What traditional South African sausage is usually enjoyed at a braai?",
-                answer: "Boerewors",
-                options: ["Boerewors", "Chorizo", "Biltong", "Droëwors"],
-                category: "culture"
-            },
-            {
-                question: "Which South African mine is known as 'The Big Hole'?",
-                answer: "Kimberley Diamond Mine",
-                options: ["Kimberley Diamond Mine", "Cullinan Diamond Mine", "Premier Diamond Mine", "De Beers Mine"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the name of the mountain range that forms part of the border between South Africa and Lesotho?",
-                answer: "Drakensberg Mountains",
-                options: ["Drakensberg Mountains", "Magaliesberg Mountains", "Cape Fold Mountains", "Soutpansberg Mountains"],
-                category: "geography"
-            },
-            {
-                question: "What indigenous South African fruit has a tart flavor and is high in Vitamin C?",
-                answer: "Marula Fruit",
-                options: ["Marula Fruit", "Baobab Fruit", "Wild Peach", "Monkey Orange"],
-                category: "culture"
-            },
-            {
-                question: "Which indigenous South African plant is known for its medicinal properties and is sometimes called 'Cancer Bush'?",
-                answer: "Sutherlandia",
-                options: ["Sutherlandia", "Aloe Vera", "Buchu", "Devil's Claw"],
-                category: "culture"
-            },
-            {
-                question: "Which fruit is the main ingredient in South African Amarula liqueur?",
-                answer: "Marula Fruit",
-                options: ["Marula Fruit", "Mango", "Pineapple", "Guava"],
-                category: "culture"
-            },
-            {
-                question: "What do South Africans call flip-flops or thong sandals?",
-                answer: "Slops",
-                options: ["Slops", "Plakkies", "Veldskoen", "Tackies"],
-                category: "culture"
-            },
-            {
-                question: "What traditional South African delicacy is made from dried meat?",
-                answer: "Biltong",
-                options: ["Biltong", "Boerewors", "Droëwors", "Vetkoek"],
-                category: "culture"
-            },
-            {
-                question: "What is the name of the famous cliff-face in the Drakensberg Mountains?",
-                answer: "Amphitheatre",
-                options: ["Amphitheatre", "Cathedral Peak", "Giant's Castle", "Champagne Castle"],
-                category: "landmarks"
-            },
-            {
-                question: "What animal is known as 'The Grey Ghost' of the African bush?",
-                answer: "Kudu",
-                options: ["Kudu", "Leopard", "Elephant", "Sable Antelope"],
-                category: "animals"
-            },
-            {
-                question: "What traditional Xhosa drink is made from fermented maize meal?",
-                answer: "Umqombothi",
-                options: ["Umqombothi", "Mageu", "Amasi", "Skokiaan"],
-                category: "culture"
-            },
-            {
-                question: "What unique South African biome is characterized by shrubby vegetation adapted to dry conditions?",
-                answer: "Fynbos",
-                options: ["Fynbos", "Karoo", "Savanna", "Grassland"],
-                category: "geography"
-            },
-            {
-                question: "What do South Africans call a traffic light?",
-                answer: "Robot",
-                options: ["Robot", "Traffic signal", "Traffic light", "Stop light"],
-                category: "culture"
-            },
-            {
-                question: "What traditional South African sweet treat is soaked in syrup after being fried?",
-                answer: "Koeksister",
-                options: ["Koeksister", "Malva Pudding", "Melktert", "Hertzoggies"],
-                category: "culture"
-            },
-            {
-                question: "What is the name of the waterfall on the border of South Africa and Zimbabwe?",
-                answer: "Victoria Falls",
-                options: ["Victoria Falls", "Tugela Falls", "Augrabies Falls", "Berlin Falls"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the South African term for a small convenience store, often in a township?",
-                answer: "Spaza shop",
-                options: ["Spaza shop", "Tuck shop", "Corner store", "Mini-market"],
-                category: "culture"
-            },
-            {
-                question: "Which South African artist sang 'Jerusalema', which became a global dance phenomenon?",
-                answer: "Master KG",
-                options: ["Master KG", "Black Coffee", "Cassper Nyovest", "DJ Maphorisa"],
-                category: "culture"
-            },
-            {
-                question: "What form of transport is commonly decorated with colorful paintings and called a 'moving work of art'?",
-                answer: "Taxi (Minibus)",
-                options: ["Taxi (Minibus)", "Train", "Bus", "Tram"],
-                category: "culture"
-            },
-            {
-                question: "Which South African dish consists of hollowed-out bread filled with curry?",
-                answer: "Bunny Chow",
-                options: ["Bunny Chow", "Vetkoek", "Gatsby", "Kota"],
-                category: "culture"
-            },
-            {
-                question: "What is the name of the natural hot springs in the Western Cape?",
-                answer: "Caledon Hot Springs",
-                options: ["Caledon Hot Springs", "The Baths", "Warmwaterberg", "Montagu Springs"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the South African term for what other countries might call 'pickup trucks'?",
-                answer: "Bakkie",
-                options: ["Bakkie", "Ute", "Lorry", "Truck"],
-                category: "culture"
-            },
-            {
-                question: "Which South African coastal town is known for its annual sardine run?",
-                answer: "Port St Johns",
-                options: ["Port St Johns", "Mossel Bay", "Hermanus", "St. Lucia"],
-                category: "landmarks"
-            },
-            {
-                question: "What South African landmark is known for its striking red and orange sandstone formations?",
-                answer: "The Valley of Desolation",
-                options: ["The Valley of Desolation", "God's Window", "Three Rondavels", "Bourke's Luck Potholes"],
-                category: "landmarks"
-            },
-            {
-                question: "What traditional Afrikaner dessert is made with dried apricots?",
-                answer: "Souskluitjies",
-                options: ["Souskluitjies", "Melktert", "Koeksisters", "Malva Pudding"],
-                category: "culture"
-            },
-            {
-                question: "Which South African city hosts the annual Oyster Festival?",
-                answer: "Knysna",
-                options: ["Knysna", "Hermanus", "Plettenberg Bay", "Mossel Bay"],
-                category: "landmarks"
-            },
-            {
-                question: "What is South Africa's highest waterfall?",
-                answer: "Tugela Falls",
-                options: ["Tugela Falls", "Howick Falls", "Lisbon Falls", "Mac Mac Falls"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the traditional Afrikaans name for a type of fruit preserve?",
-                answer: "Konfyt",
-                options: ["Konfyt", "Jam", "Vrugterol", "Soet lekker"],
-                category: "culture"
-            },
-            {
-                question: "Which South African city is known for its annual National Arts Festival?",
-                answer: "Makhanda (Grahamstown)",
-                options: ["Makhanda (Grahamstown)", "Cape Town", "Johannesburg", "Durban"],
-                category: "landmarks"
-            },
-            {
-                question: "What's the common name for the annual migration of millions of butterflies in South Africa?",
-                answer: "Butterfly Migration",
-                options: ["Butterfly Migration", "The Great Flight", "Brown Veined White Trek", "Mass Lepidoptera Movement"],
-                category: "animals"
-            },
-            {
-                question: "What is the name of the famous 'Big Tree' in the Tsitsikamma Forest?",
-                answer: "Outeniqua Yellowwood",
-                options: ["Outeniqua Yellowwood", "Knysna Yellowwood", "Big Baobab", "King Yellowwood"],
-                category: "landmarks"
-            },
-            {
-                question: "In which nature reserve can you find the Swartberg Pass?",
-                answer: "Swartberg Nature Reserve",
-                options: ["Swartberg Nature Reserve", "Cederberg Wilderness Area", "Baviaanskloof", "Karoo National Park"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the name of South Africa's most famous paleontological site?",
-                answer: "Cradle of Humankind",
-                options: ["Cradle of Humankind", "Sterkfontein Caves", "Makapansgat", "Taung"],
-                category: "landmarks"
-            },
-            {
-                question: "Which famous South African activist was awarded the Nobel Peace Prize in 1984?",
-                answer: "Desmond Tutu",
-                options: ["Desmond Tutu", "Nelson Mandela", "F.W. de Klerk", "Albert Luthuli"],
-                category: "culture"
-            },
-            {
-                question: "What is the South African term for a traffic circle or roundabout?",
-                answer: "Circle",
-                options: ["Circle", "Roundabout", "Traffic Island", "Rotary"],
-                category: "culture"
-            },
-            {
-                question: "Which South African town is known as the 'Jacaranda City'?",
-                answer: "Pretoria",
-                options: ["Pretoria", "Johannesburg", "Graaff-Reinet", "Stellenbosch"],
-                category: "landmarks"
-            },
-            {
-                question: "What South African delicacy is made from sheep's head?",
-                answer: "Smiley",
-                options: ["Smiley", "Skop", "Mala mogodu", "Walkie talkie"],
-                category: "culture"
-            },
-            {
-                question: "What natural phenomenon occurs annually in Namaqualand?",
-                answer: "Flower Blooming",
-                options: ["Flower Blooming", "Migration of Birds", "Meteor Shower", "Sand Storms"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the traditional South African porridge made from sorghum called?",
-                answer: "Ting",
-                options: ["Ting", "Pap", "Maltabella", "Umngqusho"],
-                category: "culture"
-            },
-            {
-                question: "What is the name of the South African indigenous instrument made from an animal horn?",
-                answer: "Kudu Horn",
-                options: ["Kudu Horn", "Vuvuzela", "Uhadi", "Mbira"],
-                category: "culture"
-            },
-            {
-                question: "Which mountain pass connects the Little Karoo with the Great Karoo?",
-                answer: "Swartberg Pass",
-                options: ["Swartberg Pass", "Meiringspoort", "Seweweekspoort", "Du Toitskloof Pass"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the South African term for a rural settlement?",
-                answer: "Dorp",
-                options: ["Dorp", "Township", "Lekasi", "Platteland"],
-                category: "culture"
-            },
-            {
-                question: "What is the name of the 55-kilometer hiking trail in the Tsitsikamma National Park?",
-                answer: "Otter Trail",
-                options: ["Otter Trail", "Dolphin Trail", "Whale Trail", "Cape Mountain Trail"],
-                category: "landmarks"
-            },
-            {
-                question: "Which South African animal is known for its 'laughing' call?",
-                answer: "Hyena",
-                options: ["Hyena", "Baboon", "Vervet Monkey", "Jackal"],
-                category: "animals"
-            },
-            {
-                question: "What traditional South African food is made with tripe?",
-                answer: "Mogodu",
-                options: ["Mogodu", "Afval", "Pens", "Mala"],
-                category: "culture"
-            },
-            {
-                question: "What South African grassy plains are known for their floral biodiversity?",
-                answer: "Renosterveld",
-                options: ["Renosterveld", "Fynbos", "Grassveld", "Bushveld"],
-                category: "landmarks"
-            },
-            {
-                question: "What traditional South African dish is made with curried fish?",
-                answer: "Cape Malay Curry",
-                options: ["Cape Malay Curry", "Pickled Fish", "Fish Bobotie", "Masala Fish"],
-                category: "culture"
-            },
-            {
-                question: "What is the name of the South African reserve known for its white rhino conservation?",
-                answer: "Hluhluwe-iMfolozi Park",
-                options: ["Hluhluwe-iMfolozi Park", "Kruger National Park", "Addo Elephant Park", "Pilanesberg Game Reserve"],
-                category: "landmarks"
-            },
-            {
-                question: "What South African plant is known as 'rooikrans' in Afrikaans?",
-                answer: "Acacia cyclops",
-                options: ["Acacia cyclops", "Protea", "Spekboom", "Yellowwood"],
-                category: "geography"
-            },
-            {
-                question: "Which South African town is known for its historic architecture and wineries?",
-                answer: "Stellenbosch",
-                options: ["Stellenbosch", "Paarl", "Franschhoek", "Worcester"],
-                category: "landmarks"
-            },
-            {
-                question: "What traditional South African street food is a quarter loaf of bread filled with chips and meat?",
-                answer: "Kota",
-                options: ["Kota", "Gatsby", "Bunny Chow", "AK"],
-                category: "culture"
-            },
-            {
-                question: "What South African phenomenon occurs when thousands of sardines migrate along the eastern coast?",
-                answer: "Sardine Run",
-                options: ["Sardine Run", "Great Migration", "Ocean Swarm", "Fish Bloom"],
-                category: "animals"
-            },
-            {
-                question: "What is the name of South Africa's endangered vulture species?",
-                answer: "Cape Vulture",
-                options: ["Cape Vulture", "Lappet-faced Vulture", "White-backed Vulture", "Bearded Vulture"],
-                category: "animals"
-            },
-            {
-                question: "Which South African coastal town is famous for whale watching?",
-                answer: "Hermanus",
-                options: ["Hermanus", "Mossel Bay", "Plettenberg Bay", "St. Lucia"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the South African term for barbecued corn on the cob?",
-                answer: "Mielies",
-                options: ["Mielies", "Braai Mielies", "Pap Mais", "Gebraaide Mielie"],
-                category: "culture"
-            },
-            {
-                question: "Which province is home to the Cango Caves?",
-                answer: "Western Cape",
-                options: ["Western Cape", "Eastern Cape", "Northern Cape", "Free State"],
-                category: "landmarks"
-            },
-            {
-                question: "What traditional South African music and dance style originated in the Western Cape?",
-                answer: "Riel Dance",
-                options: ["Riel Dance", "Gumboot Dance", "Pantsula", "Toyi-toyi"],
-                category: "culture"
-            },
-            {
-                question: "Which South African actor starred in 'The Gods Must Be Crazy'?",
-                answer: "N!xau",
-                options: ["N!xau", "John Kani", "Athol Fugard", "Sello Maake Ka-Ncube"],
-                category: "culture"
-            },
-            {
-                question: "What is the South African equivalent of 'sneakers' or 'trainers'?",
-                answer: "Tekkies",
-                options: ["Tekkies", "Takkies", "Sneaks", "Pumps"],
-                category: "culture"
-            },
-            {
-                question: "Which South African mountain is known as 'The Mountain of Dragons'?",
-                answer: "Drakensberg",
-                options: ["Drakensberg", "Magaliesberg", "Table Mountain", "Sneeuberg"],
-                category: "landmarks"
-            },
-            {
-                question: "What traditional dance involves rhythmic foot stomping with Wellington boots?",
-                answer: "Gumboot Dance",
-                options: ["Gumboot Dance", "Indlamu", "Toyi-toyi", "Sokkie"],
-                category: "culture"
-            },
-            {
-                question: "What large forest is found along the Garden Route in South Africa?",
-                answer: "Knysna Forest",
-                options: ["Knysna Forest", "Tsitsikamma Forest", "Newlands Forest", "Cecilia Forest"],
-                category: "landmarks"
-            },
-            {
-                question: "What is the South African term for a sundowner drink?",
-                answer: "Sundowner",
-                options: ["Sundowner", "Sunsetje", "Aandkappie", "Laatmiddag"],
-                category: "culture"
-            },
-            {
-                question: "Which South African author wrote 'Cry, The Beloved Country'?",
-                answer: "Alan Paton",
-                options: ["Alan Paton", "Nadine Gordimer", "J.M. Coetzee", "Athol Fugard"],
-                category: "culture"
-            },
-            {
-                question: "What is the traditional Afrikaans name for a farmer?",
-                answer: "Boer",
-                options: ["Boer", "Plaaswerker", "Landbouer", "Plattelander"],
-                category: "culture"
-            },
-            {
-        question: "What is the traditional South African dumpling made from steamed bread dough?",
-        answer: "Amagwinya (Vetkoek)",
-        options: ["Amagwinya (Vetkoek)", "Pap", "Samp", "Morogo"],
-        category: "culture"
-    },
-    {
-        question: "Which South African harbor is known as the largest container port in Africa?",
-        answer: "Durban Harbor",
-        options: ["Durban Harbor", "Cape Town Harbor", "Port Elizabeth Harbor", "Richards Bay Harbor"],
-        category: "landmarks"
-    },
-    {
-        question: "What unique South African antelope can jump up to 3 meters high?",
-        answer: "Springbok",
-        options: ["Springbok", "Kudu", "Impala", "Eland"],
-        category: "animals"
-    },
-    {
-        question: "How do you say 'goodbye' in Afrikaans?",
-        answer: "Totsiens",
-        options: ["Totsiens", "Hamba kahle", "Sala kahle", "Baie dankie"],
-        category: "languages"
-    },
-    {
-        question: "Which province is home to the Valley of a Thousand Hills?",
-        answer: "KwaZulu-Natal",
-        options: ["KwaZulu-Natal", "Eastern Cape", "Mpumalanga", "Limpopo"],
-        category: "geography"
-    },
-    {
-        question: "What is the name of the famous prison turned museum in Johannesburg?",
-        answer: "Constitution Hill",
-        options: ["Constitution Hill", "Robben Island", "Pollsmoor Prison", "Drakenstein Correctional Centre"],
-        category: "landmarks"
-    },
-    {
-        question: "Which indigenous South African tree is known as the 'Tree of Life'?",
-        answer: "Baobab",
-        options: ["Baobab", "Marula", "Yellowwood", "Wild Fig"],
-        category: "geography"
-    },
-    {
-        question: "What is 'Ubuntu' in isiXhosa?",
-        answer: "Umntu ngumntu ngabantu",
-        options: ["Umntu ngumntu ngabantu", "Umuntu ngumuntu", "Motho ke motho", "Batho pele"],
-        category: "languages"
-    },
-    {
-        question: "Which South African snake is known as the 'Tree Snake'?",
-        answer: "Boomslang",
-        options: ["Boomslang", "Black Mamba", "Puff Adder", "Cape Cobra"],
-        category: "animals"
-    },
-    {
-        question: "What traditional South African wedding custom involves the payment of 'lobola'?",
-        answer: "Bride Price",
-        options: ["Bride Price", "Wedding Dance", "Ring Exchange", "Umabo Ceremony"],
-        category: "culture"
-    }
-        ];
+        
 
         // Variables to track quiz state
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
         let answered = false;
+        let timerInterval = null;
+        let timeLeft = 0;
+        let quizHistory = [];
+
+        // Load saved quiz history from localStorage if available
+        try {
+            const savedHistory = localStorage.getItem('saQuizHistory');
+            if (savedHistory) {
+                quizHistory = JSON.parse(savedHistory);
+            }
+        } catch (error) {
+            console.error('Error loading quiz history:', error);
+            // Continue with empty history if there's an error
+        }
 
         // DOM Elements
         const startScreen = document.getElementById('start-screen');
@@ -1545,101 +585,279 @@ body {
         const achievementTitleEl = document.getElementById('achievement-title');
         const achievementDescriptionEl = document.getElementById('achievement-description');
         const confettiContainer = document.getElementById('confetti-container');
+        const timerEl = document.getElementById('timer') || document.createElement('div'); // Fallback if timer element doesn't exist
+        const highScoreEl = document.getElementById('high-score') || document.createElement('div'); // Fallback for high score
+
+        // Ensure all elements exist to prevent null reference errors
+        if (!startScreen || !quizScreen || !resultScreen) {
+            console.error('Critical elements missing from the DOM');
+            alert('Something went wrong loading the quiz. Please refresh the page.');
+        }
 
         // Initialize the quiz
-        startBtn.addEventListener('click', startQuiz);
-        nextBtn.addEventListener('click', nextQuestion);
-        restartBtn.addEventListener('click', resetQuiz);
-        shareBtn.addEventListener('click', shareResults);
+        function init() {
+            // Add event listeners only if elements exist
+            if (startBtn) startBtn.addEventListener('click', startQuiz);
+            if (nextBtn) nextBtn.addEventListener('click', nextQuestion);
+            if (restartBtn) restartBtn.addEventListener('click', resetQuiz);
+            if (shareBtn) shareBtn.addEventListener('click', shareResults);
+            
+            // Check if we have questions
+            if (!quizQuestions || quizQuestions.length === 0) {
+                console.error('No quiz questions available');
+                alert('Error: No quiz questions available. Please check your connection and refresh the page.');
+                return;
+            }
+            
+            // Display high score if available
+            updateHighScoreDisplay();
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        // Handle keyboard navigation
+        function handleKeyPress(e) {
+            // Only handle keys when appropriate screens are visible
+            if (!startScreen.classList.contains('hidden') && e.key === 'Enter') {
+                startQuiz();
+            } else if (!quizScreen.classList.contains('hidden')) {
+                // Number keys 1-4 for selecting options
+                if (e.key >= '1' && e.key <= '4' && !answered) {
+                    const optionIndex = parseInt(e.key) - 1;
+                    const options = optionsContainer.querySelectorAll('.option-btn');
+                    if (options[optionIndex]) {
+                        options[optionIndex].click();
+                    }
+                } else if (e.key === 'Enter' && answered) {
+                    nextQuestion();
+                }
+            } else if (!resultScreen.classList.contains('hidden') && e.key === 'Enter') {
+                resetQuiz();
+            }
+        }
+
+        // Display high score
+        function updateHighScoreDisplay() {
+            if (!highScoreEl) return;
+            
+            try {
+                const highScores = {};
+                quizHistory.forEach(record => {
+                    const key = `${record.category}-${record.difficulty}`;
+                    if (!highScores[key] || record.percentage > highScores[key].percentage) {
+                        highScores[key] = record;
+                    }
+                });
+                
+                // Get current selection for display
+                const category = categorySelect ? categorySelect.value : 'all';
+                const difficulty = difficultySelect ? difficultySelect.value : 'easy';
+                const key = `${category}-${difficulty}`;
+                
+                if (highScores[key]) {
+                    highScoreEl.textContent = `High Score: ${highScores[key].percentage}%`;
+                    highScoreEl.classList.remove('hidden');
+                } else {
+                    highScoreEl.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error updating high score display:', error);
+            }
+        }
+
+        // Add event listeners to category and difficulty dropdowns
+        if (categorySelect) {
+            categorySelect.addEventListener('change', updateHighScoreDisplay);
+        }
+        if (difficultySelect) {
+            difficultySelect.addEventListener('change', updateHighScoreDisplay);
+        }
 
         // Start the quiz
         function startQuiz() {
-            // Filter questions by category if needed
-            let filteredQuestions = quizQuestions;
-            const selectedCategory = categorySelect.value;
-            if (selectedCategory !== 'all') {
-                filteredQuestions = quizQuestions.filter(q => q.category === selectedCategory);
+            try {
+                // Filter questions by category if needed
+                let filteredQuestions = quizQuestions;
+                const selectedCategory = categorySelect ? categorySelect.value : 'all';
+                if (selectedCategory !== 'all') {
+                    filteredQuestions = quizQuestions.filter(q => q.category === selectedCategory);
+                }
+
+                // Check if we have enough questions
+                if (filteredQuestions.length === 0) {
+                    alert(`No questions available for the ${selectedCategory} category. Please select another category.`);
+                    return;
+                }
+
+                // Determine number of questions based on difficulty
+                const difficulty = difficultySelect ? difficultySelect.value : 'easy';
+                let numQuestions;
+
+                switch (difficulty) {
+                    case 'easy':
+                        numQuestions = 10;
+                        timeLeft = 15; // 15 seconds per question
+                        break;
+                    case 'medium':
+                        numQuestions = 20;
+                        timeLeft = 12; // 12 seconds per question
+                        break;
+                    case 'hard':
+                        numQuestions = 30;
+                        timeLeft = 10; // 10 seconds per question
+                        break;
+                    case 'expert':
+                        numQuestions = 50;
+                        timeLeft = 8; // 8 seconds per question
+                        break;
+                    case 'master':
+                        numQuestions = filteredQuestions.length;
+                        timeLeft = 6; // 6 seconds per question
+                        break;
+                    default:
+                        numQuestions = 10;
+                        timeLeft = 15;
+                }
+
+                // Make sure we don't try to get more questions than available
+                numQuestions = Math.min(numQuestions, filteredQuestions.length);
+
+                // Shuffle and select questions
+                currentQuestions = shuffleArray(filteredQuestions).slice(0, numQuestions);
+                currentQuestionIndex = 0;
+                score = 0;
+
+                // Update UI
+                if (totalQuestionsEl) totalQuestionsEl.textContent = currentQuestions.length;
+                if (totalQuestionsResultEl) totalQuestionsResultEl.textContent = currentQuestions.length;
+                if (scoreEl) scoreEl.textContent = score;
+
+                // Show quiz screen, hide start screen
+                startScreen.classList.add('hidden');
+                startScreen.classList.remove('flex');
+                quizScreen.classList.remove('hidden');
+                quizScreen.classList.add('flex');
+
+                // Load first question
+                loadQuestion();
+            } catch (error) {
+                console.error('Error starting quiz:', error);
+                alert('An error occurred while starting the quiz. Please try again.');
             }
+        }
 
-            // Determine number of questions based on difficulty
-            const difficulty = difficultySelect.value;
-            let numQuestions;
-
-            switch (difficulty) {
-                case 'easy':
-                    numQuestions = 10;
-                    break;
-                case 'medium':
-                    numQuestions = 20;
-                    break;
-                case 'hard':
-                    numQuestions = 30;
-                    break;
-                case 'expert':
-                    numQuestions = 50;
-                    break;
-                case 'master':
-                    numQuestions = filteredQuestions.length;
-                    break;
-                default:
-                    numQuestions = 10;
+        // Start timer for current question
+        function startTimer() {
+            if (!timerEl) return;
+            
+            // Clear any existing timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
             }
+            
+            // Set initial time based on difficulty
+            const difficulty = difficultySelect ? difficultySelect.value : 'easy';
+            let seconds = timeLeft;
+            
+            timerEl.textContent = `Time: ${seconds}s`;
+            timerEl.classList.remove('text-red-500');
+            
+            timerInterval = setInterval(() => {
+                seconds--;
+                timerEl.textContent = `Time: ${seconds}s`;
+                
+                // Warning when time is running low
+                if (seconds <= 5) {
+                    timerEl.classList.add('text-red-500');
+                }
+                
+                // Time's up
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    if (!answered) {
+                        // Auto-select incorrect answer if time runs out
+                        const currentQuestion = currentQuestions[currentQuestionIndex];
+                        handleTimeUp(currentQuestion);
+                    }
+                }
+            }, 1000);
+        }
 
-            // Make sure we don't try to get more questions than available
-            numQuestions = Math.min(numQuestions, filteredQuestions.length);
-
-            // Shuffle and select questions
-            currentQuestions = shuffleArray(filteredQuestions).slice(0, numQuestions);
-            currentQuestionIndex = 0;
-            score = 0;
-
-            // Update UI
-            totalQuestionsEl.textContent = currentQuestions.length;
-            totalQuestionsResultEl.textContent = currentQuestions.length;
-            scoreEl.textContent = score;
-
-            // Show quiz screen, hide start screen
-            startScreen.classList.add('hidden');
-            startScreen.classList.remove('flex');
-            quizScreen.classList.remove('hidden');
-            quizScreen.classList.add('flex');
-
-            // Load first question
-            loadQuestion();
+        // Handle time running out
+        function handleTimeUp(question) {
+            answered = true;
+            
+            // Update UI for all option buttons
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach(button => {
+                if (button.textContent === question.answer) {
+                    // Highlight correct answer
+                    button.classList.add('correct-answer');
+                }
+                
+                // Disable all buttons
+                button.disabled = true;
+            });
+            
+            // Show feedback
+            feedbackEl.classList.remove('hidden');
+            feedbackEl.classList.add('bg-yellow-100');
+            feedbackTextEl.classList.add('text-yellow-800');
+            feedbackTextEl.textContent = `Time's up! The correct answer is: ${question.answer}`;
+            
+            // Show next button
+            nextBtn.classList.remove('hidden');
         }
 
         // Load current question
         function loadQuestion() {
-            const question = currentQuestions[currentQuestionIndex];
+            try {
+                const question = currentQuestions[currentQuestionIndex];
+                if (!question) {
+                    console.error('Question not found at index', currentQuestionIndex);
+                    nextQuestion(); // Skip this question if it doesn't exist
+                    return;
+                }
 
-            // Update progress
-            currentQuestionEl.textContent = currentQuestionIndex + 1;
-            const progressPercentage = ((currentQuestionIndex) / currentQuestions.length) * 100;
-            progressBarEl.style.width = `${progressPercentage}%`;
+                // Update progress
+                if (currentQuestionEl) currentQuestionEl.textContent = currentQuestionIndex + 1;
+                const progressPercentage = ((currentQuestionIndex) / currentQuestions.length) * 100;
+                if (progressBarEl) progressBarEl.style.width = `${progressPercentage}%`;
 
-            // Update category display
-            categoryDisplayEl.textContent = capitalizeFirstLetter(question.category);
+                // Update category display
+                if (categoryDisplayEl) categoryDisplayEl.textContent = capitalizeFirstLetter(question.category);
 
-            // Set question text
-            questionText.textContent = question.question;
+                // Set question text
+                if (questionText) questionText.textContent = question.question;
 
-            // Clear previous options
-            optionsContainer.innerHTML = '';
+                // Clear previous options
+                if (optionsContainer) optionsContainer.innerHTML = '';
 
-            // Create option buttons
-            const shuffledOptions = shuffleArray([...question.options]);
-            shuffledOptions.forEach(option => {
-                const button = document.createElement('button');
-                button.className = 'option-btn w-full py-3 px-4 bg-white border border-gray-300 rounded-lg text-left font-medium hover:bg-sky-50 hover:border-sky-300 transition-all duration-300';
-                button.textContent = option;
-                button.addEventListener('click', () => selectOption(option));
-                optionsContainer.appendChild(button);
-            });
+                // Create option buttons
+                if (optionsContainer && question.options) {
+                    const shuffledOptions = shuffleArray([...question.options]);
+                    shuffledOptions.forEach((option, index) => {
+                        const button = document.createElement('button');
+                        button.className = 'option-btn w-full py-3 px-4 bg-white border border-gray-300 rounded-lg text-left font-medium hover:bg-sky-50 hover:border-sky-300 transition-all duration-300';
+                        button.textContent = option;
+                        button.setAttribute('data-index', index + 1);
+                        button.addEventListener('click', () => selectOption(option));
+                        optionsContainer.appendChild(button);
+                    });
+                }
 
-            // Reset state
-            answered = false;
-            nextBtn.classList.add('hidden');
-            feedbackEl.classList.add('hidden');
+                // Reset state
+                answered = false;
+                if (nextBtn) nextBtn.classList.add('hidden');
+                if (feedbackEl) feedbackEl.classList.add('hidden');
+                
+                // Start timer for this question
+                startTimer();
+            } catch (error) {
+                console.error('Error loading question:', error);
+                nextQuestion(); // Skip problematic question
+            }
         }
 
         // Handle option selection
@@ -1647,18 +865,23 @@ body {
             if (answered) return;
 
             answered = true;
+            // Stop the timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
             const currentQuestion = currentQuestions[currentQuestionIndex];
             const isCorrect = selectedOption === currentQuestion.answer;
 
             // Update score if correct
             if (isCorrect) {
                 score++;
-                scoreEl.textContent = score;
+                if (scoreEl) scoreEl.textContent = score;
                 createConfetti();
             }
 
             // Update UI for all option buttons
-            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            const optionButtons = optionsContainer ? optionsContainer.querySelectorAll('.option-btn') : [];
             optionButtons.forEach(button => {
                 if (button.textContent === currentQuestion.answer) {
                     // Correct answer
@@ -1673,13 +896,17 @@ body {
             });
 
             // Show feedback
-            feedbackEl.classList.remove('hidden');
-            feedbackEl.classList.add(isCorrect ? 'bg-green-100' : 'bg-red-100');
-            feedbackTextEl.classList.add(isCorrect ? 'text-green-800' : 'text-red-800');
-            feedbackTextEl.textContent = isCorrect ? 'Correct! 🎉' : `Incorrect. The correct answer is: ${currentQuestion.answer}`;
+            if (feedbackEl && feedbackTextEl) {
+                feedbackEl.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'bg-yellow-100');
+                feedbackTextEl.classList.remove('text-green-800', 'text-red-800', 'text-yellow-800');
+                
+                feedbackEl.classList.add(isCorrect ? 'bg-green-100' : 'bg-red-100');
+                feedbackTextEl.classList.add(isCorrect ? 'text-green-800' : 'text-red-800');
+                feedbackTextEl.textContent = isCorrect ? 'Correct! 🎉' : `Incorrect. The correct answer is: ${currentQuestion.answer}`;
+            }
 
             // Show next button
-            nextBtn.classList.remove('hidden');
+            if (nextBtn) nextBtn.classList.remove('hidden');
         }
 
         // Move to next question
@@ -1695,50 +922,97 @@ body {
 
         // Show results screen
         function showResults() {
-            quizScreen.classList.add('hidden');
-            quizScreen.classList.remove('flex');
-            resultScreen.classList.remove('hidden');
-            resultScreen.classList.add('flex');
+            try {
+                // Stop any running timer
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                
+                quizScreen.classList.add('hidden');
+                quizScreen.classList.remove('flex');
+                resultScreen.classList.remove('hidden');
+                resultScreen.classList.add('flex');
 
-            // Update final score
-            finalScoreEl.textContent = score;
+                // Update final score
+                if (finalScoreEl) finalScoreEl.textContent = score;
 
-            // Calculate and display percentage
-            const percentage = Math.round((score / currentQuestions.length) * 100);
-            resultPercentageEl.textContent = `${percentage}%`;
+                // Calculate and display percentage
+                const percentage = Math.round((score / currentQuestions.length) * 100);
+                if (resultPercentageEl) resultPercentageEl.textContent = `${percentage}%`;
 
-            // Animate circle
-            const circumference = 2 * Math.PI * 54; // 2πr where r=54
-            const offset = circumference - (percentage / 100) * circumference;
-            resultCircleEl.style.strokeDasharray = circumference;
-            resultCircleEl.style.strokeDashoffset = circumference;
+                // Save quiz result to history
+                saveQuizResult(percentage);
 
-            // Animate with setTimeout for a delay
-            setTimeout(() => {
-                resultCircleEl.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-                resultCircleEl.style.strokeDashoffset = offset;
-            }, 200);
+                // Animate circle
+                if (resultCircleEl) {
+                    const circumference = 2 * Math.PI * 54; // 2πr where r=54
+                    const offset = circumference - (percentage / 100) * circumference;
+                    resultCircleEl.style.strokeDasharray = circumference;
+                    resultCircleEl.style.strokeDashoffset = circumference;
 
-            // Set result message
-            let message = '';
-            if (percentage >= 90) {
-                message = "Outstanding! You're a South Africa expert! 🏆";
-                showAchievement("South Africa Expert", "You scored over 90%! Your knowledge of South Africa is impressive!");
-                createResultConfetti();
-            } else if (percentage >= 70) {
-                message = "Great job! You know South Africa well! 🌍";
-                showAchievement("South Africa Enthusiast", "You scored over 70%! You have solid knowledge about South Africa.");
-            } else if (percentage >= 50) {
-                message = "Good effort! You're learning about South Africa. 🌱";
-            } else {
-                message = "Keep learning! South Africa has much to discover. 📚";
+                    // Animate with setTimeout for a delay
+                    setTimeout(() => {
+                        resultCircleEl.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+                        resultCircleEl.style.strokeDashoffset = offset;
+                    }, 200);
+                }
+
+                // Set result message
+                let message = '';
+                if (percentage >= 90) {
+                    message = "Outstanding! You're a South Africa expert! 🏆";
+                    showAchievement("South Africa Expert", "You scored over 90%! Your knowledge of South Africa is impressive!");
+                    createResultConfetti();
+                } else if (percentage >= 70) {
+                    message = "Great job! You know South Africa well! 🌍";
+                    showAchievement("South Africa Enthusiast", "You scored over 70%! You have solid knowledge about South Africa.");
+                } else if (percentage >= 50) {
+                    message = "Good effort! You're learning about South Africa. 🌱";
+                } else {
+                    message = "Keep learning! South Africa has much to discover. 📚";
+                }
+
+                if (resultMessageEl) resultMessageEl.textContent = message;
+            } catch (error) {
+                console.error('Error showing results:', error);
+                alert('An error occurred while displaying results. Your score was: ' + score);
             }
+        }
 
-            resultMessageEl.textContent = message;
+        // Save quiz result to history
+        function saveQuizResult(percentage) {
+            try {
+                const selectedCategory = categorySelect ? categorySelect.value : 'all';
+                const difficulty = difficultySelect ? difficultySelect.value : 'easy';
+                
+                const result = {
+                    date: new Date().toISOString(),
+                    score,
+                    total: currentQuestions.length,
+                    percentage,
+                    category: selectedCategory,
+                    difficulty
+                };
+                
+                quizHistory.push(result);
+                
+                // Keep only the last 50 results to avoid storage issues
+                if (quizHistory.length > 50) {
+                    quizHistory = quizHistory.slice(-50);
+                }
+                
+                localStorage.setItem('saQuizHistory', JSON.stringify(quizHistory));
+            } catch (error) {
+                console.error('Error saving quiz result:', error);
+                // Non-critical error, continue without saving
+            }
         }
 
         // Show achievement
         function showAchievement(title, description) {
+            if (!achievementSectionEl || !achievementTitleEl || !achievementDescriptionEl) return;
+            
             achievementSectionEl.classList.remove('hidden');
             achievementTitleEl.textContent = title;
             achievementDescriptionEl.textContent = description;
@@ -1746,10 +1020,15 @@ body {
 
         // Create confetti effect for correct answers
         function createConfetti() {
+            if (!confettiContainer) return;
+            
             const colors = ['#FFB612', '#007A4D', '#DE3831', '#002395'];
             const shapes = ['circle', 'square'];
 
-            for (let i = 0; i < 20; i++) {
+            // Limit total confetti for performance
+            const confettiCount = window.innerWidth < 768 ? 10 : 20;
+
+            for (let i = 0; i < confettiCount; i++) {
                 const confetti = document.createElement('div');
                 const size = Math.random() * (8 - 5) + 5;
 
@@ -1768,16 +1047,23 @@ body {
 
                 confettiContainer.appendChild(confetti);
 
-                // Remove confetti after animation completes
+                // Remove confetti after animation completes to prevent memory leaks
                 setTimeout(() => {
-                    confetti.remove();
+                    if (confetti.parentNode) {
+                        confetti.parentNode.removeChild(confetti);
+                    }
                 }, 3500);
             }
         }
 
         // Create more confetti for results
         function createResultConfetti() {
-            for (let i = 0; i < 3; i++) {
+            if (!confettiContainer) return;
+            
+            // Only create a reasonable amount of confetti based on device performance
+            const rounds = window.innerWidth < 768 ? 2 : 3;
+            
+            for (let i = 0; i < rounds; i++) {
                 setTimeout(() => {
                     createConfetti();
                 }, i * 600);
@@ -1786,20 +1072,28 @@ body {
 
         // Share results
         function shareResults() {
-            const percentage = Math.round((score / currentQuestions.length) * 100);
-            const text = `I scored ${score}/${currentQuestions.length} (${percentage}%) on the South Africa Quiz Challenge! Can you beat my score?`;
+            try {
+                const percentage = Math.round((score / currentQuestions.length) * 100);
+                const selectedCategory = categorySelect ? categorySelect.value : 'all';
+                const categoryText = selectedCategory === 'all' ? 'South Africa' : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1);
+                const text = `I scored ${score}/${currentQuestions.length} (${percentage}%) on the ${categoryText} Quiz Challenge! Can you beat my score?`;
 
-            if (navigator.share) {
-                navigator.share({
-                    title: 'South Africa Quiz Results',
-                    text: text,
-                })
-                    .catch(error => {
-                        console.error('Error sharing:', error);
-                        fallbackShare(text);
-                    });
-            } else {
-                fallbackShare(text);
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'South Africa Quiz Results',
+                        text: text,
+                    })
+                        .catch(error => {
+                            console.error('Error sharing:', error);
+                            fallbackShare(text);
+                        });
+                } else {
+                    fallbackShare(text);
+                }
+            } catch (error) {
+                console.error('Error sharing results:', error);
+                alert('Unable to share results. Try copying your score manually: ' + 
+                      `${score}/${currentQuestions.length} (${Math.round((score / currentQuestions.length) * 100)}%)`);
             }
         }
 
@@ -1815,28 +1109,54 @@ body {
 
             try {
                 // Copy text
-                document.execCommand('copy');
-                alert('Results copied to clipboard! Share it with your friends.');
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    alert('Results copied to clipboard! Share it with your friends.');
+                } else {
+                    throw new Error('Copy command was unsuccessful');
+                }
             } catch (err) {
                 console.error('Unable to copy to clipboard:', err);
+                alert('Could not copy results. Please select and copy this text manually:\n\n' + text);
+            } finally {
+                document.body.removeChild(textArea);
             }
-
-            document.body.removeChild(textArea);
         }
 
         // Reset quiz to start screen
         function resetQuiz() {
+            // Clear any running timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
             resultScreen.classList.add('hidden');
             resultScreen.classList.remove('flex');
             startScreen.classList.remove('hidden');
             startScreen.classList.add('flex');
 
             // Reset achievement section
-            achievementSectionEl.classList.add('hidden');
+            if (achievementSectionEl) {
+                achievementSectionEl.classList.add('hidden');
+            }
+            
+            // Update high score display with latest data
+            updateHighScoreDisplay();
+            
+            // Clear any remaining confetti
+            if (confettiContainer) {
+                confettiContainer.innerHTML = '';
+            }
         }
 
         // Utility function to shuffle array
         function shuffleArray(array) {
+            if (!array || !Array.isArray(array)) {
+                console.error('Invalid array passed to shuffleArray:', array);
+                return [];
+            }
+            
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -1847,8 +1167,14 @@ body {
 
         // Utility function to capitalize first letter
         function capitalizeFirstLetter(string) {
+            if (!string || typeof string !== 'string') {
+                return '';
+            }
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
+        
+        // Initialize the quiz when page loads
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 
