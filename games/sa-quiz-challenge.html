@@ -1071,31 +1071,38 @@ body {
         }
 
         // Share results
-        function shareResults() {
-            try {
-                const percentage = Math.round((score / currentQuestions.length) * 100);
-                const selectedCategory = categorySelect ? categorySelect.value : 'all';
-                const categoryText = selectedCategory === 'all' ? 'South Africa' : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1);
-                const text = `I scored ${score}/${currentQuestions.length} (${percentage}%) on the ${categoryText} Quiz Challenge! Can you beat my score?`;
+function shareResults() {
+    try {
+        const totalQuestions = currentQuestions.length;
+        if (totalQuestions === 0) throw new Error('No questions available to calculate score.');
 
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'South Africa Quiz Results',
-                        text: text,
-                    })
-                        .catch(error => {
-                            console.error('Error sharing:', error);
-                            fallbackShare(text);
-                        });
-                } else {
-                    fallbackShare(text);
-                }
-            } catch (error) {
-                console.error('Error sharing results:', error);
-                alert('Unable to share results. Try copying your score manually: ' + 
-                      `${score}/${currentQuestions.length} (${Math.round((score / currentQuestions.length) * 100)}%)`);
-            }
+        const percentage = Math.round((score / totalQuestions) * 100);
+        const selectedCategory = categorySelect?.value || 'all';
+        const categoryText = selectedCategory === 'all' ? 'South Africa' : capitalizeFirstLetter(selectedCategory);
+        const shareText = `I scored ${score}/${totalQuestions} (${percentage}%) on the ${categoryText} Quiz Challenge! Can you beat my score? Try it at https://vylexnexys.co.za/games/sa-quiz-challenge`;
+
+        if (navigator.share) {
+            navigator.share({
+                title: 'South Africa Quiz Results',
+                text: shareText,
+            }).catch(error => {
+                console.warn('Native sharing failed:', error);
+                fallbackShare(shareText);
+            });
+        } else {
+            fallbackShare(shareText);
         }
+    } catch (error) {
+        console.error('Error sharing results:', error);
+        alert(`Unable to share results. Try copying your score manually: ${score}/${currentQuestions.length} (${percentage}%)`);
+    }
+}
+
+// Capitalize first letter of a string
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 
         // Fallback sharing method
         function fallbackShare(text) {
