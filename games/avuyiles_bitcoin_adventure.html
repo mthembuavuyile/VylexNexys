@@ -1029,8 +1029,8 @@
             joystickKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
             
             // Update player direction based on joystick position
-            playerDirection.x = dx / maxDistance;
-            playerDirection.z = dy / maxDistance;
+            playerDirection.x = -dx / maxDistance;
+            playerDirection.z = -dy / maxDistance;
         }
         
         function onJump(event) {
