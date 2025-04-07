@@ -7,56 +7,147 @@
     <title>NexysSocial - Connect and Share | Vylex Nexys</title>
     <meta name="description" content="NexysSocial is a social platform by Vylex Nexys where users can connect, share posts, and interact with others. Join now and express your thoughts!">
     <meta name="keywords" content="social platform, NexysSocial, Vylex Nexys, social media, posts, online community">
+
+    <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="NexysSocial - Connect and Share | Vylex Nexys">
     <meta property="og:description" content="Join NexysSocial, a platform by Vylex Nexys to connect with others and share your thoughts.">
-    <meta property="og:image" content="image.jpg">
+    <meta property="og:image" content="https://vylexnexys.co.za/NexysSocial/images/nexysnet.png"> <!-- Change path as needed -->
     <meta property="og:url" content="https://vylexnexys.co.za/nexysnet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Tags (for Twitter, Telegram, WhatsApp previews) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NexysSocial - Connect and Share | Vylex Nexys">
+    <meta name="twitter:description" content="Join NexysSocial, a platform by Vylex Nexys to connect with others and share your thoughts.">
+    <meta name="twitter:image" content="https://vylexnexys.co.za/NexysSocial/images/nexysnet.png"> <!-- Same image URL -->
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 
 <body>
     <header class="header">
         <div class="header-content">
             <div class="logo-container">
-                <a href="#" class="logo">
-                    <span class="logo-icon">N</span>
-                    NexysSocial
+                <a href="#" class="logo" aria-label="NexysSocial Home">
+                    <span class="logo-icon" aria-hidden="true">N</span>
+                    Nexys Social
                 </a>
-                <a href="https://vylexnexys.co.za"><span class="logo-subtext">by vylex nexys</span></a>
+                <a href="https://vylexnexys.co.za" class="logo-subtext" target="_blank" rel="noopener noreferrer">by vylex nexys</a>
             </div>
-            <div class="avatar" id="userAvatar">JS</div>
+            <!-- Avatar updated by JS, placeholder shown -->
+            <div class="avatar" id="userAvatar" title="Change Username">??</div>
         </div>
     </header>
 
-    <div id="usernameModal" class="username-modal">
+    <!-- Username Modal -->
+    <div id="usernameModal" class="username-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="username-modal-content">
-            <span class="close-button" id="closeModal">×</span>
-            <h4>Set Your Name</h4>
-            <input type="text" id="userNameInput" placeholder="Your Name">
+            <button class="close-button" id="closeModal" aria-label="Close modal">×</button>
+            <h4 id="modalTitle">Set Your Name</h4>
+            <input type="text" id="userNameInput" placeholder="Enter Your Name (min 3 chars)" maxlength="20" aria-label="Username input">
             <button id="saveUserName">Save Name</button>
-            <a href="policy.html" class="policy-link">Policy, Disclaimer & Rules ↗</a>
+            <a href="policy.html" class="policy-link" target="_blank" rel="noopener noreferrer">Policy, Disclaimer & Rules ↗</a>
         </div>
     </div>
 
     <main class="main-content">
-        <section class="create-post">
-            <textarea class="post-input" id="postContent" placeholder="What's on your mind?"></textarea>
-            <input type="text" class="image-input" id="postImageURL" placeholder="Image URL (Optional)">
+        <!-- Create Post Form -->
+        <section class="create-post" aria-labelledby="create-post-heading">
+            <h2 id="create-post-heading" class="visually-hidden">Create a new post</h2> <!-- Hidden heading for accessibility -->
+            <div class="post-input-wrapper">
+                <textarea class="post-input" id="postContentInput" placeholder="What's happening in the Nexysphere?" maxlength="500" aria-label="Post content"></textarea>
+                <div class="char-counter" id="postCharCounter">500</div>
+            </div>
+            <input type="text" class="image-input" id="postImageURLInput" placeholder="Image URL (Optional, e.g., https://...)" aria-label="Image URL for post">
             <div class="post-actions">
                 <div class="post-attachments">
-                    <button class="attachment-btn">📸 Upload Photo (Coming Soon!)</button>
+                    <button class="attachment-btn" disabled>📸 Upload Photo (Soon!)</button>
+                    <!-- <button class="attachment-btn" disabled>📎 Attach File (Soon!)</button> -->
                 </div>
-                <button class="post-btn" id="submitPost">Post</button>
+                <button class="post-btn" id="submitPostBtn">Post</button>
             </div>
         </section>
 
-        <section class="feed" id="posts">
+        <!-- Post Feed -->
+        <section class="feed" id="postsContainer" aria-live="polite">
+            <!-- Skeleton Loader -->
+            <article class="post-card skeleton" aria-hidden="true">
+                <div class="post-header">
+                    <div class="post-avatar"></div>
+                    <div class="post-meta">
+                        <div class="skeleton-line author"></div>
+                        <div class="skeleton-line time"></div>
+                    </div>
+                </div>
+                <div class="skeleton-line content"></div>
+                <div class="skeleton-line content short"></div>
+                <div class="post-footer">
+                    <div class="skeleton-line footer-btn"></div>
+                    <div class="skeleton-line footer-btn"></div>
+                    <div class="skeleton-line footer-btn"></div>
+                </div>
+            </article>
             <!-- Posts will be loaded here by JavaScript -->
         </section>
-    </main>
 
-    <script type="module" src="script.js"></script>
-</body>
+         <!-- Example Tokenized Post Section -->
+         <section class="tokenized-posts" aria-labelledby="tokenized-heading">
+             <div class="section-header">
+                 <h3 id="tokenized-heading" class="section-title">💎 Tokenized Creations <span class="section-badge">NFTs</span></h3>
+                 <a href="#" class="view-all">View All ➔</a>
+             </div>
+             <div class="tokenized-grid">
+                 <!-- Example Token Cards -->
+                 <div class="token-card">
+                    <img src="https://avuyilemthembu.co.za/assets/images/avuyile5.jpg" alt="Quantum Flux #01 NFT Image" class="token-image"> <!-- Use descriptive alt text -->
+                    <div class="token-info">
+                        <div class="token-title">Quantum Flux #01</div>
+                        <div class="token-meta">
+                            <span class="token-creator">@glitchArt</span>
+                            <span class="token-price"><span class="icon" aria-hidden="true">Ξ</span> 0.5</span>
+                        </div>
+                    </div>
+                 </div>
+                  <div class="token-card">
+                    <img src="https://avuyilemthembu.co.za/assets/images/avuyile3.jpg" alt="Chrome Dreams NFT Image" class="token-image">
+                    <div class="token-info">
+                        <div class="token-title">Chrome Dreams</div>
+                        <div class="token-meta">
+                            <span class="token-creator">@neoArtist</span>
+                            <span class="token-price"><span class="icon" aria-hidden="true">Ξ</span> 1.2</span>
+                        </div>
+                    </div>
+                 </div>
+                  <div class="token-card">
+                    <img src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg" alt="MR A CEO NFT Image" class="token-image">
+                    <div class="token-info">
+                        <div class="token-title">MR A CEO</div>
+                        <div class="token-meta">
+                            <span class="token-creator">@codeWeaver</span>
+                            <span class="token-price"><span class="icon" aria-hidden="true">Ξ</span> 0.8</span>
+                        </div>
+                    </div>
+                 </div>
+             </div>
+         </section>
 
-</html>
+        </main>
+
+        <!-- Example AR/VR Toggle Button -->
+        <button class="ar-vr-toggle" title="Enter AR/VR Mode (Example)">
+            <div class="pulse"></div>
+            🕶️
+        </button>
+
+        <!-- Visually Hidden Class -->
+        <style>.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }</style>
+
+        <script type="module" src="script.js"></script>
+
+        </body>
+        </html>
