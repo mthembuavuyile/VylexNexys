@@ -3,7 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vylex Game Lab</title>
+    <meta name="google-site-verification" content="8QCAaqQsO5s-JhKbqsiCfXk0BbJnUXRSoIe7be2Y2cs" />
+    <meta name="description" content="Vylex Game Lab - Play free online games including Zombie Shooter, Bitcoin Adventure, South Africa Quiz, Memory Match and more. Fun web games crafted with passion and precision.">
+    <meta name="keywords" content="Vylex Game Lab, online games, web games, zombie shooter, bitcoin adventure, South Africa quiz, memory games, snake game, free games">
+    <meta name="author" content="VylexNexys">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Vylex Game Lab - Free Online Games">
+    <meta property="og:description" content="Play our collection of engaging web games including Zombie Shooter, Bitcoin Adventure and more. Challenge yourself and have fun!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vylexnexys.co.za/games">
+    <meta property="og:image" content="https://vylexnexys.co.za/images/gamelab-preview.jpg">
+    
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vylex Game Lab - Free Online Games">
+    <meta name="twitter:description" content="Play our collection of engaging web games including Zombie Shooter, Bitcoin Adventure and more!">
+    <meta name="twitter:image" content="https://vylexnexys.co.za/images/gamelab-preview.jpg">
+    
+    <title>Vylex Game Lab - Play Free Online Games | VylexNexys</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    
     <style>
         :root {
             --primary: #00c4ff;
@@ -53,6 +76,7 @@
             color: var(--light);
             font-size: 1.5rem;
             cursor: pointer;
+            aria-label: "Toggle navigation menu";
         }
 
         .nav-links {
@@ -159,6 +183,18 @@
             background: rgba(0,0,0,0.2);
         }
 
+        .featured-games {
+            background: rgba(0,0,0,0.3);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .featured-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -185,106 +221,157 @@
             }
         }
     </style>
+    
+    <!-- Structured data for better SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Vylex Game Lab",
+      "url": "https://vylexnexys.co.za/games",
+      "description": "Free online games collection by VylexNexys",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://vylexnexys.co.za/games/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="#" class="logo">Vylex Game Lab</a>
-        <button class="menu-toggle">☰</button>
-        <div class="nav-links">
-            <a href="#games">Games</a>
-            <a href="https://vylexnexys.co.za">Main Site</a>
-            <a href="#about">About</a>
-        </div>
-    </nav>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo" aria-label="Vylex Game Lab Home">Vylex Game Lab</a>
+            <button class="menu-toggle" aria-label="Toggle navigation menu">☰</button>
+            <div class="nav-links">
+                <a href="#games" aria-label="Browse Games">Games</a>
+                <a href="https://vylexnexys.co.za" aria-label="Visit Vylex Nexys Main Site">Main Site</a>
+                <a href="#about" aria-label="About Vylex Game Lab">About</a>
+            </div>
+        </nav>
+    </header>
 
-    <section class="hero">
-        <h1>Welcome to Vylex Nexys Game Lab</h1>
-        <p>Experience our collection of engaging web games crafted with passion and precision. Challenge yourself, beat high scores, and have fun!</p>
-    </section>
+    <main>
+        <section class="hero">
+            <h1>Welcome to Vylex Nexys Game Lab</h1>
+            <p>Experience our collection of engaging web games crafted with passion and precision. Challenge yourself, beat high scores, and have fun!</p>
+        </section>
 
-    <div id="games" class="games-grid">
-        <div class="game-card">
-            <div class="game-icon">🧠🇿🇦</div>
-            <h3 class="game-title">South Africa Quiz Challenge</h3>
-            <p class="game-desc">Answer trivia questions on South Africa’s rich culture, history, and geography.</p>
-            <a href="sa-quiz-challenge.html" class="play-btn">Play Now</a>
-        </div>
-        
-        <div class="game-card">
-            <div class="game-icon">🎴</div>
-            <h3 class="game-title">Memory Match</h3>
-            <p class="game-desc">Sharpen your memory with this classic card-matching game. Can you find all the pairs?</p>
-            <a href="memory-match.html" class="play-btn">Play Now</a>
-        </div>
+        <section class="featured-games">
+            <h2 class="featured-title">Featured 3D Games</h2>
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-icon">🧟</div>
+                    <h3 class="game-title">Zombie Shooter 3D</h3>
+                    <p class="game-desc">Intense 3D action game where you hunt zombies and collect health boxes to survive the apocalypse.</p>
+                    <a href="https://vylexnexys.co.za/games/zombie-shooter" class="play-btn">Play Now</a>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-icon">₿</div>
+                    <h3 class="game-title">Avuyile's Bitcoin Adventure</h3>
+                    <p class="game-desc">Join Avuyile in this exciting 3D game where you collect bitcoins while dodging challenging obstacles.</p>
+                    <a href="https://vylexnexys.co.za/games/avuyiles_bitcoin_adventure" class="play-btn">Play Now</a>
+                </div>
+            </div>
+        </section>
 
-        <div class="game-card">
-            <div class="game-icon">🐍</div>
-            <h3 class="game-title">Slither Snake Game</h3>
-            <p class="game-desc">Guide your snake to collect apples and grow longer in this classic snake game.</p>
-            <a href="slither.html" class="play-btn">Play Now</a>
-        </div>
+        <section id="games" class="games-grid">
+            <div class="game-card">
+                <div class="game-icon">🧠🇿🇦</div>
+                <h3 class="game-title">South Africa Quiz Challenge</h3>
+                <p class="game-desc">Answer trivia questions on South Africa's rich culture, history, and geography.</p>
+                <a href="sa-quiz-challenge.html" class="play-btn">Play Now</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">🎴</div>
+                <h3 class="game-title">Memory Match</h3>
+                <p class="game-desc">Sharpen your memory with this classic card-matching game. Can you find all the pairs?</p>
+                <a href="memory-match.html" class="play-btn">Play Now</a>
+            </div>
 
-        <div class="game-card">
-            <div class="game-icon">⚔️</div>
-            <h3 class="game-title">Stellar Defender Shooting Game</h3>
-            <p class="game-desc">Aim, shoot, and take down targets in this action-packed game.</p>
-            <a href="stellar-defender.html" class="play-btn">Play Now</a>
-        </div>
+            <div class="game-card">
+                <div class="game-icon">🐍</div>
+                <h3 class="game-title">Slither Snake Game</h3>
+                <p class="game-desc">Guide your snake to collect apples and grow longer in this classic snake game.</p>
+                <a href="slither.html" class="play-btn">Play Now</a>
+            </div>
 
-        <div class="game-card">
-            <div class="game-icon">🌱</div>
-            <h3 class="game-title">Happy Pet Garden</h3>
-            <p class="game-desc">Build your dream garden, care for your pets, and grow plants in this fun simulator.</p>
-            <a href="pet-garden.html" class="play-btn">Play Now</a>
-        </div>
+            <div class="game-card">
+                <div class="game-icon">⚔️</div>
+                <h3 class="game-title">Stellar Defender Shooting Game</h3>
+                <p class="game-desc">Aim, shoot, and take down targets in this action-packed game.</p>
+                <a href="stellar-defender.html" class="play-btn">Play Now</a>
+            </div>
 
-        <div class="game-card">
-            <div class="game-icon">✌️</div>
-            <h3 class="game-title">Rock Paper Scissors</h3>
-            <p class="game-desc">Challenge the computer in this classic game of chance and strategy.</p>
-            <a href="rock-paper-scissors.html" class="play-btn">Play Now</a>
-        </div>
+            <div class="game-card">
+                <div class="game-icon">🌱</div>
+                <h3 class="game-title">Happy Pet Garden</h3>
+                <p class="game-desc">Build your dream garden, care for your pets, and grow plants in this fun simulator.</p>
+                <a href="pet-garden.html" class="play-btn">Play Now</a>
+            </div>
 
-        <div class="game-card">
-            <div class="game-icon">⏳</div>
-            <h3 class="game-title">30 Seconds</h3>
-            <p class="game-desc">Test your quick thinking and teamwork in this fast-paced word guessing game.</p>
-            <a href="30-seconds.html" class="play-btn">Play Now</a>
-        </div>
-        
+            <div class="game-card">
+                <div class="game-icon">✌️</div>
+                <h3 class="game-title">Rock Paper Scissors</h3>
+                <p class="game-desc">Challenge the computer in this classic game of chance and strategy.</p>
+                <a href="rock-paper-scissors.html" class="play-btn">Play Now</a>
+            </div>
 
-        <div class="game-card">
-            <div class="game-icon">☁️</div>
-            <h3 class="game-title">Sky Fall</h3>
-            <p class="game-desc">Catch falling items with your basket and rack up points in this engaging arcade game.</p>
-            <a href="sky-fall.html" class="play-btn">Play Now</a>
-        </div>
+            <div class="game-card">
+                <div class="game-icon">⏳</div>
+                <h3 class="game-title">30 Seconds</h3>
+                <p class="game-desc">Test your quick thinking and teamwork in this fast-paced word guessing game.</p>
+                <a href="30-seconds.html" class="play-btn">Play Now</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">☁️</div>
+                <h3 class="game-title">Sky Fall</h3>
+                <p class="game-desc">Catch falling items with your basket and rack up points in this engaging arcade game.</p>
+                <a href="sky-fall.html" class="play-btn">Play Now</a>
+            </div>
 
-        
+            <div class="game-card">
+                <div class="game-icon">⚡</div>
+                <h3 class="game-title">Speed Clicker</h3>
+                <p class="game-desc">How fast can you click? Test your clicking speed and aim for the highest CPS!</p>
+                <a href="speed-clicker.html" class="play-btn">Play Now</a>
+            </div>
 
-        <div class="game-card">
-            <div class="game-icon">⚡</div>
-            <h3 class="game-title">Speed Clicker</h3>
-            <p class="game-desc">How fast can you click? Test your clicking speed and aim for the highest CPS!</p>
-            <a href="speed-clicker.html" class="play-btn">Play Now</a>
-        </div>
+            <div class="game-card">
+                <div class="game-icon">🎮</div>
+                <h3 class="game-title">Dodge Survive</h3>
+                <p class="game-desc">Test your reflexes in this fast-paced arcade game. Dodge obstacles and survive as long as you can!</p>
+                <a href="dodge-survive.html" class="play-btn">Play Now</a>
+            </div>
+        </section>
 
-        <div class="game-card">
-            <div class="game-icon">🎮</div>
-            <h3 class="game-title">Dodge Survive</h3>
-            <p class="game-desc">Test your reflexes in this fast-paced arcade game. Dodge obstacles and survive as long as you can!</p>
-            <a href="dodge-survive.html" class="play-btn">Play Now</a>
-        </div>
-
-    </div>
+        <section id="about" class="hero">
+            <h2>About Vylex Game Lab</h2>
+            <p>Vylex Game Lab is a division of VylexNexys dedicated to creating fun, engaging web games for all ages. Our games range from simple classics to modern 3D experiences, all designed to provide entertainment and challenge your skills.</p>
+        </section>
+    </main>
 
     <footer>
-        &copy; 2025 Vylex Nexys. All Rights Reserved.
+        <p>&copy; 2025 Vylex Nexys. All Rights Reserved.</p>
+        <p>
+            <a href="https://vylexnexys.co.za/privacy-policy">Privacy Policy</a> | 
+            <a href="https://vylexnexys.co.za/terms">Terms of Use</a> | 
+            <a href="https://vylexnexys.co.za/contact">Contact Us</a>
+        </p>
     </footer>
 
     <script>
         document.querySelector('.menu-toggle').addEventListener('click', () => {
             document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Add lazy loading for better performance
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track page view for analytics (replace with your actual analytics code)
+            console.log('Page loaded: Vylex Game Lab');
         });
     </script>
 </body>
