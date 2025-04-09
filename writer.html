@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Writer | VylexNexys IT Solutions</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A clean, distraction-free writing tool by VylexNexys IT. Create and save your notes with this minimal text editor featuring light/dark mode and word counting.">
+    <meta name="keywords" content="minimal writer, text editor, VylexNexys, Avuyile Mthembu, web tools, distraction-free writing, online notepad">
+    <meta name="author" content="Avuyile Mthembu">
+    
+    <!-- Open Graph / Social Media Tags -->
+    <meta property="og:title" content="Minimal Writer | VylexNexys IT">
+    <meta property="og:description" content="A clean, distraction-free writing tool developed by VylexNexys IT. Features light/dark mode and word counting.">
+    <meta property="og:url" content="https://vylexnexys.co.za/writer">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="VylexNexys IT Solutions">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Minimal Writer | VylexNexys IT">
+    <meta name="twitter:description" content="A clean, distraction-free writing tool by Avuyile Mthembu at VylexNexys IT.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://vylexnexys.co.za/writer">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --editor-bg: #ffffff;
+            --border-color: #dee2e6;
+            --accent-color: #6c757d;
+            --hover-color: #495057;
+            --info-bg: #e9ecef;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #212529;
+            --text-color: #f8f9fa;
+            --editor-bg: #343a40;
+            --border-color: #495057;
+            --accent-color: #adb5bd;
+            --hover-color: #ced4da;
+            --info-bg: #343a40;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 20px;
+            background-color: var(--info-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-left: 15px;
+        }
+
+        .theme-toggle:hover {
+            color: var(--hover-color);
+        }
+
+        .word-counter {
+            color: var(--accent-color);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            flex: 1;
+            padding: 20px;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            flex-grow: 1;
+            padding: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--editor-bg);
+            color: var(--text-color);
+            resize: none;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            textarea {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="word-counter" id="wordCounter">0 words, 0 characters</div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+    </div>
+
+    <div class="container">
+        <textarea id="editor" placeholder="Start writing..." autofocus></textarea>
+    </div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const wordCounter = document.getElementById('wordCounter');
+        const themeToggle = document.getElementById('themeToggle');
+        const storageKey = 'minimalWriterText';
+        const themeKey = 'minimalWriterTheme';
+
+        // Load content and theme from local storage on page load
+        window.onload = () => {
+            // Load saved text
+            const savedText = localStorage.getItem(storageKey);
+            if (savedText) {
+                editor.value = savedText;
+                updateWordCount();
+            }
+            
+            // Load saved theme
+            const savedTheme = localStorage.getItem(themeKey);
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '🌙';
+            }
+        };
+
+        // Update word count
+        function updateWordCount() {
+            const text = editor.value;
+            const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const charCount = text.length;
+            wordCounter.textContent = `${wordCount} words, ${charCount} characters`;
+        }
+
+        // Save content to local storage and update word count on every input
+        editor.addEventListener('input', () => {
+            localStorage.setItem(storageKey, editor.value);
+            updateWordCount();
+        });
+
+        // Toggle theme
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem(themeKey, 'light');
+                themeToggle.textContent = '🌙';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem(themeKey, 'dark');
+                themeToggle.textContent = '☀️';
+            }
+        });
+    </script>
+</body>
+</html>
