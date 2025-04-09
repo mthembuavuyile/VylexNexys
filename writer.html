@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Writer | VylexNexys IT Solutions</title>
+    <title>LexWriter | VylexNexys IT Solutions</title>
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="A clean, distraction-free writing tool by VylexNexys IT. Create and save your notes with this minimal text editor featuring light/dark mode and word counting.">
-    <meta name="keywords" content="minimal writer, text editor, VylexNexys, Avuyile Mthembu, web tools, distraction-free writing, online notepad">
+    <meta name="keywords" content="LexWriter, text editor, VylexNexys, Avuyile Mthembu, web tools, distraction-free writing, online notepad">
     <meta name="author" content="Avuyile Mthembu">
     
     <!-- Open Graph / Social Media Tags -->
-    <meta property="og:title" content="Minimal Writer | VylexNexys IT">
+    <meta property="og:title" content="LexWriter | VylexNexys IT">
     <meta property="og:description" content="A clean, distraction-free writing tool developed by VylexNexys IT. Features light/dark mode and word counting.">
     <meta property="og:url" content="https://vylexnexys.co.za/writer">
     <meta property="og:type" content="website">
@@ -19,7 +19,7 @@
     
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Minimal Writer | VylexNexys IT">
+    <meta name="twitter:title" content="LexWriter | VylexNexys IT">
     <meta name="twitter:description" content="A clean, distraction-free writing tool by Avuyile Mthembu at VylexNexys IT.">
     
     <!-- Canonical URL -->
@@ -27,6 +27,9 @@
     
     <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
@@ -37,6 +40,10 @@
             --accent-color: #6c757d;
             --hover-color: #495057;
             --info-bg: #e9ecef;
+            --button-bg: #f8f9fa;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --logo-color: #0d6efd;
         }
 
         [data-theme="dark"] {
@@ -47,6 +54,8 @@
             --accent-color: #adb5bd;
             --hover-color: #ced4da;
             --info-bg: #343a40;
+            --button-bg: #343a40;
+            --logo-color: #4d94ff;
         }
 
         * {
@@ -67,15 +76,80 @@
             flex-direction: column;
         }
 
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--logo-color);
+        }
+
+        .logo-icon {
+            margin-right: 5px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: var(--logo-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
         .header {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
             padding: 10px 20px;
             background-color: var(--info-bg);
             border-bottom: 1px solid var(--border-color);
         }
 
-        .theme-toggle {
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .toolbar {
+            display: flex;
+            padding: 10px 20px;
+            background-color: var(--info-bg);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .toolbar-btn {
+            background: var(--button-bg);
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .toolbar-btn:hover {
+            background-color: var(--hover-color);
+            color: var(--text-color);
+        }
+
+        .toolbar-select {
+            background: var(--button-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .theme-toggle, .action-btn {
             background: none;
             border: none;
             color: var(--accent-color);
@@ -84,9 +158,11 @@
             padding: 5px 10px;
             border-radius: 4px;
             margin-left: 15px;
+            display: flex;
+            align-items: center;
         }
 
-        .theme-toggle:hover {
+        .theme-toggle:hover, .action-btn:hover {
             color: var(--hover-color);
         }
 
@@ -107,7 +183,7 @@
             flex-direction: column;
         }
 
-        textarea {
+        #editor {
             width: 100%;
             height: 100%;
             flex-grow: 1;
@@ -118,13 +194,38 @@
             border-radius: 5px;
             background-color: var(--editor-bg);
             color: var(--text-color);
-            resize: none;
             outline: none;
+            overflow-y: auto;
         }
 
-        textarea:focus {
+        #editor:focus {
             border-color: var(--accent-color);
             box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.2);
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .alert.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .alert-success {
+            background-color: var(--success-color);
+        }
+
+        .alert-error {
+            background-color: var(--error-color);
         }
 
         @media (max-width: 768px) {
@@ -132,36 +233,103 @@
                 padding: 10px;
             }
             
-            textarea {
+            #editor {
                 padding: 15px;
                 font-size: 16px;
+            }
+            
+            .toolbar {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .logo {
+                font-size: 16px;
+            }
+            
+            .logo-icon {
+                width: 20px;
+                height: 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="word-counter" id="wordCounter">0 words, 0 characters</div>
-        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">L</div>
+                <span>LexWriter</span>
+            </div>
+            <button class="action-btn" id="saveBtn"><i class="fas fa-save"></i> Save</button>
+            <button class="action-btn" id="exportPdfBtn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+        </div>
+        <div class="header-right">
+            <div class="word-counter" id="wordCounter">0 words, 0 characters</div>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <button class="toolbar-btn" id="boldBtn"><i class="fas fa-bold"></i></button>
+        <button class="toolbar-btn" id="italicBtn"><i class="fas fa-italic"></i></button>
+        <button class="toolbar-btn" id="underlineBtn"><i class="fas fa-underline"></i></button>
+        <button class="toolbar-btn" id="strikeBtn"><i class="fas fa-strikethrough"></i></button>
+        <button class="toolbar-btn" id="alignLeftBtn"><i class="fas fa-align-left"></i></button>
+        <button class="toolbar-btn" id="alignCenterBtn"><i class="fas fa-align-center"></i></button>
+        <button class="toolbar-btn" id="alignRightBtn"><i class="fas fa-align-right"></i></button>
+        <button class="toolbar-btn" id="listBtn"><i class="fas fa-list-ul"></i></button>
+        <button class="toolbar-btn" id="numberListBtn"><i class="fas fa-list-ol"></i></button>
+        <button class="toolbar-btn" id="linkBtn"><i class="fas fa-link"></i></button>
+        <button class="toolbar-btn" id="clearFormatBtn"><i class="fas fa-eraser"></i></button>
+        
+        <select class="toolbar-select" id="fontFamily">
+            <option value="inherit">Font Family</option>
+            <option value="Arial">Arial</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+        
+        <select class="toolbar-select" id="fontSize">
+            <option value="">Font Size</option>
+            <option value="1">Very Small</option>
+            <option value="2">Small</option>
+            <option value="3">Normal</option>
+            <option value="4">Medium</option>
+            <option value="5">Large</option>
+            <option value="6">Very Large</option>
+            <option value="7">Extra Large</option>
+        </select>
     </div>
 
     <div class="container">
-        <textarea id="editor" placeholder="Start writing..." autofocus></textarea>
+        <div id="editor" contenteditable="true">Welcome to LexWriter! Start typing or use the formatting tools above.</div>
     </div>
+    
+    <div class="alert" id="alertMessage"></div>
 
+    <!-- Include html2pdf.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <script>
         const editor = document.getElementById('editor');
         const wordCounter = document.getElementById('wordCounter');
         const themeToggle = document.getElementById('themeToggle');
-        const storageKey = 'minimalWriterText';
-        const themeKey = 'minimalWriterTheme';
+        const saveBtn = document.getElementById('saveBtn');
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
+        const alertMessage = document.getElementById('alertMessage');
+        const storageKey = 'lexWriterContent';
+        const themeKey = 'lexWriterTheme';
 
         // Load content and theme from local storage on page load
         window.onload = () => {
-            // Load saved text
-            const savedText = localStorage.getItem(storageKey);
-            if (savedText) {
-                editor.value = savedText;
+            // Load saved content
+            const savedContent = localStorage.getItem(storageKey);
+            if (savedContent) {
+                editor.innerHTML = savedContent;
                 updateWordCount();
             }
             
@@ -169,25 +337,31 @@
             const savedTheme = localStorage.getItem(themeKey);
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                themeToggle.textContent = '☀️';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
-                themeToggle.textContent = '🌙';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
             }
         };
 
         // Update word count
         function updateWordCount() {
-            const text = editor.value;
+            const text = editor.innerText || '';
             const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
             const charCount = text.length;
             wordCounter.textContent = `${wordCount} words, ${charCount} characters`;
         }
 
-        // Save content to local storage and update word count on every input
+        // Save content to local storage
         editor.addEventListener('input', () => {
-            localStorage.setItem(storageKey, editor.value);
+            localStorage.setItem(storageKey, editor.innerHTML);
             updateWordCount();
+        });
+
+        // Add click handler for Save button
+        saveBtn.addEventListener('click', () => {
+            localStorage.setItem(storageKey, editor.innerHTML);
+            showAlert('Document saved successfully!', 'success');
         });
 
         // Toggle theme
@@ -196,13 +370,119 @@
             if (currentTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'light');
                 localStorage.setItem(themeKey, 'light');
-                themeToggle.textContent = '🌙';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 localStorage.setItem(themeKey, 'dark');
-                themeToggle.textContent = '☀️';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
         });
+
+        // Export to PDF
+        exportPdfBtn.addEventListener('click', () => {
+            const element = editor;
+            const opt = {
+                margin: [15, 15],
+                filename: 'lexwriter_document.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Generate PDF
+            html2pdf().from(element).set(opt).save()
+                .then(() => {
+                    showAlert('PDF exported successfully!', 'success');
+                })
+                .catch(err => {
+                    showAlert('Error exporting PDF. Please try again.', 'error');
+                    console.error('PDF export error:', err);
+                });
+        });
+
+        // Formatting functions
+        document.getElementById('boldBtn').addEventListener('click', () => {
+            document.execCommand('bold', false, null);
+            editor.focus();
+        });
+
+        document.getElementById('italicBtn').addEventListener('click', () => {
+            document.execCommand('italic', false, null);
+            editor.focus();
+        });
+
+        document.getElementById('underlineBtn').addEventListener('click', () => {
+            document.execCommand('underline', false, null);
+            editor.focus();
+        });
+        
+        document.getElementById('strikeBtn').addEventListener('click', () => {
+            document.execCommand('strikeThrough', false, null);
+            editor.focus();
+        });
+        
+        document.getElementById('alignLeftBtn').addEventListener('click', () => {
+            document.execCommand('justifyLeft', false, null);
+            editor.focus();
+        });
+        
+        document.getElementById('alignCenterBtn').addEventListener('click', () => {
+            document.execCommand('justifyCenter', false, null);
+            editor.focus();
+        });
+        
+        document.getElementById('alignRightBtn').addEventListener('click', () => {
+            document.execCommand('justifyRight', false, null);
+            editor.focus();
+        });
+        
+        document.getElementById('listBtn').addEventListener('click', () => {
+            document.execCommand('insertUnorderedList', false, null);
+            editor.focus();
+        });
+        
+        document.getElementById('numberListBtn').addEventListener('click', () => {
+            document.execCommand('insertOrderedList', false, null);
+            editor.focus();
+        });
+        
+        document.getElementById('linkBtn').addEventListener('click', () => {
+            const url = prompt('Enter URL:', 'https://');
+            if (url) {
+                document.execCommand('createLink', false, url);
+            }
+            editor.focus();
+        });
+        
+        document.getElementById('clearFormatBtn').addEventListener('click', () => {
+            document.execCommand('removeFormat', false, null);
+            editor.focus();
+        });
+        
+        document.getElementById('fontFamily').addEventListener('change', function() {
+            if (this.value !== 'inherit') {
+                document.execCommand('fontName', false, this.value);
+                editor.focus();
+            }
+        });
+        
+        document.getElementById('fontSize').addEventListener('change', function() {
+            if (this.value) {
+                document.execCommand('fontSize', false, this.value);
+                editor.focus();
+            }
+        });
+        
+        // Show alert message
+        function showAlert(message, type) {
+            alertMessage.textContent = message;
+            alertMessage.className = 'alert show alert-' + type;
+            
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                alertMessage.classList.remove('show');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
