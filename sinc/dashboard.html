@@ -197,8 +197,8 @@
                     </button>
                 </div>
 
-                <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
-                    <!-- Active link example -->
+                <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto no-scrollbar">
+                    <!-- Active link example - JS will manage this class -->
                     <a href="#dashboard"
                         class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 sidebar-link-active">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -208,7 +208,7 @@
                         </svg>
                         Dashboard
                     </a>
-                    <div class="mb-1 pt-1">
+                    <div class="mb-1 pt-2">
                         <p class="px-3 mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Case
                             Management</p>
                     </div>
@@ -264,7 +264,7 @@
                         Documents
                     </a>
 
-                    <div class="mb-1 pt-3">
+                    <div class="mb-1 pt-2">
                         <p class="px-3 mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Productivity
                         </p>
                     </div>
@@ -298,7 +298,7 @@
                         Time Tracking
                     </a>
 
-                    <div class="mb-1 pt-3">
+                    <div class="mb-1 pt-2">
                         <p class="px-3 mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Admin</p>
                     </div>
                     <a href="#activity"
@@ -352,7 +352,8 @@
                             </button>
                         </div>
                     </div>
-                    <div id="user-menu" class="mt-2 hidden space-y-2">
+                    <!-- User Menu Dropdown -->
+                    <div id="user-menu" class="mt-2 hidden space-y-1">
                         <a href="#profile"
                             class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -362,17 +363,22 @@
                             </svg>
                             Your Profile
                         </a>
-
+                        <!-- Add other menu items here if needed -->
+                         <a href="index.html"
+                            class="w-full flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium text-red-700 hover:bg-red-100 border border-red-200 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                            </svg>
+                            Logout
+                        </a>
                     </div>
-                    <a href="#logout"
+                   <!-- Original Logout Button (now inside dropdown logic) -->
+                   <!-- <a href="#logout"
                         class="mt-4 w-full flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium text-red-700 hover:bg-red-100 border border-red-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                        </svg>
-                        Logout
-                    </a>
+                         ... Logout ...
+                    </a> -->
                 </div>
             </div>
         </aside>
@@ -472,9 +478,9 @@
                         </button>
 
                         <!-- Search Modal (hidden by default) -->
-                        <div id="search-modal"
-                            class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-start justify-center pt-20">
-                            <div class="bg-white w-full max-w-2xl rounded-lg shadow-xl p-6 mx-4">
+                         <div id="search-modal"
+                            class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 items-start justify-center pt-20">
+                            <div class="bg-white w-full max-w-2xl rounded-lg shadow-xl p-6 mx-4" id="search-modal-content">
                                 <div class="flex justify-between items-center mb-4">
                                     <h2 class="text-lg font-semibold text-gray-800">Search SINC</h2>
                                     <button id="close-search" class="text-gray-500 hover:text-gray-700">
@@ -551,7 +557,11 @@
 
             <!-- Main content area -->
             <div id="main-content" class="p-4 sm:p-6 lg:p-8 space-y-6">
-                <!-- Dashboard content - shown by default -->
+
+                <!-- ########## CONTENT SECTIONS START ########## -->
+                <!-- These divs correspond to sidebar links. JS will toggle the 'hidden' class. -->
+
+                <!-- Dashboard content - shown by default (no 'hidden' class) -->
                 <div id="dashboard-content">
                     <!-- Quick stats cards - responsive grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -570,7 +580,7 @@
                             </div>
                             <p class="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">12</p>
                             <p class="mt-1 text-sm text-gray-500">View All Cases →</p>
-                            <a href="#cases" class="absolute inset-0" aria-label="View active cases"></a>
+                            <a href="#cases" class="absolute inset-0 sidebar-link-trigger" aria-label="View active cases"></a>
                         </div>
 
                         <div
@@ -586,7 +596,7 @@
                             </div>
                             <p class="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">5</p>
                             <p class="mt-1 text-sm text-gray-500">View Tasks →</p>
-                            <a href="#tasks" class="absolute inset-0" aria-label="View pending tasks"></a>
+                            <a href="#tasks" class="absolute inset-0 sidebar-link-trigger" aria-label="View pending tasks"></a>
                         </div>
 
                         <div
@@ -602,7 +612,7 @@
                             </div>
                             <p class="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">28h</p>
                             <p class="mt-1 text-sm text-gray-500">This week so far</p>
-                            <a href="#time-tracking" class="absolute inset-0" aria-label="View time tracking"></a>
+                            <a href="#time-tracking" class="absolute inset-0 sidebar-link-trigger" aria-label="View time tracking"></a>
                         </div>
 
                         <div
@@ -617,11 +627,11 @@
                                 </svg>
                             </div>
                             <p class="mt-2 text-sm text-gray-600">Polish a document or generate a summary quickly.</p>
-                            <button
-                                class="mt-3 inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            <button data-href="#ai-assistant"
+                                class="mt-3 inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 sidebar-link-trigger">
                                 Go to AI Assistant
                             </button>
-                            <a href="#ai-assistant" class="absolute inset-0" aria-label="Go to AI Assistant"></a>
+                           <!--  <a href="#ai-assistant" class="absolute inset-0" aria-label="Go to AI Assistant"></a> -->
                         </div>
                     </div>
 
@@ -629,7 +639,7 @@
                     <div class="mt-8">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base sm:text-lg font-semibold text-gray-800">Current Cases</h3>
-                            <a href="#cases" class="text-sm font-medium text-sky-700 hover:text-sky-900">View All →</a>
+                            <a href="#cases" class="text-sm font-medium text-sky-700 hover:text-sky-900 sidebar-link-trigger">View All →</a>
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                             <div
@@ -765,7 +775,8 @@
                                         <p class="text-sm text-gray-600">You uploaded <span
                                                 class="font-medium text-gray-800">Affidavit_ClientA.pdf</span> to Case
                                             <a href="#case-001"
-                                                class="font-medium text-sky-700 hover:underline">#CASE-001</a>.</p>
+                                                class="font-medium text-sky-700 hover:underline">#CASE-001</a>.
+                                        </p>
                                     </div>
                                     <span class="text-xs text-gray-400 ml-8 sm:ml-0">15 minutes ago</span>
                                 </li>
@@ -839,7 +850,7 @@
                         <div class="bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-200">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-base sm:text-lg font-semibold text-gray-800">Upcoming Tasks</h3>
-                                <a href="#tasks" class="text-sm font-medium text-sky-700 hover:text-sky-900">View
+                                <a href="#tasks" class="text-sm font-medium text-sky-700 hover:text-sky-900 sidebar-link-trigger">View
                                     All</a>
                             </div>
                             <ul class="divide-y divide-gray-200">
@@ -916,7 +927,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- End #dashboard-content -->
 
                 <!-- Case Files content - initially hidden -->
                 <div id="cases-content" class="hidden">
@@ -1020,7 +1031,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 6, 2025</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#case-104" class="text-sky-600 hover:text-sky-900">View</a>
+                                            <a href="#case-104-detail" class="text-sky-600 hover:text-sky-900">View</a> <!-- Updated href for clarity -->
                                         </td>
                                     </tr>
                                     <tr class="hover:bg-gray-50">
@@ -1042,7 +1053,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 7, 2025</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#case-118" class="text-sky-600 hover:text-sky-900">View</a>
+                                            <a href="#case-118-detail" class="text-sky-600 hover:text-sky-900">View</a>
                                         </td>
                                     </tr>
                                     <tr class="hover:bg-gray-50">
@@ -1064,7 +1075,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 5, 2025</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#case-112" class="text-sky-600 hover:text-sky-900">View</a>
+                                            <a href="#case-112-detail" class="text-sky-600 hover:text-sky-900">View</a>
                                         </td>
                                     </tr>
                                     <tr class="hover:bg-gray-50">
@@ -1087,12 +1098,14 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 3, 2025</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#case-097" class="text-sky-600 hover:text-sky-900">View</a>
+                                            <a href="#case-097-detail" class="text-sky-600 hover:text-sky-900">View</a>
                                         </td>
                                     </tr>
+                                    <!-- Add more rows as needed -->
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Pagination -->
                         <div
                             class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                             <div class="flex-1 flex justify-between sm:hidden">
@@ -1142,7 +1155,96 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- End #cases-content -->
+
+                <!-- Clients content - initially hidden -->
+                <div id="clients-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Clients</h2>
+                    <p class="text-gray-500">Client management features would go here. This could include:</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>Client list/directory (searchable, filterable by name, type, status)</li>
+                        <li>Individual client detail pages (contact info, related cases, communication history, documents)</li>
+                        <li>Ability to add/edit client records (organizations and individuals)</li>
+                        <li>Client intake forms and workflows</li>
+                        <li>Conflict checking tools</li>
+                        <li>Custom fields for client data</li>
+                    </ul>
+                     <button class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                         Add New Client
+                     </button>
+                </div> <!-- End #clients-content -->
+
+                <!-- Billing content - initially hidden -->
+                <div id="billing-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Billing</h2>
+                    <p class="text-gray-500">Billing and invoicing features would be displayed here:</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>Invoice generation (drafting, approval, sending)</li>
+                        <li>Tracking invoice status (draft, sent, paid, overdue)</li>
+                        <li>Payment processing integration (e.g., Stripe, LawPay)</li>
+                        <li>Billing reports (accounts receivable, aging reports, realization rates)</li>
+                        <li>Trust accounting features (ledger, reconciliation)</li>
+                        <li>Time entry review and approval workflow for billing</li>
+                        <li>Expense tracking and inclusion on invoices</li>
+                        <li>Customizable invoice templates</li>
+                    </ul>
+                    <div class="mt-4 space-x-2">
+                         <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25M9 17.25v.008M12 17.25v.008M15 17.25v.008M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                             Create Invoice
+                         </button>
+                         <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                             View Billing Reports
+                         </button>
+                    </div>
+                </div> <!-- End #billing-content -->
+
+                <!-- Calendar content - initially hidden -->
+                <div id="calendar-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Calendar</h2>
+                    <p class="text-gray-500">A calendar view (day, week, month) would be shown here, integrating
+                        appointments, deadlines, court dates, etc.</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>Integration with case deadlines and task due dates</li>
+                        <li>Ability to schedule meetings, appointments, and court dates</li>
+                        <li>Synchronization with external calendars (e.g., Google Calendar, Outlook)</li>
+                        <li>Filtering calendar view by user, event type, or case</li>
+                        <li>Color-coding for different event types</li>
+                        <li>Reminders for upcoming events</li>
+                    </ul>
+                    <p class="mt-4 text-red-600 font-medium">Note: The notification badge (3) on the sidebar indicates upcoming events/deadlines.</p>
+                    <!-- Placeholder for an actual calendar component -->
+                    <div class="mt-4 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
+                        Calendar Component Placeholder
+                    </div>
+                </div> <!-- End #calendar-content -->
+
+                <!-- Documents content - initially hidden -->
+                <div id="documents-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Documents</h2>
+                    <p class="text-gray-500">Document management system features:</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>Secure document storage (cloud-based)</li>
+                        <li>Folder structure (organized per case/client, or custom)</li>
+                        <li>Advanced document searching (full-text, metadata) and filtering</li>
+                        <li>Version control with history tracking</li>
+                        <li>Document templates for common legal forms</li>
+                        <li>Integration with cloud storage providers (e.g., Dropbox, Google Drive, OneDrive)</li>
+                        <li>E-signature integration (e.g., DocuSign)</li>
+                        <li>Document preview capabilities</li>
+                        <li>Sharing and collaboration features with permission controls</li>
+                    </ul>
+                     <div class="mt-4 space-x-2">
+                         <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
+                             Upload Document
+                         </button>
+                         <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                             Browse Templates
+                         </button>
+                    </div>
+                </div> <!-- End #documents-content -->
 
                 <!-- AI Assistant content - initially hidden -->
                 <div id="ai-assistant-content" class="hidden">
@@ -1215,7 +1317,7 @@
                                         <ul class="text-sm text-gray-800 mt-2 space-y-1">
                                             <li>1. What's the name of the infringing company?</li>
                                             <li>2. When did ABC Corp first notice the infringement?</li>
-                                            <li>3. Is ABC Corp's trademark registered?</li>
+                                            <li>3. Is ABC Corp's trademark registered? If so, what's the registration number?</li>
                                             <li>4. Any specific damages or confusion in the marketplace so far?</li>
                                         </ul>
                                         <p class="text-sm text-gray-800 mt-2">Once you provide these details, I can
@@ -1227,20 +1329,20 @@
 
                             <div class="p-4 border-t border-gray-200">
                                 <form>
-                                    <div class="flex items-center">
-                                        <button type="button"
-                                            class="p-2 rounded-full text-gray-500 hover:text-sky-600 focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                    <div class="flex items-center space-x-2">
+                                        <button type="button" title="Attach File"
+                                            class="p-2 rounded-full text-gray-500 hover:text-sky-600 hover:bg-gray-100 focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                                             </svg>
                                         </button>
-                                        <input type="text" placeholder="Type your message..."
-                                            class="flex-1 border-0 focus:ring-0 px-4 py-2">
-                                        <button type="submit"
-                                            class="p-2 rounded-full text-sky-600 hover:text-sky-700 focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        <input type="text" placeholder="Type your message or command..."
+                                            class="flex-1 border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                        <button type="submit" title="Send Message"
+                                            class="p-2 rounded-full text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -1259,7 +1361,7 @@
                                 <button
                                     class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                                     <div
-                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-sky-100 text-sky-600 mr-3">
+                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-sky-100 text-sky-600 mr-3 flex-shrink-0">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1275,7 +1377,7 @@
                                 <button
                                     class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                                     <div
-                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-amber-100 text-amber-600 mr-3">
+                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-amber-100 text-amber-600 mr-3 flex-shrink-0">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1291,7 +1393,7 @@
                                 <button
                                     class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                                     <div
-                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-purple-100 text-purple-600 mr-3">
+                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-purple-100 text-purple-600 mr-3 flex-shrink-0">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1307,7 +1409,7 @@
                                 <button
                                     class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                                     <div
-                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 mr-3">
+                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 mr-3 flex-shrink-0">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1334,11 +1436,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- End #ai-assistant-content -->
+
 
                 <!-- Tasks content - initially hidden -->
                 <div id="tasks-content" class="hidden">
-                    <div class="flex justify-between items-center mb-6">
+                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Tasks</h2>
                         <button
                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
@@ -1354,389 +1457,530 @@
                     <!-- Tasks Tabs -->
                     <div class="mb-6">
                         <div class="border-b border-gray-200">
-                            <nav class="flex -mb-px">
-                                <button
-                                    class="px-4 py-2 text-sm font-medium text-sky-700 border-b-2 border-sky-500 tab-active">
+                            <nav id="task-tabs" class="flex -mb-px space-x-4 overflow-x-auto">
+                                <button data-tab-target="my-tasks"
+                                    class="px-3 py-2 text-sm font-medium text-sky-700 border-b-2 border-sky-500 whitespace-nowrap task-tab-button tab-active">
                                     My Tasks (5)
                                 </button>
-                                <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700">
+                                <button data-tab-target="team-tasks" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent whitespace-nowrap task-tab-button">
                                     Team Tasks (12)
                                 </button>
-                                <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700">
+                                <button data-tab-target="completed-tasks" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent whitespace-nowrap task-tab-button">
                                     Completed (24)
                                 </button>
                             </nav>
                         </div>
                     </div>
 
-                    <!-- Tasks List -->
-                    <div class="bg-white rounded-lg shadow">
-                        <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                            <h3 class="text-base font-medium text-gray-800">Active Tasks</h3>
-                            <div class="flex space-x-2">
-                                <select
-                                    class="text-sm border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
-                                    <option>All Cases</option>
-                                    <option>Case #104</option>
-                                    <option>Case #118</option>
-                                    <option>Case #112</option>
-                                    <option>Case #097</option>
-                                </select>
-                                <select
-                                    class="text-sm border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
-                                    <option>All Priorities</option>
-                                    <option>High</option>
-                                    <option>Medium</option>
-                                    <option>Low</option>
-                                </select>
+                    <!-- Tasks List Container -->
+                    <div id="tasks-list-container">
+                        <!-- My Tasks List (visible by default) -->
+                        <div id="my-tasks-list" class="task-tab-content">
+                            <div class="bg-white rounded-lg shadow">
+                                <div class="px-4 py-3 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                                    <h3 class="text-base font-medium text-gray-800">My Active Tasks</h3>
+                                    <div class="flex space-x-2 flex-wrap gap-2">
+                                        <select class="text-xs border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500 py-1 px-2">
+                                            <option>All Cases</option>
+                                            <option>Case #104</option>
+                                            <option>Case #118</option>
+                                            <option>Case #112</option>
+                                            <option>Case #097</option>
+                                            <option>Admin</option>
+                                        </select>
+                                        <select class="text-xs border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500 py-1 px-2">
+                                            <option>All Priorities</option>
+                                            <option>High</option>
+                                            <option>Medium</option>
+                                            <option>Low</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <ul class="divide-y divide-gray-200">
+                                    <!-- Task Item 1 -->
+                                    <li class="p-4 hover:bg-gray-50">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 mt-1">
+                                                <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                            </div>
+                                            <div class="ml-3 flex-1">
+                                                <div class="flex items-center justify-between">
+                                                    <p class="text-sm font-medium text-gray-800">Review due diligence report</p>
+                                                    <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full status-high">High</span>
+                                                </div>
+                                                <div class="mt-1 flex items-center text-xs text-gray-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" /></svg>
+                                                    Case #118 • ABC Corp Merger
+                                                </div>
+                                                <div class="mt-2 flex items-center justify-between">
+                                                    <div class="flex items-center text-xs">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                        <span class="text-red-600 font-medium">Due Apr 10, 2025</span>
+                                                    </div>
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
+                                                        <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Task Item 2 -->
+                                    <li class="p-4 hover:bg-gray-50">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 mt-1">
+                                                <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                            </div>
+                                            <div class="ml-3 flex-1">
+                                                <div class="flex items-center justify-between">
+                                                    <p class="text-sm font-medium text-gray-800">Prepare for Smith deposition</p>
+                                                    <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full status-medium">Medium</span>
+                                                </div>
+                                                <div class="mt-1 flex items-center text-xs text-gray-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" /></svg>
+                                                    Case #104 • Smith vs. Jones
+                                                </div>
+                                                <div class="mt-2 flex items-center justify-between">
+                                                    <div class="flex items-center text-xs">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                        <span class="text-gray-600 font-medium">Due Apr 12, 2025</span>
+                                                    </div>
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
+                                                        <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                     <!-- Task Item 3 -->
+                                    <li class="p-4 hover:bg-gray-50">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 mt-1">
+                                                <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                            </div>
+                                            <div class="ml-3 flex-1">
+                                                <div class="flex items-center justify-between">
+                                                    <p class="text-sm font-medium text-gray-800">Draft client meeting agenda</p>
+                                                    <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full status-low">Low</span>
+                                                </div>
+                                                <div class="mt-1 flex items-center text-xs text-gray-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" /></svg>
+                                                    Case #112 • Doe Estate Planning
+                                                </div>
+                                                <div class="mt-2 flex items-center justify-between">
+                                                    <div class="flex items-center text-xs">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                        <span class="text-gray-600 font-medium">Due Apr 11, 2025</span>
+                                                    </div>
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
+                                                        <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Task Item 4 -->
+                                    <li class="p-4 hover:bg-gray-50">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 mt-1">
+                                                <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                            </div>
+                                            <div class="ml-3 flex-1">
+                                                <div class="flex items-center justify-between">
+                                                    <p class="text-sm font-medium text-gray-800">File patent application</p>
+                                                    <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full status-medium">Medium</span>
+                                                </div>
+                                                <div class="mt-1 flex items-center text-xs text-gray-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" /></svg>
+                                                    Case #097 • XYZ Patent Filing
+                                                </div>
+                                                <div class="mt-2 flex items-center justify-between">
+                                                    <div class="flex items-center text-xs">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                        <span class="text-gray-600 font-medium">Due Apr 15, 2025</span>
+                                                    </div>
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
+                                                        <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Task Item 5 -->
+                                     <li class="p-4 hover:bg-gray-50">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 mt-1">
+                                                <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                            </div>
+                                            <div class="ml-3 flex-1">
+                                                <div class="flex items-center justify-between">
+                                                    <p class="text-sm font-medium text-gray-800">Update case status report</p>
+                                                    <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full status-low">Low</span>
+                                                </div>
+                                                <div class="mt-1 flex items-center text-xs text-gray-500">
+                                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                                   Admin • Weekly Report
+                                                </div>
+                                                <div class="mt-2 flex items-center justify-between">
+                                                    <div class="flex items-center text-xs">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                        <span class="text-gray-600 font-medium">Due Apr 20, 2025</span>
+                                                    </div>
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
+                                                        <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 
-                        <ul class="divide-y divide-gray-200">
-                            <li class="p-4 hover:bg-gray-50">
-                                <div class="flex items-start">
-                                    <div class="flex-shrink-0 mt-1">
-                                        <input type="checkbox"
-                                            class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-800">Review due diligence report</p>
-                                            <span
-                                                class="inline-block px-2 py-1 text-xs font-medium rounded-full status-high">High</span>
-                                        </div>
-                                        <div class="mt-1 flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                            </svg>
-                                            <span class="text-xs text-gray-500">Case #118 • ABC Corp Merger</span>
-                                        </div>
-                                        <div class="mt-2 flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
-                                                <span class="text-xs text-red-600 font-medium">Due Apr 10, 2025</span>
-                                            </div>
-                                            <div class="flex space-x-2">
-                                                <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
-                                                <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                        <!-- Placeholder for Team Tasks List (initially hidden) -->
+                        <div id="team-tasks-list" class="hidden task-tab-content bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Team Tasks</h3>
+                            <p class="text-gray-500">Team tasks assigned to others would appear here, likely with filters
+                                for assignee, case, priority, etc.</p>
+                            <div class="mt-4 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
+                                Team Task List Placeholder
+                            </div>
+                        </div>
 
-                            <li class="p-4 hover:bg-gray-50">
-                                <div class="flex items-start">
-                                    <div class="flex-shrink-0 mt-1">
-                                        <input type="checkbox"
-                                            class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-800">Prepare for Smith deposition
-                                            </p>
-                                            <span
-                                                class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
-                                        </div>
-                                        <div class="mt-1 flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                            </svg>
-                                            <span class="text-xs text-gray-500">Case #104 • Smith vs. Jones</span>
-                                        </div>
-                                        <div class="mt-2 flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
-                                                <span class="text-xs text-gray-600 font-medium">Due Apr 12, 2025</span>
-                                            </div>
-                                            <div class="flex space-x-2">
-                                                <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
-                                                <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                        <!-- Placeholder for Completed Tasks List (initially hidden) -->
+                        <div id="completed-tasks-list" class="hidden task-tab-content bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Completed Tasks</h3>
+                            <p class="text-gray-500">A list or table of completed tasks (yours and team's, depending on
+                                filters) would be displayed here, often sortable by completion date.</p>
+                            <div class="mt-4 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
+                                Completed Task List Placeholder
+                            </div>
+                        </div>
+                    </div> <!-- End #tasks-list-container -->
+                </div> <!-- End #tasks-content -->
 
-                            <li class="p-4 hover:bg-gray-50">
-                                <div class="flex items-start">
-                                    <div class="flex-shrink-0 mt-1">
-                                        <input type="checkbox"
-                                            class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-800">Draft client meeting agenda</p>
-                                            <span
-                                                class="inline-block px-2 py-1 text-xs font-medium rounded-full status-low">Low</span>
-                                        </div>
-                                        <div class="mt-1 flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                            </svg>
-                                            <span class="text-xs text-gray-500">Case #112 • Doe Estate Planning</span>
-                                        </div>
-                                        <div class="mt-2 flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
-                                                <span class="text-xs text-gray-600 font-medium">Due Apr 11, 2025</span>
-                                            </div>
-                                            <div class="flex space-x-2">
-                                                <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
-                                                <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
 
-                            <!-- Task List Component -->
-                            <ul class="divide-y divide-gray-200">
-                                <!-- Task Item 1 -->
-                                <li class="p-4 hover:bg-gray-50">
-                                    <div class="flex items-start">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <input type="checkbox"
-                                                class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
-                                        </div>
-                                        <div class="ml-3 flex-1">
-                                            <div class="flex items-center justify-between">
-                                                <p class="text-sm font-medium text-gray-800">File patent application</p>
-                                                <span
-                                                    class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
-                                            </div>
-                                            <div class="mt-1 flex items-center">
-                                                <svg class="h-4 w-4 text-gray-400 mr-1"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                </svg>
-                                                <span class="text-xs text-gray-500">Case #097 • XYZ Patent Filing</span>
-                                            </div>
-                                            <div class="mt-2 flex items-center justify-between">
-                                                <div class="flex items-center">
-                                                    <svg class="h-4 w-4 text-gray-400 mr-1"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                    <span class="text-xs text-gray-600 font-medium">Due Apr 15,
-                                                        2025</span>
-                                                </div>
-                                                <div class="flex space-x-2">
-                                                    <button
-                                                        class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
-                                                    <button
-                                                        class="text-xs text-red-600 hover:text-red-800">Delete</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                <!-- Time Tracking content - initially hidden -->
+                <div id="time-tracking-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Time Tracking</h2>
+                    <p class="text-gray-500">Features for logging and managing billable/non-billable time:</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>Timers for tracking work duration in real-time</li>
+                        <li>Manual time entry forms (with fields for date, duration, case, task, description)</li>
+                        <li>Association of time entries with specific cases/tasks and billing codes</li>
+                        <li>Reporting on time logged per user, case, date range, or billing status</li>
+                        <li>Review and approval workflow for time entries before billing</li>
+                        <li>Bulk editing or duplication of time entries</li>
+                        <li>Integration with calendar events for easy time logging</li>
+                        <li>Billable vs. Non-Billable time designation</li>
+                    </ul>
+                     <div class="mt-4 space-x-2">
+                         <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                             Start Timer
+                         </button>
+                         <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                             Add Manual Entry
+                         </button>
+                     </div>
+                     <!-- Placeholder for Time Log Table/List -->
+                    <div class="mt-6 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
+                        Time Log Placeholder
+                    </div>
+                </div> <!-- End #time-tracking-content -->
 
-                                <!-- Task Item 2 -->
-                                <li class="p-4 hover:bg-gray-50">
-                                    <div class="flex items-start">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <input type="checkbox"
-                                                class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
-                                        </div>
-                                        <div class="ml-3 flex-1">
-                                            <div class="flex items-center justify-between">
-                                                <p class="text-sm font-medium text-gray-800">Update case status report
-                                                </p>
-                                                <span
-                                                    class="inline-block px-2 py-1 text-xs font-medium rounded-full status-low">Low</span>
-                                            </div>
-                                            <div class="mt-1 flex items-center">
-                                                <svg class="h-4 w-4 text-gray-400 mr-1"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                </svg>
-                                                <span class="text-xs text-gray-500">Admin • Weekly Report</span>
-                                            </div>
-                                            <div class="mt-2 flex items-center justify-between">
-                                                <div class="flex items-center">
-                                                    <svg class="h-4 w-4 text-gray-400 mr-1"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                    <span class="text-xs text-gray-600 font-medium">Due Apr 20,
-                                                        2025</span>
-                                                </div>
-                                                <div class="flex space-x-2">
-                                                    <button
-                                                        class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
-                                                    <button
-                                                        class="text-xs text-red-600 hover:text-red-800">Delete</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <script>
-                                document.addEventListener('DOMContentLoaded', () => {
-                                    const menuToggle = document.getElementById('menu-toggle');
-                                    const closeSidebar = document.getElementById('close-sidebar');
-                                    const sidebar = document.getElementById('sidebar');
-                                    const overlay = document.getElementById('overlay');
-                                    const userMenuButton = document.getElementById('user-menu-button');
-                                    const userMenu = document.getElementById('user-menu');
-                                    const notificationsButton = document.getElementById('notifications-button');
-                                    const notificationsPanel = document.getElementById('notifications-panel');
-                                    const searchButton = document.getElementById('search-button');
-                                    const searchModal = document.getElementById('search-modal');
-                                    const closeSearch = document.getElementById('close-search');
-                                    const sidebarLinks = document.querySelectorAll('#sidebar nav a');
-                                    const mainContentDivs = document.querySelectorAll('#main-content > div[id$="-content"]');
-                                    const headerTitle = document.querySelector('header h2');
+                <!-- Team Activity content - initially hidden -->
+                <div id="activity-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Team Activity</h2>
+                    <p class="text-gray-500">(Admin View) An overview of recent activities across the team:</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>Comprehensive audit log of user actions (logins, file uploads/downloads, task creations/completions, case updates, etc.)</li>
+                        <li>Filtering activity log by user, date range, case, or activity type</li>
+                        <li>Overview of team member status (checked in/out, last active time)</li>
+                        <li>Monitoring key system events or potential security issues</li>
+                        <li>Exportable activity logs for compliance or review</li>
+                    </ul>
+                    <!-- Placeholder for Activity Feed/Log Table -->
+                    <div class="mt-4 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
+                        Team Activity Log Placeholder
+                    </div>
+                </div> <!-- End #activity-content -->
 
-                                    // --- Sidebar Toggle ---
-                                    function openSidebar() {
-                                        sidebar.classList.remove('mobile-menu-closed');
-                                        overlay.classList.remove('hidden');
-                                        document.body.style.overflow = 'hidden'; // Prevent background scroll
-                                    }
+                <!-- Reports content - initially hidden -->
+                <div id="reports-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Reports</h2>
+                    <p class="text-gray-500">Various reports for firm management:</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>Case Management Reports (status overview, upcoming deadlines, case load by attorney)</li>
+                        <li>Billing & Financial Reports (profitability by case/client/attorney, realization rates, WIP, accounts receivable, trust account summaries)</li>
+                        <li>Productivity Reports (time logged per user, tasks completed, billable hours vs. non-billable)</li>
+                        <li>Client Reports (active clients, client sources, matter history)</li>
+                        <li>Custom report builder allowing selection of data points, filters, and grouping</li>
+                        <li>Export options for reports (CSV, PDF)</li>
+                        <li>Dashboard widgets summarizing key report metrics</li>
+                    </ul>
+                    <!-- Placeholder for Report List/Generator -->
+                     <div class="mt-4 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
+                        Reports Dashboard/List Placeholder
+                    </div>
+                </div> <!-- End #reports-content -->
 
-                                    function closeSidebarFunc() {
-                                        sidebar.classList.add('mobile-menu-closed');
-                                        overlay.classList.add('hidden');
-                                        document.body.style.overflow = ''; // Restore background scroll
-                                    }
+                <!-- Settings content - initially hidden -->
+                <div id="settings-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Settings</h2>
+                    <p class="text-gray-500">Application and user settings:</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>User Management (add/edit users, assign roles, manage permissions) - (Admin)</li>
+                        <li>Firm Details (name, address, logo, branding customization)</li>
+                        <li>Integration Settings (calendar sync, email integration, cloud storage connections, payment gateway setup)</li>
+                        <li>Billing Configuration (default rates, activity codes, invoice templates, payment terms)</li>
+                        <li>Custom Fields (define custom data fields for cases, clients, contacts)</li>
+                        <li>Notification Preferences (control email/in-app notifications for various events)</li>
+                        <li>Security Settings (password policies, two-factor authentication setup, session timeout)</li>
+                        <li>Data Import/Export tools</li>
+                        <li>API Key management (if applicable)</li>
+                    </ul>
+                    <!-- Placeholder for Settings Sections -->
+                    <div class="mt-4 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
+                        Settings Panel Placeholder
+                    </div>
+                </div> <!-- End #settings-content -->
 
-                                    menuToggle.addEventListener('click', openSidebar);
-                                    closeSidebar.addEventListener('click', closeSidebarFunc);
-                                    overlay.addEventListener('click', closeSidebarFunc);
+                <!-- Profile content - initially hidden -->
+                <div id="profile-content" class="hidden bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Your Profile</h2>
+                    <p class="text-gray-500">User-specific profile settings:</p>
+                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
+                        <li>Edit personal information (name, email, phone number, title)</li>
+                        <li>Change password</li>
+                        <li>Upload or change profile picture</li>
+                        <li>Manage personal notification preferences</li>
+                        <li>Set up and manage two-factor authentication (2FA)</li>
+                        <li>View personal activity log</li>
+                        <li>Manage API tokens or personal integrations (if applicable)</li>
+                    </ul>
+                    <!-- Placeholder for Profile Form -->
+                    <div class="mt-4 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
+                        User Profile Form Placeholder
+                    </div>
+                </div> <!-- End #profile-content -->
 
-                                    // --- User Menu Toggle ---
-                                    userMenuButton.addEventListener('click', () => {
-                                        const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-                                        userMenuButton.setAttribute('aria-expanded', !isExpanded);
-                                        userMenu.classList.toggle('hidden');
-                                    });
 
-                                    // --- Notifications Panel Toggle ---
-                                    notificationsButton.addEventListener('click', (e) => {
-                                        e.stopPropagation(); // Prevent click from bubbling up to document
-                                        notificationsPanel.classList.toggle('hidden');
-                                    });
+                <!-- ********** END: Added Placeholder Content Sections ********** -->
 
-                                    // --- Search Modal Toggle ---
-                                    searchButton.addEventListener('click', () => {
-                                        searchModal.classList.remove('hidden');
-                                    });
+            </div> <!-- End #main-content -->
+        </main>
+    </div>
 
-                                    closeSearch.addEventListener('click', () => {
-                                        searchModal.classList.add('hidden');
-                                    });
 
-                                    // Close Notifications/Search/User Menu when clicking outside
-                                    document.addEventListener('click', (e) => {
-                                        // Close Notifications Panel
-                                        if (!notificationsPanel.classList.contains('hidden') && !notificationsPanel.contains(e.target) && e.target !== notificationsButton && !notificationsButton.contains(e.target)) {
-                                            notificationsPanel.classList.add('hidden');
-                                        }
-                                        // Close Search Modal (clicking on the gray overlay)
-                                        if (!searchModal.classList.contains('hidden') && e.target === searchModal) {
-                                            searchModal.classList.add('hidden');
-                                        }
-                                        // Close User Menu
-                                        if (!userMenu.classList.contains('hidden') && !userMenu.contains(e.target) && e.target !== userMenuButton && !userMenuButton.contains(e.target)) {
-                                            userMenu.classList.add('hidden');
-                                            userMenuButton.setAttribute('aria-expanded', 'false');
-                                        }
-                                    });
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
 
-                                    // --- Content Switching ---
-                                    function showContent(targetId) {
-                                        mainContentDivs.forEach(div => {
-                                            if (div.id === targetId) {
-                                                div.classList.remove('hidden');
-                                            } else {
-                                                div.classList.add('hidden');
-                                            }
-                                        });
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
 
-                                        // Update Header Title (Simple Example)
-                                        let titleText = "Dashboard"; // Default
-                                        const activeLink = document.querySelector(`.sidebar-link-active`);
-                                        if (activeLink) {
-                                            titleText = activeLink.textContent.trim().split('\n')[0]; // Get text before potential badge
-                                            if (titleText === "Dashboard") {
-                                                headerTitle.textContent = `Welcome back, Avuyile!`;
-                                                headerTitle.nextElementSibling.style.display = ''; // Show subtitle
-                                            } else {
-                                                headerTitle.textContent = titleText;
-                                                headerTitle.nextElementSibling.style.display = 'none'; // Hide subtitle
-                                            }
-                                        }
-                                    }
+            const notificationsButton = document.getElementById('notifications-button');
+            const notificationsPanel = document.getElementById('notifications-panel');
 
-                                    sidebarLinks.forEach(link => {
-                                        link.addEventListener('click', (e) => {
-                                            e.preventDefault(); // Prevent default anchor jump
-                                            const targetId = link.getAttribute('href').substring(1) + '-content';
+            const searchButton = document.getElementById('search-button');
+            const searchModal = document.getElementById('search-modal');
+            const searchModalContent = document.getElementById('search-modal-content');
+            const closeSearch = document.getElementById('close-search');
 
-                                            // Update active link style
-                                            sidebarLinks.forEach(l => l.classList.remove('sidebar-link-active'));
-                                            link.classList.add('sidebar-link-active');
+            const mainContent = document.getElementById('main-content');
+            const sidebarLinks = document.querySelectorAll('#sidebar nav a[href^="#"], a.sidebar-link-trigger, button.sidebar-link-trigger');
+            const contentSections = mainContent.querySelectorAll(':scope > div[id$="-content"]'); // Direct children ending with -content
 
-                                            // Show the correct content section
-                                            showContent(targetId);
+            const taskTabsContainer = document.getElementById('task-tabs');
+            const taskTabButtons = document.querySelectorAll('.task-tab-button');
+            const taskTabContents = document.querySelectorAll('.task-tab-content');
 
-                                            // Close sidebar on mobile after navigation
-                                            if (window.innerWidth < 1024) {
-                                                closeSidebarFunc();
-                                            }
 
-                                            // Scroll to top of main content area
-                                            document.getElementById('main-content').scrollTop = 0;
-                                        });
-                                    });
+            // --- Mobile Sidebar ---
+            function openMobileSidebar() {
+                sidebar.classList.remove('mobile-menu-closed');
+                sidebar.classList.add('mobile-menu-open');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; 
+            }
 
-                                    // --- Initial State ---
-                                    // Show dashboard content by default
-                                    showContent('dashboard-content');
-                                    // Ensure the dashboard link is active initially
-                                    document.querySelector('a[href="#dashboard"]').classList.add('sidebar-link-active');
+            function closeMobileSidebar() {
+                sidebar.classList.add('mobile-menu-closed');
+                sidebar.classList.remove('mobile-menu-open');
+                overlay.classList.add('hidden');
+            }
 
-                                });
-                            </script>
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openMobileSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeMobileSidebar);
+            }
+            if (overlay) {
+                overlay.addEventListener('click', closeMobileSidebar);
+            }
+
+             // --- User Menu ---
+            if (userMenuButton && userMenu) {
+                userMenuButton.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent click from bubbling to document
+                    const isHidden = userMenu.classList.toggle('hidden');
+                    userMenuButton.setAttribute('aria-expanded', !isHidden);
+                });
+
+                // Close user menu if clicked outside
+                document.addEventListener('click', (event) => {
+                    if (!userMenu.contains(event.target) && event.target !== userMenuButton && !userMenu.classList.contains('hidden')) {
+                         userMenu.classList.add('hidden');
+                         userMenuButton.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+             // --- Notifications Panel ---
+            if (notificationsButton && notificationsPanel) {
+                notificationsButton.addEventListener('click', (event) => {
+                     event.stopPropagation(); // Prevent click from bubbling to document
+                    notificationsPanel.classList.toggle('hidden');
+                });
+
+                 // Close notifications if clicked outside
+                document.addEventListener('click', (event) => {
+                    if (!notificationsPanel.contains(event.target) && event.target !== notificationsButton && !notificationsPanel.classList.contains('hidden')) {
+                        notificationsPanel.classList.add('hidden');
+                    }
+                });
+            }
+
+            // --- Search Modal ---
+             if (searchButton && searchModal && closeSearch) {
+                searchButton.addEventListener('click', () => {
+                    searchModal.classList.remove('hidden');
+                    searchModal.classList.add('flex'); // Use flex for centering
+                });
+
+                closeSearch.addEventListener('click', () => {
+                    searchModal.classList.add('hidden');
+                    searchModal.classList.remove('flex');
+                });
+
+                 // Close modal if clicked on the background overlay
+                searchModal.addEventListener('click', (event) => {
+                     // Check if the click is directly on the modal background, not its content
+                    if (event.target === searchModal) {
+                        searchModal.classList.add('hidden');
+                        searchModal.classList.remove('flex');
+                    }
+                });
+            }
+
+
+            // --- Content Switching ---
+            function switchContent(targetHref) {
+                 if (!targetHref || !targetHref.startsWith('#')) return;
+
+                const targetId = targetHref.substring(1) + '-content';
+                const targetSection = document.getElementById(targetId);
+
+                // Hide all content sections
+                contentSections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+
+                // Show the target section if found
+                if (targetSection) {
+                    targetSection.classList.remove('hidden');
+                } else if (targetHref === '#dashboard') {
+                    // Fallback to dashboard if target not found but dashboard link clicked
+                    document.getElementById('dashboard-content').classList.remove('hidden');
+                } else {
+                    // If no section found, maybe show dashboard or an error/default
+                    console.warn(`Content section for ${targetHref} not found. Showing dashboard.`);
+                    document.getElementById('dashboard-content').classList.remove('hidden');
+                }
+
+                 // Update active link styles only for actual sidebar nav links
+                const sidebarNavLinks = document.querySelectorAll('#sidebar nav a[href^="#"]');
+                sidebarNavLinks.forEach(sLink => {
+                    sLink.classList.remove('sidebar-link-active');
+                     if (sLink.getAttribute('href') === targetHref) {
+                        sLink.classList.add('sidebar-link-active');
+                    }
+                });
+
+                // Close mobile sidebar after navigation
+                if (window.innerWidth < 1024) { // lg breakpoint
+                    closeMobileSidebar();
+                }
+            }
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    let targetHref = link.getAttribute('href') || link.dataset.href; // Handle buttons with data-href
+                     if (targetHref) {
+                         switchContent(targetHref);
+                    }
+                });
+            });
+
+            // Handle potential hash changes from external links or back/forward buttons
+            function handleHashChange() {
+                const hash = window.location.hash;
+                if (hash && hash.length > 1) {
+                    switchContent(hash);
+                } else {
+                    // Default to dashboard if no hash or empty hash
+                    switchContent('#dashboard');
+                }
+            }
+
+             // Initial content load based on hash or default to dashboard
+             handleHashChange();
+             // Listen for hash changes
+             window.addEventListener('hashchange', handleHashChange);
+
+            // --- Task Tabs ---
+            if (taskTabsContainer) {
+                taskTabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetId = button.dataset.tabTarget + '-list'; // e.g., my-tasks-list
+                        const targetContent = document.getElementById(targetId);
+
+                        // Update button styles
+                        taskTabButtons.forEach(btn => {
+                            btn.classList.remove('tab-active', 'text-sky-700', 'border-sky-500');
+                            btn.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'border-transparent');
+                        });
+                        button.classList.add('tab-active', 'text-sky-700', 'border-sky-500');
+                        button.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'border-transparent');
+
+
+                        // Hide all content sections
+                        taskTabContents.forEach(content => {
+                            content.classList.add('hidden');
+                        });
+
+                        // Show target content section
+                        if (targetContent) {
+                            targetContent.classList.remove('hidden');
+                        }
+                    });
+                });
+            }
+
+
+        }); // End DOMContentLoaded
+    </script>
+
 </body>
-
 </html>
