@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,45 +10,66 @@
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <style>
         /* Use Inter font if loaded, otherwise default sans-serif */
-        html { font-family: 'Inter', sans-serif; }
-        @supports (font-variation-settings: normal) {
-            html { font-family: 'Inter var', sans-serif; }
+        html {
+            font-family: 'Inter', sans-serif;
         }
+
+        @supports (font-variation-settings: normal) {
+            html {
+                font-family: 'Inter var', sans-serif;
+            }
+        }
+
         /* Custom scrollbar for a cleaner look */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
-            background: #f1f1f1; /* gray-100 */
+            background: #f1f1f1;
+            /* gray-100 */
             border-radius: 10px;
         }
+
         ::-webkit-scrollbar-thumb {
-            background: #c5c5c5; /* gray-300 */
+            background: #c5c5c5;
+            /* gray-300 */
             border-radius: 10px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8; /* gray-400 */
+            background: #a8a8a8;
+            /* gray-400 */
         }
+
         /* Basic styling for active sidebar link */
         .sidebar-link-active {
-            background-color: #e0f2fe; /* light-sky-100 */
-            color: #0c4a6e; /* sky-900 */
+            background-color: #e0f2fe;
+            /* light-sky-100 */
+            color: #0c4a6e;
+            /* sky-900 */
             font-weight: 600;
         }
+
         /* Hide scrollbar for Chrome, Safari and Opera */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
         /* Hide scrollbar for IE, Edge and Firefox */
         .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
+
         /* Mobile menu transition classes */
         .mobile-menu-open {
             transform: translateX(0);
         }
+
         .mobile-menu-closed {
             transform: translateX(-100%);
         }
@@ -63,10 +85,14 @@
         }
 
         /* Ensure sidebar starts closed below lg breakpoint by default */
-        @media (max-width: 1023.98px) { /* Tailwind's lg breakpoint is 1024px */
+        @media (max-width: 1023.98px) {
+
+            /* Tailwind's lg breakpoint is 1024px */
             #sidebar {
-                transform: translateX(-100%); /* Start closed */
+                transform: translateX(-100%);
+                /* Start closed */
             }
+
             /* Style for when it IS explicitly opened (mobile-menu-closed is REMOVED) */
             #sidebar:not(.mobile-menu-closed) {
                 transform: translateX(0);
@@ -76,7 +102,8 @@
         /* Ensure sidebar ignores mobile-menu-closed class on large screens */
         @media (min-width: 1024px) {
             #sidebar {
-                transform: translateX(0) !important; /* Always open */
+                transform: translateX(0) !important;
+                /* Always open */
             }
         }
 
@@ -85,157 +112,221 @@
             background-color: #fee2e2;
             color: #991b1b;
         }
+
         .status-medium {
             background-color: #fef3c7;
             color: #92400e;
         }
+
         .status-low {
             background-color: #d1fae5;
             color: #065f46;
         }
-        
+
         /* Case file styling */
         .case-active {
             border-left: 4px solid #0ea5e9;
         }
+
         .case-closed {
             border-left: 4px solid #6b7280;
         }
+
         .case-urgent {
             border-left: 4px solid #ef4444;
         }
-        
+
         /* Animation for notifications */
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 1;
             }
+
             50% {
                 opacity: 0.5;
             }
         }
+
         .anim-pulse {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-        
+
         /* Tab styling */
         .tab-active {
             color: #0c4a6e;
             border-bottom: 2px solid #0c4a6e;
         }
-        
+
         /* AI Chat styling */
         .user-message {
             background-color: #e0f2fe;
             border-radius: 0.75rem 0.75rem 0 0.75rem;
         }
+
         .ai-message {
             background-color: #f3f4f6;
             border-radius: 0.75rem 0.75rem 0.75rem 0;
         }
     </style>
 </head>
+
 <body class="bg-gray-100">
     <div class="relative min-h-screen">
         <!-- Mobile menu overlay -->
-        <div id="overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-20 lg:hidden hidden" aria-hidden="true"></div>
+        <div id="overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-20 lg:hidden hidden" aria-hidden="true">
+        </div>
 
         <!-- Sidebar - desktop always visible, mobile hidden by default -->
         <!-- Initial state: closed on mobile (translateX(-100%)), visible on desktop (lg:translate-x-0 overrides) -->
-        <aside id="sidebar" class="fixed top-0 left-0 z-30 h-screen w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 mobile-menu-closed">
+        <aside id="sidebar"
+            class="fixed top-0 left-0 z-30 h-screen w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 mobile-menu-closed">
             <div class="flex flex-col h-full">
                 <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 flex-shrink-0">
                     <h1 class="text-2xl font-bold text-sky-800">SINC</h1>
                     <span class="text-xs text-gray-500">v1.5 Pro</span>
                     <!-- Close button visible only on mobile -->
-                    <button id="close-sidebar" aria-label="Close sidebar menu" class="p-2 rounded-md text-gray-500 hover:bg-gray-100 lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    <button id="close-sidebar" aria-label="Close sidebar menu"
+                        class="p-2 rounded-md text-gray-500 hover:bg-gray-100 lg:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
 
                 <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
                     <!-- Active link example -->
-                    <a href="#dashboard" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 sidebar-link-active">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    <a href="#dashboard"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 sidebar-link-active">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                         </svg>
                         Dashboard
                     </a>
                     <div class="mb-1 pt-1">
-                        <p class="px-3 mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Case Management</p>
+                        <p class="px-3 mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Case
+                            Management</p>
                     </div>
-                    <a href="#cases" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 3.75V.75a.75.75 0 01.75-.75h3.75a.75.75 0 01.75.75v3a.75.75 0 01-.75.75h-3a.75.75 0 01-.75-.75z" />
+                    <a href="#cases"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15 3.75V.75a.75.75 0 01.75-.75h3.75a.75.75 0 01.75.75v3a.75.75 0 01-.75.75h-3a.75.75 0 01-.75-.75z" />
                         </svg>
                         Case Files
-                        <span class="ml-auto inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-sky-100 text-sky-800">12</span>
+                        <span
+                            class="ml-auto inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-sky-100 text-sky-800">12</span>
                     </a>
-                    <a href="#clients" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    <a href="#clients"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                         </svg>
                         Clients
                     </a>
-                    <a href="#calendar" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                    <a href="#billing"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                        </svg>
+                        Billing
+                    </a>
+                    <a href="#calendar"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                         </svg>
                         Calendar
-                        <span class="ml-auto inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 anim-pulse">3</span>
+                        <span
+                            class="ml-auto inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 anim-pulse">3</span>
                     </a>
-                    <a href="#documents" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                    <a href="#documents"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                         </svg>
                         Documents
                     </a>
-                    
+
                     <div class="mb-1 pt-3">
-                        <p class="px-3 mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Productivity</p>
+                        <p class="px-3 mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Productivity
+                        </p>
                     </div>
-                    <a href="#tasks" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <a href="#tasks"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Tasks
-                        <span class="ml-auto inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">5</span>
+                        <span
+                            class="ml-auto inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">5</span>
                     </a>
-                    <a href="#ai-assistant" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                    <a href="#ai-assistant"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                         </svg>
                         AI Assistant
                     </a>
-                    <a href="#time-tracking" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <a href="#time-tracking"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Time Tracking
                     </a>
-                     
+
                     <div class="mb-1 pt-3">
                         <p class="px-3 mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Admin</p>
                     </div>
-                    <a href="#activity" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <a href="#activity"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Team Activity
-                        <span class="ml-auto inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Admin</span>
+                        <span
+                            class="ml-auto inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Admin</span>
                     </a>
-                    <a href="#reports" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                    <a href="#reports"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                         </svg>
                         Reports
                     </a>
-                    <a href="#settings" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                    <a href="#settings"
+                        class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                         Settings
@@ -244,39 +335,44 @@
 
                 <div class="mt-auto border-t border-gray-200 p-4">
                     <div class="flex items-center">
-                        <img class="h-9 w-9 rounded-full object-cover" src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg" alt="User Avatar">
+                        <img class="h-9 w-9 rounded-full object-cover"
+                            src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg" alt="User Avatar">
                         <div class="ml-3">
                             <p class="text-sm font-medium text-gray-900">Avuyile M.</p>
                             <p class="text-xs text-gray-500">Attorney</p>
                         </div>
                         <div class="ml-auto">
-                            <button id="user-menu-button" aria-expanded="false" aria-haspopup="true" class="p-1 rounded-full text-gray-500 hover:bg-gray-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            <button id="user-menu-button" aria-expanded="false" aria-haspopup="true"
+                                class="p-1 rounded-full text-gray-500 hover:bg-gray-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                 </svg>
                             </button>
                         </div>
                     </div>
                     <div id="user-menu" class="mt-2 hidden space-y-2">
-                        <a href="#profile" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <a href="#profile"
+                            class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 mr-3">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             Your Profile
                         </a>
-                        <a href="#billing" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                            </svg>
-                            Billing
-                        </a>
+
                     </div>
-                    <a href="#logout" class="mt-4 w-full flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium text-red-700 hover:bg-red-100 border border-red-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                       </svg>
+                    <a href="#logout"
+                        class="mt-4 w-full flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium text-red-700 hover:bg-red-100 border border-red-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                        </svg>
                         Logout
-                   </a>
+                    </a>
                 </div>
             </div>
         </aside>
@@ -287,44 +383,55 @@
             <header class="sticky top-0 bg-white shadow-sm z-10 border-b border-gray-200">
                 <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                     <!-- Menu toggle button visible only on mobile -->
-                    <button id="menu-toggle" aria-label="Open sidebar menu" class="p-2 rounded-md text-gray-600 hover:bg-gray-100 lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <button id="menu-toggle" aria-label="Open sidebar menu"
+                        class="p-2 rounded-md text-gray-600 hover:bg-gray-100 lg:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
 
                     <!-- Header content with responsive layout -->
                     <div class="flex-1 ml-3 lg:ml-0">
                         <h2 class="text-lg sm:text-xl font-semibold text-gray-800 truncate">Welcome back, Avuyile!</h2>
-                        <p class="text-xs sm:text-sm text-gray-500 hidden sm:block">Here's your dashboard overview for Tuesday, April 8, 2025.</p>
+                        <p class="text-xs sm:text-sm text-gray-500 hidden sm:block">Here's your dashboard overview for
+                            Tuesday, April 8, 2025.</p>
                     </div>
 
                     <div class="flex items-center space-x-2 sm:space-x-4">
-                       <div class="hidden sm:flex items-center space-x-2 p-2 rounded-lg bg-green-50 border border-green-200">
+                        <div
+                            class="hidden sm:flex items-center space-x-2 p-2 rounded-lg bg-green-50 border border-green-200">
                             <span class="relative flex h-3 w-3">
-                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                             </span>
                             <span class="text-sm font-medium text-green-800">Checked In</span>
                             <button class="text-xs text-red-600 hover:text-red-800">(Check Out)</button>
-                       </div>
+                        </div>
 
-                       <!-- Mobile check-in indicator -->
-                       <div class="sm:hidden relative flex h-3 w-3">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                       </div>
+                        <!-- Mobile check-in indicator -->
+                        <div class="sm:hidden relative flex h-3 w-3">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        </div>
 
-                        <button id="notifications-button" class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 relative">
+                        <button id="notifications-button"
+                            class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 relative">
                             <span class="sr-only">View notifications</span>
                             <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                             </svg>
                         </button>
-                        
+
                         <!-- Notification Panel (hidden by default) -->
-                        <div id="notifications-panel" class="hidden absolute right-4 top-16 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                        <div id="notifications-panel"
+                            class="hidden absolute right-4 top-16 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                             <div class="p-3 border-b border-gray-200">
                                 <h3 class="text-sm font-semibold text-gray-800">Notifications</h3>
                             </div>
@@ -336,50 +443,70 @@
                                 </div>
                                 <div class="p-3 border-b border-gray-100 hover:bg-gray-50">
                                     <p class="text-sm font-medium text-gray-800">Court date reminder</p>
-                                    <p class="text-xs text-gray-500 mt-1">You have a court hearing tomorrow at 10:00 AM.</p>
+                                    <p class="text-xs text-gray-500 mt-1">You have a court hearing tomorrow at 10:00 AM.
+                                    </p>
                                     <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
                                 </div>
                                 <div class="p-3 border-b border-gray-100 hover:bg-gray-50">
                                     <p class="text-sm font-medium text-gray-800">Document approved</p>
-                                    <p class="text-xs text-gray-500 mt-1">Your draft has been approved by the senior partner.</p>
+                                    <p class="text-xs text-gray-500 mt-1">Your draft has been approved by the senior
+                                        partner.</p>
                                     <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
                                 </div>
                             </div>
                             <div class="p-2 border-t border-gray-200 text-center">
-                                <a href="#all-notifications" class="text-xs font-medium text-sky-700 hover:text-sky-900">View all notifications</a>
+                                <a href="#all-notifications"
+                                    class="text-xs font-medium text-sky-700 hover:text-sky-900">View all
+                                    notifications</a>
                             </div>
                         </div>
 
-                        <button id="search-button" class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                             <span class="sr-only">Search</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        <button id="search-button"
+                            class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            <span class="sr-only">Search</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
                         </button>
-                        
+
                         <!-- Search Modal (hidden by default) -->
-                        <div id="search-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-start justify-center pt-20">
+                        <div id="search-modal"
+                            class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-start justify-center pt-20">
                             <div class="bg-white w-full max-w-2xl rounded-lg shadow-xl p-6 mx-4">
                                 <div class="flex justify-between items-center mb-4">
                                     <h2 class="text-lg font-semibold text-gray-800">Search SINC</h2>
                                     <button id="close-search" class="text-gray-500 hover:text-gray-700">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
                                 </div>
                                 <div class="relative mb-4">
-                                    <input type="text" placeholder="Search cases, clients, documents..." class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                    <input type="text" placeholder="Search cases, clients, documents..."
+                                        class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                     </svg>
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-xs text-gray-500 mb-2">Recent searches</p>
                                     <div class="flex flex-wrap gap-2">
-                                        <button class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200">Case #104</button>
-                                        <button class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200">Smith vs. Jones</button>
-                                        <button class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200">Contract template</button>
+                                        <button
+                                            class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200">Case
+                                            #104</button>
+                                        <button
+                                            class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200">Smith
+                                            vs. Jones</button>
+                                        <button
+                                            class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200">Contract
+                                            template</button>
                                     </div>
                                 </div>
                                 <div>
@@ -387,19 +514,26 @@
                                     <ul class="divide-y divide-gray-100">
                                         <li class="py-2 hover:bg-gray-50 rounded px-2">
                                             <a href="#case-104" class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-500 mr-3" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-5 w-5 text-sky-500 mr-3" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" />
                                                 </svg>
                                                 <div>
-                                                    <p class="text-sm font-medium text-gray-800">Case #104: Smith vs. Jones</p>
+                                                    <p class="text-sm font-medium text-gray-800">Case #104: Smith vs.
+                                                        Jones</p>
                                                     <p class="text-xs text-gray-500">Last updated: April 6, 2025</p>
                                                 </div>
                                             </a>
                                         </li>
                                         <li class="py-2 hover:bg-gray-50 rounded px-2">
                                             <a href="#client-smith" class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-500 mr-3" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-5 w-5 text-sky-500 mr-3" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                                                 </svg>
                                                 <div>
                                                     <p class="text-sm font-medium text-gray-800">Client: James Smith</p>
@@ -422,12 +556,16 @@
                     <!-- Quick stats cards - responsive grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                         <!-- Each card is now fully responsive with proper spacing -->
-                        <div class="bg-white p-4 sm:p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow relative">
+                        <div
+                            class="bg-white p-4 sm:p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow relative">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-base sm:text-lg font-semibold text-gray-800">Active Cases</h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6 text-sky-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 3.75V.75a.75.75 0 01.75-.75h3.75a.75.75 0 01.75.75v3a.75.75 0 01-.75.75h-3a.75.75 0 01-.75-.75z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6 text-sky-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M20.25 14.15v4.07a2.25 2.25 0 01-2.25 2.25h-13.5a2.25 2.25 0 01-2.25-2.25V6.375c0-1.621 1.379-2.967 3.032-2.967h6.136c1.653 0 3.032 1.346 3.032 2.967V9.88a2.25 2.25 0 01-.656 1.57l-3.074 3.073a.75.75 0 00-.22.53v.693a.75.75 0 00.22.531l3.074 3.074a2.25 2.25 0 001.57.656z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 3.75V.75a.75.75 0 01.75-.75h3.75a.75.75 0 01.75.75v3a.75.75 0 01-.75.75h-3a.75.75 0 01-.75-.75z" />
                                 </svg>
                             </div>
                             <p class="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">12</p>
@@ -435,11 +573,15 @@
                             <a href="#cases" class="absolute inset-0" aria-label="View active cases"></a>
                         </div>
 
-                        <div class="bg-white p-4 sm:p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow relative">
+                        <div
+                            class="bg-white p-4 sm:p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow relative">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-base sm:text-lg font-semibold text-gray-800">Pending Tasks</h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6 text-amber-600">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12M8.25 17.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-amber-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 6.75h12M8.25 12h12M8.25 17.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                                 </svg>
                             </div>
                             <p class="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">5</p>
@@ -447,11 +589,15 @@
                             <a href="#tasks" class="absolute inset-0" aria-label="View pending tasks"></a>
                         </div>
 
-                        <div class="bg-white p-4 sm:p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow relative">
+                        <div
+                            class="bg-white p-4 sm:p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow relative">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-base sm:text-lg font-semibold text-gray-800">Time Logged</h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6 text-green-600">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-green-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <p class="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">28h</p>
@@ -459,15 +605,20 @@
                             <a href="#time-tracking" class="absolute inset-0" aria-label="View time tracking"></a>
                         </div>
 
-                        <div class="bg-white p-4 sm:p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow relative">
+                        <div
+                            class="bg-white p-4 sm:p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow relative">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-base sm:text-lg font-semibold text-gray-800">AI Assistant</h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                                 </svg>
                             </div>
                             <p class="mt-2 text-sm text-gray-600">Polish a document or generate a summary quickly.</p>
-                            <button class="mt-3 inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            <button
+                                class="mt-3 inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                                 Go to AI Assistant
                             </button>
                             <a href="#ai-assistant" class="absolute inset-0" aria-label="Go to AI Assistant"></a>
@@ -481,86 +632,116 @@
                             <a href="#cases" class="text-sm font-medium text-sky-700 hover:text-sky-900">View All →</a>
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                            <div class="bg-white rounded-lg shadow border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow case-active">
+                            <div
+                                class="bg-white rounded-lg shadow border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow case-active">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h4 class="text-sm sm:text-base font-semibold text-gray-800">Smith vs. Jones</h4>
+                                        <h4 class="text-sm sm:text-base font-semibold text-gray-800">Smith vs. Jones
+                                        </h4>
                                         <p class="text-xs sm:text-sm text-gray-500">Case #104 • Corporate Law</p>
                                     </div>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
                                 </div>
                                 <div class="mt-3 flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-sky-100 text-sky-800">Contract Dispute</span>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">High Priority</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-sky-100 text-sky-800">Contract
+                                        Dispute</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">High
+                                        Priority</span>
                                 </div>
                                 <div class="mt-4 flex items-center justify-between">
                                     <div class="flex items-center">
                                         <span class="text-xs text-gray-500">Next hearing: </span>
                                         <span class="ml-1 text-xs font-medium text-gray-700">Apr 15, 2025</span>
                                     </div>
-                                    <a href="#case-104" class="text-xs font-medium text-sky-700 hover:text-sky-900">View Case →</a>
+                                    <a href="#case-104" class="text-xs font-medium text-sky-700 hover:text-sky-900">View
+                                        Case →</a>
                                 </div>
                             </div>
-                            
-                            <div class="bg-white rounded-lg shadow border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow case-urgent">
+
+                            <div
+                                class="bg-white rounded-lg shadow border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow case-urgent">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h4 class="text-sm sm:text-base font-semibold text-gray-800">ABC Corp Merger</h4>
+                                        <h4 class="text-sm sm:text-base font-semibold text-gray-800">ABC Corp Merger
+                                        </h4>
                                         <p class="text-xs sm:text-sm text-gray-500">Case #118 • M&A</p>
                                     </div>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Urgent</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Urgent</span>
                                 </div>
                                 <div class="mt-3 flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Due Diligence</span>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-800">Deadline: 5d</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Due
+                                        Diligence</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-800">Deadline:
+                                        5d</span>
                                 </div>
                                 <div class="mt-4 flex items-center justify-between">
                                     <div class="flex items-center">
                                         <span class="text-xs text-gray-500">Assigned: </span>
                                         <span class="ml-1 text-xs font-medium text-gray-700">You + 2 others</span>
                                     </div>
-                                    <a href="#case-118" class="text-xs font-medium text-sky-700 hover:text-sky-900">View Case →</a>
+                                    <a href="#case-118" class="text-xs font-medium text-sky-700 hover:text-sky-900">View
+                                        Case →</a>
                                 </div>
                             </div>
-                            
-                            <div class="bg-white rounded-lg shadow border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow case-active">
+
+                            <div
+                                class="bg-white rounded-lg shadow border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow case-active">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h4 class="text-sm sm:text-base font-semibold text-gray-800">Doe Estate Planning</h4>
+                                        <h4 class="text-sm sm:text-base font-semibold text-gray-800">Doe Estate Planning
+                                        </h4>
                                         <p class="text-xs sm:text-sm text-gray-500">Case #112 • Estate Law</p>
                                     </div>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
                                 </div>
                                 <div class="mt-3 flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Trust Creation</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Trust
+                                        Creation</span>
                                 </div>
                                 <div class="mt-4 flex items-center justify-between">
                                     <div class="flex items-center">
                                         <span class="text-xs text-gray-500">Client meeting: </span>
                                         <span class="ml-1 text-xs font-medium text-gray-700">Apr 12, 2025</span>
                                     </div>
-                                    <a href="#case-112" class="text-xs font-medium text-sky-700 hover:text-sky-900">View Case →</a>
+                                    <a href="#case-112" class="text-xs font-medium text-sky-700 hover:text-sky-900">View
+                                        Case →</a>
                                 </div>
                             </div>
-                            
-                            <div class="bg-white rounded-lg shadow border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow case-closed">
+
+                            <div
+                                class="bg-white rounded-lg shadow border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow case-closed">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h4 class="text-sm sm:text-base font-semibold text-gray-800">XYZ Patent Filing</h4>
+                                        <h4 class="text-sm sm:text-base font-semibold text-gray-800">XYZ Patent Filing
+                                        </h4>
                                         <p class="text-xs sm:text-sm text-gray-500">Case #097 • IP Law</p>
                                     </div>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Pending Review</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Pending
+                                        Review</span>
                                 </div>
                                 <div class="mt-3 flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">Patent</span>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Draft Complete</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">Patent</span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Draft
+                                        Complete</span>
                                 </div>
                                 <div class="mt-4 flex items-center justify-between">
                                     <div class="flex items-center">
                                         <span class="text-xs text-gray-500">Waiting approval since: </span>
                                         <span class="ml-1 text-xs font-medium text-gray-700">Apr 3, 2025</span>
                                     </div>
-                                    <a href="#case-097" class="text-xs font-medium text-sky-700 hover:text-sky-900">View Case →</a>
+                                    <a href="#case-097" class="text-xs font-medium text-sky-700 hover:text-sky-900">View
+                                        Case →</a>
                                 </div>
                             </div>
                         </div>
@@ -570,119 +751,165 @@
                     <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- Activity feed - responsive design -->
                         <div class="bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-200 lg:col-span-2">
-                            <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Recent Activity</h3>
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Recent Activity
+                            </h3>
                             <ul class="divide-y divide-gray-200">
                                 <li class="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                     <div class="flex items-start sm:items-center mb-1 sm:mb-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
-                                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
+                                            <path fill-rule="evenodd"
+                                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                                                clip-rule="evenodd" />
                                         </svg>
-                                        <p class="text-sm text-gray-600">You uploaded <span class="font-medium text-gray-800">Affidavit_ClientA.pdf</span> to Case <a href="#case-001" class="font-medium text-sky-700 hover:underline">#CASE-001</a>.</p>
+                                        <p class="text-sm text-gray-600">You uploaded <span
+                                                class="font-medium text-gray-800">Affidavit_ClientA.pdf</span> to Case
+                                            <a href="#case-001"
+                                                class="font-medium text-sky-700 hover:underline">#CASE-001</a>.</p>
                                     </div>
                                     <span class="text-xs text-gray-400 ml-8 sm:ml-0">15 minutes ago</span>
                                 </li>
                                 <li class="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                     <div class="flex items-start sm:items-center mb-1 sm:mb-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-blue-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
-                                        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.06-1.06l-3.103 3.104-1.536-1.536a.75.75 0 10-1.06 1.061l2.065 2.065a.75.75 0 001.06 0l3.638-3.638z" clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-5 h-5 text-blue-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
+                                            <path fill-rule="evenodd"
+                                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.06-1.06l-3.103 3.104-1.536-1.536a.75.75 0 10-1.06 1.061l2.065 2.065a.75.75 0 001.06 0l3.638-3.638z"
+                                                clip-rule="evenodd" />
                                         </svg>
-                                        <p class="text-sm text-gray-600"><span class="font-medium text-gray-800">John D. (Assistant)</span> completed task: <span class="font-medium text-gray-800">Draft initial response letter</span>.</p>
+                                        <p class="text-sm text-gray-600"><span class="font-medium text-gray-800">John D.
+                                                (Assistant)</span> completed task: <span
+                                                class="font-medium text-gray-800">Draft initial response letter</span>.
+                                        </p>
                                     </div>
                                     <span class="text-xs text-gray-400 ml-8 sm:ml-0">1 hour ago</span>
                                 </li>
                                 <li class="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                     <div class="flex items-start sm:items-center mb-1 sm:mb-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
-                                        <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l3.75 3.75a.75.75 0 01-1.06 1.06l-2.47-2.47V21a.75.75 0 01-1.5 0V4.81L8.78 7.28a.75.75 0 01-1.06-1.06l3.75-3.75z" clip-rule="evenodd" />
-                                        <path d="M21.75 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h18a.75.75 0 01.75.75z" /> </svg>
-                                        <p class="text-sm text-gray-600">AI Assistant polished <a href="#document-contract" class="font-medium text-sky-700 hover:underline">Contract_Draft_v1.docx</a>.</p>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
+                                            <path fill-rule="evenodd"
+                                                d="M11.47 2.47a.75.75 0 011.06 0l3.75 3.75a.75.75 0 01-1.06 1.06l-2.47-2.47V21a.75.75 0 01-1.5 0V4.81L8.78 7.28a.75.75 0 01-1.06-1.06l3.75-3.75z"
+                                                clip-rule="evenodd" />
+                                            <path
+                                                d="M21.75 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h18a.75.75 0 01.75.75z" />
+                                        </svg>
+                                        <p class="text-sm text-gray-600">AI Assistant polished <a
+                                                href="#document-contract"
+                                                class="font-medium text-sky-700 hover:underline">Contract_Draft_v1.docx</a>.
+                                        </p>
                                     </div>
                                     <span class="text-xs text-gray-400 ml-8 sm:ml-0">2 hours ago</span>
                                 </li>
                                 <li class="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                     <div class="flex items-start sm:items-center mb-1 sm:mb-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
-                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-5 h-5 text-gray-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
+                                            <path fill-rule="evenodd"
+                                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z"
+                                                clip-rule="evenodd" />
                                         </svg>
-                                        <p class="text-sm text-gray-600"><span class="font-medium text-gray-800">You</span> checked in.</p>
+                                        <p class="text-sm text-gray-600"><span
+                                                class="font-medium text-gray-800">You</span> checked in.</p>
                                     </div>
                                     <span class="text-xs text-gray-400 ml-8 sm:ml-0">8:05 AM today</span>
                                 </li>
                                 <li class="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                     <div class="flex items-start sm:items-center mb-1 sm:mb-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
-                                            <path fill-rule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z" clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5 sm:mt-0">
+                                            <path fill-rule="evenodd"
+                                                d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z"
+                                                clip-rule="evenodd" />
                                         </svg>
-                                        <p class="text-sm text-gray-600">Court hearing reminder for <a href="#case-104" class="font-medium text-sky-700 hover:underline">Case #104</a> tomorrow at 10:00 AM.</p>
+                                        <p class="text-sm text-gray-600">Court hearing reminder for <a href="#case-104"
+                                                class="font-medium text-sky-700 hover:underline">Case #104</a> tomorrow
+                                            at 10:00 AM.</p>
                                     </div>
                                     <span class="text-xs text-gray-400 ml-8 sm:ml-0">Yesterday</span>
                                 </li>
                             </ul>
                             <div class="mt-4 text-right">
-                                <a href="#activity-log" class="text-sm font-medium text-sky-700 hover:text-sky-900">View Full Activity Log →</a>
+                                <a href="#activity-log" class="text-sm font-medium text-sky-700 hover:text-sky-900">View
+                                    Full Activity Log →</a>
                             </div>
                         </div>
-                        
+
                         <!-- Upcoming tasks -->
                         <div class="bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-200">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-base sm:text-lg font-semibold text-gray-800">Upcoming Tasks</h3>
-                                <a href="#tasks" class="text-sm font-medium text-sky-700 hover:text-sky-900">View All</a>
+                                <a href="#tasks" class="text-sm font-medium text-sky-700 hover:text-sky-900">View
+                                    All</a>
                             </div>
                             <ul class="divide-y divide-gray-200">
                                 <li class="py-3">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-start">
-                                            <span class="inline-block h-2 w-2 rounded-full bg-red-500 mt-1.5 mr-3 flex-shrink-0"></span>
+                                            <span
+                                                class="inline-block h-2 w-2 rounded-full bg-red-500 mt-1.5 mr-3 flex-shrink-0"></span>
                                             <div>
-                                                <p class="text-sm font-medium text-gray-800">Review due diligence report</p>
+                                                <p class="text-sm font-medium text-gray-800">Review due diligence report
+                                                </p>
                                                 <p class="text-xs text-gray-500">Case #118 • Due Apr 10</p>
                                             </div>
                                         </div>
-                                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-high">High</span>
+                                        <span
+                                            class="inline-block px-2 py-1 text-xs font-medium rounded-full status-high">High</span>
                                     </div>
                                 </li>
                                 <li class="py-3">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-start">
-                                            <span class="inline-block h-2 w-2 rounded-full bg-amber-500 mt-1.5 mr-3 flex-shrink-0"></span>
+                                            <span
+                                                class="inline-block h-2 w-2 rounded-full bg-amber-500 mt-1.5 mr-3 flex-shrink-0"></span>
                                             <div>
-                                                <p class="text-sm font-medium text-gray-800">Prepare for Smith deposition</p>
+                                                <p class="text-sm font-medium text-gray-800">Prepare for Smith
+                                                    deposition</p>
                                                 <p class="text-xs text-gray-500">Case #104 • Due Apr 12</p>
                                             </div>
                                         </div>
-                                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
+                                        <span
+                                            class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
                                     </div>
                                 </li>
                                 <li class="py-3">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-start">
-                                            <span class="inline-block h-2 w-2 rounded-full bg-green-500 mt-1.5 mr-3 flex-shrink-0"></span>
+                                            <span
+                                                class="inline-block h-2 w-2 rounded-full bg-green-500 mt-1.5 mr-3 flex-shrink-0"></span>
                                             <div>
-                                                <p class="text-sm font-medium text-gray-800">Draft client meeting agenda</p>
+                                                <p class="text-sm font-medium text-gray-800">Draft client meeting agenda
+                                                </p>
                                                 <p class="text-xs text-gray-500">Case #112 • Due Apr 11</p>
                                             </div>
                                         </div>
-                                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-low">Low</span>
+                                        <span
+                                            class="inline-block px-2 py-1 text-xs font-medium rounded-full status-low">Low</span>
                                     </div>
                                 </li>
                                 <li class="py-3">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-start">
-                                            <span class="inline-block h-2 w-2 rounded-full bg-amber-500 mt-1.5 mr-3 flex-shrink-0"></span>
+                                            <span
+                                                class="inline-block h-2 w-2 rounded-full bg-amber-500 mt-1.5 mr-3 flex-shrink-0"></span>
                                             <div>
                                                 <p class="text-sm font-medium text-gray-800">File patent application</p>
                                                 <p class="text-xs text-gray-500">Case #097 • Due Apr 15</p>
                                             </div>
                                         </div>
-                                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
+                                        <span
+                                            class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
                                     </div>
                                 </li>
                             </ul>
                             <div class="mt-4">
-                                <button class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                <button
+                                    class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
                                     Add New Task
                                 </button>
@@ -690,32 +917,40 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Case Files content - initially hidden -->
                 <div id="cases-content" class="hidden">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Case Files</h2>
-                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        <button
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
                             New Case
                         </button>
                     </div>
-                    
+
                     <!-- Case Search and Filters -->
                     <div class="bg-white p-4 rounded-lg shadow mb-6">
                         <div class="flex flex-col sm:flex-row gap-4">
                             <div class="flex-1">
                                 <div class="relative">
-                                    <input type="text" placeholder="Search cases..." class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                    <input type="text" placeholder="Search cases..."
+                                        class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                     </svg>
                                 </div>
                             </div>
                             <div class="sm:w-40">
-                                <select class="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                                <select
+                                    class="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
                                     <option>All Status</option>
                                     <option>Active</option>
                                     <option>Pending</option>
@@ -724,7 +959,8 @@
                                 </select>
                             </div>
                             <div class="sm:w-48">
-                                <select class="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                                <select
+                                    class="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
                                     <option>All Practice Areas</option>
                                     <option>Corporate Law</option>
                                     <option>IP Law</option>
@@ -734,20 +970,34 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Case List -->
                     <div class="bg-white rounded-lg shadow">
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Case Name</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Case #</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Practice Area</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
-                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Case Name</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Case #</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Client</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Practice Area</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Last Updated</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -765,7 +1015,8 @@
                                             <div class="text-sm text-gray-500">Corporate Law</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                            <span
+                                                class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 6, 2025</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -786,7 +1037,8 @@
                                             <div class="text-sm text-gray-500">M&A</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Urgent</span>
+                                            <span
+                                                class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Urgent</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 7, 2025</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -807,7 +1059,8 @@
                                             <div class="text-sm text-gray-500">Estate Law</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                            <span
+                                                class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 5, 2025</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -828,7 +1081,9 @@
                                             <div class="text-sm text-gray-500">IP Law</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Pending Review</span>
+                                            <span
+                                                class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Pending
+                                                Review</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 3, 2025</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -838,32 +1093,48 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                        <div
+                            class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                             <div class="flex-1 flex justify-between sm:hidden">
-                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Previous</a>
-                                <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Next</a>
+                                <a href="#"
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Previous</a>
+                                <a href="#"
+                                    class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Next</a>
                             </div>
                             <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                                 <div>
                                     <p class="text-sm text-gray-700">
-                                        Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">12</span> results
+                                        Showing <span class="font-medium">1</span> to <span class="font-medium">4</span>
+                                        of <span class="font-medium">12</span> results
                                     </p>
                                 </div>
                                 <div>
-                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                                        aria-label="Pagination">
+                                        <a href="#"
+                                            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                                             <span class="sr-only">Previous</span>
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd" />
                                             </svg>
                                         </a>
-                                        <a href="#" aria-current="page" class="z-10 bg-sky-50 border-sky-500 text-sky-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">1</a>
-                                        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">2</a>
-                                        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">3</a>
-                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <a href="#" aria-current="page"
+                                            class="z-10 bg-sky-50 border-sky-500 text-sky-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">1</a>
+                                        <a href="#"
+                                            class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">2</a>
+                                        <a href="#"
+                                            class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">3</a>
+                                        <a href="#"
+                                            class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                                             <span class="sr-only">Next</span>
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                    clip-rule="evenodd" />
                                             </svg>
                                         </a>
                                     </nav>
@@ -872,13 +1143,13 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- AI Assistant content - initially hidden -->
                 <div id="ai-assistant-content" class="hidden">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl sm:text-2xl font-bold text-gray-800">AI Legal Assistant</h2>
                     </div>
-                    
+
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- AI Chat -->
                         <div class="lg:col-span-2 bg-white rounded-lg shadow flex flex-col h-[600px]">
@@ -886,19 +1157,22 @@
                                 <h3 class="text-lg font-semibold text-gray-800">Chat with SINC Assistant</h3>
                                 <p class="text-sm text-gray-500">Ask questions, draft documents, analyze legal text</p>
                             </div>
-                            
+
                             <div class="flex-1 p-4 overflow-y-auto space-y-4">
                                 <!-- Welcome message -->
                                 <div class="flex items-start space-x-3">
                                     <div class="flex-shrink-0">
                                         <div class="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                                             </svg>
                                         </div>
                                     </div>
                                     <div class="flex-1 ai-message p-3">
-                                        <p class="text-sm text-gray-800">Hello Avuyile! How can I assist you today? I can help with:</p>
+                                        <p class="text-sm text-gray-800">Hello Avuyile! How can I assist you today? I
+                                            can help with:</p>
                                         <ul class="text-sm text-gray-800 mt-2 space-y-1">
                                             <li>• Drafting legal documents or letters</li>
                                             <li>• Summarizing case files or research</li>
@@ -908,68 +1182,88 @@
                                         </ul>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Sample conversation -->
                                 <div class="flex items-start justify-end space-x-3">
                                     <div class="flex-1 user-message p-3 ml-12">
-                                        <p class="text-sm text-gray-800">I need to draft a cease and desist letter for a trademark infringement case. The client is ABC Corp and they've discovered a competitor using a very similar logo.</p>
+                                        <p class="text-sm text-gray-800">I need to draft a cease and desist letter for a
+                                            trademark infringement case. The client is ABC Corp and they've discovered a
+                                            competitor using a very similar logo.</p>
                                     </div>
                                     <div class="flex-shrink-0">
                                         <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
-                                            <img src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg" alt="User" class="h-full w-full object-cover">
+                                            <img src="https://avuyilemthembu.co.za/assets/images/avuyile2.jpg"
+                                                alt="User" class="h-full w-full object-cover">
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start space-x-3">
                                     <div class="flex-shrink-0">
                                         <div class="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                                             </svg>
                                         </div>
                                     </div>
                                     <div class="flex-1 ai-message p-3">
-                                        <p class="text-sm text-gray-800">I'd be happy to help draft a cease and desist letter for trademark infringement. To make the letter more effective, I'll need a few additional details:</p>
+                                        <p class="text-sm text-gray-800">I'd be happy to help draft a cease and desist
+                                            letter for trademark infringement. To make the letter more effective, I'll
+                                            need a few additional details:</p>
                                         <ul class="text-sm text-gray-800 mt-2 space-y-1">
                                             <li>1. What's the name of the infringing company?</li>
                                             <li>2. When did ABC Corp first notice the infringement?</li>
                                             <li>3. Is ABC Corp's trademark registered?</li>
                                             <li>4. Any specific damages or confusion in the marketplace so far?</li>
                                         </ul>
-                                        <p class="text-sm text-gray-800 mt-2">Once you provide these details, I can generate a customized cease and desist letter that your legal team can review.</p>
+                                        <p class="text-sm text-gray-800 mt-2">Once you provide these details, I can
+                                            generate a customized cease and desist letter that your legal team can
+                                            review.</p>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="p-4 border-t border-gray-200">
                                 <form>
                                     <div class="flex items-center">
-                                        <button type="button" class="p-2 rounded-full text-gray-500 hover:text-sky-600 focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                        <button type="button"
+                                            class="p-2 rounded-full text-gray-500 hover:text-sky-600 focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                                             </svg>
                                         </button>
-                                        <input type="text" placeholder="Type your message..." class="flex-1 border-0 focus:ring-0 px-4 py-2">
-                                        <button type="submit" class="p-2 rounded-full text-sky-600 hover:text-sky-700 focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                        <input type="text" placeholder="Type your message..."
+                                            class="flex-1 border-0 focus:ring-0 px-4 py-2">
+                                        <button type="submit"
+                                            class="p-2 rounded-full text-sky-600 hover:text-sky-700 focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                             </svg>
                                         </button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        
+
                         <!-- AI Tools -->
                         <div class="bg-white rounded-lg shadow p-6">
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">AI Legal Tools</h3>
-                            
+
                             <div class="space-y-4">
-                                <button class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                                    <div class="rounded-full w-10 h-10 flex items-center justify-center bg-sky-100 text-sky-600 mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                <button
+                                    class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                                    <div
+                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-sky-100 text-sky-600 mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                     </div>
                                     <div class="text-left">
@@ -977,11 +1271,15 @@
                                         <p class="text-xs text-gray-500">Create contracts, letters, filings</p>
                                     </div>
                                 </button>
-                                
-                                <button class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                                    <div class="rounded-full w-10 h-10 flex items-center justify-center bg-amber-100 text-amber-600 mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+
+                                <button
+                                    class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                                    <div
+                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-amber-100 text-amber-600 mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                         </svg>
                                     </div>
                                     <div class="text-left">
@@ -989,11 +1287,15 @@
                                         <p class="text-xs text-gray-500">Review contracts, find key clauses</p>
                                     </div>
                                 </button>
-                                
-                                <button class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                                    <div class="rounded-full w-10 h-10 flex items-center justify-center bg-purple-100 text-purple-600 mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+
+                                <button
+                                    class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                                    <div
+                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-purple-100 text-purple-600 mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                         </svg>
                                     </div>
                                     <div class="text-left">
@@ -1001,11 +1303,15 @@
                                         <p class="text-xs text-gray-500">Find relevant precedents</p>
                                     </div>
                                 </button>
-                                
-                                <button class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                                    <div class="rounded-full w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+
+                                <button
+                                    class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                                    <div
+                                        class="rounded-full w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                                         </svg>
                                     </div>
                                     <div class="text-left">
@@ -1014,7 +1320,7 @@
                                     </div>
                                 </button>
                             </div>
-                            
+
                             <div class="mt-6">
                                 <h4 class="text-sm font-medium text-gray-800 mb-2">Recently Used</h4>
                                 <div class="space-y-2">
@@ -1029,24 +1335,28 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Tasks content - initially hidden -->
                 <div id="tasks-content" class="hidden">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Tasks</h2>
-                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        <button
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
                             New Task
                         </button>
                     </div>
-                    
+
                     <!-- Tasks Tabs -->
                     <div class="mb-6">
                         <div class="border-b border-gray-200">
                             <nav class="flex -mb-px">
-                                <button class="px-4 py-2 text-sm font-medium text-sky-700 border-b-2 border-sky-500 tab-active">
+                                <button
+                                    class="px-4 py-2 text-sm font-medium text-sky-700 border-b-2 border-sky-500 tab-active">
                                     My Tasks (5)
                                 </button>
                                 <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700">
@@ -1058,20 +1368,22 @@
                             </nav>
                         </div>
                     </div>
-                    
+
                     <!-- Tasks List -->
                     <div class="bg-white rounded-lg shadow">
                         <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                             <h3 class="text-base font-medium text-gray-800">Active Tasks</h3>
                             <div class="flex space-x-2">
-                                <select class="text-sm border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                <select
+                                    class="text-sm border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
                                     <option>All Cases</option>
                                     <option>Case #104</option>
                                     <option>Case #118</option>
                                     <option>Case #112</option>
                                     <option>Case #097</option>
                                 </select>
-                                <select class="text-sm border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                <select
+                                    class="text-sm border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
                                     <option>All Priorities</option>
                                     <option>High</option>
                                     <option>Medium</option>
@@ -1079,28 +1391,36 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <ul class="divide-y divide-gray-200">
                             <li class="p-4 hover:bg-gray-50">
                                 <div class="flex items-start">
                                     <div class="flex-shrink-0 mt-1">
-                                        <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                        <input type="checkbox"
+                                            class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 flex-1">
                                         <div class="flex items-center justify-between">
                                             <p class="text-sm font-medium text-gray-800">Review due diligence report</p>
-                                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-high">High</span>
+                                            <span
+                                                class="inline-block px-2 py-1 text-xs font-medium rounded-full status-high">High</span>
                                         </div>
                                         <div class="mt-1 flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                             </svg>
                                             <span class="text-xs text-gray-500">Case #118 • ABC Corp Merger</span>
                                         </div>
                                         <div class="mt-2 flex items-center justify-between">
                                             <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 <span class="text-xs text-red-600 font-medium">Due Apr 10, 2025</span>
                                             </div>
@@ -1112,27 +1432,36 @@
                                     </div>
                                 </div>
                             </li>
-                            
+
                             <li class="p-4 hover:bg-gray-50">
                                 <div class="flex items-start">
                                     <div class="flex-shrink-0 mt-1">
-                                        <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                        <input type="checkbox"
+                                            class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 flex-1">
                                         <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-800">Prepare for Smith deposition</p>
-                                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
+                                            <p class="text-sm font-medium text-gray-800">Prepare for Smith deposition
+                                            </p>
+                                            <span
+                                                class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
                                         </div>
                                         <div class="mt-1 flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                             </svg>
                                             <span class="text-xs text-gray-500">Case #104 • Smith vs. Jones</span>
                                         </div>
                                         <div class="mt-2 flex items-center justify-between">
                                             <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 <span class="text-xs text-gray-600 font-medium">Due Apr 12, 2025</span>
                                             </div>
@@ -1144,27 +1473,35 @@
                                     </div>
                                 </div>
                             </li>
-                            
+
                             <li class="p-4 hover:bg-gray-50">
                                 <div class="flex items-start">
                                     <div class="flex-shrink-0 mt-1">
-                                        <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                        <input type="checkbox"
+                                            class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 flex-1">
                                         <div class="flex items-center justify-between">
                                             <p class="text-sm font-medium text-gray-800">Draft client meeting agenda</p>
-                                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-low">Low</span>
+                                            <span
+                                                class="inline-block px-2 py-1 text-xs font-medium rounded-full status-low">Low</span>
                                         </div>
                                         <div class="mt-1 flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                             </svg>
                                             <span class="text-xs text-gray-500">Case #112 • Doe Estate Planning</span>
                                         </div>
                                         <div class="mt-2 flex items-center justify-between">
                                             <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 <span class="text-xs text-gray-600 font-medium">Due Apr 11, 2025</span>
                                             </div>
@@ -1176,202 +1513,230 @@
                                     </div>
                                 </div>
                             </li>
-                            
+
                             <!-- Task List Component -->
-<ul class="divide-y divide-gray-200">
-    <!-- Task Item 1 -->
-    <li class="p-4 hover:bg-gray-50">
-        <div class="flex items-start">
-            <div class="flex-shrink-0 mt-1">
-                <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
-            </div>
-            <div class="ml-3 flex-1">
-                <div class="flex items-center justify-between">
-                    <p class="text-sm font-medium text-gray-800">File patent application</p>
-                    <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
-                </div>
-                <div class="mt-1 flex items-center">
-                    <svg class="h-4 w-4 text-gray-400 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                    <span class="text-xs text-gray-500">Case #097 • XYZ Patent Filing</span>
-                </div>
-                <div class="mt-2 flex items-center justify-between">
-                    <div class="flex items-center">
-                        <svg class="h-4 w-4 text-gray-400 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span class="text-xs text-gray-600 font-medium">Due Apr 15, 2025</span>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
-                        <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </li>
+                            <ul class="divide-y divide-gray-200">
+                                <!-- Task Item 1 -->
+                                <li class="p-4 hover:bg-gray-50">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-800">File patent application</p>
+                                                <span
+                                                    class="inline-block px-2 py-1 text-xs font-medium rounded-full status-medium">Medium</span>
+                                            </div>
+                                            <div class="mt-1 flex items-center">
+                                                <svg class="h-4 w-4 text-gray-400 mr-1"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                </svg>
+                                                <span class="text-xs text-gray-500">Case #097 • XYZ Patent Filing</span>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <svg class="h-4 w-4 text-gray-400 mr-1"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    <span class="text-xs text-gray-600 font-medium">Due Apr 15,
+                                                        2025</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button
+                                                        class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
+                                                    <button
+                                                        class="text-xs text-red-600 hover:text-red-800">Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
 
-    <!-- Task Item 2 -->
-    <li class="p-4 hover:bg-gray-50">
-        <div class="flex items-start">
-            <div class="flex-shrink-0 mt-1">
-                <input type="checkbox" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
-            </div>
-            <div class="ml-3 flex-1">
-                <div class="flex items-center justify-between">
-                    <p class="text-sm font-medium text-gray-800">Update case status report</p>
-                    <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-low">Low</span>
-                </div>
-                <div class="mt-1 flex items-center">
-                    <svg class="h-4 w-4 text-gray-400 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span class="text-xs text-gray-500">Admin • Weekly Report</span>
-                </div>
-                <div class="mt-2 flex items-center justify-between">
-                    <div class="flex items-center">
-                        <svg class="h-4 w-4 text-gray-400 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span class="text-xs text-gray-600 font-medium">Due Apr 20, 2025</span>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
-                        <button class="text-xs text-red-600 hover:text-red-800">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </li>
-</ul>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const menuToggle = document.getElementById('menu-toggle');
-        const closeSidebar = document.getElementById('close-sidebar');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const userMenuButton = document.getElementById('user-menu-button');
-        const userMenu = document.getElementById('user-menu');
-        const notificationsButton = document.getElementById('notifications-button');
-        const notificationsPanel = document.getElementById('notifications-panel');
-        const searchButton = document.getElementById('search-button');
-        const searchModal = document.getElementById('search-modal');
-        const closeSearch = document.getElementById('close-search');
-        const sidebarLinks = document.querySelectorAll('#sidebar nav a');
-        const mainContentDivs = document.querySelectorAll('#main-content > div[id$="-content"]');
-        const headerTitle = document.querySelector('header h2');
+                                <!-- Task Item 2 -->
+                                <li class="p-4 hover:bg-gray-50">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-800">Update case status report
+                                                </p>
+                                                <span
+                                                    class="inline-block px-2 py-1 text-xs font-medium rounded-full status-low">Low</span>
+                                            </div>
+                                            <div class="mt-1 flex items-center">
+                                                <svg class="h-4 w-4 text-gray-400 mr-1"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                                <span class="text-xs text-gray-500">Admin • Weekly Report</span>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <svg class="h-4 w-4 text-gray-400 mr-1"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    <span class="text-xs text-gray-600 font-medium">Due Apr 20,
+                                                        2025</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button
+                                                        class="text-xs text-sky-600 hover:text-sky-800">Edit</button>
+                                                    <button
+                                                        class="text-xs text-red-600 hover:text-red-800">Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const menuToggle = document.getElementById('menu-toggle');
+                                    const closeSidebar = document.getElementById('close-sidebar');
+                                    const sidebar = document.getElementById('sidebar');
+                                    const overlay = document.getElementById('overlay');
+                                    const userMenuButton = document.getElementById('user-menu-button');
+                                    const userMenu = document.getElementById('user-menu');
+                                    const notificationsButton = document.getElementById('notifications-button');
+                                    const notificationsPanel = document.getElementById('notifications-panel');
+                                    const searchButton = document.getElementById('search-button');
+                                    const searchModal = document.getElementById('search-modal');
+                                    const closeSearch = document.getElementById('close-search');
+                                    const sidebarLinks = document.querySelectorAll('#sidebar nav a');
+                                    const mainContentDivs = document.querySelectorAll('#main-content > div[id$="-content"]');
+                                    const headerTitle = document.querySelector('header h2');
 
-        // --- Sidebar Toggle ---
-        function openSidebar() {
-            sidebar.classList.remove('mobile-menu-closed');
-            overlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-        }
+                                    // --- Sidebar Toggle ---
+                                    function openSidebar() {
+                                        sidebar.classList.remove('mobile-menu-closed');
+                                        overlay.classList.remove('hidden');
+                                        document.body.style.overflow = 'hidden'; // Prevent background scroll
+                                    }
 
-        function closeSidebarFunc() {
-            sidebar.classList.add('mobile-menu-closed');
-            overlay.classList.add('hidden');
-            document.body.style.overflow = ''; // Restore background scroll
-        }
+                                    function closeSidebarFunc() {
+                                        sidebar.classList.add('mobile-menu-closed');
+                                        overlay.classList.add('hidden');
+                                        document.body.style.overflow = ''; // Restore background scroll
+                                    }
 
-        menuToggle.addEventListener('click', openSidebar);
-        closeSidebar.addEventListener('click', closeSidebarFunc);
-        overlay.addEventListener('click', closeSidebarFunc);
+                                    menuToggle.addEventListener('click', openSidebar);
+                                    closeSidebar.addEventListener('click', closeSidebarFunc);
+                                    overlay.addEventListener('click', closeSidebarFunc);
 
-        // --- User Menu Toggle ---
-        userMenuButton.addEventListener('click', () => {
-            const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-            userMenuButton.setAttribute('aria-expanded', !isExpanded);
-            userMenu.classList.toggle('hidden');
-        });
+                                    // --- User Menu Toggle ---
+                                    userMenuButton.addEventListener('click', () => {
+                                        const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+                                        userMenuButton.setAttribute('aria-expanded', !isExpanded);
+                                        userMenu.classList.toggle('hidden');
+                                    });
 
-        // --- Notifications Panel Toggle ---
-        notificationsButton.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent click from bubbling up to document
-            notificationsPanel.classList.toggle('hidden');
-        });
+                                    // --- Notifications Panel Toggle ---
+                                    notificationsButton.addEventListener('click', (e) => {
+                                        e.stopPropagation(); // Prevent click from bubbling up to document
+                                        notificationsPanel.classList.toggle('hidden');
+                                    });
 
-        // --- Search Modal Toggle ---
-        searchButton.addEventListener('click', () => {
-            searchModal.classList.remove('hidden');
-        });
+                                    // --- Search Modal Toggle ---
+                                    searchButton.addEventListener('click', () => {
+                                        searchModal.classList.remove('hidden');
+                                    });
 
-        closeSearch.addEventListener('click', () => {
-            searchModal.classList.add('hidden');
-        });
+                                    closeSearch.addEventListener('click', () => {
+                                        searchModal.classList.add('hidden');
+                                    });
 
-        // Close Notifications/Search/User Menu when clicking outside
-        document.addEventListener('click', (e) => {
-            // Close Notifications Panel
-            if (!notificationsPanel.classList.contains('hidden') && !notificationsPanel.contains(e.target) && e.target !== notificationsButton && !notificationsButton.contains(e.target)) {
-                notificationsPanel.classList.add('hidden');
-            }
-            // Close Search Modal (clicking on the gray overlay)
-            if (!searchModal.classList.contains('hidden') && e.target === searchModal) {
-                 searchModal.classList.add('hidden');
-            }
-             // Close User Menu
-            if (!userMenu.classList.contains('hidden') && !userMenu.contains(e.target) && e.target !== userMenuButton && !userMenuButton.contains(e.target)) {
-                userMenu.classList.add('hidden');
-                userMenuButton.setAttribute('aria-expanded', 'false');
-            }
-        });
+                                    // Close Notifications/Search/User Menu when clicking outside
+                                    document.addEventListener('click', (e) => {
+                                        // Close Notifications Panel
+                                        if (!notificationsPanel.classList.contains('hidden') && !notificationsPanel.contains(e.target) && e.target !== notificationsButton && !notificationsButton.contains(e.target)) {
+                                            notificationsPanel.classList.add('hidden');
+                                        }
+                                        // Close Search Modal (clicking on the gray overlay)
+                                        if (!searchModal.classList.contains('hidden') && e.target === searchModal) {
+                                            searchModal.classList.add('hidden');
+                                        }
+                                        // Close User Menu
+                                        if (!userMenu.classList.contains('hidden') && !userMenu.contains(e.target) && e.target !== userMenuButton && !userMenuButton.contains(e.target)) {
+                                            userMenu.classList.add('hidden');
+                                            userMenuButton.setAttribute('aria-expanded', 'false');
+                                        }
+                                    });
 
-        // --- Content Switching ---
-        function showContent(targetId) {
-            mainContentDivs.forEach(div => {
-                if (div.id === targetId) {
-                    div.classList.remove('hidden');
-                } else {
-                    div.classList.add('hidden');
-                }
-            });
+                                    // --- Content Switching ---
+                                    function showContent(targetId) {
+                                        mainContentDivs.forEach(div => {
+                                            if (div.id === targetId) {
+                                                div.classList.remove('hidden');
+                                            } else {
+                                                div.classList.add('hidden');
+                                            }
+                                        });
 
-             // Update Header Title (Simple Example)
-            let titleText = "Dashboard"; // Default
-            const activeLink = document.querySelector(`.sidebar-link-active`);
-            if (activeLink) {
-                titleText = activeLink.textContent.trim().split('\n')[0]; // Get text before potential badge
-                 if (titleText === "Dashboard") {
-                     headerTitle.textContent = `Welcome back, Avuyile!`;
-                     headerTitle.nextElementSibling.style.display = ''; // Show subtitle
-                } else {
-                    headerTitle.textContent = titleText;
-                    headerTitle.nextElementSibling.style.display = 'none'; // Hide subtitle
-                }
-            }
-        }
+                                        // Update Header Title (Simple Example)
+                                        let titleText = "Dashboard"; // Default
+                                        const activeLink = document.querySelector(`.sidebar-link-active`);
+                                        if (activeLink) {
+                                            titleText = activeLink.textContent.trim().split('\n')[0]; // Get text before potential badge
+                                            if (titleText === "Dashboard") {
+                                                headerTitle.textContent = `Welcome back, Avuyile!`;
+                                                headerTitle.nextElementSibling.style.display = ''; // Show subtitle
+                                            } else {
+                                                headerTitle.textContent = titleText;
+                                                headerTitle.nextElementSibling.style.display = 'none'; // Hide subtitle
+                                            }
+                                        }
+                                    }
 
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent default anchor jump
-                const targetId = link.getAttribute('href').substring(1) + '-content';
+                                    sidebarLinks.forEach(link => {
+                                        link.addEventListener('click', (e) => {
+                                            e.preventDefault(); // Prevent default anchor jump
+                                            const targetId = link.getAttribute('href').substring(1) + '-content';
 
-                // Update active link style
-                sidebarLinks.forEach(l => l.classList.remove('sidebar-link-active'));
-                link.classList.add('sidebar-link-active');
+                                            // Update active link style
+                                            sidebarLinks.forEach(l => l.classList.remove('sidebar-link-active'));
+                                            link.classList.add('sidebar-link-active');
 
-                // Show the correct content section
-                showContent(targetId);
+                                            // Show the correct content section
+                                            showContent(targetId);
 
-                // Close sidebar on mobile after navigation
-                if (window.innerWidth < 1024) {
-                    closeSidebarFunc();
-                }
+                                            // Close sidebar on mobile after navigation
+                                            if (window.innerWidth < 1024) {
+                                                closeSidebarFunc();
+                                            }
 
-                // Scroll to top of main content area
-                document.getElementById('main-content').scrollTop = 0;
-            });
-        });
+                                            // Scroll to top of main content area
+                                            document.getElementById('main-content').scrollTop = 0;
+                                        });
+                                    });
 
-        // --- Initial State ---
-        // Show dashboard content by default
-         showContent('dashboard-content');
-        // Ensure the dashboard link is active initially
-        document.querySelector('a[href="#dashboard"]').classList.add('sidebar-link-active');
+                                    // --- Initial State ---
+                                    // Show dashboard content by default
+                                    showContent('dashboard-content');
+                                    // Ensure the dashboard link is active initially
+                                    document.querySelector('a[href="#dashboard"]').classList.add('sidebar-link-active');
 
-    });
-</script>
+                                });
+                            </script>
 </body>
+
 </html>
