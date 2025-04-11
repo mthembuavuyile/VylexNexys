@@ -1,0 +1,124 @@
+html {
+    font-family: 'Inter', sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+    html {
+        font-family: 'Inter var', sans-serif;
+    }
+}
+
+/* Custom scrollbar for a cleaner look */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* gray-100 */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c5c5c5; /* gray-300 */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8; /* gray-400 */
+}
+
+/* Active sidebar link */
+.sidebar-link-active {
+    background-color: #e0f2fe; /* light-sky-100 */
+    color: #0c4a6e; /* sky-900 */
+    font-weight: 600;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Mobile menu transition classes */
+.mobile-menu-open {
+    transform: translateX(0);
+}
+.mobile-menu-closed {
+    transform: translateX(-100%);
+}
+
+/* Ensure sidebar transition */
+#sidebar {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Default mobile state (hidden) */
+@media (max-width: 1023.98px) { /* Below lg breakpoint */
+    #sidebar {
+        transform: translateX(-100%); /* Start closed */
+    }
+    /* Style for when explicitly opened (mobile-menu-closed is REMOVED) */
+    #sidebar:not(.mobile-menu-closed) {
+        transform: translateX(0);
+    }
+}
+
+/* Desktop state (always visible, ignore mobile classes) */
+@media (min-width: 1024px) { /* lg breakpoint and up */
+    #sidebar {
+        transform: translateX(0) !important; /* Always open */
+    }
+}
+
+/* Task status styling */
+.status-high { background-color: #fee2e2; color: #991b1b; }
+.status-medium { background-color: #fef3c7; color: #92400e; }
+.status-low { background-color: #d1fae5; color: #065f46; }
+
+/* Case file styling */
+.case-active { border-left: 4px solid #0ea5e9; } /* sky-500 */
+.case-closed { border-left: 4px solid #6b7280; } /* gray-500 */
+.case-urgent { border-left: 4px solid #ef4444; } /* red-500 */
+
+/* Animation for notifications */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.anim-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Tab styling */
+.tab-active {
+    color: #0c4a6e; /* sky-900 */
+    border-bottom: 2px solid #0c4a6e; /* sky-900 */
+    font-weight: 500; /* Medium */
+}
+
+/* Default tab styling (applied by JS when removing active) */
+.tab-inactive {
+    color: #6b7280; /* gray-500 */
+    border-bottom: 2px solid transparent;
+    font-weight: 500; /* Medium */
+}
+.tab-inactive:hover {
+    color: #374151; /* gray-700 */
+    border-bottom-color: #d1d5db; /* gray-300 */
+}
+
+
+/* AI Chat styling */
+.user-message {
+    background-color: #e0f2fe; /* light-sky-100 */
+    border-radius: 0.75rem 0.75rem 0 0.75rem;
+}
+.ai-message {
+    background-color: #f3f4f6; /* gray-100 */
+    border-radius: 0.75rem 0.75rem 0.75rem 0;
+}
