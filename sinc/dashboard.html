@@ -580,7 +580,8 @@
                                         <p class="text-sm text-gray-600">You uploaded <span
                                                 class="font-medium text-gray-800">Affidavit_ClientA.pdf</span> to Case
                                             <a href="#case-001"
-                                                class="font-medium text-sky-700 hover:underline">#CASE-001</a>.</p>
+                                                class="font-medium text-sky-700 hover:underline">#CASE-001</a>.
+                                        </p>
                                     </div><span class="text-xs text-gray-400 ml-8 sm:ml-0">15 minutes ago</span>
                                 </li>
                                 <li class="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -915,6 +916,9 @@
                     </div>
                 </div>
 
+               
+               
+               
                 <!-- Clients content (hidden by default) -->
                 <div id="clients-content" class="hidden">
                     <div class="bg-white rounded-lg shadow">
@@ -1075,31 +1079,96 @@
                         Calendar Component Placeholder</div>
                 </div>
 
+
+
+
                 <!-- Documents content (hidden by default) -->
                 <div id="documents-content" class="hidden bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Documents</h2>
-                    <p class="text-gray-500">Document management system features:</p>
-                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
-                        <li>Secure document storage (cloud-based)</li>
-                        <li>Folder structure (organized per case/client, or custom)</li>
-                        <li>Advanced document searching (full-text, metadata) and filtering</li>
-                        <li>Version control with history tracking</li>
-                        <li>Document templates for common legal forms</li>
-                        <li>Integration with cloud storage providers (e.g., Dropbox, Google Drive, OneDrive)</li>
-                        <li>E-signature integration (e.g., DocuSign)</li>
-                        <li>Document preview capabilities</li>
-                        <li>Sharing and collaboration features with permission controls</li>
-                    </ul>
-                    <div class="mt-4 space-x-2"><button
-                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"><svg
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+
+
+                    <div class="mt-4 space-x-2">
+                        <label for="file-upload"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5 mr-2">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
-                            </svg>Upload Document</button><button
-                            class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">Browse
-                            Templates</button></div>
+                            </svg>
+                            Upload Document
+                        </label>
+                        <input id="file-upload" type="file" class="hidden" />
+                        <button
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            Browse Templates
+                        </button>
+                    </div>
+
+                    <!-- Document List -->
+                    <div id="document-list" class="mt-6">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">Uploaded Documents</h3>
+                        <ul class="divide-y divide-gray-200">
+                            <!-- Document items -->
+                            <li class="py-3 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 mr-2"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="text-gray-800">Smith_Settlement_Agreement_v3.pdf</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-sm text-sky-600 hover:underline">View</button>
+                                    <button class="text-sm text-gray-500 hover:underline">Download</button>
+                                </div>
+                            </li>
+                            <li class="py-3 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="text-gray-800">Johnson_Trust_Amendment_2025-04-10.docx</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-sm text-sky-600 hover:underline">View</button>
+                                    <button class="text-sm text-gray-500 hover:underline">Download</button>
+                                </div>
+                            </li>
+                            <li class="py-3 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="text-gray-800">Martinez_v_Acme_Corp_Discovery_Request.pdf</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-sm text-sky-600 hover:underline">View</button>
+                                    <button class="text-sm text-gray-500 hover:underline">Download</button>
+                                </div>
+                            </li>
+                            <li class="py-3 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-2"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="text-gray-800">Williams_Estate_Planning_Draft_2025.docx</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-sm text-sky-600 hover:underline">View</button>
+                                    <button class="text-sm text-gray-500 hover:underline">Download</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+
 
                 <!-- AI Assistant content (hidden by default) -->
                 <div id="ai-assistant-content" class="hidden">
@@ -1120,7 +1189,8 @@
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-                                            </svg></div>
+                                            </svg>
+                                        </div>
                                     </div>
                                     <div class="flex-1 ai-message p-3">
                                         <p class="text-sm text-gray-800">Hello Avuyile! How can I assist you today? I
@@ -1153,7 +1223,8 @@
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-                                            </svg></div>
+                                            </svg>
+                                        </div>
                                     </div>
                                     <div class="flex-1 ai-message p-3">
                                         <p class="text-sm text-gray-800">I'd be happy to help draft a cease and desist
@@ -1204,7 +1275,8 @@
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                        </svg></div>
+                                        </svg>
+                                    </div>
                                     <div class="text-left">
                                         <h4 class="text-sm font-medium text-gray-800">Document Generator</h4>
                                         <p class="text-xs text-gray-500">Create contracts, letters, filings</p>
@@ -1218,7 +1290,8 @@
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                        </svg></div>
+                                        </svg>
+                                    </div>
                                     <div class="text-left">
                                         <h4 class="text-sm font-medium text-gray-800">Document Analyzer</h4>
                                         <p class="text-xs text-gray-500">Review contracts, find key clauses</p>
@@ -1232,7 +1305,8 @@
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                        </svg></div>
+                                        </svg>
+                                    </div>
                                     <div class="text-left">
                                         <h4 class="text-sm font-medium text-gray-800">Case Law Research</h4>
                                         <p class="text-xs text-gray-500">Find relevant precedents</p>
@@ -1246,7 +1320,8 @@
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                                        </svg></div>
+                                        </svg>
+                                    </div>
                                     <div class="text-left">
                                         <h4 class="text-sm font-medium text-gray-800">Client Communication</h4>
                                         <p class="text-xs text-gray-500">Draft emails and summaries</p>
@@ -1518,33 +1593,148 @@
                     </div>
                 </div>
 
+
+
+                
+
                 <!-- Time Tracking content (hidden by default) -->
-                <div id="time-tracking-content" class="hidden bg-white rounded-lg shadow p-6">
+                <div id="time-tracking-content" class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Time Tracking</h2>
                     <p class="text-gray-500">Features for logging and managing billable/non-billable time:</p>
-                    <ul class="list-disc list-inside text-gray-500 mt-2 space-y-1">
-                        <li>Timers for tracking work duration in real-time</li>
-                        <li>Manual time entry forms (with fields for date, duration, case, task, description)</li>
-                        <li>Association of time entries with specific cases/tasks and billing codes</li>
-                        <li>Reporting on time logged per user, case, date range, or billing status</li>
-                        <li>Review and approval workflow for time entries before billing</li>
-                        <li>Bulk editing or duplication of time entries</li>
-                        <li>Integration with calendar events for easy time logging</li>
-                        <li>Billable vs. Non-Billable time designation</li>
-                    </ul>
-                    <div class="mt-4 space-x-2"><button
-                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"><svg
-                                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>Start Timer</button><button
-                            class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">Add
-                            Manual Entry</button></div>
-                    <div
-                        class="mt-6 h-64 bg-gray-100 border border-dashed border-gray-300 rounded-md flex items-center justify-center text-gray-400">
-                        Time Log Placeholder</div>
+                    
+                    <!-- Timer/Manual Entry Toggle Buttons -->
+                    <div class="mt-4 mb-6 flex border-b border-gray-200">
+                        <button id="timer-btn" class="px-4 py-2 text-sm font-medium text-sky-700 border-b-2 border-sky-700">
+                            Timer
+                        </button>
+                        <button id="manual-entry-btn" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            Manual Entry
+                        </button>
+                    </div>
+                    
+                    <!-- Timer Interface -->
+                    <div id="timer-interface" class="mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="case-select" class="block text-sm font-medium text-gray-700">Case</label>
+                                <select id="case-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md">
+                                    <option value="">Select Case</option>
+                                    <option value="case-001">Case #001 - Smith vs. Jones</option>
+                                    <option value="case-002">Case #002 - Corporate Acquisition</option>
+                                    <option value="case-003">Case #003 - Estate Planning</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="task-select" class="block text-sm font-medium text-gray-700">Task</label>
+                                <select id="task-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md">
+                                    <option value="">Select Task</option>
+                                    <option value="research">Legal Research</option>
+                                    <option value="drafting">Document Drafting</option>
+                                    <option value="meeting">Client Meeting</option>
+                                    <option value="call">Phone Call</option>
+                                    <option value="court">Court Appearance</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="description-input" class="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea id="description-input" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"></textarea>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <div id="timer-display" class="text-3xl font-mono font-bold text-gray-800">00:00:00</div>
+                            <div>
+                                <button id="start-timer-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Start Timer
+                                </button>
+                                <button id="stop-timer-btn" class="hidden inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Stop Timer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Manual Entry Form -->
+                    <div id="manual-entry-form-container" class="hidden mb-6">
+                        <form id="manual-entry-form" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="entry-date" class="block text-sm font-medium text-gray-700">Date</label>
+                                    <input type="date" id="entry-date" name="entry-date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm" required>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label for="entry-hours" class="block text-sm font-medium text-gray-700">Hours</label>
+                                        <input type="number" id="entry-hours" name="entry-hours" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="entry-minutes" class="block text-sm font-medium text-gray-700">Minutes</label>
+                                        <input type="number" id="entry-minutes" name="entry-minutes" min="0" max="59" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="entry-case" class="block text-sm font-medium text-gray-700">Case</label>
+                                    <select id="entry-case" name="entry-case" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md" required>
+                                        <option value="">Select Case</option>
+                                        <option value="case-001">Case #001 - Smith vs. Jones</option>
+                                        <option value="case-002">Case #002 - Corporate Acquisition</option>
+                                        <option value="case-003">Case #003 - Estate Planning</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="entry-task" class="block text-sm font-medium text-gray-700">Task</label>
+                                    <select id="entry-task" name="entry-task" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md" required>
+                                        <option value="">Select Task</option>
+                                        <option value="research">Legal Research</option>
+                                        <option value="drafting">Document Drafting</option>
+                                        <option value="meeting">Client Meeting</option>
+                                        <option value="call">Phone Call</option>
+                                        <option value="court">Court Appearance</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="entry-description" class="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea id="entry-description" name="entry-description" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"></textarea>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input id="entry-billable" name="entry-billable" type="checkbox" checked class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                                <label for="entry-billable" class="ml-2 block text-sm text-gray-900">
+                                    Billable
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                    Add Entry
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Time Log Section -->
+                    <h3 class="text-lg font-medium text-gray-900 mt-8 mb-4">Time Log</h3>
+                    <div id="time-log-container" class="border border-gray-200 rounded-md max-h-96 overflow-y-auto">
+                        <div class="text-center py-8 text-gray-500">
+                            No time entries yet. Start the timer or add a manual entry.
+                        </div>
+                    </div>
                 </div>
+
+
+
 
                 <!-- Team Activity content (hidden by default) -->
                 <div id="activity-content" class="hidden bg-white rounded-lg shadow p-6">
