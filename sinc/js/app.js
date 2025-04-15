@@ -5,6 +5,9 @@ import { initRouter } from './router.js';
 import { initTaskTabs } from './uiComponents.js';
 import { initClients } from './clients.js';
 import { initSettings } from './settings.js';
+import { initFileUpload } from './FileUpload.js'; // <-- Add this line
+import { initTimeTracking } from './timeTracker.js';
+
 
 // --- Global Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initTaskTabs(); // Initialize task tabs (will only run if task elements exist on current page)
     initClients();  // Initialize client functionality
     initSettings(); // Initialize settings functionality
+    initTimeTracking(); // Initialize time tracking functionality
+    initFileUpload(); // Initialize file upload functionality
 
     // You could initialize other components here
     // initSomethingElse();
