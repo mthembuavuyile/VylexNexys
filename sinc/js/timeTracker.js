@@ -420,6 +420,7 @@ function editTimeEntry(id) {
 
 /**
  * Cancel edit mode
+ * 
  */
 function cancelEditMode() {
     const form = document.getElementById('manual-entry-form');

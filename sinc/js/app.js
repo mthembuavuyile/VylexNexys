@@ -26,4 +26,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // initSomethingElse();
 
     console.log("SINC Dashboard Ready.");
+    
 });
