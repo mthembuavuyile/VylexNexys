@@ -1,450 +1,1659 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskMaster - Your Tasks</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .gradient-navbar {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskMaster Pro | Smart Task & Calendar Organizer</title>
+
+  <!-- TailwindCSS & Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="TaskMaster Pro is your intelligent task and calendar management system—empowering productivity, visual organization, and effortless scheduling.">
+  <meta name="keywords" content="task manager, productivity app, calendar planner, to-do list, schedule organizer, TaskMaster Pro">
+  <meta name="author" content="Avuyile Mthembu, South Africa">
+
+  <!-- Open Graph for Social Sharing -->
+  <meta property="og:title" content="TaskMaster Pro - Master Your Tasks, Rule Your Day">
+  <meta property="og:description" content="Transform chaos into clarity with TaskMaster Pro. Organize tasks, filter priorities, and navigate your week with grace.">
+  <meta property="og:image" content="https://vylexnexys.co.za/TaskMaster/assets/images/og-image.jpg">
+  <meta property="og:url" content="https://vylexnexys.co.za/TaskMaster">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TaskMaster Pro - Master Your Tasks, Rule Your Day">
+  <meta name="twitter:description" content="Intuitive task planning and calendar management built for busy minds.">
+  <meta name="twitter:image" content="https://vylexnexys.co.za/TaskMaster/assets/images/twitter-card.jpg">
+  <meta name="twitter:site" content="@TaskMasterPro">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TaskMaster Pro",
+    "operatingSystem": "Web",
+    "applicationCategory": "ProductivityApplication",
+    "description": "A modern task and calendar organizer designed to streamline your workflow with visual tagging, smart filters, and an intuitive dashboard.",
+    "url": "https://vylexnexys.co.za/TaskMaster",
+    "image": "https://vylexnexys.co.za/TaskMaster/assets/images/logo.png",
+    "author": {
+      "@type": "Person",
+      "name": "Avuyile Mthembu"
+    }
+  }
+</script>
+<style>
+        :root {
+            --primary-gradient: linear-gradient(90deg, #4f46e5 0%, #7e22ce 100%);
+            --secondary-gradient: linear-gradient(90deg, #585c61 0%, #8b5cf6 100%);
         }
-        .todo-item {
-            transition: all 0.3s ease;
-        }
-        .todo-item:hover {
-            transform: translateX(5px);
-        }
-        .empty-state {
-            opacity: 0.7;
-        }
+        html { scroll-behavior: smooth; } /* Smooth scrolling for FAB actions */
+        body { overflow-x: hidden; } /* Prevent horizontal scroll */
+        .gradient-navbar { background: var(--primary-gradient); }
+        .todo-item { transition: all 0.3s ease; cursor: pointer; }
+        .todo-item:hover { transform: translateX(3px); background-color: #f9fafb; }
         .priority-high { border-left: 4px solid #ef4444; }
         .priority-medium { border-left: 4px solid #f59e0b; }
         .priority-low { border-left: 4px solid #10b981; }
-        .completed { opacity: 0.7; text-decoration: line-through; }
+        .tag { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; margin-right: 0.5rem; white-space: nowrap; }
+        .tag-work { background-color: #dbeafe; color: #1e40af; }
+        .tag-personal { background-color: #fce7f3; color: #9d174d; }
+        .tag-school { background-color: #ecfdf5; color: #065f46; }
+        .tag-shopping { background-color: #fff7ed; color: #c2410c; }
+        .tag-health { background-color: #f0fdf4; color: #166534; }
+        .tag-finance { background-color: #f1f5f9; color: #475569; }
+        .calendar-day { min-height: 100px; height: auto; overflow: hidden; /* Prevent cell overflow initially */ transition: all 0.2s ease; background-color: white; border: 1px solid #e5e7eb; position: relative; padding-bottom: 1.5rem; /* Space for day number */ display: flex; flex-direction: column; }
+        .calendar-day:hover { background-color: #f3f4f6; }
+        .calendar-day .day-number { position: absolute; top: 4px; right: 4px; font-size: 0.75rem; font-weight: bold; color: #6b7280; z-index: 1; /* Ensure number is above tasks */ }
+        .calendar-day.today .day-number { background-color: #4f46e5; color: white; border-radius: 50%; width: 1.5rem; height: 1.5rem; display: flex; align-items: center; justify-content: center; }
+        .calendar-day.other-month { background-color: #f9fafb; opacity: 0.7; }
+        .calendar-tasks-container { margin-top: 1.8rem; /* Space below day number */ flex-grow: 1; overflow-y: auto; padding-right: 2px; /* Prevent scrollbar overlap */ }
+        .calendar-task { font-size: 0.75rem; margin-bottom: 0.25rem; padding: 0.25rem; border-radius: 0.25rem; transition: all 0.2s ease; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .calendar-task:hover { transform: translateX(2px); opacity: 0.8; }
+        .calendar-task-high { background-color: #fee2e2; border-left: 2px solid #ef4444; }
+        .calendar-task-medium { background-color: #fef3c7; border-left: 2px solid #f59e0b; }
+        .calendar-task-low { background-color: #d1fae5; border-left: 2px solid #10b981; }
+        .completed { opacity: 0.6; }
+        .completed .task-text { text-decoration: line-through; }
+        .tab-button { padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 0.3s ease; }
+        .tab-button.active { background: var(--secondary-gradient); color: white; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .sidebar { background: var(--primary-gradient); min-height: calc(100vh - 64px); }
+        .filter-button { transition: background-color 0.2s ease; padding: 0.3rem 0.5rem; border-radius: 4px; }
+        .filter-button:hover, .filter-button.active { background-color: rgba(255, 255, 255, 0.2); }
+        .filter-tag-button { transition: background-color 0.2s ease; } /* Sidebar tag filter style */
+        .filter-tag-button.active { background-color: rgba(255, 255, 255, 0.2); font-weight: 600; opacity: 1 !important; } /* Active state for sidebar tag */
+
         @media (max-width: 768px) {
-            .mobile-user {
-                background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 0.5rem;
-                text-align: center;
-                z-index: 40;
-            }
-            /* Add padding to main content to prevent overlap */
-            body {
-                padding-top: 0;
-            }
+            .sidebar { position: fixed; top: 64px; left: 0; bottom: 0; z-index: 50; width: 80%; transform: translateX(-100%); transition: transform 0.3s ease-in-out; overflow-y: auto; }
+            .sidebar.show { transform: translateX(0); }
+            .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 40; opacity: 0; transition: opacity 0.3s ease-in-out; pointer-events: none; }
+            .overlay.show { opacity: 1; pointer-events: auto; }
+            #tagsListSidebar { padding-bottom: 2rem; } /* Add padding for scroll */
+            /* Ensure FABs are above mobile overlay */
+            #dashboardAddTaskBtn, #calendarAddTaskBtn { z-index: 51; }
         }
+        /* Custom scrollbar for webkit browsers */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.2); border-radius: 3px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.3); }
+        .calendar-tasks-container::-webkit-scrollbar { width: 4px; }
+        .calendar-tasks-container::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 2px; }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
+
     <!-- Navbar -->
-    <nav class="gradient-navbar text-white shadow-md">
-        <!-- Mobile Username Banner -->
-        <div class="mobile-user md:hidden">
-            <span>Welcome, </span>
-            <span id="userNameMobile" class="font-semibold"></span>
-        </div>
-        
+    <nav class="gradient-navbar text-white shadow-md sticky top-0 z-30">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <i class="fas fa-check-circle text-2xl"></i>
-                <h1 class="text-2xl font-bold">TaskMaster</h1>
+                <button id="menuToggle" class="md:hidden text-2xl mr-2 focus:outline-none" aria-label="Toggle menu">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                </button>
+                <i class="fas fa-check-circle text-2xl" aria-hidden="true"></i>
+                <h1 class="text-xl sm:text-2xl font-bold">TaskMaster Pro</h1>
             </div>
             <div class="flex items-center space-x-4">
                 <div class="hidden md:flex items-center space-x-2">
                     <span>Welcome, </span>
-                    <span id="userName" class="font-semibold"></span>
+                    <span id="userName" class="font-semibold">User</span>
                 </div>
-                <button id="logoutBtn" class="bg-white text-indigo-600 py-1 px-4 rounded-md hover:bg-gray-100 transition duration-300">
+                <button id="logoutBtn" class="bg-white text-indigo-600 py-1 px-3 rounded-md hover:bg-gray-100 transition duration-300 text-sm sm:text-base" aria-label="Logout">
                     Logout
                 </button>
             </div>
         </div>
     </nav>
 
+    <div class="overlay" id="overlay"></div>
+
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8 flex-grow">
-        <!-- Task Statistics -->
-        <div class="max-w-2xl mx-auto mb-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                    <h3 class="text-gray-500">Total Tasks</h3>
-                    <p id="totalTasks" class="text-2xl font-bold text-indigo-600">0</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                    <h3 class="text-gray-500">Completed</h3>
-                    <p id="completedTasks" class="text-2xl font-bold text-green-600">0</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                    <h3 class="text-gray-500">Pending</h3>
-                    <p id="pendingTasks" class="text-2xl font-bold text-yellow-600">0</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                    <h3 class="text-gray-500">Overdue</h3>
-                    <p id="overdueTasks" class="text-2xl font-bold text-red-600">0</p>
-                </div>
+    <div class="flex flex-grow relative">
+        <!-- Sidebar -->
+        <div class="sidebar w-64 text-white p-4 space-y-6 absolute md:relative md:translate-x-0 custom-scrollbar" id="sidebar">
+            <div class="md:hidden flex items-center space-x-2 mb-6 border-b border-white/20 pb-4">
+                <span>Welcome, </span>
+                <span id="userNameMobile" class="font-semibold">User</span>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Navigation</h3>
+                <ul class="space-y-2" id="navigationTabs">
+                    <li><button data-tab="dashboard" class="tab-button active w-full text-left flex items-center space-x-2" aria-label="Dashboard tab"><i class="fas fa-home w-5 text-center" aria-hidden="true"></i><span>Dashboard</span></button></li>
+                    <li><button data-tab="tasks" class="tab-button w-full text-left flex items-center space-x-2" aria-label="Tasks tab"><i class="fas fa-tasks w-5 text-center" aria-hidden="true"></i><span>Tasks</span></button></li>
+                    <li><button data-tab="calendar" class="tab-button w-full text-left flex items-center space-x-2" aria-label="Calendar tab"><i class="fas fa-calendar-alt w-5 text-center" aria-hidden="true"></i><span>Calendar</span></button></li>
+                    <li><button data-tab="tags" class="tab-button w-full text-left flex items-center space-x-2" aria-label="Tags tab"><i class="fas fa-tags w-5 text-center" aria-hidden="true"></i><span>Tags</span></button></li>
+                </ul>
+            </div>
+
+            <div class="border-t border-white/20 pt-4">
+                <h3 class="text-lg font-semibold mb-2">Tags</h3>
+                <ul class="space-y-1" id="tagsListSidebar">
+                    <!-- Static "Show All" tag -->
+                     <li class="filter-tag-button flex items-center justify-between opacity-80 hover:opacity-100 cursor-pointer p-1 rounded" data-tag-filter="all">
+                        <span class="text-sm font-medium flex items-center"><i class="fas fa-layer-group w-5 text-center mr-2" aria-hidden="true"></i> Show All Tasks</span>
+                        <span class="bg-white text-indigo-600 px-2 rounded-full text-xs font-mono" id="allTagsCountSidebar">0</span>
+                    </li>
+                    <!-- Other tags dynamically added here -->
+                </ul>
+            </div>
+
+            <div class="border-t border-white/20 pt-4">
+                <h3 class="text-lg font-semibold mb-2">Quick Filters</h3>
+                <ul class="space-y-2" id="quickFilters">
+                     <li><button class="filter-button w-full text-left flex items-center space-x-2" data-filter="today" aria-label="Filter tasks due today"><i class="fas fa-calendar-day w-5 text-center" aria-hidden="true"></i><span>Due Today</span></button></li>
+                    <li><button class="filter-button w-full text-left flex items-center space-x-2" data-filter="week" aria-label="Filter tasks due this week"><i class="fas fa-calendar-week w-5 text-center" aria-hidden="true"></i><span>Due This Week</span></button></li>
+                    <li><button class="filter-button w-full text-left flex items-center space-x-2" data-filter="high" aria-label="Filter high priority tasks"><i class="fas fa-exclamation-circle w-5 text-center" aria-hidden="true"></i><span>High Priority</span></button></li>
+                    <li><button class="filter-button w-full text-left flex items-center space-x-2" data-filter="overdue" aria-label="Filter overdue tasks"><i class="fas fa-exclamation-triangle w-5 text-center" aria-hidden="true"></i><span>Overdue</span></button></li>
+                     <li><button class="filter-button w-full text-left flex items-center space-x-2 active" data-filter="all" aria-label="Show all active tasks"><i class="fas fa-infinity w-5 text-center" aria-hidden="true"></i><span>Show All Active</span></button></li>
+                </ul>
             </div>
         </div>
 
-        <div id="todoSection" class="max-w-2xl mx-auto">
-            <!-- Search Bar -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                <div class="relative">
-                    <input type="text" id="searchInput" 
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                           placeholder="Search tasks...">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+        <!-- Content Area -->
+        <main class="flex-grow p-4 md:p-6 lg:p-8 overflow-y-auto custom-scrollbar">
+            <!-- Dashboard Tab -->
+            <div class="tab-content" id="dashboard-tab">
+                <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                     <div class="bg-white p-4 rounded-lg shadow text-center"><h3 class="text-gray-500 text-sm mb-1">Total Tasks</h3><p id="totalTasks" class="text-2xl font-bold text-indigo-600">0</p></div>
+                    <div class="bg-white p-4 rounded-lg shadow text-center"><h3 class="text-gray-500 text-sm mb-1">Completed</h3><p id="completedTasks" class="text-2xl font-bold text-green-600">0</p></div>
+                    <div class="bg-white p-4 rounded-lg shadow text-center"><h3 class="text-gray-500 text-sm mb-1">Pending</h3><p id="pendingTasks" class="text-2xl font-bold text-yellow-600">0</p></div>
+                    <div class="bg-white p-4 rounded-lg shadow text-center"><h3 class="text-gray-500 text-sm mb-1">Overdue</h3><p id="overdueTasks" class="text-2xl font-bold text-red-600">0</p></div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow p-6 flex flex-col">
+                        <h3 class="text-xl font-semibold mb-4 flex-shrink-0">Today's Tasks</h3>
+                        <div class="flex-grow overflow-y-auto max-h-60 custom-scrollbar">
+                            <ul id="todaysList" class="space-y-3"></ul>
+                            <div id="todaysEmptyState" class="hidden text-center py-8 opacity-70">
+                                <i class="fas fa-sun text-5xl text-yellow-300 mb-3" aria-hidden="true"></i>
+                                <p class="text-gray-500">No tasks due today. Enjoy!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6 flex flex-col">
+                        <h3 class="text-xl font-semibold mb-4 flex-shrink-0">Upcoming Tasks (Next 7 Days)</h3>
+                        <div class="flex-grow overflow-y-auto max-h-60 custom-scrollbar">
+                             <ul id="upcomingList" class="space-y-3"></ul>
+                             <div id="upcomingEmptyState" class="hidden text-center py-8 opacity-70">
+                                 <i class="fas fa-calendar-check text-5xl text-indigo-300 mb-3" aria-hidden="true"></i>
+                                 <p class="text-gray-500">No upcoming tasks in the next week.</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fixed floating action button for quick task creation -->
+                <button id="dashboardAddTaskBtn" data-tab="tasks" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-indigo-600 text-white h-14 w-14 rounded-full shadow-lg hover:bg-indigo-700 transition duration-300 flex items-center justify-center" aria-label="Add new task">
+                    <i class="fas fa-plus text-xl" aria-hidden="true"></i>
+                    <span class="sr-only">Add Task</span>
+                </button>
+            </div>
+
+            <!-- Tasks Tab -->
+            <div class="tab-content hidden" id="tasks-tab">
+                <h2 class="text-2xl font-bold mb-6">Manage Tasks</h2>
+                 <!-- Add Todo Form -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <h3 class="text-xl font-semibold mb-4">Add New Task</h3>
+                    <form id="addTaskForm">
+                         <div class="space-y-4">
+                             <div>
+                                <label for="todoInput" class="sr-only">Task description</label>
+                                <input id="todoInput" type="text" placeholder="What needs doing? (e.g., Buy groceries)" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                             </div>
+                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                 <div>
+                                    <label for="prioritySelect" class="sr-only">Priority</label>
+                                    <select id="prioritySelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="low">Low Priority</option>
+                                        <option value="medium" selected>Medium Priority</option>
+                                        <option value="high">High Priority</option>
+                                    </select>
+                                 </div>
+                                 <div>
+                                    <label for="tagSelect" class="sr-only">Tag</label>
+                                    <select id="tagSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="">-- No Tag --</option>
+                                        <option value="work">Work</option>
+                                        <option value="personal">Personal</option>
+                                        <option value="school">School</option>
+                                        <option value="shopping">Shopping</option>
+                                        <option value="health">Health</option>
+                                        <option value="finance">Finance</option>
+                                        <!-- Consider dynamically populating tags here -->
+                                    </select>
+                                 </div>
+                                 <div>
+                                    <label for="dueDateInput" class="sr-only">Due date</label>
+                                    <input type="date" id="dueDateInput" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                 </div>
+                             </div>
+                             <div>
+                                <label for="notesInput" class="sr-only">Notes</label>
+                                <textarea id="notesInput" placeholder="Add notes (optional)" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                             </div>
+                             <div class="text-right">
+                                 <button id="addTaskFormBtn" type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 disabled:opacity-50">
+                                    <i class="fas fa-plus mr-2" aria-hidden="true"></i>Add Task
+                                 </button>
+                             </div>
+                         </div>
+                    </form>
+                    <p id="errorMessage" class="text-red-500 mt-2 text-sm hidden"></p>
+                </div>
+                <!-- Task List Controls -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                         <div class="relative w-full md:w-1/3">
+                            <label for="searchInput" class="sr-only">Search tasks</label>
+                            <input type="text" id="searchInput" class="w-full px-4 py-2 border border-gray-300 rounded-lg pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Search tasks...">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex flex-wrap justify-end gap-2 w-full md:w-auto">
+                             <label for="tagFilterSelect" class="sr-only">Filter by tag</label>
+                             <select id="tagFilterSelect" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="all">All Tags</option>
+                                <option value="work">Work</option>
+                                <option value="personal">Personal</option>
+                                <option value="school">School</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="health">Health</option>
+                                <option value="finance">Finance</option>
+                                <option value="none">No Tag</option>
+                                <!-- Consider dynamically populating tags here -->
+                             </select>
+
+                             <label for="statusFilterSelect" class="sr-only">Filter by status</label>
+                             <select id="statusFilterSelect" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="active">Active</option>
+                                <option value="completed">Completed</option>
+                                <option value="all">All Tasks</option>
+                             </select>
+
+                             <label for="sortSelect" class="sr-only">Sort tasks</label>
+                             <select id="sortSelect" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="dueDate">Sort by Due Date</option>
+                                <option value="priority">Sort by Priority</option>
+                                <option value="createdAt">Sort by Created</option>
+                                <option value="name">Sort by Name</option>
+                             </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- Todo List -->
+                <div class="bg-white rounded-lg shadow p-6 min-h-[300px] relative">
+                    <h3 class="text-xl font-semibold mb-4">Your Tasks</h3>
+                    <ul id="todoList" class="space-y-3" role="list" aria-label="Your task list"></ul>
+                    <div id="emptyState" class="hidden absolute inset-0 flex items-center justify-center text-center py-12 opacity-70 pointer-events-none">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-clipboard-list text-6xl text-gray-300 mb-4" aria-hidden="true"></i>
+                            <p class="text-gray-500 text-lg">No tasks match your current filters.</p>
+                            <p class="text-gray-400 text-sm">Try adding a task or adjusting the filters.</p>
+                        </div>
+                    </div>
+                    <div id="noTasksState" class="hidden absolute inset-0 flex items-center justify-center text-center py-12 opacity-70 pointer-events-none">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-magic text-6xl text-indigo-300 mb-4" aria-hidden="true"></i>
+                            <p class="text-gray-500 text-lg">Your task list is empty!</p>
+                            <p class="text-gray-400 text-sm">Use the form above to add your first task.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Add Todo Form -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h2 class="text-xl font-semibold mb-4">Add New Task</h2>
-                <div class="space-y-4">
-                    <div>
-                        <input id="todoInput" type="text" placeholder="What do you need to do?"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <!-- Calendar Tab -->
+            <div class="tab-content hidden" id="calendar-tab">
+                <h2 class="text-2xl font-bold mb-6">Calendar View</h2>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <button id="prevMonth" class="text-indigo-600 hover:text-indigo-800 p-2 rounded-full hover:bg-indigo-100 transition duration-150" aria-label="Previous month">
+                            <i class="fas fa-chevron-left fa-fw" aria-hidden="true"></i>
+                        </button>
+                        <h3 id="currentMonthYear" class="text-xl font-semibold text-center">Month Year</h3>
+                        <button id="nextMonth" class="text-indigo-600 hover:text-indigo-800 p-2 rounded-full hover:bg-indigo-100 transition duration-150" aria-label="Next month">
+                            <i class="fas fa-chevron-right fa-fw" aria-hidden="true"></i>
+                        </button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <select id="prioritySelect" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="low">Low Priority</option>
-                            <option value="medium">Medium Priority</option>
-                            <option value="high">High Priority</option>
-                        </select>
-                        <input type="date" id="dueDateInput" 
-                               class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <button id="addTodoBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">
-                            <i class="fas fa-plus mr-2"></i>Add Task
+                    <div class="grid grid-cols-7 gap-px bg-gray-200 border border-gray-200" role="rowgroup">
+                        <div class="bg-indigo-100 p-2 text-center font-semibold text-sm text-indigo-800" role="columnheader">Sun</div>
+                        <div class="bg-indigo-100 p-2 text-center font-semibold text-sm text-indigo-800" role="columnheader">Mon</div>
+                        <div class="bg-indigo-100 p-2 text-center font-semibold text-sm text-indigo-800" role="columnheader">Tue</div>
+                        <div class="bg-indigo-100 p-2 text-center font-semibold text-sm text-indigo-800" role="columnheader">Wed</div>
+                        <div class="bg-indigo-100 p-2 text-center font-semibold text-sm text-indigo-800" role="columnheader">Thu</div>
+                        <div class="bg-indigo-100 p-2 text-center font-semibold text-sm text-indigo-800" role="columnheader">Fri</div>
+                        <div class="bg-indigo-100 p-2 text-center font-semibold text-sm text-indigo-800" role="columnheader">Sat</div>
+                    </div>
+                    <div id="calendarGrid" class="grid grid-cols-7 gap-px bg-gray-200 border border-gray-200 border-t-0" role="grid" aria-label="Calendar showing tasks by date">
+                        <!-- Calendar cells generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Add task button for calendar view -->
+                <button id="calendarAddTaskBtn" data-tab="tasks" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-indigo-600 text-white h-14 w-14 rounded-full shadow-lg hover:bg-indigo-700 transition duration-300 flex items-center justify-center" aria-label="Add new task">
+                    <i class="fas fa-plus text-xl" aria-hidden="true"></i>
+                    <span class="sr-only">Add Task</span>
+                </button>
+            </div>
+
+            <!-- Tags Tab -->
+            <div class="tab-content hidden" id="tags-tab">
+                <h2 class="text-2xl font-bold mb-6">Tasks by Tag</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="tagsOverviewContainer" role="list" aria-label="Tasks organized by tags">
+                    <!-- Tag cards generated by JS -->
+                    <div id="noTagsState" class="hidden md:col-span-2 lg:col-span-3 text-center py-12 opacity-70">
+                        <i class="fas fa-tags text-6xl text-gray-300 mb-4" aria-hidden="true"></i>
+                        <p class="text-gray-500 text-lg">No tasks with tags found.</p>
+                        <p class="text-gray-400 text-sm">Add tags to your tasks to see them organized here.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Task Detail Modal -->
+    <div id="taskDetailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] hidden p-4" role="dialog" aria-labelledby="modalTaskTitle" aria-modal="true">
+        <div class="bg-white rounded-lg p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-xl font-bold" id="modalTaskTitle">Task Details</h3>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700 text-2xl leading-none" aria-label="Close modal">×</button>
+            </div>
+            <form id="editTaskForm">
+                <div class="space-y-4">
+                    <input type="hidden" id="modalTaskId">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1" for="modalTaskText">Task Description</label>
+                        <input type="text" id="modalTaskText" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-1" for="modalDueDate">Due Date</label>
+                            <input type="date" id="modalDueDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-1" for="modalStatus">Status</label>
+                            <select id="modalStatus" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="false">Active</option>
+                                <option value="true">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-1" for="modalPriority">Priority</label>
+                            <select id="modalPriority" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-1" for="modalTag">Tag</label>
+                            <select id="modalTag" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">-- No Tag --</option>
+                                <option value="work">Work</option>
+                                <option value="personal">Personal</option>
+                                <option value="school">School</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="health">Health</option>
+                                <option value="finance">Finance</option>
+                                <!-- Consider dynamically populating tags here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1" for="modalNotes">Notes</label>
+                        <textarea id="modalNotes" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3"></textarea>
+                    </div>
+                    <p id="modalErrorMessage" class="text-red-500 text-sm hidden"></p>
+                    <div class="pt-2 flex flex-col sm:flex-row justify-between gap-3">
+                        <button type="button" id="deleteTaskBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 disabled:opacity-50 order-2 sm:order-1" aria-label="Delete task">
+                            <i class="fas fa-trash mr-2" aria-hidden="true"></i>Delete
+                        </button>
+                        <button type="submit" id="saveTaskBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 disabled:opacity-50 order-1 sm:order-2" aria-label="Save task changes">
+                            <i class="fas fa-save mr-2" aria-hidden="true"></i>Save Changes
                         </button>
                     </div>
                 </div>
-                <p id="errorMessage" class="text-red-500 mt-2 hidden"></p>
-            </div>
-
-            <!-- Todo List -->
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold">Your Tasks</h2>
-                    <select id="filterSelect" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="all">All Tasks</option>
-                        <option value="active">Active</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                </div>
-                <ul id="todoList" class="space-y-3">
-                    <!-- Todo items will be inserted here -->
-                </ul>
-                <div id="emptyState" class="hidden text-center py-8 empty-state">
-                    <i class="fas fa-clipboard-list text-5xl text-gray-300 mb-3"></i>
-                    <p class="text-gray-500">No tasks yet. Add a new task to get started!</p>
-                </div>
-            </div>
+            </form>
         </div>
-    </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="fixed bottom-5 right-5 shadow-lg rounded-lg p-4 transform translate-y-[200%] opacity-0 transition-all duration-500 ease-out flex items-center z-[70] max-w-sm text-white" role="alert" aria-live="polite">
+        <div id="notificationIcon" class="mr-3 text-xl flex-shrink-0 w-6 text-center" aria-hidden="true"></div>
+        <div class="flex-1">
+            <h4 id="notificationTitle" class="font-semibold">Notification</h4>
+            <p id="notificationMessage" class="text-sm opacity-90">Message here.</p>
+        </div>
+        <button id="closeNotification" class="ml-4 text-gray-200 hover:text-white flex-shrink-0" aria-label="Close notification">×</button>
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-300 py-4">
-        <div class="container mx-auto px-4 text-center">
-            <p>TaskMaster © 2025. <a href="https://vylexnexys.co.za" class="underline">By Vylex Nexys</a> All rights reserved.</p>
+    <footer class="bg-gray-800 text-gray-400 py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>TaskMaster Pro © <span id="currentYear"></span>. Developed by <a href="https://vylexnexys.co.za" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-200">Vylex Nexys</a>. All rights reserved.</p>
         </div>
     </footer>
 
-    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <script type="module">
-        // Firebase imports
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, orderBy, updateDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        // --- !!! IMPORTANT !!! ---
+        // Replace the placeholder values in firebaseConfig below with your
+        // actual Firebase project configuration details. You can find these
+        // in your Firebase project settings -> General tab -> Your apps -> Web app.
+        const firebaseConfig = {
+            apiKey: "AIzaSyAnEO8oaqwEJzq9yiDnlyCY1qGlGqQt9Es", // Consider environment variables for API keys
+            authDomain: "to-do-list-6ce28.firebaseapp.com",
+            projectId: "to-do-list-6ce28",
+            storageBucket: "to-do-list-6ce28.appspot.com", // Corrected domain
+            messagingSenderId: "1029497276623",
+            appId: "1:1029497276623:web:1840e90ebcb2b6f4a68fba",
+            measurementId: "G-2CGRDCJ3WS"
+        };
 
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyAnEO8oaqwEJzq9yiDnlyCY1qGlGqQt9Es",
-    authDomain: "to-do-list-6ce28.firebaseapp.com",
-    projectId: "to-do-list-6ce28",
-    storageBucket: "to-do-list-6ce28.firebasestorage.app",
-    messagingSenderId: "1029497276623",
-    appId: "1:1029497276623:web:1840e90ebcb2b6f4a68fba",
-    measurementId: "G-2CGRDCJ3WS"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// DOM Elements
-const logoutBtn = document.getElementById('logoutBtn');
-const userName = document.getElementById('userName');
-const userNameMobile = document.getElementById('userNameMobile');
-const todoInput = document.getElementById('todoInput');
-const addTodoBtn = document.getElementById('addTodoBtn');
-const todoList = document.getElementById('todoList');
-const errorMessage = document.getElementById('errorMessage');
-const emptyState = document.getElementById('emptyState');
-const searchInput = document.getElementById('searchInput');
-const prioritySelect = document.getElementById('prioritySelect');
-const dueDateInput = document.getElementById('dueDateInput');
-const filterSelect = document.getElementById('filterSelect');
-const totalTasks = document.getElementById('totalTasks');
-const completedTasks = document.getElementById('completedTasks');
-const pendingTasks = document.getElementById('pendingTasks');
-const overdueTasks = document.getElementById('overdueTasks');
-
-// Stats tracking
-let statistics = {
-    total: 0,
-    completed: 0,
-    pending: 0,
-    overdue: 0
-};
-
-// Check authentication state
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        userName.textContent = user.displayName || user.email;
-        userNameMobile.textContent = user.displayName || user.email;
-        loadTodos(user.uid);
-    } else {
-        window.location.href = 'login.html';
-    }
-});
-
-// Error handling functions
-function displayError(message) {
-    errorMessage.textContent = message;
-    errorMessage.classList.remove('hidden');
-}
-
-function clearError() {
-    errorMessage.textContent = '';
-    errorMessage.classList.add('hidden');
-}
-
-// Sign out handler
-logoutBtn.addEventListener('click', async () => {
-    try {
-        await signOut(auth);
-    } catch (error) {
-        console.error('Sign-out error:', error);
-        displayError(`Sign-out failed: ${error.message}`);
-    }
-});
-
-// Add new todo
-addTodoBtn.addEventListener('click', async () => {
-    const text = todoInput.value.trim();
-    const priority = prioritySelect.value;
-    const dueDate = dueDateInput.value;
-
-    if (!text) {
-        displayError('Please enter a task description');
-        return;
-    }
-
-    if (!dueDate) {
-        displayError('Please select a due date');
-        return;
-    }
-
-    try {
-        await addDoc(collection(db, 'todos'), {
-            text,
-            userId: auth.currentUser.uid,
-            createdAt: new Date().toISOString(),
-            completed: false,
-            priority,
-            dueDate,
-        });
-        todoInput.value = '';
-        dueDateInput.value = '';
-        prioritySelect.value = 'low';
-        clearError();
-    } catch (error) {
-        console.error('Error adding todo:', error);
-        displayError(`Error adding todo: ${error.message}`);
-    }
-});
-
-// Handle enter key on input
-todoInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        addTodoBtn.click();
-    }
-});
-
-// Update statistics
-function updateStatistics(todos) {
-    const now = new Date();
-    
-    statistics = todos.reduce((stats, todo) => {
-        stats.total++;
-        if (todo.completed) {
-            stats.completed++;
-        } else {
-            stats.pending++;
-            if (new Date(todo.dueDate) < now) {
-                stats.overdue++;
+        // Initialize Firebase
+        try {
+            if (!firebase.apps.length) { // Avoid re-initializing
+                firebase.initializeApp(firebaseConfig);
             }
+        } catch (e) {
+            console.error("Firebase initialization failed. Ensure config is correct and variables are replaced.", e);
+            alert("Error initializing the application. Please check the console and ensure Firebase configuration is set correctly.");
+            // Optionally disable UI elements if Firebase fails
         }
-        return stats;
-    }, {
-        total: 0,
-        completed: 0,
-        pending: 0,
-        overdue: 0
-    });
 
-    totalTasks.textContent = statistics.total;
-    completedTasks.textContent = statistics.completed;
-    pendingTasks.textContent = statistics.pending;
-    overdueTasks.textContent = statistics.overdue;
-}
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const todosCollection = db.collection('todos');
 
-// Create todo item element
-function createTodoElement(doc) {
-    const todo = doc.data();
-    const li = document.createElement('li');
-    li.className = 'todo-item flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 mb-2';
+        // --- DOM Elements ---
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userNameEl = document.getElementById('userName');
+        const userNameMobileEl = document.getElementById('userNameMobile');
+        const addTaskForm = document.getElementById('addTaskForm');
+        const todoInput = document.getElementById('todoInput');
+        const prioritySelect = document.getElementById('prioritySelect');
+        const tagSelect = document.getElementById('tagSelect');
+        const dueDateInput = document.getElementById('dueDateInput');
+        const notesInput = document.getElementById('notesInput');
+        // Corrected: Reference the actual Add Task button ID
+        const addTaskFormBtn = document.getElementById('addTaskFormBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const todoList = document.getElementById('todoList');
+        const emptyState = document.getElementById('emptyState');
+        const noTasksState = document.getElementById('noTasksState');
+        const searchInput = document.getElementById('searchInput');
+        const tagFilterSelect = document.getElementById('tagFilterSelect');
+        const statusFilterSelect = document.getElementById('statusFilterSelect');
+        const sortSelect = document.getElementById('sortSelect');
+        const navigationTabs = document.getElementById('navigationTabs');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const totalTasksEl = document.getElementById('totalTasks');
+        const completedTasksEl = document.getElementById('completedTasks');
+        const pendingTasksEl = document.getElementById('pendingTasks');
+        const overdueTasksEl = document.getElementById('overdueTasks');
+        const todaysList = document.getElementById('todaysList');
+        const upcomingList = document.getElementById('upcomingList');
+        const todaysEmptyState = document.getElementById('todaysEmptyState');
+        const upcomingEmptyState = document.getElementById('upcomingEmptyState');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const currentMonthYearEl = document.getElementById('currentMonthYear');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+        const tagsOverviewContainer = document.getElementById('tagsOverviewContainer');
+        const noTagsState = document.getElementById('noTagsState'); // For Tags tab
+        const tagsListSidebar = document.getElementById('tagsListSidebar');
+        const allTagsCountSidebarEl = document.getElementById('allTagsCountSidebar');
+        const quickFiltersContainer = document.getElementById('quickFilters');
+        const taskDetailModal = document.getElementById('taskDetailModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const editTaskForm = document.getElementById('editTaskForm');
+        const modalTaskId = document.getElementById('modalTaskId');
+        const modalTaskText = document.getElementById('modalTaskText');
+        const modalDueDate = document.getElementById('modalDueDate');
+        const modalStatus = document.getElementById('modalStatus');
+        const modalPriority = document.getElementById('modalPriority');
+        const modalTag = document.getElementById('modalTag');
+        const modalNotes = document.getElementById('modalNotes');
+        const modalErrorMessage = document.getElementById('modalErrorMessage');
+        const saveTaskBtn = document.getElementById('saveTaskBtn');
+        const deleteTaskBtn = document.getElementById('deleteTaskBtn');
+        const notificationToast = document.getElementById('notificationToast');
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationTitle = document.getElementById('notificationTitle');
+        const notificationMessage = document.getElementById('notificationMessage');
+        const closeNotification = document.getElementById('closeNotification');
+        const currentYearEl = document.getElementById('currentYear');
+        const dashboardAddTaskBtn = document.getElementById('dashboardAddTaskBtn'); // FAB
+        const calendarAddTaskBtn = document.getElementById('calendarAddTaskBtn'); // FAB
 
-    // Priority indicator
-    const priorityColor = {
-        low: 'bg-green-500',
-        medium: 'bg-yellow-500',
-        high: 'bg-red-500'
-    };
+        // --- State Variables ---
+        let currentUserId = null;
+        let allTasks = []; // Holds all raw tasks for the current user from Firestore
+        let currentCalendarDate = new Date();
+        let unsubscribeSnapshot = null; // To stop listener on logout
+        let activeQuickFilter = 'all'; // Sidebar quick filter: 'all', 'today', 'week', 'high', 'overdue'
+        let activeSidebarTagFilter = 'all'; // Sidebar tag filter: 'all', 'work', 'personal', etc.
+        let notificationTimeout = null; // To manage notification timer
 
-    // Create the main content container
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'flex items-center flex-grow';
+        // --- Utility Functions ---
+        const showNotification = (type, title, message) => {
+            if (notificationTimeout) clearTimeout(notificationTimeout); // Clear previous timer
 
-    // Checkbox
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = todo.completed;
-    checkbox.className = 'mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500';
-    
-    // Text and details container
-    const textContainer = document.createElement('div');
-    textContainer.className = 'flex flex-col';
-    
-    const textSpan = document.createElement('span');
-    textSpan.className = `text-lg ${todo.completed ? 'line-through text-gray-500' : ''}`;
-    textSpan.textContent = todo.text;
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            // Reset classes first
+            notificationToast.className = 'fixed bottom-5 right-5 shadow-lg rounded-lg p-4 transform transition-all duration-500 ease-out flex items-center z-[70] max-w-sm text-white';
+            notificationToast.classList.add('opacity-100', 'translate-y-0'); // Make visible
 
-    const detailsSpan = document.createElement('span');
-    detailsSpan.className = 'text-sm text-gray-500';
-    const dueDate = new Date(todo.dueDate).toLocaleDateString();
-    detailsSpan.textContent = `Due: ${dueDate} • Priority: ${todo.priority}`;
+            notificationIcon.innerHTML = ''; // Clear previous icon
 
-    textContainer.appendChild(textSpan);
-    textContainer.appendChild(detailsSpan);
+            switch (type) {
+                case 'success':
+                    notificationToast.classList.add('bg-green-600');
+                    notificationIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'error':
+                    notificationToast.classList.add('bg-red-600');
+                    notificationIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                    break;
+                case 'info':
+                     notificationToast.classList.add('bg-blue-600');
+                     notificationIcon.innerHTML = '<i class="fas fa-info-circle"></i>';
+                     break;
+                 case 'warning':
+                     notificationToast.classList.add('bg-yellow-500'); // Using yellow for warning
+                     notificationIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                    break;
+                default: // Use gray as default/neutral
+                    notificationToast.classList.add('bg-gray-700');
+                    notificationIcon.innerHTML = '<i class="fas fa-bell"></i>';
+            }
 
-    // Priority indicator
-    const priorityIndicator = document.createElement('span');
-    priorityIndicator.className = `w-3 h-3 rounded-full ${priorityColor[todo.priority]} mr-2`;
+            // Auto-hide after 5 seconds
+            notificationTimeout = setTimeout(() => {
+                 hideNotification();
+            }, 5000);
+        };
 
-    // Delete button
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'text-red-500 hover:text-red-700 ml-4 transition duration-300';
-    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        const hideNotification = () => {
+             if (notificationTimeout) clearTimeout(notificationTimeout);
+             notificationToast.classList.remove('opacity-100', 'translate-y-0');
+             notificationToast.classList.add('opacity-0', 'translate-y-[200%]');
+        };
 
-    // Assemble the elements
-    contentDiv.appendChild(priorityIndicator);
-    contentDiv.appendChild(checkbox);
-    contentDiv.appendChild(textContainer);
-    
-    li.appendChild(contentDiv);
-    li.appendChild(deleteBtn);
+        closeNotification.addEventListener('click', hideNotification);
 
-    // Event listeners
-    checkbox.addEventListener('change', async () => {
-        try {
-            await updateDoc(doc.ref, {
-                completed: checkbox.checked
-            });
-            textSpan.className = `text-lg ${checkbox.checked ? 'line-through text-gray-500' : ''}`;
-        } catch (error) {
-            console.error('Error updating todo:', error);
-            displayError(`Error updating todo: ${error.message}`);
-        }
-    });
+        const formatDate = (dateString) => {
+            if (!dateString) return 'No date';
+            try {
+                // Add T00:00:00 to treat the date string as local time, preventing timezone shifts during formatting
+                const date = new Date(dateString + 'T00:00:00');
+                if (isNaN(date.getTime())) return 'Invalid date'; // Check if date is valid
+                return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch (e) {
+                console.error("Error formatting date:", dateString, e);
+                return 'Invalid date';
+            }
+        };
 
-    deleteBtn.addEventListener('click', async () => {
-        try {
-            await deleteDoc(doc.ref);
-        } catch (error) {
-            console.error('Error deleting todo:', error);
-            displayError(`Error deleting todo: ${error.message}`);
-        }
-    });
+        const getTagClass = (tag) => {
+            switch (tag) {
+                case 'work': return 'tag-work';
+                case 'personal': return 'tag-personal';
+                case 'school': return 'tag-school';
+                case 'shopping': return 'tag-shopping';
+                case 'health': return 'tag-health';
+                case 'finance': return 'tag-finance';
+                default: return 'bg-gray-200 text-gray-800'; // Default tag style
+            }
+        };
 
-    return li;
-}
+        const getPriorityBorderClass = (priority) => {
+            switch (priority) {
+                case 'high': return 'priority-high';
+                case 'medium': return 'priority-medium';
+                case 'low': return 'priority-low';
+                default: return '';
+            }
+        };
 
-// Load and filter todos
-function loadTodos(userId) {
-    const q = query(
-        collection(db, 'todos'),
-        where('userId', '==', userId),
-        orderBy('createdAt', 'desc')
-    );
+        const getPriorityCalendarClass = (priority) => {
+            switch (priority) {
+                case 'high': return 'calendar-task-high';
+                case 'medium': return 'calendar-task-medium';
+                case 'low': return 'calendar-task-low';
+                default: return 'bg-gray-100 border-l-2 border-gray-300'; // Default style for calendar tasks
+            }
+        };
 
-    onSnapshot(q, (snapshot) => {
-        let todos = [];
-        snapshot.forEach(doc => {
-            todos.push({ ...doc.data(), id: doc.id });
+        const priorityValue = (priority) => {
+            switch (priority) {
+                case 'high': return 3;
+                case 'medium': return 2;
+                case 'low': return 1;
+                default: return 0;
+            }
+        };
+
+        const getLocalDateString = (date) => {
+             // Returns date in "YYYY-MM-DD" format adjusted for local timezone
+             const year = date.getFullYear();
+             const month = (date.getMonth() + 1).toString().padStart(2, '0');
+             const day = date.getDate().toString().padStart(2, '0');
+             return `${year}-${month}-${day}`;
+        };
+
+        // --- Authentication ---
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log("User detected:", user.uid);
+                currentUserId = user.uid;
+                const displayName = user.displayName || (user.email ? user.email.split('@')[0] : 'User');
+                userNameEl.textContent = displayName;
+                userNameMobileEl.textContent = displayName;
+                loadTasks(); // Fetch tasks for the logged-in user
+                setInitialDueDate(); // Set date input defaults
+            } else {
+                console.log("No user detected, redirecting to login.");
+                currentUserId = null;
+                if (unsubscribeSnapshot) {
+                    console.log("Unsubscribing Firestore listener.");
+                    unsubscribeSnapshot();
+                    unsubscribeSnapshot = null;
+                }
+                allTasks = []; // Clear local task cache
+                renderAll(); // Clear UI
+                // Redirect to login page (ensure login.html exists or change path)
+                if (window.location.pathname !== '/login.html' && window.location.pathname !== '/login') { // Avoid redirect loop
+                     window.location.href = 'login.html';
+                }
+            }
         });
 
-        updateStatistics(todos);
-
-        // Apply filters
-        const filterValue = filterSelect.value;
-        const searchText = searchInput.value.toLowerCase();
-
-        const filteredTodos = todos.filter(todo => {
-            const matchesFilter = filterValue === 'all' ||
-                (filterValue === 'active' && !todo.completed) ||
-                (filterValue === 'completed' && todo.completed);
-            
-            const matchesSearch = todo.text.toLowerCase().includes(searchText);
-            
-            return matchesFilter && matchesSearch;
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().catch(error => {
+                console.error("Logout failed: ", error);
+                showNotification('error', 'Logout Failed', error.message);
+            });
+             // onAuthStateChanged will handle redirect and cleanup
         });
 
-        // Update UI
-        todoList.innerHTML = '';
-        
-        if (filteredTodos.length === 0) {
-            emptyState.classList.remove('hidden');
-        } else {
-            emptyState.classList.add('hidden');
-            filteredTodos.forEach(todo => {
-                const docRef = doc(db, 'todos', todo.id);
-                todoList.appendChild(createTodoElement({ ref: docRef, data: () => todo }));
+        // --- Task Management ---
+        const loadTasks = () => {
+            if (!currentUserId || !db) {
+                 console.warn("loadTasks called without user ID or DB not initialized.");
+                 return;
+            }
+            console.log("loadTasks: Setting up snapshot listener for user:", currentUserId);
+
+            if (unsubscribeSnapshot) {
+                console.log("loadTasks: Unsubscribing previous listener.");
+                unsubscribeSnapshot();
+            }
+
+            const q = todosCollection.where('userId', '==', currentUserId);
+
+            unsubscribeSnapshot = q.onSnapshot(snapshot => {
+                console.log("loadTasks: Snapshot received, task count:", snapshot.docs.length);
+                allTasks = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        text: data.text || '',
+                        completed: data.completed || false,
+                        priority: data.priority || 'medium',
+                        tag: data.tag || null,
+                        dueDate: data.dueDate || null,
+                        notes: data.notes || null,
+                        // Ensure createdAt is a Firestore Timestamp or null
+                        createdAt: data.createdAt instanceof firebase.firestore.Timestamp ? data.createdAt : null,
+                        userId: data.userId
+                    };
+                });
+                renderAll(); // Render everything after getting data
+            }, error => {
+                console.error("Error fetching tasks: ", error);
+                showNotification('error', 'Loading Error', 'Could not fetch tasks.');
+                allTasks = []; // Clear tasks on error
+                renderAll(); // Re-render empty state
             });
+        };
+
+        // Central render function called after data changes or filter/tab changes
+        const renderAll = () => {
+             // Check if Firestore is available before rendering
+             if (!db) {
+                 console.warn("Firestore not initialized, skipping render.");
+                 return;
+             }
+             const filteredTasks = filterAndSortTasks(); // Apply all active filters
+             updateStatistics();
+             renderTaskList(filteredTasks); // Pass filtered tasks to the list renderer
+             renderDashboardLists(); // Uses allTasks but filters internally
+             renderCalendar(); // Uses allTasks but filters internally
+             renderTagsTab(); // Uses allTasks but filters internally
+             updateSidebarTags(); // Uses allTasks to update counts
+        };
+
+        // Applies ALL active filters (sidebar + task tab if active) and sorts
+        const filterAndSortTasks = () => {
+            let tasksToDisplay = [...allTasks]; // Start with a copy of all raw tasks
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusFilter = statusFilterSelect.value; // Task tab status dropdown
+            const tagFilter = tagFilterSelect.value;       // Task tab tag dropdown
+            const sortBy = sortSelect.value;               // Task tab sort dropdown
+
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Start of today
+            const todayStr = getLocalDateString(today);
+            const startOfWeek = new Date(today);
+            startOfWeek.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)); // Start of week (Monday)
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 7); // End of week (next Monday morning)
+
+
+            // 1. Apply Sidebar Quick Filters (Global - operates on allTasks)
+            // These filters primarily target *active* tasks unless overridden later.
+            switch (activeQuickFilter) {
+                case 'today':
+                    tasksToDisplay = tasksToDisplay.filter(task => !task.completed && task.dueDate === todayStr);
+                    break;
+                case 'week':
+                    tasksToDisplay = tasksToDisplay.filter(task => {
+                        if (task.completed || !task.dueDate) return false;
+                        // Use T00:00:00 for consistent date comparison regardless of time component
+                        const dueDate = new Date(task.dueDate + 'T00:00:00');
+                        // Due date is on or after start of today AND before end of week
+                        return dueDate >= today && dueDate < endOfWeek;
+                    });
+                    break;
+                case 'high':
+                    tasksToDisplay = tasksToDisplay.filter(task => !task.completed && task.priority === 'high');
+                    break;
+                case 'overdue':
+                     tasksToDisplay = tasksToDisplay.filter(task => {
+                          if (task.completed || !task.dueDate) return false;
+                          const dueDate = new Date(task.dueDate + 'T00:00:00');
+                          return dueDate < today; // Due before the start of today
+                     });
+                    break;
+                case 'all': // 'Show All Active' - Default state
+                default:
+                    // If 'Show All Active' is selected, we start by filtering for active tasks.
+                    // The Task Tab's status filter might override this later if that tab is active.
+                    tasksToDisplay = tasksToDisplay.filter(task => !task.completed);
+                    break;
+            }
+
+             // 2. Apply Sidebar Tag Filter (Global - operates on the result of step 1)
+             if (activeSidebarTagFilter !== 'all') {
+                 tasksToDisplay = tasksToDisplay.filter(task => {
+                     // Handle 'No Tag' case if needed (although sidebar doesn't have explicit 'No Tag' yet)
+                     if (activeSidebarTagFilter === 'none') return !task.tag;
+                     return task.tag === activeSidebarTagFilter;
+                 });
+             }
+
+            // 3. Apply Task Tab Specific Filters & Sort (ONLY if Tasks tab is active)
+            const activeTabId = document.querySelector('#navigationTabs .tab-button.active')?.getAttribute('data-tab');
+            if (activeTabId === 'tasks') {
+                // a. Status Filter (Tasks Tab Dropdown) - Overrides sidebar active/inactive focus
+                if (statusFilter !== 'all') {
+                    // Re-filter based *only* on the dropdown selection, ignoring previous active/inactive filtering
+                    // We need to start from the result of the *sidebar tag filter* (step 2) before applying status
+                    let tasksAfterSidebarFilters = [...allTasks]; // Re-fetch all tasks first
+                     if (activeSidebarTagFilter !== 'all') { // Re-apply sidebar tag filter
+                         tasksAfterSidebarFilters = tasksAfterSidebarFilters.filter(task => {
+                            if (activeSidebarTagFilter === 'none') return !task.tag;
+                            return task.tag === activeSidebarTagFilter;
+                         });
+                     }
+                    // Now apply the status dropdown filter
+                    tasksToDisplay = tasksAfterSidebarFilters.filter(task => (statusFilter === 'completed' ? task.completed : !task.completed));
+                } else {
+                    // If 'All Tasks' is selected in the status dropdown, ensure we are showing both active & completed
+                    // that match the sidebar tag filter.
+                    let tasksAfterSidebarTagFilter = [...allTasks]; // Re-fetch all tasks
+                     if (activeSidebarTagFilter !== 'all') { // Re-apply sidebar tag filter
+                         tasksAfterSidebarTagFilter = tasksAfterSidebarTagFilter.filter(task => {
+                            if (activeSidebarTagFilter === 'none') return !task.tag;
+                            return task.tag === activeSidebarTagFilter;
+                         });
+                     }
+                    tasksToDisplay = tasksAfterSidebarTagFilter; // Show all statuses matching sidebar tag filter
+                }
+
+
+                // b. Tag Filter (Tasks Tab Dropdown) - Applied to the result of 3a
+                if (tagFilter !== 'all') {
+                    if (tagFilter === 'none') {
+                        tasksToDisplay = tasksToDisplay.filter(task => !task.tag);
+                    } else {
+                        tasksToDisplay = tasksToDisplay.filter(task => task.tag === tagFilter);
+                    }
+                }
+
+                 // c. Search Filter (Tasks Tab Input) - Applied to the result of 3b
+                 if (searchTerm) {
+                     tasksToDisplay = tasksToDisplay.filter(task =>
+                         task.text.toLowerCase().includes(searchTerm) ||
+                         (task.notes && task.notes.toLowerCase().includes(searchTerm))
+                     );
+                 }
+
+                // d. Sorting (Tasks Tab Dropdown) - Applied last to the filtered list
+                tasksToDisplay.sort((a, b) => {
+                    switch (sortBy) {
+                        case 'priority':
+                            const priorityDiff = priorityValue(b.priority) - priorityValue(a.priority);
+                            if (priorityDiff !== 0) return priorityDiff;
+                            const dateA_p = a.dueDate ? new Date(a.dueDate + 'T00:00:00') : new Date(9999, 0, 1);
+                            const dateB_p = b.dueDate ? new Date(b.dueDate + 'T00:00:00') : new Date(9999, 0, 1);
+                            return dateA_p - dateB_p; // Secondary sort: earlier due date first
+                        case 'createdAt':
+                            // Ensure createdAt is valid before calling toDate()
+                            const timeA = a.createdAt ? a.createdAt.toDate().getTime() : 0;
+                            const timeB = b.createdAt ? b.createdAt.toDate().getTime() : 0;
+                            return timeB - timeA; // Newest first
+                        case 'name':
+                            return a.text.localeCompare(b.text);
+                        case 'dueDate':
+                        default:
+                             const dateA = a.dueDate ? new Date(a.dueDate + 'T00:00:00') : new Date(9999, 0, 1); // Nulls last
+                             const dateB = b.dueDate ? new Date(b.dueDate + 'T00:00:00') : new Date(9999, 0, 1);
+                             const dateDiff = dateA - dateB; // Earliest first
+                             if (dateDiff !== 0) return dateDiff;
+                            return priorityValue(b.priority) - priorityValue(a.priority); // Secondary sort: higher priority first
+                    }
+                });
+             } else {
+                  // Default sort for OTHER tabs (Dashboard, Calendar, Tags) - Due Date, then Priority
+                  // Applied to the result of step 2 (sidebar filters)
+                   tasksToDisplay.sort((a, b) => {
+                       const dateA = a.dueDate ? new Date(a.dueDate + 'T00:00:00') : new Date(9999, 0, 1);
+                       const dateB = b.dueDate ? new Date(b.dueDate + 'T00:00:00') : new Date(9999, 0, 1);
+                       const dateDiff = dateA - dateB;
+                       if (dateDiff !== 0) return dateDiff;
+                       return priorityValue(b.priority) - priorityValue(a.priority);
+                   });
+             }
+
+            return tasksToDisplay; // Return the final filtered and sorted list
+        };
+
+        // Renders the main task list in the "Tasks" tab
+        const renderTaskList = (tasks) => {
+            todoList.innerHTML = ''; // Clear existing list
+
+            // Determine which empty state to show based on filtering result vs raw data
+            const isAnyTaskPresentGlobally = allTasks.length > 0;
+            const isFilteredListEmpty = tasks.length === 0;
+
+            // Show "No tasks added yet" state ONLY if allTasks is empty
+            noTasksState.classList.toggle('hidden', isAnyTaskPresentGlobally);
+            // Show "No tasks match filter" state ONLY if tasks exist globally, but the current filter yields none
+            emptyState.classList.toggle('hidden', !isAnyTaskPresentGlobally || !isFilteredListEmpty);
+
+            if (!isFilteredListEmpty) {
+                tasks.forEach(task => {
+                    todoList.appendChild(createTaskElement(task)); // Use full task element view
+                });
+            }
+        };
+
+        // Creates a single task list item (li element)
+        // isCompact controls whether to render a smaller version (e.g., for dashboard)
+        const createTaskElement = (task, isCompact = false) => {
+            const li = document.createElement('li');
+            // Added role="listitem" for better semantics
+            li.className = `todo-item flex items-center justify-between p-3 rounded-lg border border-gray-200 mb-2 ${getPriorityBorderClass(task.priority)} ${task.completed ? 'completed bg-gray-50' : 'bg-white'} transition-all duration-200`;
+            li.dataset.taskId = task.id;
+            li.setAttribute('role', 'listitem');
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'flex items-center flex-grow overflow-hidden mr-2';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = task.completed;
+            checkbox.className = 'mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 flex-shrink-0 cursor-pointer';
+            checkbox.setAttribute('aria-label', `Mark task ${task.text} as ${task.completed ? 'incomplete' : 'complete'}`);
+            checkbox.addEventListener('change', async (e) => {
+                e.stopPropagation();
+                await updateTaskCompletion(task.id, checkbox.checked);
+            });
+
+            const textContainer = document.createElement('div');
+            textContainer.className = 'flex flex-col overflow-hidden';
+
+            const textSpan = document.createElement('span');
+            textSpan.className = `task-text font-medium ${isCompact ? 'text-sm' : 'text-base'} ${task.completed ? 'line-through text-gray-500' : 'text-gray-800'} truncate`;
+            textSpan.textContent = task.text;
+            textSpan.title = task.text; // Tooltip for full text
+
+            const detailsSpan = document.createElement('span');
+            detailsSpan.className = `text-xs ${task.completed ? 'text-gray-400' : 'text-gray-500'} mt-1 truncate flex items-center flex-wrap gap-x-2`; // Added gap
+
+            const details = [];
+            if (task.dueDate) {
+                const dueDate = new Date(task.dueDate + 'T00:00:00');
+                const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
+
+                if (!task.completed && dueDate < todayStart) {
+                    details.push(`<span class="text-red-500 font-semibold whitespace-nowrap"><i class="fas fa-exclamation-triangle mr-1"></i>Overdue: ${formatDate(task.dueDate)}</span>`);
+                } else {
+                     details.push(`<span class="whitespace-nowrap"><i class="far fa-calendar-alt mr-1"></i>${formatDate(task.dueDate)}</span>`);
+                }
+            } else if (!isCompact) {
+                 details.push('<span class="text-gray-400 italic whitespace-nowrap">No due date</span>');
+            }
+
+            if (task.tag) {
+                details.push(`<span class="tag ${getTagClass(task.tag)} !p-0.5 !px-1.5 !text-[10px] !mr-0">${task.tag}</span>`);
+            }
+
+            detailsSpan.innerHTML = details.join('');
+
+            contentDiv.appendChild(checkbox);
+            textContainer.appendChild(textSpan);
+            textContainer.appendChild(detailsSpan);
+            contentDiv.appendChild(textContainer);
+
+            // Action Buttons (Delete) - only show in non-compact view
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'flex-shrink-0';
+            if (!isCompact) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'text-gray-400 hover:text-red-600 ml-2 px-1 transition duration-150 focus:outline-none focus:ring-2 focus:ring-red-300 rounded';
+                deleteBtn.innerHTML = '<i class="fas fa-trash fa-sm"></i>';
+                deleteBtn.title = "Delete Task";
+                deleteBtn.setAttribute('aria-label', `Delete task ${task.text}`);
+                deleteBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    if (confirm(`Are you sure you want to delete task: "${task.text}"?`)) {
+                        await deleteTask(task.id);
+                    }
+                });
+                actionsDiv.appendChild(deleteBtn);
+            }
+
+            li.appendChild(contentDiv);
+            li.appendChild(actionsDiv);
+
+            // Click on list item to open modal
+            li.addEventListener('click', (e) => {
+                // Ensure the click wasn't on the checkbox or delete button
+                if (e.target !== checkbox && !actionsDiv.contains(e.target)) {
+                    openTaskModal(task.id);
+                }
+            });
+
+            return li;
+        };
+
+        // Updates task completion status in Firestore
+        const updateTaskCompletion = async (taskId, isCompleted) => {
+             if (!currentUserId || !db) return;
+             const taskRef = todosCollection.doc(taskId);
+             try {
+                 await taskRef.update({ completed: isCompleted });
+                 showNotification('success', 'Task Updated', `Task marked as ${isCompleted ? 'complete' : 'active'}.`);
+                  // Snapshot listener handles UI update automatically
+             } catch (error) {
+                 console.error("Error updating task completion: ", error);
+                 showNotification('error', 'Update Failed', 'Could not update task status.');
+                 // Optionally revert checkbox optimistically (snapshot should correct it anyway)
+                 const checkbox = document.querySelector(`li[data-task-id="${taskId}"] input[type="checkbox"]`);
+                 if (checkbox) checkbox.checked = !isCompleted;
+             }
+        };
+
+         // Deletes a task from Firestore
+         const deleteTask = async (taskId) => {
+             if (!currentUserId || !db) return;
+             const taskRef = todosCollection.doc(taskId);
+             try {
+                 await taskRef.delete();
+                 showNotification('info', 'Task Deleted', 'Task successfully removed.');
+                 closeTaskModal(); // Ensure modal is closed if this task was being edited
+                  // Snapshot listener handles UI update automatically
+             } catch (error) {
+                 console.error("Error deleting task: ", error);
+                 showNotification('error', 'Delete Failed', 'Could not delete task.');
+             }
+         };
+
+        // Handles the submission of the "Add New Task" form
+        addTaskForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearError(errorMessage); // Clear previous form errors
+
+            const text = todoInput.value.trim();
+            const priority = prioritySelect.value;
+            const tag = tagSelect.value;
+            const dueDate = dueDateInput.value; // Already in YYYY-MM-DD format
+            const notes = notesInput.value.trim();
+
+            if (!text) {
+                displayError('Task description cannot be empty.', errorMessage);
+                todoInput.focus();
+                return;
+            }
+            if (!currentUserId || !db) {
+                 displayError('User not logged in or database unavailable. Cannot add task.', errorMessage);
+                 return;
+            }
+
+            addTaskFormBtn.disabled = true; // Disable button during operation
+            addTaskFormBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Adding...'; // Indicate loading
+
+            try {
+                const newTask = {
+                    text,
+                    userId: currentUserId,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    completed: false,
+                    priority,
+                    tag: tag || null,
+                    dueDate: dueDate || null,
+                    notes: notes || null,
+                };
+                await todosCollection.add(newTask);
+                showNotification('success', 'Task Added', `"${text.substring(0, 30)}${text.length > 30 ? '...' : ''}" added.`);
+                addTaskForm.reset(); // Clear the form
+                setInitialDueDate(); // Reset due date to default (today)
+                 // Snapshot listener will update the UI
+            } catch (error) {
+                console.error("Error adding task: ", error);
+                displayError(`Error adding task: ${error.message}`, errorMessage);
+                showNotification('error', 'Add Failed', 'Could not add the task.');
+            } finally {
+                addTaskFormBtn.disabled = false; // Re-enable button
+                addTaskFormBtn.innerHTML = '<i class="fas fa-plus mr-2"></i>Add Task'; // Reset button text
+            }
+        });
+
+        // --- Filtering and Sorting Listeners (Task Tab) ---
+        searchInput.addEventListener('input', () => renderAll());
+        tagFilterSelect.addEventListener('change', () => renderAll());
+        statusFilterSelect.addEventListener('change', () => renderAll());
+        sortSelect.addEventListener('change', () => renderAll());
+
+        // --- Sidebar Quick Filters ---
+        quickFiltersContainer.addEventListener('click', (e) => {
+            const button = e.target.closest('.filter-button');
+            if (!button || button.classList.contains('active')) return;
+
+            const filter = button.dataset.filter;
+            activeQuickFilter = filter;
+
+            // Update active class for quick filters
+            quickFiltersContainer.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // When a quick filter is applied, it often implies viewing 'active' tasks.
+            // Reset the Tasks tab status dropdown to 'Active' unless the quick filter itself is 'Show All Active'.
+            // If the user explicitly selected 'Completed' or 'All Tasks' in the dropdown, changing the quick filter
+            // will reset it back to 'Active' for consistency, focusing the quick filter's intent.
+            statusFilterSelect.value = 'active';
+
+            renderAll(); // Re-render based on new quick filter
+        });
+
+         // --- Sidebar Tag Filters ---
+        tagsListSidebar.addEventListener('click', (e) => {
+             const tagItem = e.target.closest('.filter-tag-button');
+             if (!tagItem || tagItem.classList.contains('active')) return;
+
+             const tagFilter = tagItem.dataset.tagFilter;
+             activeSidebarTagFilter = tagFilter;
+
+             // Update active class for sidebar tags
+             tagsListSidebar.querySelectorAll('.filter-tag-button').forEach(item => item.classList.remove('active'));
+             tagItem.classList.add('active');
+
+             renderAll(); // Re-render based on new sidebar tag filter
+        });
+
+        // --- Tab Switching ---
+        navigationTabs.addEventListener('click', (e) => {
+            const button = e.target.closest('.tab-button');
+            if (!button || button.classList.contains('active')) return;
+            const tabId = button.dataset.tab;
+            switchTab(tabId);
+        });
+
+        function switchTab(tabId) {
+            console.log("Switching to tab:", tabId);
+            // Update button active states
+            navigationTabs.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabId);
+            });
+
+            // Show/hide content panes
+            tabContents.forEach(content => {
+                content.classList.toggle('hidden', content.id !== `${tabId}-tab`);
+            });
+
+            // Hide/show relevant FABs based on tab
+            dashboardAddTaskBtn.classList.toggle('hidden', tabId !== 'dashboard');
+            calendarAddTaskBtn.classList.toggle('hidden', tabId !== 'calendar');
+
+            // Close mobile sidebar on tab switch
+            if (sidebar.classList.contains('show')) {
+                 toggleSidebar();
+            }
+
+             // Re-render content. Crucial because filter/sort logic depends on the active tab.
+             renderAll();
+
+             // Optional: Scroll to top of the main content area on tab switch
+             document.querySelector('main')?.scrollTo(0, 0);
         }
-    }, (error) => {
-        console.error("Error loading todos:", error);
-        displayError(`Error loading todos: ${error.message}`);
-    });
-}
 
-// Search and filter event listeners
-searchInput.addEventListener('input', () => {
-    const userId = auth.currentUser?.uid;
-    if (userId) loadTodos(userId);
-});
+        // --- Floating Action Button (FAB) Listeners ---
+        dashboardAddTaskBtn.addEventListener('click', () => {
+            switchTab('tasks');
+            // Optional: Scroll the add task form into view
+            document.getElementById('addTaskForm')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('todoInput')?.focus(); // Focus the input field
+        });
 
-filterSelect.addEventListener('change', () => {
-    const userId = auth.currentUser?.uid;
-    if (userId) loadTodos(userId);
-});
+        calendarAddTaskBtn.addEventListener('click', () => {
+            switchTab('tasks');
+            // Optional: Scroll the add task form into view
+            document.getElementById('addTaskForm')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('todoInput')?.focus(); // Focus the input field
+        });
 
-// Set minimum date for due date input to today
-const today = new Date().toISOString().split('T')[0];
-dueDateInput.min = today;
+
+        // --- Mobile Sidebar ---
+        menuToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+            // Prevent body scrolling when sidebar is open
+            document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
+            // Ensure overlay doesn't block clicks when hidden visually
+            overlay.classList.toggle('pointer-events-none', !overlay.classList.contains('show'));
+        }
+
+         // --- Dashboard Updates ---
+         const updateStatistics = () => {
+             const now = new Date();
+             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Start of today
+             let completedCount = 0;
+             let pendingCount = 0;
+             let overdueCount = 0;
+
+             allTasks.forEach(task => {
+                 if (task.completed) {
+                     completedCount++;
+                 } else {
+                     pendingCount++;
+                     if (task.dueDate) {
+                         const dueDate = new Date(task.dueDate + 'T00:00:00'); // Compare dates only
+                         if (dueDate < today) {
+                             overdueCount++;
+                         }
+                     }
+                 }
+             });
+
+             totalTasksEl.textContent = allTasks.length;
+             completedTasksEl.textContent = completedCount;
+             pendingTasksEl.textContent = pendingCount;
+             overdueTasksEl.textContent = overdueCount;
+         };
+
+         const renderDashboardLists = () => {
+             const now = new Date();
+             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+             const todayStr = getLocalDateString(today);
+             const endOfWeek = new Date(today);
+             endOfWeek.setDate(today.getDate() + 7); // Tasks due up to 7 days from now (exclusive of day 7 morning)
+
+             // Filter for Today's Tasks (active, due today) based on sidebar filters
+             const todaysTasks = filterAndSortTasks().filter(task => !task.completed && task.dueDate === todayStr);
+                                       // Sorting is already handled by filterAndSortTasks
+
+             // Filter for Upcoming Tasks (active, due after today but within 7 days) based on sidebar filters
+             const upcomingTasks = filterAndSortTasks().filter(task => {
+                 if (task.completed || !task.dueDate || task.dueDate === todayStr) return false;
+                 const dueDate = new Date(task.dueDate + 'T00:00:00');
+                 return dueDate > today && dueDate < endOfWeek;
+             }); // Sorting handled by filterAndSortTasks
+
+             // Render Today's List
+             todaysList.innerHTML = '';
+             if (todaysTasks.length > 0) {
+                 todaysTasks.forEach(task => todaysList.appendChild(createTaskElement(task, true))); // Use compact view
+                 todaysEmptyState.classList.add('hidden');
+             } else {
+                 todaysEmptyState.classList.remove('hidden');
+             }
+
+             // Render Upcoming List
+             upcomingList.innerHTML = '';
+             if (upcomingTasks.length > 0) {
+                 upcomingTasks.forEach(task => upcomingList.appendChild(createTaskElement(task, true))); // Use compact view
+                 upcomingEmptyState.classList.add('hidden');
+             } else {
+                 upcomingEmptyState.classList.remove('hidden');
+             }
+         };
+
+
+         // --- Calendar View ---
+         const renderCalendar = () => {
+             calendarGrid.innerHTML = ''; // Clear grid
+             const year = currentCalendarDate.getFullYear();
+             const month = currentCalendarDate.getMonth(); // 0-indexed
+
+             currentMonthYearEl.textContent = currentCalendarDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+
+             const firstDayOfMonth = new Date(year, month, 1);
+             const lastDayOfMonth = new Date(year, month + 1, 0);
+             const firstDayWeekday = firstDayOfMonth.getDay(); // 0 = Sunday
+             const totalDaysInMonth = lastDayOfMonth.getDate();
+             const todayStr = getLocalDateString(new Date());
+
+             // Get tasks relevant to the displayed month view (including padding days)
+             const firstDisplayedDate = new Date(year, month, 1 - firstDayWeekday);
+             const totalCells = Math.ceil((totalDaysInMonth + firstDayWeekday) / 7) * 7;
+             const lastDisplayedDate = new Date(firstDisplayedDate);
+             lastDisplayedDate.setDate(firstDisplayedDate.getDate() + totalCells);
+
+             const firstDisplayedDateStr = getLocalDateString(firstDisplayedDate);
+             const lastDisplayedDateStr = getLocalDateString(lastDisplayedDate);
+
+             // Filter tasks based on current *sidebar* filters that fall within the calendar view's date range
+             const tasksForCalendar = filterAndSortTasks().filter(task =>
+                task.dueDate && task.dueDate >= firstDisplayedDateStr && task.dueDate < lastDisplayedDateStr
+             );
+
+             let currentDate = new Date(firstDisplayedDate); // Start iterating from the first displayed date
+
+             for (let i = 0; i < totalCells; i++) {
+                 const dayCell = document.createElement('div');
+                 dayCell.className = 'calendar-day p-1 relative flex flex-col'; // Reduced padding
+
+                 const dayNumberSpan = document.createElement('span');
+                 dayNumberSpan.className = 'day-number';
+                 dayNumberSpan.textContent = currentDate.getDate();
+
+                 const cellDateStr = getLocalDateString(currentDate);
+                 const isCurrentMonth = currentDate.getMonth() === month;
+
+                 dayCell.appendChild(dayNumberSpan);
+
+                 if (!isCurrentMonth) {
+                     dayCell.classList.add('other-month');
+                 } else {
+                     dayCell.dataset.date = cellDateStr; // Store YYYY-MM-DD
+                     if (cellDateStr === todayStr) {
+                         dayCell.classList.add('today');
+                     }
+                 }
+
+                 // Add tasks for this specific date from the pre-filtered list
+                 const tasksForDay = tasksForCalendar.filter(task => task.dueDate === cellDateStr);
+                                                   // Already sorted by filterAndSortTasks
+
+                  const tasksContainer = document.createElement('div');
+                  // Added custom scrollbar class
+                  tasksContainer.className = 'calendar-tasks-container mt-1 space-y-1 flex-grow overflow-y-auto custom-scrollbar';
+
+                 tasksForDay.forEach(task => {
+                     const taskEl = document.createElement('div');
+                     taskEl.className = `calendar-task ${getPriorityCalendarClass(task.priority)} ${task.completed ? 'opacity-50 line-through' : ''}`;
+                     taskEl.textContent = task.text;
+                     taskEl.title = `${task.text}\nPriority: ${task.priority}\n${task.completed ? 'Status: Completed' : 'Status: Active'}`; // Multi-line title
+                     taskEl.dataset.taskId = task.id;
+                     taskEl.setAttribute('role', 'button');
+                     taskEl.tabIndex = 0; // Make focusable
+                     taskEl.addEventListener('click', (e) => {
+                          e.stopPropagation();
+                          openTaskModal(task.id);
+                     });
+                      taskEl.addEventListener('keydown', (e) => {
+                         if (e.key === 'Enter' || e.key === ' ') {
+                             e.preventDefault();
+                             openTaskModal(task.id);
+                         }
+                     });
+                     tasksContainer.appendChild(taskEl);
+                 });
+
+                 dayCell.appendChild(tasksContainer);
+                 calendarGrid.appendChild(dayCell);
+
+                 // Move to the next day
+                 currentDate.setDate(currentDate.getDate() + 1);
+             }
+         };
+
+         prevMonthBtn.addEventListener('click', () => {
+             currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+             renderCalendar();
+         });
+
+         nextMonthBtn.addEventListener('click', () => {
+             currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+             renderCalendar();
+         });
+
+         // --- Tags Tab & Sidebar Tags ---
+         const renderTagsTab = () => {
+             tagsOverviewContainer.innerHTML = ''; // Clear container
+
+             // Filter tasks based on current *sidebar* filters first
+             const relevantTasks = filterAndSortTasks();
+             const tasksWithTags = relevantTasks.filter(task => task.tag);
+
+             const tagGroups = tasksWithTags.reduce((acc, task) => {
+                 if (!acc[task.tag]) {
+                     acc[task.tag] = [];
+                 }
+                 acc[task.tag].push(task);
+                 return acc;
+             }, {});
+
+             const sortedTags = Object.keys(tagGroups).sort();
+
+             // Show empty state if no tagged tasks match current filters
+             const noTagsMatchFilters = sortedTags.length === 0 && allTasks.some(t => t.tag); // Check if tags exist globally but not in filter results
+             noTagsState.classList.toggle('hidden', sortedTags.length > 0 || !noTagsMatchFilters);
+
+
+             sortedTags.forEach(tag => {
+                 // Tasks within tagGroups are already sorted by filterAndSortTasks
+                 const tagTasks = tagGroups[tag];
+
+                 const tagCard = document.createElement('div');
+                 tagCard.className = 'bg-white rounded-lg shadow p-4 flex flex-col'; // Use flex-col
+
+                 const title = document.createElement('h3');
+                 title.className = 'text-lg font-semibold mb-3 flex items-center flex-shrink-0';
+                 // Use tag class directly for styling
+                 title.innerHTML = `<span class="tag ${getTagClass(tag)} mr-2">${tag}</span> (${tagTasks.length})`;
+                 tagCard.appendChild(title);
+
+                 const taskListUl = document.createElement('ul');
+                 // Use custom scrollbar, limit height
+                 taskListUl.className = 'space-y-2 flex-grow overflow-y-auto max-h-60 custom-scrollbar';
+                 taskListUl.setAttribute('role', 'list');
+
+                 if (tagTasks.length > 0) {
+                     tagTasks.forEach(task => {
+                         taskListUl.appendChild(createTaskElement(task, true)); // Compact view
+                     });
+                 }
+                 // No need for 'else' as we only create cards for tags with tasks matching filters
+
+                 tagCard.appendChild(taskListUl);
+                 tagsOverviewContainer.appendChild(tagCard);
+             });
+         };
+
+          // Updates the tag list in the sidebar with counts of *active* tasks
+          const updateSidebarTags = () => {
+             // Clear existing dynamic tags (keep the 'Show All')
+             const existingTags = tagsListSidebar.querySelectorAll('.dynamic-tag');
+             existingTags.forEach(el => el.remove());
+
+              // Calculate counts for *active* tasks per tag from the raw list
+              const activeTagCounts = allTasks.reduce((acc, task) => {
+                   if (!task.completed && task.tag) {
+                       acc[task.tag] = (acc[task.tag] || 0) + 1;
+                   }
+                  return acc;
+              }, {});
+
+             const sortedTags = Object.keys(activeTagCounts).sort();
+             const allTagElement = tagsListSidebar.querySelector('[data-tag-filter="all"]');
+
+              // Update 'Show All Active Tasks' count
+              const activeTasksCount = allTasks.filter(task => !task.completed).length;
+              if (allTagsCountSidebarEl) {
+                    allTagsCountSidebarEl.textContent = activeTasksCount;
+              }
+             // Update active state for 'Show All' tag button
+             allTagElement?.classList.toggle('active', activeSidebarTagFilter === 'all');
+
+             // Add/Update other tags dynamically only if they have active tasks
+             sortedTags.forEach(tag => {
+                 if (activeTagCounts[tag] > 0) {
+                     const li = document.createElement('li');
+                     li.className = `dynamic-tag filter-tag-button flex items-center justify-between opacity-80 hover:opacity-100 cursor-pointer p-1 rounded`;
+                     li.dataset.tagFilter = tag;
+                     li.setAttribute('role', 'button');
+                     li.tabIndex = 0; // Make focusable
+
+                     // Use span with tag styles for the name part
+                     const tagNameSpanContainer = document.createElement('span');
+                     tagNameSpanContainer.className = 'flex items-center overflow-hidden mr-2'; // Container to prevent count overlap
+                     const tagNameSpan = document.createElement('span');
+                     tagNameSpan.className = `tag ${getTagClass(tag)} !m-0 !mr-2`; // Use tag class directly, remove default margin
+                     tagNameSpan.textContent = tag;
+                     tagNameSpanContainer.appendChild(tagNameSpan);
+
+                     const countSpan = document.createElement('span');
+                     countSpan.className = 'bg-white text-indigo-600 px-2 rounded-full text-xs font-mono flex-shrink-0';
+                     countSpan.textContent = activeTagCounts[tag];
+
+                     li.appendChild(tagNameSpanContainer);
+                     li.appendChild(countSpan);
+
+                     li.classList.toggle('active', activeSidebarTagFilter === tag);
+
+                     // Add keyboard accessibility for tag selection
+                     li.addEventListener('keydown', (e) => {
+                         if (e.key === 'Enter' || e.key === ' ') {
+                             e.preventDefault();
+                             li.click(); // Simulate click
+                         }
+                     });
+
+                     tagsListSidebar.appendChild(li);
+                 }
+             });
+          };
+
+
+        // --- Task Detail Modal ---
+        const openTaskModal = (taskId) => {
+            const task = allTasks.find(t => t.id === taskId);
+            if (!task) {
+                console.error("Task not found for modal:", taskId);
+                showNotification('error', 'Error', 'Could not find task details.');
+                return;
+            }
+
+            clearError(modalErrorMessage); // Clear previous errors
+            modalTaskId.value = task.id;
+            modalTaskText.value = task.text;
+            modalDueDate.value = task.dueDate || '';
+            modalStatus.value = task.completed ? 'true' : 'false';
+            modalPriority.value = task.priority || 'medium';
+            modalTag.value = task.tag || '';
+            modalNotes.value = task.notes || '';
+
+            modalTaskTitle.textContent = `Edit Task`; // Keep title concise
+            taskDetailModal.classList.remove('hidden');
+            modalTaskText.focus(); // Focus first editable field
+        };
+
+        const closeTaskModal = () => {
+            taskDetailModal.classList.add('hidden');
+            editTaskForm.reset();
+            clearError(modalErrorMessage);
+            modalTaskTitle.textContent = 'Task Details';
+        };
+
+        closeModalBtn.addEventListener('click', closeTaskModal);
+        taskDetailModal.addEventListener('click', (e) => {
+            if (e.target === taskDetailModal) {
+                closeTaskModal();
+            }
+        });
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+             if (e.key === 'Escape' && !taskDetailModal.classList.contains('hidden')) {
+                 closeTaskModal();
+             }
+        });
+
+
+        editTaskForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearError(modalErrorMessage);
+
+            const taskId = modalTaskId.value;
+            const text = modalTaskText.value.trim();
+            const dueDate = modalDueDate.value;
+            const completed = modalStatus.value === 'true';
+            const priority = modalPriority.value;
+            const tag = modalTag.value;
+            const notes = modalNotes.value.trim();
+
+            if (!text) {
+                displayError('Task description cannot be empty.', modalErrorMessage);
+                modalTaskText.focus();
+                return;
+            }
+            if (!taskId || !currentUserId || !db) {
+                 displayError('Cannot save changes, task ID missing or connection issue.', modalErrorMessage);
+                 return;
+            }
+
+            saveTaskBtn.disabled = true;
+            deleteTaskBtn.disabled = true;
+            saveTaskBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+
+            try {
+                const updatedData = {
+                    text,
+                    dueDate: dueDate || null,
+                    completed,
+                    priority,
+                    tag: tag || null,
+                    notes: notes || null,
+                    // Optionally add updatedAt timestamp:
+                    // updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                await todosCollection.doc(taskId).update(updatedData);
+                showNotification('success', 'Task Updated', 'Changes saved successfully.');
+                closeTaskModal();
+                // Snapshot listener handles UI update
+            } catch (error) {
+                console.error("Error updating task: ", error);
+                displayError(`Error updating task: ${error.message}`, modalErrorMessage);
+                showNotification('error', 'Update Failed', 'Could not save changes.');
+            } finally {
+                saveTaskBtn.disabled = false;
+                deleteTaskBtn.disabled = false;
+                saveTaskBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Changes';
+            }
+        });
+
+         deleteTaskBtn.addEventListener('click', async () => {
+             const taskId = modalTaskId.value;
+             const taskText = modalTaskText.value || 'this task';
+              if (!taskId || !currentUserId || !db) {
+                 displayError('Cannot delete, task ID missing or connection issue.', modalErrorMessage);
+                 return;
+             }
+
+             if (confirm(`Are you sure you want to permanently delete task: "${taskText}"? This cannot be undone.`)) {
+                 saveTaskBtn.disabled = true;
+                 deleteTaskBtn.disabled = true;
+                 deleteTaskBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Deleting...';
+
+                 await deleteTask(taskId); // deleteTask handles notifications & closing modal
+                 // No need to re-enable buttons here as the modal will close on success.
+                 // If delete fails, the finally block in editTaskForm submit won't run,
+                 // so explicitly re-enable here on failure (or rely on modal close/reopen).
+                 // For simplicity, we rely on the modal closing via deleteTask -> closeTaskModal
+             }
+         });
+
+
+         // --- Error Handling Helpers ---
+         function displayError(message, element) {
+             element.textContent = message;
+             element.classList.remove('hidden');
+         }
+
+         function clearError(element) {
+             element.textContent = '';
+             element.classList.add('hidden');
+         }
+
+         // --- Initialization ---
+         const setInitialDueDate = () => {
+             // Set default due date for the ADD form to today
+             dueDateInput.value = getLocalDateString(new Date());
+             // Optional: Prevent selecting past dates in ADD form
+             // dueDateInput.min = getLocalDateString(new Date());
+         };
+
+        // Set footer year
+        currentYearEl.textContent = new Date().getFullYear();
+
+        // Initial setup when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+             // Firebase auth listener (onAuthStateChanged) handles the initial data load.
+             // Set default view to dashboard initially
+             switchTab('dashboard');
+
+             // Set initial visual state for sidebar filters
+             quickFiltersContainer.querySelector('[data-filter="all"]')?.classList.add('active');
+             tagsListSidebar.querySelector('[data-tag-filter="all"]')?.classList.add('active');
+
+             // Set default due date for add form
+             setInitialDueDate();
+
+             // Hide FABs initially, switchTab will show the correct one
+             dashboardAddTaskBtn.classList.add('hidden');
+             calendarAddTaskBtn.classList.add('hidden');
+        });
+
     </script>
 </body>
 </html>
