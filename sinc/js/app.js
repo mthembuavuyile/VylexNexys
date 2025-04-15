@@ -5,7 +5,7 @@ import { initRouter } from './router.js';
 import { initTaskTabs } from './uiComponents.js';
 import { initClients } from './clients.js';
 import { initSettings } from './settings.js';
-import { initFileUpload } from './FileUpload.js'; // <-- Add this line
+import { initFileUpload } from './fileUpload.js'; // <-- Add this line
 import { initTimeTracking } from './timeTracker.js';
 
 
@@ -26,5 +26,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // initSomethingElse();
 
     console.log("SINC Dashboard Ready.");
-    
 });
