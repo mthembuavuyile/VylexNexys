@@ -5,8 +5,11 @@ import { initRouter } from './router.js';
 import { initTaskTabs } from './uiComponents.js';
 import { initClients } from './clients.js';
 import { initSettings } from './settings.js';
-import { initFileUpload } from './fileUpload.js'; // <-- Add this line
+import { initFileUpload } from './fileUpload.js';
 import { initTimeTracking } from './timeTracker.js';
+import { initCalendar } from './calendar.js';
+
+
 
 
 // --- Global Initialization ---
@@ -21,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSettings(); // Initialize settings functionality
     initTimeTracking(); // Initialize time tracking functionality
     initFileUpload(); // Initialize file upload functionality
+    initCalendar(); // Initialize calendar functionality
 
     // You could initialize other components here
     // initSomethingElse();
