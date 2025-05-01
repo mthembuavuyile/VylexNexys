@@ -1,0 +1,181 @@
+<!-- AI Assistant content (hidden by default) -->
+<div id="ai-assistant-content" aria-labelledby="ai-assistant-heading">
+    <div class="flex justify-between items-center mb-6">
+        <h2 id="ai-assistant-heading" class="text-xl sm:text-2xl font-bold text-gray-800">AI Legal Assistant</h2>
+        <!-- Optional: Add controls here like close button, settings, etc. -->
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Left Column: Chat Interface -->
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-md flex flex-col h-[600px] sm:h-[700px] overflow-hidden">
+            <!-- Chat Header -->
+            <div class="p-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">Chat with SINC Assistant</h3>
+                <p class="text-sm text-gray-500">Ask questions, draft documents, analyze legal text</p>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 scroll-smooth" role="log" aria-live="polite">
+                <!-- AI Message Example -->
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-gray-100 rounded-lg p-3 max-w-[80%]">
+                        <p class="text-sm text-gray-800">Hello Sethu! How can I assist you today? I can help with:</p>
+                        <ul class="text-sm text-gray-800 mt-2 space-y-1 list-none">
+                            <li>• Drafting legal documents or letters</li>
+                            <li>• Summarizing case files or research</li>
+                            <li>• Analyzing contracts for specific clauses</li>
+                            <li>• Generating legal research queries</li>
+                            <li>• Creating meeting agenda templates</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- User Message Example -->
+                <div class="flex items-start justify-end space-x-3">
+                    <div class="flex-1 bg-sky-500 text-white rounded-lg p-3 max-w-[80%] ml-auto">
+                        <p class="text-sm">I need to draft a cease and desist letter for a trademark infringement case. The client is ABC Corp and they've discovered a competitor using a very similar logo.</p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1OFyMSRqZw3QL90AjZZtetZALnuFVpEUdYQ&s" alt="User Avatar" class="h-full w-full object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Message Example -->
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                         <div class="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-gray-100 rounded-lg p-3 max-w-[80%]">
+                        <p class="text-sm text-gray-800">I'd be happy to help draft a cease and desist letter for trademark infringement. To make the letter more effective, I'll need a few additional details:</p>
+                        <ol class="text-sm text-gray-800 mt-2 space-y-1 list-decimal list-inside">
+                            <li>What's the name of the infringing company?</li>
+                            <li>When did ABC Corp first notice the infringement?</li>
+                            <li>Is ABC Corp's trademark registered? If so, what's the registration number?</li>
+                            <li>Any specific damages or confusion in the marketplace so far?</li>
+                        </ol>
+                        <p class="text-sm text-gray-800 mt-2">Once you provide these details, I can generate a customized cease and desist letter that your legal team can review.</p>
+                    </div>
+                </div>
+                <!-- More messages would be added here dynamically -->
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <!-- Add JS to handle form submission -->
+                <form id="chat-form" class="w-full">
+                    <div class="flex items-center space-x-2">
+                        <button type="button" title="Attach File" aria-label="Attach File" class="p-2 rounded-full text-gray-500 hover:text-sky-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                            </svg>
+                        </button>
+                        <label for="chat-input" class="sr-only">Chat Message</label>
+                        <input type="text" id="chat-input" name="message" placeholder="Type your message or command..." aria-label="Chat message input" class="flex-1 border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-3 py-2" autocomplete="off">
+                        <button type="submit" title="Send Message" aria-label="Send Message" class="p-2 rounded-full text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- End Left Column -->
+
+        <!-- Right Column: Tools & History -->
+        <div class="bg-white rounded-lg shadow-md p-6 space-y-6">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">AI Legal Tools</h3>
+                <div class="space-y-4">
+                    <!-- Tool Button 1 -->
+                    <button class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-sky-500 transition-colors text-left">
+                        <div class="rounded-full w-10 h-10 flex items-center justify-center bg-sky-100 text-sky-600 mr-3 flex-shrink-0" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-800">Document Generator</h4>
+                            <p class="text-xs text-gray-500">Create contracts, letters, filings</p>
+                        </div>
+                    </button>
+                    <!-- Tool Button 2 -->
+                    <button class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-sky-500 transition-colors text-left">
+                        <div class="rounded-full w-10 h-10 flex items-center justify-center bg-amber-100 text-amber-600 mr-3 flex-shrink-0" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-800">Document Analyzer</h4>
+                            <p class="text-xs text-gray-500">Review contracts, find key clauses</p>
+                        </div>
+                    </button>
+                    <!-- Tool Button 3 -->
+                    <button class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-sky-500 transition-colors text-left">
+                        <div class="rounded-full w-10 h-10 flex items-center justify-center bg-purple-100 text-purple-600 mr-3 flex-shrink-0" aria-hidden="true">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-800">Case Law Research</h4>
+                            <p class="text-xs text-gray-500">Find relevant precedents</p>
+                        </div>
+                    </button>
+                    <!-- Tool Button 4 -->
+                    <button class="w-full flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-sky-500 transition-colors text-left">
+                         <div class="rounded-full w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 mr-3 flex-shrink-0" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-800">Client Communication</h4>
+                            <p class="text-xs text-gray-500">Draft emails and summaries</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recently Used Section -->
+            <div>
+                <h4 class="text-sm font-medium text-gray-800 mb-2">Recently Used</h4>
+                <div class="space-y-2">
+                    <div class="px-3 py-2 bg-gray-50 rounded text-xs text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors">Analyzed Contract_Draft_v1.docx <span class="text-gray-400">(2h ago)</span></div>
+                    <div class="px-3 py-2 bg-gray-50 rounded text-xs text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors">Generated case summary for #118 <span class="text-gray-400">(Yesterday)</span></div>
+                    <!-- More recent items can be added here -->
+                </div>
+            </div>
+        </div> <!-- End Right Column -->
+
+    </div> <!-- End Grid -->
+</div> <!-- End AI Assistant Content -->
+
+<script>
+    // Example: Show the content when a button is clicked
+const showButton = document.getElementById('show-ai-button');
+const aiContent = document.getElementById('ai-assistant-content');
+
+if (showButton && aiContent) {
+    showButton.addEventListener('click', () => {
+        // If using Tailwind's hidden class:
+        aiContent.classList.remove('hidden');
+
+        // Or if using inline style or CSS rule 'display: none;':
+        // aiContent.style.display = 'block'; // Or 'flex', 'grid' depending on layout
+    });
+}
+</script>
