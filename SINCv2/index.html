@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINC - Legal Management System</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    
+    <!-- FullCalendar Bundle - includes core and all plugins -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.11/main.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.11/index.global.min.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <!-- Updated Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <i class="fas fa-balance-scale logo-icon"></i>
+                    <h1 class="logo">SINC</h1>
+                </div>
+                <!-- Desktop toggle -->
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://vylexnexys.co.za/sinc/images/SethuM.jpg" alt="User Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Sethu M</h3>
+                    <p>Attorney</p>
+                </div>
+            </div>
+
+            <nav id="sidebar-nav" class="sidebar-nav">
+                <ul>
+                    <!-- Use data-route for easy JS selection and mapping -->
+                    <li data-route="dashboard">
+                        <a href="#dashboard">
+                            <i class="fas fa-th-large"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li data-route="cases">
+                        <a href="#cases">
+                            <i class="fas fa-folder"></i>
+                            <span>Case Files</span>
+                        </a>
+                    </li>
+                    <li data-route="clients">
+                        <a href="#clients">
+                            <i class="fas fa-users"></i>
+                            <span>Clients</span>
+                        </a>
+                    </li>
+                    <li data-route="calendar">
+                        <a href="#calendar">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li data-route="documents">
+                        <a href="#documents">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Documents</span>
+                        </a>
+                    </li>
+                    <li data-route="tasks">
+                        <a href="#tasks">
+                            <i class="fas fa-tasks"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li data-route="notes">
+                        <a href="#notes">
+                            <i class="fas fa-sticky-note"></i>
+                            <span>Notes</span>
+                        </a>
+                    </li>
+                    <li data-route="time">
+                        <a href="#time">
+                            <i class="fas fa-clock"></i>
+                            <span>Time Tracking</span>
+                        </a>
+                    </li>
+                    <li data-route="billing">
+                        <a href="#billing">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Billing</span>
+                        </a>
+                    </li>
+                    <li data-route="assistant">
+                        <a href="#assistant">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Assistant</span>
+                        </a>
+                    </li>
+                    <li data-route="settings">
+                        <a href="#settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Add overlay for mobile -->
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header Bar -->
+            <header class="header">
+                <div class="header-left">
+                    <!-- Mobile toggle -->
+                    <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 id="page-title">Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">1</span>
+                    </div>
+                    <div class="user-profile-mini">
+                        <div class="avatar"></div>
+                        <span>Sethu M</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Container -->
+            <div id="content-container" class="content-container">
+                <!-- Loading indicator shown by default, hidden by JS -->
+                <div id="loading-indicator" class="loading-indicator">
+                    <div class="spinner"></div>
+                </div>
+                <!-- Content will be loaded dynamically here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Core JavaScript -->
+    <!-- Order matters: Utils -> Router -> Sidebar -> App -->
+    <script src="js/utils.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/app.js"></script>
+
+
+    <script src="js/fragments/clients.js"></script>
+</body>
+
+</html>
