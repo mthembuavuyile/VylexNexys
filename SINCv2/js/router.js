@@ -12,6 +12,7 @@ const router = {
         'billing': { path: 'templates/billing.html', title: 'Billing' },
         'assistant': { path: 'templates/assistant.html', title: 'AI Assistant' },
         'settings': { path: 'templates/settings.html', title: 'Settings' },
+        'notes': { path: 'templates/notes.html', title: 'Notes' },
         'default': 'dashboard'
     },
 
