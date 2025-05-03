@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vylex Nexys News - Web3 Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Web3 Inspired Palette */
+      --primary: #8A2BE2; /* BlueViolet - a common Web3 accent */
+      --primary-rgb: 138, 43, 226;
+      --secondary: #00f2ff; /* Bright Cyan */
+      --bg-light: #f0f2f5; /* Slightly cooler light background */
+      --bg-dark: #121212; /* Deeper dark background */
+      --card-light: white;
+      --card-dark: #1e1e1e; /* Slightly lighter dark card */
+      --text-light: #1f1f1f;
+      --text-dark: #e0e0e0; /* Lighter text for dark mode */
+      --header-light: #ffffff;
+      --header-dark: #181818; /* Dark header */
+      --border-light: #e0e0e0;
+      --border-dark: rgba(255, 255, 255, 0.1); /* Subtle border for dark mode */
+      --shadow-light: rgba(0,0,0,0.1);
+      --shadow-dark: rgba(0,0,0,0.4);
+      --glow-dark: rgba(var(--primary-rgb), 0.3); /* Glow effect color */
+    }
+
+    /* Default to dark mode visually */
+    body {
+      font-family: 'Inter', sans-serif; /* Modern Font */
+      margin: 0;
+      background: var(--bg-dark); /* Dark by default */
+      color: var(--text-dark);
+      transition: background 0.3s ease, color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* Ensure footer stays at bottom */
+    }
+
+    /* Light mode styles */
+    body:not(.dark-mode) {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    header {
+      background: var(--header-dark); /* Dark by default */
+      color: var(--text-dark);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between; /* Align items */
+      align-items: center;
+      border-bottom: 1px solid var(--border-dark); /* Subtle separator */
+      transition: background 0.3s ease, border-color 0.3s ease;
+      flex-shrink: 0; /* Prevent header from shrinking */
+    }
+
+    body:not(.dark-mode) header {
+      background: var(--header-light);
+      color: var(--text-light); /* Use text-light for light mode */
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .header-title {
+      text-align: left;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary); /* Use accent for title */
+    }
+     header h1 .icon { /* Style the icon differently */
+        display: inline-block;
+        margin-right: 8px;
+        /* Optional: Add animation or specific style */
+        filter: drop-shadow(0 0 5px var(--glow-dark));
+     }
+
+    header p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .connect-wallet-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 25px; /* Pill shape */
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease, filter 0.3s ease, box-shadow 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .connect-wallet-btn:hover {
+        /* background: darken(var(--primary), 10%); Replaced with filter */
+        filter: brightness(0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px var(--glow-dark);
+    }
+
+    body:not(.dark-mode) .connect-wallet-btn {
+        box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+    }
+     body:not(.dark-mode) .connect-wallet-btn:hover {
+        box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.4);
+        filter: brightness(1); /* Reset filter if needed for light mode */
+        /* Or define a specific light mode hover background */
+        /* background: #7a1cc5; /* Slightly darker violet */
+     }
+
+
+    .container {
+      max-width: 960px; /* Slightly wider */
+      margin-left: auto;
+      margin-right: auto;
+      padding: 1.5rem 1rem; /* Consistent vertical padding */
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    main.container { /* Target the main content container */
+        flex-grow: 1; /* Allow main content to fill space */
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-dark); /* Dark by default */
+      border-radius: 12px; /* More rounded */
+      border: 1px solid var(--border-dark);
+      box-shadow: 0 4px 10px var(--shadow-dark);
+      padding: 1.25rem; /* More padding */
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden; /* Ensure content respects border radius */
+    }
+
+    body:not(.dark-mode) .card {
+      background: var(--card-light);
+      border: 1px solid var(--border-light);
+      box-shadow: 0 3px 8px var(--shadow-light);
+    }
+
+    .card:hover {
+      transform: translateY(-3px); /* Lift effect */
+      box-shadow: 0 6px 20px var(--glow-dark); /* Glow effect on hover */
+      border-color: rgba(var(--primary-rgb), 0.5);
+    }
+
+     body:not(.dark-mode) .card:hover {
+      box-shadow: 0 5px 15px var(--shadow-light);
+      border-color: var(--primary);
+     }
+
+    .card a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+    }
+     body:not(.dark-mode) .card a {
+       color: var(--primary);
+     }
+     .card a:hover {
+        text-decoration: underline;
+     }
+
+    .card img {
+      max-width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      border-radius: 8px; /* Rounded images */
+      margin-bottom: 1rem;
+      display: block;
+    }
+     .card h3 {
+         margin-top: 0;
+         margin-bottom: 0.5rem;
+         font-size: 1.15rem;
+         line-height: 1.4;
+     }
+     .card p {
+         font-size: 0.9rem;
+         opacity: 0.8;
+         margin-bottom: 0.5rem;
+         line-height: 1.5;
+     }
+     .card p:last-child {
+        margin-bottom: 0;
+     }
+     .card .meta-info { /* Assuming you might add meta info later */
+        font-size: 0.8rem;
+        opacity: 0.6;
+        margin-top: 1rem;
+     }
+
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 1rem;
+      background: var(--card-dark); /* Controls background */
+      border-radius: 12px;
+      border: 1px solid var(--border-dark);
+    }
+     body:not(.dark-mode) .controls {
+       background: var(--card-light);
+       border: 1px solid var(--border-light);
+     }
+
+    /* Toggle Switch */
+    .switch { position: relative; display: inline-block; width: 50px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; transition: .4s; border-radius: 24px; }
+    body:not(.dark-mode) .slider { background-color: #ccc; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(26px); }
+    .theme-toggle { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; }
+
+    /* Category Filters */
+    .category-filter { display: flex; gap: 10px; flex-wrap: wrap; }
+    .category-btn {
+      background: transparent;
+      border: 1px solid var(--border-dark);
+      color: var(--text-dark);
+      padding: 6px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    body:not(.dark-mode) .category-btn { color: var(--text-light); border: 1px solid var(--border-light); }
+    .category-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .category-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* Weather Widget */
+    .weather-widget { /* Uses .card styles */ margin-bottom: 1.5rem; }
+    /* body:not(.dark-mode) .weather-widget { ... } Already covered by .card */
+    .weather-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 15px; }
+    .weather-info { display: flex; align-items: center; gap: 15px; }
+    #weather-icon { font-size: 2.5rem; }
+    .weather-temp { font-size: 2.2rem; font-weight: 600; }
+    #weather-desc { font-size: 0.9rem; opacity: 0.8; }
+
+    .weather-location-search { display: flex; gap: 5px; } /* Use flex for search */
+    .weather-location-search input {
+      padding: 8px 12px; border-radius: 6px;
+      border: 1px solid var(--border-dark);
+      background: var(--bg-dark);
+      color: var(--text-dark); font-size: 0.9rem;
+      flex-grow: 1; /* Allow input to grow */
+    }
+    body:not(.dark-mode) .weather-location-search input {
+        background: var(--bg-light);
+        color: var(--text-light);
+        border: 1px solid var(--border-light);
+    }
+     .weather-location-search input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+     }
+
+    .weather-location-search button {
+      padding: 8px 15px; background: var(--primary); color: white;
+      border: none; border-radius: 6px; cursor: pointer; font-weight: 600;
+      transition: background 0.3s ease, filter 0.3s ease;
+    }
+     .weather-location-search button:hover {
+        /* background: darken(var(--primary), 10%); Replaced with filter */
+        filter: brightness(0.9);
+     }
+     body:not(.dark-mode) .weather-location-search button:hover {
+        filter: brightness(1); /* Reset filter */
+        /* background: #7a1cc5; /* Slightly darker violet */
+     }
+
+
+    .weather-forecast { display: flex; justify-content: space-between; margin-top: 15px; overflow-x: auto; gap: 15px; padding-bottom: 10px; }
+    .forecast-day { text-align: center; min-width: 75px; opacity: 0.8; }
+    .forecast-date { font-size: 0.75rem; margin-bottom: 5px; opacity: 0.7; }
+    .forecast-icon { font-size: 1.5rem; margin-bottom: 3px; }
+    .forecast-temp { font-size: 0.9rem; font-weight: 600; }
+
+    .loading { text-align: center; padding: 30px; opacity: 0.7; font-size: 1rem; }
+    .error {
+      background: rgba(255, 0, 0, 0.1);
+      color: #ff8a8a;
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      padding: 15px; border-radius: 8px; margin-bottom: 1.5rem; font-weight: 500;
+    }
+    body:not(.dark-mode) .error {
+      background: #ffdddd; color: #d8000c; border: 1px solid #ffbaba;
+    }
+
+    /* --- Footer Styles --- */
+    .site-footer {
+        background: var(--header-dark); /* Match header bg */
+        color: var(--text-dark);
+        padding-top: 2rem;
+        padding-bottom: 1rem; /* Less padding at the very bottom */
+        border-top: 1px solid var(--border-dark);
+        margin-top: auto; /* Push footer to bottom */
+        transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        flex-shrink: 0; /* Prevent footer from shrinking */
+    }
+    body:not(.dark-mode) .site-footer {
+        background: var(--header-light);
+        color: var(--text-light);
+        border-top: 1px solid var(--border-light);
+    }
+
+    /* Re-use .container for footer content alignment */
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem; /* Space between quote and bottom links/copyright */
+    }
+
+    /* Style quote section like a card */
+    .quote-section {
+        /* Inherits .card styles when class="card" is added */
+        width: 100%; /* Take full width within container */
+        max-width: 600px; /* Limit quote section width */
+        text-align: center;
+        margin-bottom: 0; /* Remove default card margin */
+    }
+    .quote-section h2 {
+        margin-top: 0;
+        font-size: 1.3rem;
+        color: var(--primary); /* Accent color */
+        margin-bottom: 0.8rem;
+    }
+    #quote-text {
+        font-size: 1rem;
+        font-style: italic;
+        opacity: 0.9;
+        min-height: 3em; /* Prevent layout shifts while loading */
+        margin: 1rem 0;
+        line-height: 1.5;
+        transition: opacity 0.3s ease;
+    }
+    #quote-text:empty::before { /* Placeholder text */
+       content: "Click the button to get advice!";
+       opacity: 0.6;
+    }
+    #quote-button {
+        background: transparent;
+        border: 1px solid var(--primary);
+        color: var(--primary);
+        padding: 8px 18px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    #quote-button:hover:not(:disabled) { /* Don't apply hover style when disabled */
+        background: var(--primary);
+        color: white;
+    }
+    #quote-button:disabled { /* Style for loading state */
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+
+    .footer-bottom {
+        text-align: center;
+        width: 100%;
+        font-size: 0.85rem;
+        opacity: 0.7;
+        margin-top: 1rem; /* Space above bottom links */
+    }
+    .footer-links {
+        margin-bottom: 0.5rem;
+    }
+    .footer-links a {
+        color: inherit; /* Inherit from footer */
+        text-decoration: none;
+        margin: 0 8px; /* More space between links */
+        transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+        color: var(--primary);
+        text-decoration: underline;
+    }
+    .copyright {
+        margin: 0;
+        font-size: 0.8rem; /* Slightly smaller copyright */
+    }
+
+    @media (max-width: 768px) {
+        header { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .connect-wallet-btn { align-self: flex-end; } /* Keep button to the right on mobile header*/
+        main.container { padding-top: 1rem; padding-bottom: 1rem;}
+    }
+    @media (max-width: 600px) {
+      .container { padding-left: 0.5rem; padding-right: 0.5rem; }
+      .controls { flex-direction: column; align-items: stretch; }
+      .theme-toggle { justify-content: center; }
+      .category-filter { justify-content: center; }
+      .weather-top { flex-direction: column; align-items: flex-start; gap: 15px; }
+      .weather-location-search { width: 100%; } /* Make search take full width */
+      header h1 { font-size: 1.3rem; }
+
+      /* Footer adjustments */
+      .site-footer { padding-top: 1.5rem; }
+      .quote-section { padding: 1rem; } /* Adjust padding on mobile */
+      #quote-text { font-size: 0.95rem; }
+      .footer-bottom { font-size: 0.8rem; }
+      .footer-links a { margin: 0 5px;}
+    }
+  </style>
+</head>
+<!-- Add dark-mode class by default -->
+<body class="dark-mode">
+  <header>
+    <div class="header-title">
+      <h1><span class="icon">💎</span> VylexNexys News</h1>
+      <p>Decentralized(?) Headlines & Insights</p>
+    </div>
+    <!-- Added Connect Wallet Button -->
+    <button class="connect-wallet-btn">Connect Wallet</button>
+  </header>
+
+  <!-- Use main tag for semantic content -->
+  <main class="container">
+    <!-- Weather Widget -->
+    <div class="weather-widget card" id="weather-widget"> <!-- Added card class -->
+       <div class="weather-top">
+         <div class="weather-info">
+           <div id="weather-icon">⚙️</div>
+           <div>
+             <div class="weather-temp" id="weather-temp">--°C</div>
+             <div id="weather-desc">Loading weather...</div>
+           </div>
+         </div>
+         <div class="weather-location-search">
+           <input type="text" id="location-input" placeholder="Enter city...">
+           <button id="location-search">Search</button>
+         </div>
+       </div>
+       <div class="weather-forecast" id="weather-forecast">
+         <!-- Forecast days will be added here -->
+       </div>
+    </div>
+
+    <!-- Controls: Theme Toggle & Category Filter -->
+    <div class="controls">
+      <div class="category-filter" id="category-filter">
+        <button class="category-btn active" data-source="all">All</button>
+        <button class="category-btn" data-source="worldnews">World</button>
+        <button class="category-btn" data-source="technology">Tech</button>
+        <button class="category-btn" data-source="science">Science</button>
+        <button class="category-btn" data-source="business">Business</button>
+        <button class="category-btn" data-source="southafrica">South Africa</button>
+
+      </div>
+      <div class="theme-toggle">
+        <span>☀️</span>
+        <label class="switch">
+          <input type="checkbox" id="dark-mode-toggle" checked>
+          <span class="slider"></span>
+        </label>
+        <span>🌙</span>
+      </div>
+    </div>
+
+    <!-- Error Container -->
+    <div id="error-container"></div>
+
+    <!-- News Feed -->
+    <div id="news-container">
+      <div class="loading" id="loading">Loading VylexNexys Feed...</div>
+      <!-- News cards generated by JS -->
+    </div>
+  </main> <!-- End of main content -->
+
+  <!-- Improved Footer -->
+  <footer class="site-footer">
+    <div class="footer-content container"> <!-- Use container for consistent width -->
+
+        <!-- Quote Section - Styled like a card -->
+        <div class="quote-section card">
+            <h2>🧠 Random Life Advice</h2>
+            <p id="quote-text"></p> <!-- Content set by JS or CSS placeholder -->
+            <button id="quote-button" onclick="getAdvice()">💬 Get Advice</button>
+        </div>
+
+        <!-- Footer Bottom Links & Copyright -->
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a> |
+                <a href="#">Terms of Service</a> |
+                <a href="https://vylexnexys.co.za" target="_blank" rel="noopener noreferrer">VylexNexys</a>
+            </div>
+            <p class="copyright">© 2025 VylexNexys. All rights reserved.</p>
+        </div>
+
+    </div>
+  </footer>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- SELECTORS ---
+      const newsContainer = document.getElementById('news-container');
+      const loadingElement = document.getElementById('loading');
+      const errorContainer = document.getElementById('error-container');
+      const darkModeToggle = document.getElementById('dark-mode-toggle');
+      const categoryButtons = document.querySelectorAll('.category-btn');
+      const locationInput = document.getElementById('location-input');
+      const locationSearch = document.getElementById('location-search');
+      const weatherTempEl = document.getElementById('weather-temp');
+      const weatherIconEl = document.getElementById('weather-icon');
+      const weatherDescEl = document.getElementById('weather-desc');
+      const forecastContainer = document.getElementById('weather-forecast');
+
+      // --- STATE & CONFIG ---
+      let currentCategory = 'all';
+      let cachedNews = {}; // Simple cache { category: [posts] }
+
+      const weatherConfig = {
+        openMeteoGeoUrl: 'https://geocoding-api.open-meteo.com/v1/search',
+        openMeteoWeatherUrl: 'https://api.open-meteo.com/v1/forecast',
+        defaultCity: 'Durban',
+        weatherIconMap: {
+          0: '☀️', 1: '☀️', 2: '🌤️', 3: '☁️',
+          45: '🌫️', 48: '🌫️',
+          51: '🌦️', 53: '🌦️', 55: '🌧️',
+          61: '🌧️', 63: '🌧️', 65: '🌧️',
+          71: '❄️', 73: '❄️', 75: '❄️',
+          80: '🌦️', 81: '🌧️', 82: '🌧️',
+          95: '⛈️', 96: '⛈️', 99: '⛈️'
+        },
+        storageKeys: {
+            darkMode: 'vylexnews_dark_mode',
+            lastCity: 'vylexnews_last_city'
+        }
+      };
+
+      const redditSources = {
+        all: 'https://www.reddit.com/r/worldnews/.json?limit=15', // Fetch slightly more
+        worldnews: 'https://www.reddit.com/r/worldnews/.json?limit=15',
+        technology: 'https://www.reddit.com/r/technology/.json?limit=15',
+        science: 'https://www.reddit.com/r/science/.json?limit=15',
+        business: 'https://www.reddit.com/r/business/.json?limit=15',
+        southafrica: 'https://www.reddit.com/r/southafrica/.json?limit=25'
+      };
+
+      // --- FUNCTIONS ---
+
+      // Load saved preferences (Theme, Location)
+      function loadPreferences() {
+        const darkModeSaved = localStorage.getItem(weatherConfig.storageKeys.darkMode);
+        // If explicitly set to false, remove dark mode, otherwise default to dark
+        if (darkModeSaved === 'false') {
+            document.body.classList.remove('dark-mode');
+            darkModeToggle.checked = false;
+        } else {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+        const lastCity = localStorage.getItem(weatherConfig.storageKeys.lastCity) || weatherConfig.defaultCity;
+        locationInput.value = lastCity;
+        fetchWeather(lastCity);
+      }
+
+      // Toggle dark mode class and save preference
+      function toggleDarkMode() {
+        const isDarkMode = document.body.classList.toggle('dark-mode');
+        localStorage.setItem(weatherConfig.storageKeys.darkMode, isDarkMode);
+      }
+
+      // Format date for weather forecast
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        // Use short weekday, numeric day, short month
+        return date.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short'});
+      }
+
+      // Display error message in the dedicated container
+      function showError(message) {
+        clearError(); // Clear previous errors first
+        errorContainer.innerHTML = `<div class="error">${message}</div>`;
+        console.error("Error Displayed:", message); // Log error for debugging
+      }
+
+      // Clear any existing error messages
+      function clearError() {
+        errorContainer.innerHTML = '';
+      }
+
+      // Fetch weather data from OpenMeteo
+      async function fetchWeather(city) {
+        clearError(); // Clear previous errors
+        weatherDescEl.textContent = 'Fetching weather...'; // Update status
+        weatherIconEl.textContent = '⏳'; // Loading indicator
+
+        try {
+          // 1. Get Coordinates from City Name
+          const geoResponse = await fetch(`${weatherConfig.openMeteoGeoUrl}?name=${encodeURIComponent(city)}&count=1`);
+          if (!geoResponse.ok) throw new Error(`Geocoding failed: ${geoResponse.statusText}`);
+          const geoData = await geoResponse.json();
+
+          if (!geoData.results || geoData.results.length === 0) {
+            throw new Error(`City '${city}' not found. Please try another location.`);
+          }
+          const { latitude, longitude, name, country_code } = geoData.results[0];
+
+          // 2. Fetch Weather Forecast using Coordinates
+          const weatherParams = new URLSearchParams({
+            latitude: latitude,
+            longitude: longitude,
+            current: 'temperature_2m,weather_code',
+            daily: 'weather_code,temperature_2m_max', // Removed min temp for simplicity
+            forecast_days: 5,
+            timezone: 'auto'
+          });
+          const weatherResponse = await fetch(`${weatherConfig.openMeteoWeatherUrl}?${weatherParams}`);
+          if (!weatherResponse.ok) throw new Error(`Weather fetch failed: ${weatherResponse.statusText}`);
+          const weatherData = await weatherResponse.json();
+
+          // 3. Update UI
+          updateWeatherWidget(weatherData, name, country_code);
+
+          // 4. Save successful search to localStorage
+          localStorage.setItem(weatherConfig.storageKeys.lastCity, name); // Save the found name
+
+        } catch (error) {
+          showError(error.message || 'Failed to fetch weather data. Please check the city name or try again later.');
+          // Reset weather display on error
+          weatherTempEl.textContent = '--°C';
+          weatherIconEl.textContent = '⚠️';
+          weatherDescEl.textContent = 'Error loading';
+          forecastContainer.innerHTML = ''; // Clear forecast too
+        }
+      }
+
+      // Update the weather widget UI elements
+      function updateWeatherWidget(data, cityName, countryCode) {
+        const currentTemp = Math.round(data.current.temperature_2m);
+        const weatherCode = data.current.weather_code;
+        const weatherIcon = weatherConfig.weatherIconMap[weatherCode] || '❓'; // Default icon if code unknown
+
+        weatherTempEl.textContent = `${currentTemp}°${data.current_units.temperature_2m}`;
+        weatherIconEl.textContent = weatherIcon;
+        weatherDescEl.textContent = `${cityName}, ${countryCode}`;
+
+        // Update forecast display
+        forecastContainer.innerHTML = ''; // Clear old forecast
+        data.daily.time.slice(1, 5).forEach((day, index) => { // Show next 4 days (index 0 is today)
+          const dayTemp = Math.round(data.daily.temperature_2m_max[index + 1]);
+          const dayCode = data.daily.weather_code[index + 1];
+          const dayIcon = weatherConfig.weatherIconMap[dayCode] || '❓';
+
+          const forecastDay = document.createElement('div');
+          forecastDay.className = 'forecast-day';
+          forecastDay.innerHTML = `
+            <div class="forecast-date">${formatDate(day)}</div>
+            <div class="forecast-icon">${dayIcon}</div>
+            <div class="forecast-temp">${dayTemp}°${data.daily_units.temperature_2m_max}</div>
+          `;
+          forecastContainer.appendChild(forecastDay);
+        });
+      }
+
+      // Fetch news from Reddit API
+      async function fetchNews(category = 'all') {
+        clearError(); // Clear previous errors
+        loadingElement.style.display = 'block';
+        newsContainer.innerHTML = ''; // Clear previous news immediately
+
+        // Check cache first
+        if (cachedNews[category]) {
+          displayNews(cachedNews[category]);
+          loadingElement.style.display = 'none';
+          return;
+        }
+
+        try {
+          const redditUrl = redditSources[category];
+          if (!redditUrl) throw new Error(`Invalid news category: ${category}`);
+
+          const response = await fetch(redditUrl);
+          if (!response.ok) {
+             // Try to get error message from Reddit if possible
+             let errorMsg = `Failed to fetch news (status: ${response.status})`;
+             try {
+                const errorData = await response.json();
+                errorMsg = `Reddit API Error: ${errorData.message || response.statusText} (status: ${response.status})`;
+             } catch (e) { /* Ignore if error response isn't JSON */ }
+            throw new Error(errorMsg);
+          }
+
+          const data = await response.json();
+          // Filter out stickied posts and potentially NSFW, limit results
+          const posts = data?.data?.children
+              .filter(post => !post?.data?.stickied && !post?.data?.over_18)
+              .slice(0, 10) || []; // Ensure it's an array even if filtering fails
+
+          cachedNews[category] = posts; // Cache results
+          displayNews(posts);
+
+        } catch (error) {
+          showError(error.message || 'Failed to load news. Please try again later.');
+          newsContainer.innerHTML = ''; // Ensure container is empty on error
+        } finally {
+          loadingElement.style.display = 'none';
+        }
+      }
+
+      // Render news posts into cards
+      function displayNews(posts) {
+        newsContainer.innerHTML = ''; // Clear just in case
+
+        if (!posts || posts.length === 0) {
+          newsContainer.innerHTML = '<p style="text-align: center; opacity: 0.8;">No news found in this category.</p>';
+          return;
+        }
+
+        posts.forEach(post => {
+          const item = post.data;
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const createdDate = new Date(item.created_utc * 1000); // Use UTC timestamp
+          const formattedDate = createdDate.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+
+          // Basic HTML sanitization (replace < and > to prevent injection)
+          const title = item.title.replace(/</g, "<").replace(/>/g, ">");
+          let selftext = item.selftext ? item.selftext.replace(/</g, "<").replace(/>/g, ">") : '';
+          if (selftext.length > 150) {
+              selftext = selftext.substring(0, 150) + '...';
+          }
+
+          // Use 'preview' images if available and valid, fallback to thumbnail
+          let imageUrl = '';
+          if (item.preview?.images?.[0]?.source?.url) {
+            imageUrl = item.preview.images[0].source.url.replace(/&/g, '&'); // Decode HTML entities
+          } else if (item.thumbnail && item.thumbnail.startsWith('http')) {
+            imageUrl = item.thumbnail;
+          }
+
+
+          card.innerHTML = `
+            ${imageUrl ? `<img src="${imageUrl}" alt="News image for ${title.substring(0,30)}...">` : ''}
+            <h3><a href="https://reddit.com${item.permalink}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+            <p class="meta-info">Posted: ${formattedDate} | Subreddit: r/${item.subreddit}</p>
+            <p class="meta-info">👍 ${item.ups?.toLocaleString() || 0} | 💬 ${item.num_comments?.toLocaleString() || 0} comments</p>
+            ${selftext ? `<p>${selftext}</p>` : ''}
+            <a href="https://reddit.com${item.permalink}" target="_blank" rel="noopener noreferrer" style="font-size: 0.9em; display: inline-block; margin-top: 10px;">Read on Reddit →</a>
+          `;
+          newsContainer.appendChild(card);
+        });
+      }
+
+      // Change news category and fetch new data
+      function changeCategory(category) {
+        if (currentCategory === category) return; // Don't refetch if same category
+        currentCategory = category;
+
+        categoryButtons.forEach(button => {
+          button.classList.toggle('active', button.dataset.source === category);
+        });
+
+        fetchNews(category);
+      }
+
+      // --- EVENT LISTENERS ---
+      darkModeToggle.addEventListener('change', toggleDarkMode);
+
+      categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          changeCategory(button.dataset.source);
+        });
+      });
+
+      locationSearch.addEventListener('click', () => {
+        const city = locationInput.value.trim();
+        if (city) {
+          fetchWeather(city);
+        } else {
+           showError("Please enter a city name.");
+        }
+      });
+
+      locationInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault(); // Prevent potential form submission
+          const city = locationInput.value.trim();
+          if (city) {
+            fetchWeather(city);
+          } else {
+             showError("Please enter a city name.");
+          }
+        }
+      });
+
+      // --- INITIALIZATION ---
+      loadPreferences(); // Load theme & weather location
+      fetchNews(currentCategory); // Fetch initial news
+      getAdvice(); // Fetch initial advice on load
+
+    }); // End DOMContentLoaded
+
+
+    // --- Random Advice Function (Global Scope or inside DOMContentLoaded) ---
+    function getAdvice() {
+        const adviceElement = document.getElementById('quote-text');
+        const adviceButton = document.getElementById('quote-button');
+        const originalButtonText = '💬 Get Advice'; // Store original text
+
+        // Indicate loading state
+        adviceElement.style.opacity = '0.5'; // Dim text while loading
+        adviceElement.textContent = 'Thinking... 🤔';
+        adviceButton.disabled = true;
+        adviceButton.innerHTML = '💬 Fetching...';
+
+        fetch('https://api.adviceslip.com/advice')
+            .then(response => {
+                if (!response.ok) { // Check for HTTP errors
+                    throw new Error(`Advice API Error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const advice = data?.slip?.advice;
+                if (advice) {
+                   adviceElement.textContent = `"${advice}"`;
+                } else {
+                    throw new Error("Invalid advice format received.");
+                }
+            })
+            .catch(error => {
+                adviceElement.textContent = "Couldn't fetch advice right now.";
+                console.error('Advice Fetch Error:', error); // Log the actual error
+            })
+            .finally(() => {
+                // Restore button and text state
+                adviceElement.style.opacity = '1';
+                adviceButton.disabled = false;
+                adviceButton.innerHTML = originalButtonText;
+            });
+    }
+
+  </script>
+</body>
+</html>
