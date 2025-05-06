@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nexora AI: Your Smart Chat Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nexora is an intelligent AI-powered chat assistant. Get instant answers for weather forecasts, word definitions, Bible verses, jokes, and inspiring quotes. Try Nexora now!">
+  <meta name="keywords" content="AI assistant, chatbot, weather, dictionary, bible verses, jokes, quotes, Nexora, Vylex Nexys">
+  
+  <!-- Canonical URL (replace with your actual URL) -->
+  <link rel="canonical" href="https://vylexnexys.co.za/nexora"> <!-- Example URL -->
+
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:title" content="Nexora AI: Your Smart Chat Assistant">
+  <meta property="og:description" content="Chat with Nexora for weather, definitions, Bible verses, jokes, and quotes.">
+  <meta property="og:image" content="https://your-domain.com/nexora-og-image.png"> <!-- Replace with an actual image URL -->
+  <meta property="og:url" content="https://vylexnexys.co.za/nexora"> <!-- Example URL -->
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nexora AI: Your Smart Chat Assistant">
+  <meta name="twitter:description" content="Chat with Nexora for weather, definitions, Bible verses, jokes, and quotes.">
+  <meta name="twitter:image" content="https://your-domain.com/nexora-twitter-image.png"> <!-- Replace with an actual image URL -->
+
+  <!-- Favicon (replace with your actual favicons) -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2e7bf6;
+      --primary-dark: #1a5cbf;
+      --secondary: #f5f9ff;
+      --user: #e8f4fd;
+      --assistant: #f8f9fa;
+      --text: #333;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --radius: 20px;
+      --transition: all 0.2s ease;
+      --shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    [data-theme="dark"] {
+      --primary: #4285f4;
+      --primary-dark: #3367d6;
+      --secondary: #121212;
+      --user: #263238;
+      --assistant: #1e1e1e;
+      --text: #e0e0e0;
+      --text-light: #aaa;
+      --border: #444;
+      --shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--secondary);
+      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+    }
+
+    #app-wrapper { /* Renamed from .container */
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      font-weight: 500;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h1 i {
+      font-size: 1.5rem;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .toolbar button {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text-light);
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .toolbar button:hover {
+      background: var(--border);
+      color: var(--primary);
+    }
+    
+    main { /* Added for semantic structure */
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0; /* Fix for flex child overflow */
+    }
+
+    .chat {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      background: var(--secondary);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scrollbar-width: thin;
+      min-height: 50vh; /* Adjusted from 60vh to give more space for footer */
+    }
+
+    .chat::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat::-webkit-scrollbar-thumb {
+      background-color: var(--border);
+      border-radius: 6px;
+    }
+
+    .message {
+      display: flex;
+      flex-direction: column;
+      max-width: 85%;
+    }
+
+    .message-content {
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      line-height: 1.5;
+      word-break: break-word;
+      box-shadow: var(--shadow);
+    }
+
+    .user {
+      align-self: flex-end;
+    }
+
+    .user .message-content {
+      background: var(--user);
+      border-bottom-right-radius: 4px;
+      color: var(--text);
+    }
+
+    .assistant {
+      align-self: flex-start;
+    }
+
+    .assistant .message-content {
+      background: var(--assistant);
+      border-bottom-left-radius: 4px;
+      color: var(--text);
+    }
+
+    .message-time {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 4px;
+      margin-left: 4px;
+      margin-right: 4px;
+      align-self: flex-end;
+    }
+
+    .message.user .message-time {
+      align-self: flex-end;
+    }
+
+    .message.assistant .message-time {
+      align-self: flex-start;
+    }
+
+    form {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px; /* Reduced from 8px to avoid being too far from chat */
+      position: relative;
+    }
+
+    .input-container {
+      display: flex;
+      flex: 1;
+      position: relative;
+      align-items: center;
+      background: var(--assistant);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .input-container:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(46, 123, 246, 0.2);
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 14px;
+      font-size: 1rem;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      border-radius: var(--radius);
+      width: 100%;
+    }
+
+    input[type="text"]::placeholder {
+      color: var(--text-light);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 4px;
+      padding-right: 8px;
+    }
+
+    button { /* General button styling */
+      font-size: 1.1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      padding: 0 18px;
+      height: 46px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+    }
+    
+    form button[type="submit"] { /* More specific for send button */
+       /* Inherits general button styles */
+    }
+
+
+    button:hover {
+      background: var(--primary-dark);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .action-btn { /* For clear input etc. */
+      background: transparent;
+      color: var(--text-light);
+      box-shadow: none;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    .action-btn:hover {
+      background: var(--border);
+      color: var(--primary);
+    }
+
+    .mic-btn {
+      background: var(--primary);
+      color: white;
+      width: 46px;
+      padding: 0;
+    }
+
+    .mic-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .mic-btn.listening {
+      background: #e53935;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(229, 57, 53, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
+    }
+
+    .app-footer { /* Changed from inline style to a class */
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin: 16px 0 8px; /* Adjusted margin */
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .app-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .app-footer a:hover {
+      text-decoration: underline;
+    }
+
+
+    /* Settings Panel */
+    .settings-panel { /* Now an <aside> */
+      position: fixed;
+      top: 0;
+      right: -320px; /* Default hidden */
+      width: 320px;
+      height: 100%;
+      background: var(--assistant); /* Matches chat messages */
+      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: right 0.3s ease;
+      padding: 20px;
+      overflow-y: auto;
+      border-left: 1px solid var(--border); /* Subtle border */
+    }
+
+    .settings-panel.open {
+      right: 0;
+    }
+
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+
+    .close-settings { /* Specific styles for close button in settings */
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 4px; /* Small padding for easier click */
+      width: auto; /* Override general button styles */
+      height: auto; /* Override general button styles */
+      box-shadow: none; /* Override general button styles */
+      border-radius: 50%; /* Make it round */
+    }
+    .close-settings:hover {
+        background: var(--border); /* Consistent hover */
+        color: var(--primary);
+    }
+
+
+    .settings-section {
+      margin-bottom: 24px;
+    }
+
+    .settings-section h3 {
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .setting-item {
+      margin-bottom: 16px;
+    }
+
+    .setting-item label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+
+    .setting-item select, 
+    .setting-item input[type="range"] {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--secondary);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .theme-switch {
+      display: flex;
+      gap: 12px;
+    }
+
+    .theme-option {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .theme-option.active {
+      border-color: var(--primary);
+      background: rgba(46, 123, 246, 0.1); /* Subtle background for active */
+    }
+
+    .theme-option i {
+      font-size: 1.2rem;
+    }
+
+    .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease; /* Smoother transition */
+    }
+
+    .backdrop.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .auto-send-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .auto-send-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border);
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white; /* Or var(--secondary) for theme consistency */
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .switch-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .switch-label {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    /* Voice level indicator */
+    .voice-level {
+      display: flex;
+      height: 20px;
+      margin-top: 8px;
+      margin-bottom: 8px; /* Added margin bottom */
+      gap: 3px;
+      order: 1; /* To place it below the input form visually */
+    }
+    
+    form { /* Adjust form to accommodate voice level indicator */
+      flex-wrap: wrap; /* Allow items to wrap */
+    }
+    .input-container, form button { /* Ensure these elements don't shrink too much */
+      flex-shrink: 0;
+    }
+
+
+    .voice-level-bar {
+      flex: 1;
+      background: var(--border);
+      border-radius: 2px;
+      transition: height 0.1s ease, background-color 0.1s ease; /* Added background transition */
+      align-self: flex-end;
+      height: 3px;
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      line-height: 1.5;
+      background: var(--assistant);
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+      /* margin-bottom: 8px; No longer needed as it's removed before new msg */
+      align-self: flex-start;
+      box-shadow: var(--shadow); /* Consistent shadow */
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--text-light);
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    .typing-dot:nth-child(1) {
+      animation: typingDot 1.5s infinite 0s;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation: typingDot 1.5s infinite 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation: typingDot 1.5s infinite 0.4s;
+    }
+
+    @keyframes typingDot {
+      0% { transform: translateY(0); }
+      25% { transform: translateY(-5px); opacity: 1; }
+      50% { transform: translateY(0); opacity: 0.7; }
+    }
+
+    /* Widget Styles (Weather, Quote, Dictionary, Bible) */
+    .weather-widget, .quote-widget, .dictionary-widget, .bible-widget {
+      background: var(--assistant);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 0; /* Messages have gap, so individual margin not needed */
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--shadow);
+    }
+    
+    /* Weather Widget */
+    .weather-widget {
+      max-width: 300px; /* Retain max-width for this specific widget */
+    }
+    .weather-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .weather-location { font-weight: 500; font-size: 1.1rem; }
+    .weather-icon { font-size: 2.2rem; color: var(--primary); }
+    .weather-temp { font-size: 2rem; margin: 4px 0; }
+    .weather-desc { color: var(--text-light); }
+    .weather-details {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .weather-detail { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .weather-detail i { color: var(--primary); }
+
+    /* Quote Widget */
+    .quote-text {
+      font-style: italic;
+      line-height: 1.5;
+      position: relative;
+      padding: 0 16px;
+    }
+    .quote-text::before, .quote-text::after {
+      font-size: 3rem;
+      color: var(--primary);
+      opacity: 0.2;
+      position: absolute;
+    }
+    .quote-text::before { content: "“"; top: -20px; left: -10px; }
+    .quote-text::after { content: "”"; bottom: -40px; right: -10px; }
+    .quote-author { align-self: flex-end; font-weight: 500; color: var(--text-light); }
+
+    /* Dictionary Widget */
+    .dict-word {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dict-word i { cursor: pointer; color: var(--text-light); font-size: 1.2rem; }
+    .dict-word i:hover { color: var(--primary); }
+    .dict-phonetic { font-size: 0.95rem; color: var(--text-light); font-style: italic; }
+    .dict-meanings { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+    .dict-part-of-speech { font-weight: 500; font-style: italic; color: var(--text-light); margin-bottom: 4px; }
+    .dict-definition { margin-bottom: 8px; line-height: 1.5; }
+    .dict-example { color: var(--text-light); font-style: italic; margin-top: 4px; padding-left: 12px; border-left: 2px solid var(--primary); }
+
+    /* Bible Verse Widget */
+    .bible-reference {
+      font-weight: 500;
+      color: var(--primary);
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bible-reference i { color: var(--text-light); }
+    .bible-text { line-height: 1.6; margin-top: 8px; }
+    .bible-version { font-size: 0.8rem; color: var(--text-light); margin-top: 8px; text-align: right; }
+
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      #app-wrapper {
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .message {
+        max-width: 90%;
+      }
+      .toolbar button {
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem; /* Slightly smaller icon */
+      }
+      .settings-panel {
+        width: 280px; /* Fixed width or slightly larger percentage */
+        right: -280px;
+      }
+      .weather-widget,
+      .quote-widget,
+      .dictionary-widget,
+      .bible-widget {
+        max-width: 100%; /* Allow widgets to take full width if needed */
+      }
+       form {
+        gap: 6px; /* Reduce gap in form on smaller screens */
+      }
+      form button[type="submit"], .mic-btn {
+        height: 42px; /* Slightly smaller buttons */
+        padding: 0 14px;
+      }
+      .mic-btn { width: 42px; }
+    }
+
+    @media (max-width: 480px) {
+      .message {
+        max-width: 95%;
+      }
+      h1 {
+        font-size: 1.3rem;
+      }
+      .toolbar {
+        gap: 8px;
+      }
+      .settings-panel {
+        width: 85vw; /* Use viewport width for very small screens */
+        right: -85vw;
+      }
+      .input-container input[type="text"] {
+          padding: 12px; /* Reduce padding */
+          font-size: 0.95rem;
+      }
+      form button[type="submit"], .mic-btn {
+        height: 40px;
+        padding: 0 12px;
+        font-size: 1rem;
+      }
+      .mic-btn { width: 40px; }
+      .action-btn { width: 38px; height: 38px; }
+
+      .voice-level {
+        width: 100%; /* Make voice level take full width under input */
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app-wrapper">
+    <header>
+      <h1><i class="fas fa-robot" aria-hidden="true"></i>Nexora</h1>
+      <div class="toolbar">
+        <button id="clear-btn" title="Clear chat history" aria-label="Clear chat history"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+        <button id="settings-btn" title="Settings" aria-label="Open settings panel"><i class="fas fa-cog" aria-hidden="true"></i></button>
+      </div>
+    </header>
+    
+    <main id="main-content">
+        <div class="chat" id="chat" role="log" aria-live="polite">
+            <!-- Chat messages will be appended here -->
+        </div>
+        
+        <form id="form" autocomplete="off">
+          <div class="input-container">
+            <input type="text" id="input" placeholder="Ask about weather, words, Bible verses, jokes, or quotes..." aria-label="Type your message">
+            <div class="action-buttons">
+              <button type="button" class="action-btn" id="clear-input" title="Clear input" aria-label="Clear input text">
+                <i class="fas fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" title="Send message" aria-label="Send message"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+          <button type="button" class="mic-btn" id="mic" title="Click to talk" aria-label="Start voice input"><i class="fas fa-microphone" aria-hidden="true"></i></button>
+        </form>
+        <!-- Voice level indicator will be inserted here by JS if mic is active -->
+    </main>
+    
+    <footer class="app-footer">
+        Nexora by 
+        <a href="https://vylexnexys.co.za" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: bold;">
+          Vylex Nexys
+        </a><br>
+        • Weather, Dictionary, Bible, Jokes, Quotes •
+    </footer>
+  </div>
+  
+  <aside class="settings-panel" id="settings-panel" aria-labelledby="settings-panel-title">
+    <div class="settings-header">
+      <h2 id="settings-panel-title">Settings</h2>
+      <button class="close-settings" id="close-settings" aria-label="Close settings"><i class="fas fa-times" aria-hidden="true"></i></button>
+    </div>
+    
+    <div class="settings-section">
+      <h3>Voice Settings</h3>
+      <div class="setting-item">
+        <label for="voice-select">Assistant Voice</label>
+        <select id="voice-select" aria-label="Select assistant voice">
+          <option value="">Loading voices...</option>
+        </select>
+      </div>
+      <div class="setting-item">
+        <label for="voice-rate">Speech Rate: <span id="rate-value">1.0</span></label>
+        <input type="range" id="voice-rate" min="0.5" max="2" value="1" step="0.1" aria-label="Adjust speech rate">
+      </div>
+      <div class="setting-item">
+        <label for="voice-pitch">Speech Pitch: <span id="pitch-value">1.0</span></label>
+        <input type="range" id="voice-pitch" min="0.5" max="2" value="1" step="0.1" aria-label="Adjust speech pitch">
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h3>API Settings</h3>
+      <div class="setting-item">
+        <label for="weather-units">Weather Units</label>
+        <select id="weather-units" aria-label="Select weather units">
+          <option value="metric">Celsius (°C)</option>
+          <option value="imperial">Fahrenheit (°F)</option>
+        </select>
+      </div>
+      <div class="setting-item">
+        <label for="bible-version">Bible Version</label>
+        <select id="bible-version" aria-label="Select Bible version">
+          <option value="kjv">King James Version</option>
+          <option value="esv">English Standard Version</option>
+          <option value="niv">New International Version</option>
+          <option value="nlt">New Living Translation</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h3>Recognition Settings</h3>
+      <div class="switch-container">
+        <span class="switch-label" id="auto-send-label">Auto-send when speech ends</span>
+        <label class="auto-send-switch" aria-labelledby="auto-send-label">
+          <input type="checkbox" id="auto-send" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="setting-item">
+        <label for="recognition-lang">Recognition Language</label>
+        <select id="recognition-lang" aria-label="Select speech recognition language">
+          <option value="en-US">English (US)</option>
+          <option value="en-GB">English (UK)</option>
+          <option value="es-ES">Spanish (Spain)</option>
+          <option value="fr-FR">French (France)</option>
+          <option value="de-DE">German (Germany)</option>
+          <option value="it-IT">Italian (Italy)</option>
+          <option value="ja-JP">Japanese (Japan)</option>
+          <option value="ko-KR">Korean (Korea)</option>
+          <option value="zh-CN">Chinese (Simplified, China)</option>
+          <option value="zh-TW">Chinese (Traditional, Taiwan)</option>
+          <option value="ru-RU">Russian (Russia)</option>
+          <option value="pt-BR">Portuguese (Brazil)</option>
+          <option value="ar-SA">Arabic (Saudi Arabia)</option>
+          <option value="hi-IN">Hindi (India)</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h3>Appearance</h3>
+      <div class="theme-switch" role="group" aria-label="Select color theme">
+        <div class="theme-option" data-theme="light" role="button" tabindex="0" aria-pressed="false">
+          <i class="fas fa-sun" aria-hidden="true"></i>
+          <span>Light</span>
+        </div>
+        <div class="theme-option" data-theme="dark" role="button" tabindex="0" aria-pressed="false">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+          <span>Dark</span>
+        </div>
+      </div>
+    </div>
+    <p>
+      <a href="user-guide.html" style="text-decoration: none; color: red; font-weight: bold;" target="_blank">
+        Help 🔗
+      </a>
+    </p>
+    </aside>
+  
+  <div class="backdrop" id="backdrop"></div>
+  
+  <script>
+    // DOM elements
+    const chatEl = document.getElementById('chat');
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    const micBtn = document.getElementById('mic');
+    const settingsBtn = document.getElementById('settings-btn');
+    const settingsPanel = document.getElementById('settings-panel');
+    const closeSettings = document.getElementById('close-settings');
+    const backdrop = document.getElementById('backdrop');
+    const clearBtn = document.getElementById('clear-btn');
+    const clearInputBtn = document.getElementById('clear-input');
+    const voiceSelect = document.getElementById('voice-select');
+    const voiceRate = document.getElementById('voice-rate');
+    const voicePitch = document.getElementById('voice-pitch');
+    const rateValue = document.getElementById('rate-value');
+    const pitchValue = document.getElementById('pitch-value');
+    const autoSendToggle = document.getElementById('auto-send');
+    const recognitionLang = document.getElementById('recognition-lang');
+    const themeOptions = document.querySelectorAll('.theme-option');
+    const weatherUnits = document.getElementById('weather-units');
+    const bibleVersion = document.getElementById('bible-version');
+
+    // State variables
+    let isListening = false;
+    let recognition = null;
+    let synth = window.speechSynthesis;
+    let voices = [];
+    let selectedVoice = null;
+    let speechRate = 1.0;
+    let speechPitch = 1.0;
+    let autoSend = true;
+    let currentTheme = localStorage.getItem('theme') || 'light';
+    let units = localStorage.getItem('weatherUnits') || 'metric';
+    let bibleVer = localStorage.getItem('bibleVersion') || 'kjv';
+
+    // API endpoints
+    const APIs = {
+      weather: {
+        base: 'https://api.openweathermap.org/data/2.5/weather',
+        key: 'YOUR_OPENWEATHER_API_KEY' // Replace with your API key or use free proxy
+      },
+      dictionary: {
+        base: 'https://api.dictionaryapi.dev/api/v2/entries/en/'
+      },
+      bible: {
+        base: 'https://bible-api.com/'
+      },
+      jokes: {
+        base: 'https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit'
+      },
+      quotes: {
+        base: 'https://api.quotable.io/random'
+      }
+    };
+
+    // Intent patterns for natural language understanding
+    const intentPatterns = {
+      weather: [
+        /weather (in|for) (.+)/i,
+        /what('s| is) the weather (like )?(in|at) (.+)/i,
+        /how('s| is) the weather (in|at) (.+)/i,
+        /temperature (in|at) (.+)/i,
+        /forecast (for|in) (.+)/i
+      ],
+      dictionary: [
+        /define (.+)/i,
+        /what (does|is|are) (.+) mean/i,
+        /meaning of (.+)/i,
+        /definition of (.+)/i,
+        /dictionary (.+)/i,
+        /lookup (.+)/i
+      ],
+      bible: [
+        /bible verse/i,
+        /random verse/i,
+        /(show|tell|give) me a (bible |)verse/i,
+        /quote from the bible/i,
+        /bible (.+)/i,
+        /verse from (.+)/i,
+        /(.+) chapter (.+) verse (.+)/i,
+        /(.+) (.+):(.+)/i
+      ],
+      jokes: [
+        /tell (me |)(a |)joke/i,
+        /joke/i,
+        /funny/i,
+        /make me laugh/i,
+        /humor me/i,
+        /another joke/i
+      ],
+      quotes: [
+        /quote/i,
+        /(show|tell|give) me a quote/i,
+        /inspirational quote/i,
+        /motivate me/i,
+        /inspiration/i,
+        /wisdom/i
+      ],
+      greeting: [
+        /^(hi|hello|hey|greetings|howdy|hola)/i
+      ],
+      farewell: [
+        /^(bye|goodbye|see you|cya|farewell|later)/i
+      ],
+      thanks: [
+        /^(thanks|thank you|thx|ty)/i
+      ],
+      help: [
+        /^(help|assist|support|how do (you|I)|what can (you|I))/i
+      ]
+    };
+
+    // Initialize theme
+    document.body.setAttribute('data-theme', currentTheme);
+    document.querySelector(`.theme-option[data-theme="${currentTheme}"]`)?.classList.add('active');
+
+    // Initialize settings values
+    if (units) {
+      weatherUnits.value = units;
+    }
+    
+    if (bibleVer) {
+      bibleVersion.value = bibleVer;
+    }
+
+    // Format time
+    function formatTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes}`;
+    }
+
+    // Render message
+    function addMsg(text, sender, html = false) {
+      // Remove typing indicator if present
+      const typingIndicator = document.querySelector('.typing-indicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message ${sender}`;
+      
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'message-content';
+      
+      if (html) {
+        contentDiv.innerHTML = text;
+      } else {
+        contentDiv.textContent = text;
+      }
+      
+      const timeDiv = document.createElement('div');
+      timeDiv.className = 'message-time';
+      timeDiv.textContent = formatTime();
+      
+      msgDiv.appendChild(contentDiv);
+      msgDiv.appendChild(timeDiv);
+      
+      chatEl.appendChild(msgDiv);
+      scrollToBottom();
+    }
+
+    // Add typing indicator
+    function addTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'typing-indicator';
+      
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'typing-dot';
+        typingDiv.appendChild(dot);
+      }
+      
+      chatEl.appendChild(typingDiv);
+      scrollToBottom();
+    }
+
+    // Scroll chat to bottom
+    function scrollToBottom() {
+      chatEl.scrollTop = chatEl.scrollHeight;
+    }
+
+    // Speak text
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+      
+      // Cancel any ongoing speech
+      synth.cancel();
+      
+      // Remove HTML tags for speech
+      const cleanText = text.replace(/<[^>]*>/g, '');
+      
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.voice = selectedVoice;
+      utterance.rate = speechRate;
+      utterance.pitch = speechPitch;
+      
+      synth.speak(utterance);
+    }
+
+    // Extract location from weather intent
+    function extractLocation(text, pattern) {
+      const match = text.match(pattern);
+      if (!match) return null;
+      
+      // Different patterns have location in different capture groups
+      if (pattern.toString().includes('what(\'s| is) the weather')) {
+        return match[5]; // Location is in the 5th capture group for this pattern
+      } else if (pattern.toString().includes('how(\'s| is) the weather')) {
+        return match[3]; // Location is in the 3rd capture group for this pattern
+      } else if (pattern.toString().includes('weather (in|for)')) {
+        return match[2]; // Location is in the 2nd capture group for this pattern
+      } else if (pattern.toString().includes('temperature (in|at)')) {
+        return match[2]; // Location is in the 2nd capture group
+      } else if (pattern.toString().includes('forecast (for|in)')) {
+        return match[2]; // Location is in the 2nd capture group
+      }
+      
+      return null;
+    }
+
+    // Extract word from dictionary intent
+    function extractWord(text, pattern) {
+      const match = text.match(pattern);
+      if (!match) return null;
+      
+      if (pattern.toString().includes('define ')) {
+        return match[1]; // Word is in the 1st capture group
+      } else if (pattern.toString().includes('what (does|is|are)')) {
+        return match[2]; // Word is in the 2nd capture group
+      } else if (pattern.toString().includes('meaning of ')) {
+        return match[1]; // Word is in the 1st capture group
+      } else if (pattern.toString().includes('definition of ')) {
+        return match[1]; // Word is in the 1st capture group
+      } else if (pattern.toString().includes('dictionary ')) {
+        return match[1]; // Word is in the 1st capture group
+      } else if (pattern.toString().includes('lookup ')) {
+        return match[1]; // Word is in the 1st capture group
+      }
+      
+      return null;
+    }
+
+    // Extract Bible reference from intent
+    function extractBibleReference(text, pattern) {
+      const match = text.match(pattern);
+      if (!match) return null;
+      
+      // If it's a specific reference like "John 3:16"
+      if (pattern.toString().includes('(.+) (.+):(.+)')) {
+        const book = match[1].trim();
+        const chapter = match[2].trim();
+        const verse = match[3].trim();
+        return `${book} ${chapter}:${verse}`;
+      } 
+      // If it's a general request for a verse
+      else if (pattern.toString().includes('bible verse') || 
+              pattern.toString().includes('random verse') || 
+              pattern.toString().includes('(show|tell|give) me a (bible |)verse')) {
+        return 'random';
+      } 
+      // If it's a specific book
+      else if (pattern.toString().includes('verse from (.+)')) {
+        const book = match[1].trim();
+        return `${book} random`;
+      }
+      
+      return 'random';
+    }
+
+    // Get user intent from message
+    function getIntent(text) {
+      for (const [intent, patterns] of Object.entries(intentPatterns)) {
+        for (const pattern of patterns) {
+          if (pattern.test(text)) {
+            let data = null;
+            
+            // Extract specific data based on intent
+            if (intent === 'weather') {
+              data = extractLocation(text, pattern);
+            } else if (intent === 'dictionary') {
+              data = extractWord(text, pattern);
+            } else if (intent === 'bible') {
+              data = extractBibleReference(text, pattern);
+            }
+            
+            return { intent, data, pattern };
+          }
+        }
+      }
+      
+      // Default to general conversation
+      return { intent: 'general', data: null };
+    }
+
+    // Get weather data
+    async function getWeather(location) {
+      try {
+        // For demo purposes using a mock API call
+        // In a real app, use the actual OpenWeatherMap API
+        // const url = `${APIs.weather.base}?q=${encodeURIComponent(location)}&units=${weatherUnits.value}&appid=${APIs.weather.key}`;
+        
+        // Simulating API response for demo
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Mock data
+        const weatherData = {
+          name: location,
+          main: {
+            temp: (Math.random() * 30 + 5).toFixed(1),
+            feels_like: (Math.random() * 30 + 3).toFixed(1),
+            humidity: Math.floor(Math.random() * 60 + 40)
+          },
+          weather: [
+            {
+              main: ['Clear', 'Clouds', 'Rain', 'Snow', 'Mist'][Math.floor(Math.random() * 5)],
+              description: ['clear sky', 'scattered clouds', 'light rain', 'light snow', 'mist'][Math.floor(Math.random() * 5)]
+            }
+          ],
+          wind: {
+            speed: (Math.random() * 15).toFixed(1)
+          }
+        };
+        
+        // Format response
+        const iconMap = {
+          'Clear': 'sun',
+          'Clouds': 'cloud',
+          'Rain': 'cloud-rain',
+          'Snow': 'snowflake',
+          'Mist': 'smog'
+        };
+        
+        const icon = iconMap[weatherData.weather[0].main] || 'cloud';
+        const units = weatherUnits.value === 'metric' ? '°C' : '°F';
+        const windUnits = weatherUnits.value === 'metric' ? 'm/s' : 'mph';
+        
+        const html = `
+          <div class="weather-widget">
+            <div class="weather-header">
+              <div class="weather-location">${weatherData.name}</div>
+              <i class="fas fa-${icon} weather-icon"></i>
+            </div>
+            <div class="weather-temp">${weatherData.main.temp}${units}</div>
+            <div class="weather-desc">${weatherData.weather[0].description}</div>
+            <div class="weather-details">
+              <div class="weather-detail">
+                <i class="fas fa-temperature-high"></i>
+                <span>Feels like: ${weatherData.main.feels_like}${units}</span>
+              </div>
+              <div class="weather-detail">
+                <i class="fas fa-wind"></i>
+                <span>Wind: ${weatherData.wind.speed} ${windUnits}</span>
+              </div>
+              <div class="weather-detail">
+                <i class="fas fa-tint"></i>
+                <span>Humidity: ${weatherData.main.humidity}%</span>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        const textResponse = `The current weather in ${weatherData.name} is ${weatherData.weather[0].description} with a temperature of ${weatherData.main.temp}${units}. It feels like ${weatherData.main.feels_like}${units} with wind at ${weatherData.wind.speed} ${windUnits} and humidity at ${weatherData.main.humidity}%.`;
+        
+        return { html, text: textResponse };
+      } catch (error) {
+        console.error('Error fetching weather:', error);
+        return { html: null, text: `Sorry, I couldn't get the weather information for ${location}. Please try again later.` };
+      }
+    }
+
+    // Get dictionary definition
+    async function getDictionaryDefinition(word) {
+      try {
+        const cleanWord = word.trim().toLowerCase().split(' ')[0]; // Take only the first word
+        const url = `${APIs.dictionary.base}${encodeURIComponent(cleanWord)}`;
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        if (!data || data.length === 0) {
+          return { html: null, text: `Sorry, I couldn't find a definition for "${word}".` };
+        }
+        
+        const wordData = data[0];
+        let html = `
+          <div class="dictionary-widget">
+            <div class="dict-word">
+              ${wordData.word}
+              <i class="fas fa-volume-up" onclick="new SpeechSynthesisUtterance('${wordData.word}').volume=1; window.speechSynthesis.speak(new SpeechSynthesisUtterance('${wordData.word}'))"></i>
+            </div>
+            ${wordData.phonetic ? `<div class="dict-phonetic">${wordData.phonetic}</div>` : ''}
+            <div class="dict-meanings">
+        `;
+        
+        let textResponse = `The word "${wordData.word}" has the following meanings:\n`;
+        
+        // Only show the first 3 meanings for brevity
+        const maxMeanings = Math.min(3, wordData.meanings.length);
+        
+        for (let i = 0; i < maxMeanings; i++) {
+          const meaning = wordData.meanings[i];
+          html += `<div class="dict-part-of-speech">${meaning.partOfSpeech}</div>`;
+          textResponse += `\nAs a ${meaning.partOfSpeech}:\n`;
+          
+          // Only show the first 2 definitions for brevity
+          const maxDefinitions = Math.min(2, meaning.definitions.length);
+          
+          for (let j = 0; j < maxDefinitions; j++) {
+            const definition = meaning.definitions[j];
+            html += `
+              <div class="dict-definition">
+                ${j + 1}. ${definition.definition}
+                ${definition.example ? `<div class="dict-example">"${definition.example}"</div>` : ''}
+              </div>
+            `;
+            textResponse += `${j + 1}. ${definition.definition}\n`;
+            if (definition.example) {
+              textResponse += `   Example: "${definition.example}"\n`;
+            }
+          }
+        }
+        
+        html += `</div></div>`;
+        
+        return { html, text: textResponse };
+      } catch (error) {
+        console.error('Error fetching definition:', error);
+        return { html: null, text: `Sorry, I couldn't find a definition for "${word}". Please try a different word.` };
+      }
+    }
+
+    // Get Bible verse
+    // Get Bible verse - improved version
+async function getBibleVerse(reference) {
+  try {
+    let url;
+    let randomVerses = [
+      "John 3:16",
+      "Psalm 23:1",
+      "Proverbs 3:5-6",
+      "Philippians 4:13",
+      "Romans 8:28",
+      "Matthew 11:28",
+      "Isaiah 40:31",
+      "Jeremiah 29:11",
+      "Romans 12:2",
+      "Psalm 119:105"
+    ];
+    
+    // Handle random verse requests
+    if (reference === 'random') {
+      reference = randomVerses[Math.floor(Math.random() * randomVerses.length)];
+    } else if (reference.includes('random')) {
+      // Extract book if specified
+      const book = reference.split(' ')[0];
+      // For now, we'll just use a general random verse
+      // In a more advanced implementation, you'd filter by book
+      reference = randomVerses[Math.floor(Math.random() * randomVerses.length)];
+    }
+    
+    // Check if the reference is a direct Bible reference (like "John 3:16")
+    const bibleReferencePattern = /^(\d*\s*[a-zA-Z]+)\s+(\d+):(\d+(-\d+)?)$/;
+    const isDirectReference = bibleReferencePattern.test(reference);
+    
+    // Make the actual API call to get the verse
+    url = `${APIs.bible.base}${encodeURIComponent(reference)}?translation=${bibleVer}`;
+    
+    // Actually fetch from the API instead of using mock data
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Bible API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Extract the verse data
+    let verseData = {
+      reference: data.reference,
+      text: data.text || data.verses?.map(v => v.text).join(' ') || "Verse text not found"
+    };
+    
+    // Format the HTML response
+    const html = `
+      <div class="bible-widget">
+        <div class="bible-reference">
+          ${verseData.reference}
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="bible-text">${verseData.text}</div>
+        <div class="bible-version">${bibleVer.toUpperCase()}</div>
+      </div>
+    `;
+    
+    const textResponse = `${verseData.reference} (${bibleVer.toUpperCase()}): ${verseData.text}`;
+    
+    return { html, text: textResponse };
+  } catch (error) {
+    console.error('Error fetching Bible verse:', error);
+    
+    // Fallback: Try to extract the verse directly if we can parse the reference
+    try {
+      // This regex matches common Bible reference patterns
+      const referenceMatch = reference.match(/^(\d*\s*[a-zA-Z]+)\s+(\d+):(\d+(-\d+)?)$/);
+      
+      if (referenceMatch) {
+        // If we matched a reference pattern, show a generic "fetching" message
+        return { 
+          html: null, 
+          text: `I found a reference to ${reference}, but I couldn't retrieve the verse text. Please check your internet connection or try a different reference.` 
+        };
+      }
+    } catch (parseError) {
+      console.error('Error parsing reference:', parseError);
+    }
+    
+    return { 
+      html: null, 
+      text: `Sorry, I couldn't retrieve that Bible verse. Please try a different reference or check your internet connection.` 
+    };
+  }
+}
+
+    // Get random joke
+    async function getJoke() {
+      try {
+        const url = APIs.jokes.base;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        let joke;
+        if (data.type === 'single') {
+          joke = data.joke;
+        } else {
+          joke = `${data.setup} ${data.delivery}`;
+        }
+        
+        return { html: null, text: joke };
+      } catch (error) {
+        console.error('Error fetching joke:', error);
+        
+        // Fallback jokes
+        const fallbackJokes = [
+          "Why don't scientists trust atoms? Because they make up everything!",
+          "Why did the scarecrow win an award? Because he was outstanding in his field!",
+          "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+          "What do you call a fake noodle? An impasta!",
+          "How do you organize a space party? You planet!",
+          "Why don't eggs tell jokes? They'd crack each other up!",
+          "I'm reading a book about anti-gravity. It's impossible to put down!",
+          "What did the ocean say to the beach? Nothing, it just waved.",
+          "Why did the bicycle fall over? Because it was two-tired!",
+          "How do you make a tissue dance? Put a little boogie in it!"
+        ];
+        
+        const randomJoke = fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+        return { html: null, text: randomJoke };
+      }
+    }
+
+    // Get random quote
+    async function getQuote() {
+      try {
+        const url = APIs.quotes.base;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        const html = `
+          <div class="quote-widget">
+            <div class="quote-text">${data.content}</div>
+            <div class="quote-author">— ${data.author}</div>
+          </div>
+        `;
+        
+        const textResponse = `"${data.content}" — ${data.author}`;
+        
+        return { html, text: textResponse };
+      } catch (error) {
+        console.error('Error fetching quote:', error);
+        
+        // Fallback quotes
+        const fallbackQuotes = [
+          { content: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+          { content: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
+          { content: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+          { content: "In three words I can sum up everything I've learned about life: it goes on.", author: "Robert Frost" },
+          { content: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
+          { content: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+          { content: "Your time is limited, so don't waste it living someone else's life.", author: "Steve Jobs" },
+          { content: "Spread love everywhere you go. Let no one ever come to you without leaving happier.", author: "Mother Teresa" },
+          { content: "The only impossible journey is the one you never begin.", author: "Tony Robbins" },
+          { content: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" }
+        ];
+        
+        const randomQuote = fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
+        
+        const html = `
+          <div class="quote-widget">
+            <div class="quote-text">${randomQuote.content}</div>
+            <div class="quote-author">— ${randomQuote.author}</div>
+          </div>
+        `;
+        
+        const textResponse = `"${randomQuote.content}" — ${randomQuote.author}`;
+        
+        return { html, text: textResponse };
+      }
+    }
+
+    // Handle greeting intent
+    function handleGreeting() {
+      const greetings = [
+        "Hello there! How can I help you today?",
+        "Hi! I'm your assistant, developed by vylex nexys. What would you like to know?",
+        "Greetings! I can help with weather, definitions, Bible verses, jokes, and quotes. What do you need?",
+        "Hello! How may I assist you today?",
+        "Hi there! I'm here to help. What would you like me to do for you?"
+      ];
+      
+      return { html: null, text: greetings[Math.floor(Math.random() * greetings.length)] };
+    }
+
+    // Handle farewell intent
+    function handleFarewell() {
+      const farewells = [
+        "Goodbye! Have a great day!",
+        "See you later! Feel free to come back if you need anything else.",
+        "Farewell! It was nice chatting with you.",
+        "Take care! Come back anytime you need assistance.",
+        "Bye for now! I'll be here if you need help later."
+      ];
+      
+      return { html: null, text: farewells[Math.floor(Math.random() * farewells.length)] };
+    }
+
+    // Handle thanks intent
+    function handleThanks() {
+      const responses = [
+        "You're welcome! Is there anything else I can help with?",
+        "My pleasure! Let me know if you need anything else.",
+        "Glad I could help! What else would you like to know?",
+        "No problem at all! Feel free to ask if you need more assistance.",
+        "You're welcome! I'm here to help whenever you need it."
+      ];
+      
+      return { html: null, text: responses[Math.floor(Math.random() * responses.length)] };
+    }
+
+    // Handle help intent
+    function handleHelp() {
+      const helpText = `
+        I'm your assistant! Here's how I can help you:
+        
+        • Weather: Ask "What's the weather in New York?" or "Weather in Tokyo"
+        • Dictionary: Ask "Define happiness" or "What does ambivalent mean?"
+        • Bible: Ask "Give me a Bible verse" or "Show John 3:16"
+        • Jokes: Ask "Tell me a joke" or simply "joke"
+        • Quotes: Ask "Give me a quote" or "inspirational quote"
+        
+        You can also change settings like voice, theme, and units using the settings button.
+      `;
+      
+      return { html: null, text: helpText };
+    }
+
+    // Handle fallback conversation
+    function handleFallback(text) {
+      // Implement a simple rule-based response system
+      const responses = [
+        "I'm not sure I understand. Could you rephrase that?",
+        "I'm still learning! Try asking about weather, definitions, Bible verses, jokes, or quotes.",
+        "I didn't quite catch that. You can ask me to define words, get the weather, tell jokes, provide quotes, or share Bible verses.",
+        "Hmm, I'm not programmed to answer that. Try asking me for a joke, quote, Bible verse, weather, or definition instead.",
+        "I'm designed to help with weather, dictionary lookups, Bible verses, jokes, and quotes. How can I assist you with those?"
+      ];
+      
+      return { html: null, text: responses[Math.floor(Math.random() * responses.length)] };
+    }
+
+    // Get AI response based on intent
+    async function getAIResponse(userInput) {
+      // Find the user's intent
+      const { intent, data } = getIntent(userInput);
+      let response;
+      
+      // Handle different intents
+      switch (intent) {
+        case 'weather':
+          if (data) {
+            addTypingIndicator();
+            response = await getWeather(data);
+          } else {
+            response = { html: null, text: "Which city would you like to check the weather for?" };
+          }
+          break;
+          
+        case 'dictionary':
+          if (data) {
+            addTypingIndicator();
+            response = await getDictionaryDefinition(data);
+          } else {
+            response = { html: null, text: "What word would you like me to define?" };
+          }
+          break;
+          
+        case 'bible':
+          addTypingIndicator();
+          response = await getBibleVerse(data || 'random');
+          break;
+          
+        case 'jokes':
+          addTypingIndicator();
+          response = await getJoke();
+          break;
+          
+        case 'quotes':
+          addTypingIndicator();
+          response = await getQuote();
+          break;
+          
+        case 'greeting':
+          response = handleGreeting();
+          break;
+          
+        case 'farewell':
+          response = handleFarewell();
+          break;
+          
+        case 'thanks':
+          response = handleThanks();
+          break;
+          
+        case 'help':
+          response = handleHelp();
+          break;
+          
+        default:
+          // If we don't recognize the intent, try to engage in conversation
+          response = handleFallback(userInput);
+      }
+      
+      return response;
+    }
+
+    // Handle form submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const userMsg = input.value.trim();
+      if (!userMsg) return;
+      
+      addMsg(userMsg, 'user');
+      input.value = '';
+      
+      // Show typing indicator if the response is not immediate
+      addTypingIndicator();
+      
+      // Get AI response
+      const aiResponse = await getAIResponse(userMsg);
+      
+      if (aiResponse.html) {
+        addMsg(aiResponse.html, 'assistant', true);
+      } else {
+        addMsg(aiResponse.text, 'assistant');
+      }
+      
+      // Speak response
+      speak(aiResponse.text);
+    });
+
+    // Setup Speech Recognition
+    function setupSpeechRecognition() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        micBtn.disabled = true;
+        micBtn.title = "Speech recognition not supported in this browser";
+        return null;
+      }
+      
+      // Use the standard SpeechRecognition or the webkit prefixed version
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const rec = new SpeechRecognition();
+      
+      // Configure recognition
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.lang = recognitionLang.value;
+      
+      rec.onstart = () => {
+        isListening = true;
+        micBtn.classList.add('listening');
+        // Reset transcripts when starting a new session
+        finalTranscript = '';
+        interimTranscript = '';
+      };
+      
+      rec.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        stopListening();
+      };
+      
+      rec.onend = () => {
+        stopListening();
+      };
+      
+      let finalTranscript = '';
+      let interimTranscript = '';
+      
+      rec.onresult = (event) => {
+        interimTranscript = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+        
+        // Update input field with current transcription
+        input.value = finalTranscript + interimTranscript;
+        
+        // If using auto-send and we have a final result with decent confidence
+        const lastResult = event.results[event.results.length - 1];
+        if (autoSend && lastResult.isFinal && lastResult[0].confidence > 0.7) {
+          // Add a small delay to allow for pauses
+          clearTimeout(window.autoSendTimeout);
+          window.autoSendTimeout = setTimeout(() => {
+            if (finalTranscript.trim() && !isListening) {
+              form.requestSubmit();
+            }
+          }, 1000);
+        }
+      };
+      
+      return rec;
+    }
+
+    // Start listening
+    function startListening() {
+      if (isListening || !recognition) return;
+      
+      recognition.lang = recognitionLang.value;
+      recognition.start();
+      
+      // Create voice level visualization if applicable
+      createVoiceLevelVisualization();
+    }
+
+    // Stop listening
+    function stopListening() {
+      if (!isListening || !recognition) return;
+      
+      isListening = false;
+      micBtn.classList.remove('listening');
+      
+      try {
+        recognition.stop();
+      } catch (e) {
+        console.error('Error stopping recognition:', e);
+      }
+      
+      // Remove voice level visualization
+      const voiceLevel = document.querySelector('.voice-level');
+      if (voiceLevel) voiceLevel.remove();
+      
+      // Auto-send if enabled and input is not empty
+      if (autoSend && input.value.trim()) {
+        setTimeout(() => form.requestSubmit(), 500);
+      }
+    }
+
+    // Create voice level visualization
+    function createVoiceLevelVisualization() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+      
+      // Create voice level container
+      const voiceLevelContainer = document.createElement('div');
+      voiceLevelContainer.className = 'voice-level';
+      
+      // Create voice level bars
+      for (let i = 0; i < 20; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'voice-level-bar';
+        voiceLevelContainer.appendChild(bar);
+      }
+      
+      form.insertBefore(voiceLevelContainer, input.parentNode.nextSibling);
+      
+      // Get audio and analyze
+      navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        .then(stream => {
+          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          const analyser = audioContext.createAnalyser();
+          const microphone = audioContext.createMediaStreamSource(stream);
+          
+          microphone.connect(analyser);
+          analyser.fftSize = 256;
+          
+          const bufferLength = analyser.frequencyBinCount;
+          const dataArray = new Uint8Array(bufferLength);
+          
+          function updateVoiceLevel() {
+            if (!isListening) return;
+            
+            analyser.getByteFrequencyData(dataArray);
+            
+            // Calculate volume
+            let sum = 0;
+            for (let i = 0; i < bufferLength; i++) {
+              sum += dataArray[i];
+            }
+            
+            const average = sum / bufferLength;
+            const volume = Math.min(20, Math.max(1, Math.floor(average / 5)));
+            
+            // Update voice level visualization
+            const bars = document.querySelectorAll('.voice-level-bar');
+            bars.forEach((bar, i) => {
+              if (i < volume) {
+                const intensity = Math.min(100, (i / volume) * 120);
+                bar.style.height = `${3 + (i / 20) * 17}px`;
+                bar.style.background = `hsl(${120 - intensity}, 80%, 50%)`;
+              } else {
+                bar.style.height = '3px';
+                bar.style.background = 'var(--border)';
+              }
+            });
+            
+            // Continuously update
+            if (isListening) {
+              requestAnimationFrame(updateVoiceLevel);
+            }
+          }
+          
+          // Start updating
+          updateVoiceLevel();
+          
+          // Clean up when speech recognition stops
+          const cleanupStream = () => {
+            if (stream && stream.getTracks) {
+              stream.getTracks().forEach(track => track.stop());
+            }
+          };
+          
+          micBtn.addEventListener('click', () => {
+            if (!isListening) {
+              cleanupStream();
+            }
+          });
+        })
+        .catch(err => {
+          console.error('Error accessing microphone:', err);
+        });
+    }
+
+    // Toggle microphone
+    micBtn.addEventListener('click', () => {
+      if (isListening) {
+        stopListening();
+      } else {
+        startListening();
+      }
+    });
+
+    // Setup settings panel
+    settingsBtn.addEventListener('click', () => {
+      settingsPanel.classList.add('open');
+      backdrop.classList.add('show');
+    });
+
+    closeSettings.addEventListener('click', () => {
+      settingsPanel.classList.remove('open');
+      backdrop.classList.remove('show');
+    });
+
+    backdrop.addEventListener('click', () => {
+      settingsPanel.classList.remove('open');
+      backdrop.classList.remove('show');
+    });
+
+    // Load and set up speech synthesis voices
+    function loadVoices() {
+      voices = synth.getVoices();
+      
+      if (voices.length === 0) {
+        setTimeout(loadVoices, 100);
+        return;
+      }
+      
+      // Clear previous options
+      voiceSelect.innerHTML = '';
+      
+      // Add voices to select
+      voices.forEach((voice, i) => {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        
+        voiceSelect.appendChild(option);
+        
+        // Select a default voice (prefer native voices)
+        if (!selectedVoice && !voice.localService) {
+          selectedVoice = voice;
+          voiceSelect.value = i;
+        }
+      });
+      
+      // If no voice was selected, use the first one
+      if (!selectedVoice && voices.length > 0) {
+        selectedVoice = voices[0];
+        voiceSelect.value = 0;
+      }
+      
+      // Save voice preference
+      localStorage.setItem('selectedVoice', voiceSelect.value);
+    }
+
+    if ('speechSynthesis' in window) {
+      // Chrome needs a small delay to load voices
+      if (synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = loadVoices;
+      } else {
+        loadVoices();
+      }
+    }
+
+    // Voice select change handler
+    voiceSelect.addEventListener('change', () => {
+      selectedVoice = voices[voiceSelect.value];
+      localStorage.setItem('selectedVoice', voiceSelect.value);
+    });
+
+    // Speech rate change handler
+    voiceRate.addEventListener('input', () => {
+      speechRate = parseFloat(voiceRate.value);
+      rateValue.textContent = speechRate.toFixed(1);
+      localStorage.setItem('speechRate', speechRate);
+    });
+
+    // Speech pitch change handler
+    voicePitch.addEventListener('input', () => {
+      speechPitch = parseFloat(voicePitch.value);
+      pitchValue.textContent = speechPitch.toFixed(1);
+      localStorage.setItem('speechPitch', speechPitch);
+    });
+
+    // Auto send toggle handler
+    autoSendToggle.addEventListener('change', () => {
+      autoSend = autoSendToggle.checked;
+      localStorage.setItem('autoSend', autoSend);
+    });
+
+    // Recognition language change handler
+    recognitionLang.addEventListener('change', () => {
+      if (recognition) {
+        recognition.lang = recognitionLang.value;
+      }
+      localStorage.setItem('recognitionLang', recognitionLang.value);
+    });
+
+    // Weather units change handler
+    weatherUnits.addEventListener('change', () => {
+      units = weatherUnits.value;
+      localStorage.setItem('weatherUnits', units);
+    });
+
+    // Bible version change handler
+    bibleVersion.addEventListener('change', () => {
+      bibleVer = bibleVersion.value;
+      localStorage.setItem('bibleVersion', bibleVer);
+    });
+
+    // Theme change handler
+    themeOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const theme = option.getAttribute('data-theme');
+        currentTheme = theme;
+        
+        // Update active state
+        themeOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        
+        // Set theme on body
+        document.body.setAttribute('data-theme', theme);
+        
+        // Save theme preference
+        localStorage.setItem('theme', theme);
+      });
+    });
+
+    // Clear chat history
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear the chat history?')) {
+        chatEl.innerHTML = '';
+        
+        // Add welcome message again
+        setTimeout(() => {
+          addMsg("Hello! I'm your assistant developed by Vylex Nexys. I can help with weather, definitions, Bible verses, jokes, and quotes. How can I help you today?", 'assistant');
+        }, 300);
+      }
+    });
+
+    // Clear input field
+    clearInputBtn.addEventListener('click', () => {
+      input.value = '';
+      input.focus();
+    });
+
+    // Load settings from localStorage
+    function loadSettings() {
+      // Load speech rate
+      const savedRate = localStorage.getItem('speechRate');
+      if (savedRate) {
+        speechRate = parseFloat(savedRate);
+        voiceRate.value = speechRate;
+        rateValue.textContent = speechRate.toFixed(1);
+      }
+      
+      // Load speech pitch
+      const savedPitch = localStorage.getItem('speechPitch');
+      if (savedPitch) {
+        speechPitch = parseFloat(savedPitch);
+        voicePitch.value = speechPitch;
+        pitchValue.textContent = speechPitch.toFixed(1);
+      }
+      
+      // Load auto-send preference
+      const savedAutoSend = localStorage.getItem('autoSend');
+      if (savedAutoSend !== null) {
+        autoSend = savedAutoSend === 'true';
+        autoSendToggle.checked = autoSend;
+      }
+      
+      // Load recognition language
+      const savedLang = localStorage.getItem('recognitionLang');
+      if (savedLang) {
+        recognitionLang.value = savedLang;
+      }
+      
+      // Load weather units
+      const savedUnits = localStorage.getItem('weatherUnits');
+      if (savedUnits) {
+        weatherUnits.value = savedUnits;
+        units = savedUnits;
+      }
+      
+      // Load Bible version
+      const savedBibleVer = localStorage.getItem('bibleVersion');
+      if (savedBibleVer) {
+        bibleVersion.value = savedBibleVer;
+        bibleVer = savedBibleVer;
+      }
+      
+      // Load selected voice (after voices are loaded)
+      setTimeout(() => {
+        const savedVoice = localStorage.getItem('selectedVoice');
+        if (savedVoice && voices.length > 0 && savedVoice < voices.length) {
+          voiceSelect.value = savedVoice;
+          selectedVoice = voices[savedVoice];
+        }
+      }, 500);
+    }
+    
+    // Initialize the app
+    function init() {
+      // Add welcome message
+      addMsg("Hello! I'm your assistant, powered by Vylex Nexys. I can help with weather, definitions, Bible verses, jokes, and quotes. How can I help you today?", 'assistant');
+      
+      // Setup speech recognition
+      recognition = setupSpeechRecognition();
+      
+      // Load saved settings
+      loadSettings();
+      
+      // Focus input field
+      input.focus();
+    }
+    
+    // Start the app after DOM loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
