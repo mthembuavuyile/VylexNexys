@@ -25,6 +25,10 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         /* --- GLOBAL STYLES --- */
         :root {
             --primary-color: #4361ee;
@@ -50,6 +54,8 @@
             --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             --border-radius: 10px;
             --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --header-height: 60px;
+            --header-height-mobile: 50px;
         }
 
         body {
@@ -59,6 +65,7 @@
             transition: background-color 0.3s, color 0.3s;
             font-size: 16px;
             line-height: 1.6;
+            padding-top: var(--header-height); /* Account for sticky header */
         }
 
         body[data-theme="light"] {
@@ -76,6 +83,62 @@
             transition: none !important;
         }
 
+        /* --- NEW APP HEADER --- */
+        .app-header {
+            background-color: var(--card-bg-light);
+            color: var(--text-light);
+            padding: 0 1rem; /* Vertical padding is implicitly handled by height and flex align */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            position: fixed; /* Changed to fixed */
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            height: var(--header-height);
+        }
+
+        body[data-theme="dark"] .app-header {
+            background-color: var(--card-bg-dark);
+            color: var(--text-dark);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+        }
+
+        .app-header .logo-area {
+            display: flex;
+            align-items: center;
+        }
+
+        .app-header .logo-area .placeholder-logo-icon {
+            font-size: 1.8rem;
+            margin-right: 0.75rem;
+            color: var(--primary-color);
+        }
+        body[data-theme="dark"] .app-header .logo-area .placeholder-logo-icon {
+            color: var(--accent-color);
+        }
+
+        .app-header .logo-area h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: -0.25px;
+            color: var(--text-light); /* To match body text by default */
+        }
+        body[data-theme="dark"] .app-header .logo-area h1 {
+            color: var(--text-dark);
+        }
+        
+        /* Placeholder for future header actions like a user icon or main settings */
+        .app-header .header-actions {
+            /* For icons or buttons on the right side of the header */
+        }
+
+        /* --- OLD HEADER (Commented Out) --- */
+        /*
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--accent-secondary));
             color: white;
@@ -96,6 +159,7 @@
             opacity: 0.9;
             font-size: 1.1rem;
         }
+        */
 
         main {
             padding: 1.5rem;
@@ -163,6 +227,8 @@
             padding: 1.2rem;
             border-radius: var(--border-radius);
             transition: transform 0.2s ease;
+            display: flex; /* Added for better internal control */
+            flex-direction: column; /* Added for better internal control */
         }
         
         .widget:hover {
@@ -210,11 +276,13 @@
             font-size: 0.95rem;
             margin-bottom: 0.8rem;
             transition: all 0.2s ease;
+            /* width: 100%; */ /* Make most form elements full-width by default */
         }
         
         input[type="text"], select {
             border: 2px solid #e0e6ed;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            width: 100%; /* Ensure inputs take available width */
         }
         
         body[data-theme="light"] input[type="text"]:focus,
@@ -249,6 +317,7 @@
             border: none;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             font-weight: 500;
+            width: auto; /* Allow buttons to size to content unless specified */
         }
         
         button:hover {
@@ -269,9 +338,9 @@
             opacity: 0.7;
         }
         
-        input[type="text"] {
-            width: calc(100% - 2.2rem);
-        }
+        /* input[type="text"] {
+            width: calc(100% - 2.2rem); /* Original, can be simplified if padding is internal
+        } */
 
         /* --- DASHBOARD: NEWS & WEATHER SPECIFIC --- */
         #weather-widget-main {
@@ -291,14 +360,32 @@
             z-index: 0;
         }
         
-        #weather-widget-main input[type="text"] {
+        /* Specific layout for weather input/button */
+        .weather-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem; /* Original margin from input */
+        }
+        .weather-input-group input[type="text"] {
+            flex-grow: 1;
+            margin-bottom: 0; /* Reset margin as it's on the group */
+        }
+        .weather-input-group button {
+            flex-shrink: 0;
+            width: auto; /* Let it size to content or a fixed px value */
+            padding: 0.6rem 1rem;
+            margin-bottom: 0;
+        }
+
+        /* Original weather input/button sizing removed */
+        /* #weather-widget-main input[type="text"] {
             width: calc(65% - 2.2rem);
             margin-right: 0.5rem;
         }
         
         #weather-widget-main button {
             width: 30%;
-        }
+        } */
         
         #weather-temp { 
             font-size: 3rem; 
@@ -328,6 +415,8 @@
             margin-top: 1rem;
             padding-top: 1rem;
             border-top: 1px solid rgba(128, 128, 128, 0.2);
+            flex-wrap: wrap; /* Allow forecast days to wrap on small screens */
+            gap: 0.5rem; /* Add gap for wrapped items */
         }
         
         .forecast-day { 
@@ -336,6 +425,8 @@
             padding: 0.5rem;
             border-radius: var(--border-radius);
             transition: transform 0.2s;
+            flex-basis: 60px; /* Base size for forecast days */
+            flex-grow: 1; /* Allow them to grow */
         }
         
         body[data-theme="light"] .forecast-day {
@@ -382,6 +473,7 @@
             position: relative;
             min-height: 60px;
             line-height: 1.6;
+            flex-grow: 1; /* Allow quote text to take available space in widget */
         }
         
         body[data-theme="light"] #quote-text { 
@@ -399,6 +491,7 @@
             width: 100%;
             text-align: center;
             background: linear-gradient(135deg, var(--accent-secondary), var(--primary-color));
+            margin-bottom: 0; /* Remove bottom margin if it's the last element */
         }
         
         #quote-button:hover {
@@ -418,6 +511,7 @@
             padding: 0.5rem 0.8rem;
             font-size: 0.9rem;
             border-radius: 20px;
+            margin-bottom: 0; /* Override global button margin */
         }
         
         .category-btn.active { 
@@ -434,7 +528,7 @@
         
         #news-container .card {
             padding: 1.2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1rem; /* This causes extra space below cards already gapped by grid */
             border-radius: var(--border-radius);
             transition: all 0.3s ease;
             height: 100%;
@@ -535,7 +629,8 @@
         #nexora-chat-module {
             display: flex;
             flex-direction: column;
-            max-height: 80vh;
+            max-height: 80vh; /* On desktop, allow it to not take full screen height */
+            height: 700px; /* Example fixed height for desktop, can be adjusted */
             position: relative;
         }
         
@@ -694,14 +789,17 @@
             display: flex;
             width: 100%;
             gap: 0.6rem;
+            align-items: center; /* Vertically align items in input area */
         }
         
         #input-area input[type="text"] {
             flex-grow: 1;
-            margin-bottom: 0;
+            margin-bottom: 0; /* Reset global margin */
             padding: 0.8rem 1rem;
             border-radius: 20px;
             transition: all 0.3s ease;
+            font-size: 1rem; /* Slightly larger for chat input */
+            height: 44px; /* Consistent height with buttons */
         }
         
         body[data-theme="light"] #input-area input[type="text"] {
@@ -717,15 +815,16 @@
         }
         
         #input-area button {
-            width: auto;
-            padding: 0.8rem;
-            margin-bottom: 0;
-            aspect-ratio: 1 / 1;
+            width: 44px; /* Square buttons */
+            height: 44px;
+            padding: 0; /* Remove padding if fixed size */
+            margin-bottom: 0; /* Reset global margin */
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0; /* Prevent buttons from shrinking */
         }
         
         #input-area button i {
@@ -776,6 +875,11 @@
             opacity: 0.7;
             transition: all 0.2s ease;
             z-index: 5;
+            width: 36px; /* Explicit size */
+            height: 36px; /* Explicit size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         body[data-theme="light"] #settings-btn, 
@@ -816,7 +920,7 @@
         #settings-panel {
             position: fixed;
             top: 0; 
-            right: -350px;
+            right: -350px; /* Default hidden */
             width: 330px; 
             height: 100%;
             z-index: 100;
@@ -846,6 +950,7 @@
             border-bottom: 1px solid var(--border-light);
             background: linear-gradient(90deg, var(--primary-color), var(--accent-secondary));
             color: white;
+            flex-shrink: 0; /* Prevent header from shrinking */
         }
         
         .settings-header h2 { 
@@ -866,6 +971,8 @@
             cursor: pointer;
             color: white;
             transition: transform 0.2s;
+            padding: 0.25rem; /* Easier to tap */
+            width: auto; height: auto; /* Reset button specific sizing */
         }
         
         #close-settings:hover {
@@ -930,6 +1037,7 @@
         .settings-section input[type="checkbox"] { 
             margin-right: 0.5rem;
             accent-color: var(--primary-color);
+            vertical-align: middle; /* Align checkbox better with label text */
         }
         
         .theme-selector { 
@@ -946,6 +1054,7 @@
             text-align: center;
             color: white;
             transition: all 0.2s ease;
+            margin-bottom: 0; /* Reset global button margin */
         }
         
         .theme-selector .theme-option.active {
@@ -957,10 +1066,11 @@
         
         .btn-danger { 
             background: linear-gradient(135deg, var(--error-color), #e63946);
-            border-color: var(--error-color);
+            /* border-color: var(--error-color); */ /* border is none on buttons */
             width: 100%;
             font-weight: 500;
             margin-top: 1rem;
+            margin-bottom: 0; /* Reset */
         }
         
         .btn-danger:hover { 
@@ -1079,7 +1189,7 @@
         
         .weather-details {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive detail columns */
             gap: 0.5rem;
         }
         
@@ -1336,6 +1446,7 @@
             border: none;
             font-weight: 600;
             transition: all 0.2s ease;
+            margin-bottom: 0; /* Reset */
         }
         
         .banner-button:hover {
@@ -1353,6 +1464,7 @@
             padding: 0.3rem;
             opacity: 0.8;
             transition: all 0.2s ease;
+            width: auto; height: auto; /* Reset */
         }
         
         .banner-close:hover {
@@ -1362,7 +1474,7 @@
 
         #scroll-to-bottom {
             position: absolute;
-            bottom: 5rem;
+            bottom: 5rem; /* Adjust if input area height changes */
             right: 1.2rem;
             background: linear-gradient(135deg, var(--primary-color), var(--accent-secondary));
             color: white;
@@ -1379,6 +1491,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 0; /* Reset */
         }
         
         #scroll-to-bottom.visible {
@@ -1428,31 +1541,32 @@
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
+             body {
+                padding-top: var(--header-height); /* Still use default header height for tablet */
+            }
+            main {
+                padding: 1rem;
+            }
             .app-container {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
             
             #nexora-chat-module {
-                max-height: none;
+                max-height: none; /* Allow chat to take natural height on mobile */
+                height: auto; /* Or specific like 80vh, 70vh */
+                min-height: 60vh; /* Ensure it has some decent height */
             }
             
             #settings-panel {
                 width: 280px;
-                right: -300px;
+                right: -300px; /* Adjust if width changed */
             }
             
-            header {
-                padding: 1.2rem 1rem;
-            }
-            
-            header h1 { 
-                font-size: 1.8rem; 
-            }
-            
-            header p {
-                font-size: 0.95rem;
-            }
+            /* Old header responsive removed */
+            /* header { padding: 1.2rem 1rem; }
+            header h1 { font-size: 1.8rem; }
+            header p { font-size: 0.95rem; } */
             
             .module {
                 padding: 1.2rem;
@@ -1465,16 +1579,59 @@
             #news-container {
                 grid-template-columns: 1fr;
             }
+            #news-container .card {
+                margin-bottom: 0; /* Handled by grid gap */
+            }
+
+            .weather-input-group {
+                flex-direction: column; /* Stack weather input and button */
+            }
+            .weather-input-group input[type="text"],
+            .weather-input-group button {
+                width: 100%; /* Make them full width */
+            }
+            .weather-input-group button {
+                margin-top: 0.5rem;
+            }
         }
         
         @media (max-width: 480px) {
-            body.mobile #input-area button {
-                padding: 0.6rem;
+            body {
+                padding-top: var(--header-height-mobile);
+            }
+            .app-header {
+                height: var(--header-height-mobile);
+                padding: 0 0.75rem;
+            }
+            .app-header .logo-area h1 {
+                font-size: 1.25rem;
+            }
+            .app-header .logo-area .placeholder-logo-icon {
+                font-size: 1.5rem;
+                margin-right: 0.5rem;
+            }
+
+            main {
+                padding: 1rem 0.5rem; /* Minimal horizontal padding */
+            }
+
+            .app-container,
+            .widget-container,
+            #news-container {
+                grid-template-columns: minmax(0, 1fr); /* Ensure full width usage */
             }
             
-            header h1 {
-                font-size: 1.5rem;
+            body.mobile #input-area button { /* class .mobile not used in JS yet, direct style for now */
+                width: 40px;
+                height: 40px;
             }
+             body.mobile #input-area input[type="text"] {
+                height: 40px;
+                font-size: 0.95rem;
+            }
+            
+            /* Old header responsive removed */
+            /* header h1 { font-size: 1.5rem; } */
             
             .module h2 {
                 font-size: 1.4rem;
@@ -1486,6 +1643,7 @@
             
             .forecast-day {
                 font-size: 0.8em;
+                padding: 0.4rem;
             }
             
             #quote-text {
@@ -1493,15 +1651,40 @@
             }
             
             #input-area input[type="text"] {
-                padding: 0.7rem 0.9rem;
+                padding: 0.7rem 0.9rem; /* Keep some padding */
+                height: 40px; /* Match button size */
+            }
+             #input-area button {
+                width: 40px;
+                height: 40px;
+            }
+            #scroll-to-bottom {
+                bottom: 4.5rem; /* Adjust if input area gets smaller */
+                width: 40px;
+                height: 40px;
+            }
+            .weather-input-group {
+                flex-direction: column;
+            }
+            .weather-input-group input[type="text"],
+            .weather-input-group button {
+                width: 100%;
+                margin-bottom: 0.5rem; /* Add space when stacked */
+            }
+            .weather-input-group button {
+                margin-bottom: 0; /* Last item no bottom margin */
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Nexora - Intelligent AI Suite</h1>
-        <p>By Vylex Nexys</p>
+    <header class="app-header">
+        <div class="logo-area">
+            <i class="fas fa-robot placeholder-logo-icon"></i>
+            <h1>Nexora</h1>
+        </div>
+        <div class="header-actions">
+        </div>
     </header>
 
     <main>
