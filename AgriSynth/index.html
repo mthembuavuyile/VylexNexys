@@ -4,6 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgriSynth by Vylex Nexys: The OS for Urban Agriculture</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="AgriSynth: The new Operating System for Urban Agriculture. A decentralized, intelligent, and cooperative OS by Vylex Nexys, empowering cities to become regenerative food engines.">
+    <meta name="keywords" content="urban agriculture, smart farming, AgriTech, Vylex Nexys, Avuyile Mthembu, sustainable farming, IoT farming, AI farming, decentralized food systems, regenerative agriculture, urban farming OS, Johannesburg">
+    <meta name="author" content="Vylex Nexys, Avuyile Mthembu">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com/"> <!-- TODO: Replace with actual URL -->
+    <meta property="og:title" content="AgriSynth by Vylex Nexys: The OS for Urban Agriculture">
+    <meta property="og:description" content="AgriSynth is a decentralized, intelligent, and cooperative OS empowering cities to become regenerative food engines.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1587033690033-246b37035910?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXJiYW4lMjBmYXJtaW5nfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=1200&q=60"> <!-- TODO: Replace with a good OG image -->
+    <meta property="og:site_name" content="AgriSynth">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://your-domain.com/"> <!-- TODO: Replace with actual URL -->
+    <meta name="twitter:title" content="AgriSynth by Vylex Nexys: The OS for Urban Agriculture">
+    <meta name="twitter:description" content="AgriSynth is a decentralized, intelligent, and cooperative OS empowering cities to become regenerative food engines.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1587033690033-246b37035910?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXJiYW4lMjBmYXJtaW5nfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=1200&q=60"> <!-- TODO: Replace with a good Twitter image -->
+
+    <!-- Favicon Placeholder -->
+    <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+    <!-- <link rel="icon" type="image/png" href="favicon.png"> -->
+
     <style>
         :root {
             --primary: #4CAF50; /* Green for growth */
@@ -36,6 +61,7 @@
             line-height: 1.6;
             scroll-behavior: smooth;
             overflow-x: hidden;
+            /* padding-top will be set by JS for fixed header */
         }
         
         .container {
@@ -50,16 +76,18 @@
             color: var(--white);
             padding: 1rem 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            position: sticky;
+            position: fixed;
             top: 0;
+            width: 100%;
             z-index: 1000;
-            transition: var(--transition);
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
         }
         
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         
         .logo {
@@ -69,6 +97,7 @@
             font-size: 1.8rem;
             font-weight: bold;
             text-shadow: var(--text-shadow);
+            z-index: 101;
         }
         
         .logo .company-name {
@@ -84,13 +113,50 @@
             color: var(--highlight);
         }
         
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
+        .nav-toggle {
+            display: none; /* Initially hidden, shown via media query */
+            background: transparent;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+            width: 44px;
+            height: 44px;
+            position: relative;
         }
         
-        nav a {
+        .hamburger-icon {
+            display: block;
+            position: relative;
+            width: 24px;
+            height: 2px;
+            background-color: var(--white);
+            transition: background-color 0.1s 0.15s ease-in-out;
+            margin: auto;
+        }
+        
+        .hamburger-icon::before,
+        .hamburger-icon::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            transition: transform 0.3s ease, top 0.3s 0.1s ease;
+        }
+        
+        .hamburger-icon::before { top: -8px; }
+        .hamburger-icon::after { top: 8px; }
+        
+        header.nav-open .hamburger-icon { background-color: transparent; }
+        header.nav-open .hamburger-icon::before { transform: rotate(45deg); top: 0; transition: top 0.3s ease, transform 0.3s 0.1s ease; }
+        header.nav-open .hamburger-icon::after { transform: rotate(-45deg); top: 0; transition: top 0.3s ease, transform 0.3s 0.1s ease; }
+        
+        .main-nav { z-index: 100; }
+        .main-nav ul { display: flex; list-style: none; gap: 1.5rem; }
+        .main-nav a {
             color: var(--white);
             text-decoration: none;
             font-weight: 500;
@@ -102,7 +168,7 @@
             display: inline-block;
         }
         
-        nav a::after {
+        .main-nav a::after {
             content: '';
             position: absolute;
             width: 0;
@@ -114,21 +180,13 @@
             transform: translateX(-50%);
         }
         
-        nav a:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
+        .main-nav a:hover { background-color: rgba(255,255,255,0.1); }
+        .main-nav a:hover::after { width: 70%; }
         
-        nav a:hover::after {
-            width: 70%;
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 1.5rem;
-            cursor: pointer;
+        main {
+            position: relative;
+            z-index: 1;
+            /* margin-top: 60px;  REMOVED - body padding-top handles this */
         }
         
         .btn {
@@ -146,44 +204,15 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
-        .btn i {
-            margin-right: 0.5rem;
-            color: var(--primary-dark);
-        }
+        .btn i { margin-right: 0.5rem; /* color: var(--primary-dark); REMOVED - let button color define icon color */ }
         
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: var(--white);
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            color: var(--white);
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--white);
-            color: var(--white);
-        }
-        
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: var(--white); }
+        .btn-primary:hover { background: linear-gradient(135deg, var(--accent-dark), var(--accent)); transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
+        .btn-secondary { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: var(--white); }
+        .btn-secondary:hover { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
+        .btn-outline { background: transparent; border: 2px solid var(--white); color: var(--white); }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
+        .btn-sm { font-size: 0.85rem; padding: 0.5rem 1rem; }
 
         .hero {
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
@@ -211,70 +240,17 @@
             z-index: 1;
         }
         
-        .hero .container {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            text-shadow: var(--text-shadow);
-            animation: fadeInUp 1s ease-out;
-            line-height: 1.2;
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            max-width: 700px;
-            margin: 0 auto 2.5rem;
-            line-height: 1.7;
-            animation: fadeInUp 1s ease-out 0.3s both;
-            text-shadow: var(--text-shadow);
-        }
-        
-        .hero .btn {
-            font-size: 1.2rem;
-            padding: 1rem 2.5rem;
-            animation: fadeInUp 1s ease-out 0.6s both;
-            margin: 0 0.5rem 1rem;
-        }
+        .hero .container { position: relative; z-index: 2; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1.5rem; font-weight: 700; text-shadow: var(--text-shadow); animation: fadeInUp 1s ease-out; line-height: 1.2; }
+        .hero p { font-size: 1.3rem; max-width: 700px; margin: 0 auto 2.5rem; line-height: 1.7; animation: fadeInUp 1s ease-out 0.3s both; text-shadow: var(--text-shadow); }
+        .hero .btn { font-size: 1.2rem; padding: 1rem 2.5rem; animation: fadeInUp 1s ease-out 0.6s both; margin: 0 0.5rem 1rem; }
 
-        .content-section {
-            padding: 6rem 0;
-            text-align: center;
-            position: relative;
-        }
+        .content-section { padding: 6rem 0; text-align: center; position: relative; }
+        .content-section.bg-light-gray { background-color: var(--light-gray); }
+        .content-section.bg-white { background-color: var(--white); }
         
-        .content-section.bg-light-gray {
-            background-color: var(--light-gray);
-        }
-        
-        .content-section.bg-white {
-            background-color: var(--white);
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-dark);
-            position: relative;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-
-        }
-        
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--gray);
-            max-width: 800px;
-            margin: 0 auto 3.5rem;
-            line-height: 1.8;
-        }
-        
+        .section-title { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--primary-dark); position: relative; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
+        .section-subtitle { font-size: 1.2rem; color: var(--gray); max-width: 800px; margin: 0 auto 3.5rem; line-height: 1.8; }
         .section-title::after {
             content: '';
             display: block;
@@ -285,13 +261,7 @@
             border-radius: 2px;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            text-align: left;
-        }
-
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; text-align: left; }
         .info-card {
             background-color: var(--white);
             border-radius: 15px;
@@ -302,7 +272,6 @@
             position: relative;
             overflow: hidden;
         }
-        
         .info-card::before {
             content: '';
             position: absolute;
@@ -315,22 +284,9 @@
             transition: var(--transition);
             z-index: 0;
         }
-        
-        .info-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-            border-bottom: 4px solid var(--primary);
-        }
-        
-        .info-card:hover::before {
-            height: 100%;
-        }
-        
-        .info-card > * {
-            position: relative;
-            z-index: 1;
-        }
-        
+        .info-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); border-bottom: 4px solid var(--primary); }
+        .info-card:hover::before { height: 100%; }
+        .info-card > * { position: relative; z-index: 1; }
         .info-card i {
             font-size: 3rem;
             color: var(--primary);
@@ -342,49 +298,13 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
-        .info-card h3 {
-            font-size: 1.5rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            text-align: center;
-            font-weight: 700;
-        }
-        
-        .info-card ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .info-card ul li {
-            margin-bottom: 0.8rem;
-            padding-left: 1.8em;
-            position: relative;
-            font-size: 1.05rem;
-        }
-        
-        .info-card ul li::before {
-            content: "\f00c";
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            color: var(--primary);
-            position: absolute;
-            left: 0;
-        }
-        
-        .info-card p {
-            font-size: 1.05rem;
-            line-height: 1.7;
-        }
+        .info-card h3 { font-size: 1.5rem; color: var(--primary-dark); margin-bottom: 1rem; text-align: center; font-weight: 700; }
+        .info-card ul { list-style: none; padding-left: 0; }
+        .info-card ul li { margin-bottom: 0.8rem; padding-left: 1.8em; position: relative; font-size: 1.05rem; }
+        .info-card ul li::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; color: var(--primary); position: absolute; left: 0; }
+        .info-card p { font-size: 1.05rem; line-height: 1.7; }
 
-        .manifesto-section {
-            background: linear-gradient(135deg, var(--primary-dark), #2c3e50);
-            color: var(--white);
-            padding: 6rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
+        .manifesto-section { background: linear-gradient(135deg, var(--primary-dark), #2c3e50); color: var(--white); padding: 6rem 0; position: relative; overflow: hidden; }
         .manifesto-section::before {
             content: '';
             position: absolute;
@@ -396,42 +316,13 @@
             background-size: 20px 20px;
             opacity: 0.5;
         }
-        
-        .manifesto-section .section-title,
-        .manifesto-section .section-subtitle {
-            color: var(--white);
-        }
-        
-        .manifesto-section .section-title::after {
-            background: linear-gradient(90deg, var(--highlight), var(--accent));
-        }
-        
-        .manifesto-text {
-            max-width: 800px;
-            margin: 0 auto 2.5rem;
-            font-size: 1.15rem;
-            text-align: left;
-            line-height: 1.9;
-            position: relative;
-            z-index: 1;
-            padding: 0 1.5rem;
-        }
-        
-        .manifesto-text p {
-            margin-bottom: 1.5rem;
-        }
-        
-        .manifesto-text strong {
-            color: var(--highlight);
-            font-weight: 700;
-        }
+        .manifesto-section .section-title, .manifesto-section .section-subtitle { color: var(--white); }
+        .manifesto-section .section-title::after { background: linear-gradient(90deg, var(--highlight), var(--accent)); }
+        .manifesto-text { max-width: 800px; margin: 0 auto 2.5rem; font-size: 1.15rem; text-align: left; line-height: 1.9; position: relative; z-index: 1; padding: 0 1.5rem; }
+        .manifesto-text p { margin-bottom: 1.5rem; }
+        .manifesto-text strong { color: var(--highlight); font-weight: 700; }
 
-        .about-founder {
-            background-color: var(--white);
-            position: relative;
-            overflow: hidden;
-        }
-        
+        .about-founder { background-color: var(--white); position: relative; overflow: hidden; }
         .about-founder::before {
             content: '';
             position: absolute;
@@ -444,16 +335,7 @@
             border-radius: 50%;
             transform: translate(100px, 100px);
         }
-        
-        .founder-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            position: relative;
-            z-index: 1;
-        }
-        
+        .founder-info { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; position: relative; z-index: 1; }
         .founder-info .user-avatar {
             width: 180px;
             height: 180px;
@@ -468,47 +350,15 @@
             font-size: 4rem;
             font-weight: bold;
             color: white;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background-position: center;
+            background-size: cover;
+            background-image: url('https://avuyilemthembu.co.za/assets/images/avuyile2.jpg');
         }
-        
-        .founder-info h3 {
-            font-size: 2rem;
-            color: var(--primary-dark);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        
-        .founder-info p {
-            font-size: 1.15rem;
-            color: var(--gray);
-            max-width: 650px;
-            line-height: 1.8;
-            margin-bottom: 0.5rem;
-            text-align: center;
-        }
-        
-        .founder-info p em {
-            display: block;
-            margin-top: 1.5rem;
-            font-style: italic;
-            font-size: 1.2rem;
-            color: var(--primary-dark);
-            font-weight: 500;
-            padding: 1rem 2rem;
-            border-left: 4px solid var(--primary);
-            background-color: var(--light);
-            border-radius: 0 15px 15px 0;
-        }
+        .founder-info h3 { font-size: 2rem; color: var(--primary-dark); margin-bottom: 0.5rem; font-weight: 700; }
+        .founder-info p { font-size: 1.15rem; color: var(--gray); max-width: 650px; line-height: 1.8; margin-bottom: 0.5rem; text-align: center; }
+        .founder-info p em { display: block; margin-top: 1.5rem; font-style: italic; font-size: 1.2rem; color: var(--primary-dark); font-weight: 500; padding: 1rem 2rem; border-left: 4px solid var(--primary); background-color: var(--light); border-radius: 0 15px 15px 0; }
 
-        footer {
-            background: linear-gradient(135deg, var(--dark), #121212);
-            color: var(--light-gray);
-            padding: 4rem 0 3rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
+        footer { background: linear-gradient(135deg, var(--dark), #121212); color: var(--light-gray); padding: 4rem 0 3rem; text-align: center; position: relative; overflow: hidden; }
         footer::before {
             content: '';
             position: absolute;
@@ -520,56 +370,16 @@
             background-size: 200% 100%;
             animation: gradient-shift 4s linear infinite;
         }
-        
-        footer p {
-            margin-bottom: 0.8rem;
-            font-size: 1.05rem;
-        }
-        
-        footer a {
-            color: var(--secondary);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        footer a:hover {
-            color: var(--accent);
-            text-decoration: underline;
-        }
-        
-        .social-links {
-            margin-top: 1.5rem;
-        }
-        
-        .social-links a {
-            font-size: 1.8rem;
-            margin: 0 0.8rem;
-            color: var(--light-gray);
-            transition: var(--transition);
-            display: inline-block;
-        }
-        
-        .social-links a:hover {
-            color: var(--accent);
-            transform: translateY(-5px);
-            text-decoration: none;
-        }
+        footer p { margin-bottom: 0.8rem; font-size: 1.05rem; }
+        footer a { color: var(--secondary); text-decoration: none; transition: var(--transition); }
+        footer a:hover { color: var(--accent); text-decoration: underline; }
+        .social-links { margin-top: 1.5rem; }
+        .social-links a { font-size: 1.8rem; margin: 0 0.8rem; color: var(--light-gray); transition: var(--transition); display: inline-block; }
+        .social-links a:hover { color: var(--accent); transform: translateY(-5px); text-decoration: none; }
 
         /* App Dashboard Styles */
-        .app-container {
-            display: none;
-            padding: 2rem 0;
-            background-color: #f0f2f5;
-            min-height: 100vh;
-        }
-        
-        .dashboard {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 2rem;
-            min-height: calc(100vh - 70px);
-        }
-        
+        .app-container { display: none; padding: 2rem 0; background-color: #f0f2f5; min-height: 100vh; }
+        .dashboard { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; min-height: calc(100vh - 70px); /* Adjusted if header is hidden */ }
         .sidebar {
             background-color: var(--white);
             border-radius: 15px;
@@ -577,315 +387,91 @@
             padding: 1.8rem;
             height: fit-content;
             position: sticky;
-            top: 90px;
+            top: 20px; /* Adjusted as main header is hidden */
         }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding-bottom: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--light-gray);
-        }
-        
+        .user-info { display: flex; align-items: center; gap: 1rem; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--light-gray); }
         .user-avatar {
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
+            background-color: var(--primary);
             justify-content: center;
             color: white;
             font-weight: bold;
             font-size: 1.3rem;
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
+        .user-details h3 { font-size: 1.1rem; font-weight: 600; color: var(--dark); margin-bottom: 0.3rem; }
+        .user-details p { font-size: 0.9rem; color: var(--gray); }
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu li { margin-bottom: 0.7rem; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1rem; border-radius: 10px; color: var(--dark); text-decoration: none; transition: var(--transition); font-weight: 500; font-size: 1.05rem; }
+        .sidebar-menu a:hover, .sidebar-menu a.active { background-color: var(--primary-light); color: var(--primary-dark); }
+        .sidebar-menu i { font-size: 1.3rem; color: var(--primary); width: 24px; text-align: center; }
+        .main-content { background-color: var(--white); border-radius: 15px; box-shadow: var(--card-shadow); padding: 2rem; overflow: hidden; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--light-gray); }
+        .dashboard-title { font-size: 1.8rem; color: var(--primary-dark); font-weight: 700; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease-out; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.8rem; margin-bottom: 2.5rem; }
+        .card { background-color: var(--light); border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: var(--transition); border: 1px solid rgba(0,0,0,0.05); }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+        .card-header { padding: 1.2rem; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-weight: bold; font-size: 1.1rem; }
+        .card-body { padding: 1.5rem; }
+        .card-footer { padding: 1.2rem; background-color: var(--light-gray); display: flex; justify-content: space-between; align-items: center; }
+        .resource-card-img { height: 160px; background-color: var(--light-gray); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: var(--primary); }
         
-        .user-details h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.3rem;
-        }
+        .weather-widget { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .weather-item { background: linear-gradient(135deg, var(--white), var(--light)); border-radius: 15px; padding: 1.5rem; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: var(--transition); border: 1px solid rgba(0,0,0,0.03); }
+        .weather-item:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .weather-icon { font-size: 2.5rem; margin-bottom: 0.8rem; color: var(--primary); background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .weather-value { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
+        .weather-label { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
         
-        .user-details p {
-            font-size: 0.9rem;
-            color: var(--gray);
-        }
+        h3 { font-size: 1.5rem; color: var(--primary-dark); margin: 2rem 0 1.5rem; font-weight: 600; }
         
-        .sidebar-menu {
-            list-style: none;
-        }
+        .chart-container { height: 300px; margin-bottom: 2.5rem; position: relative; background-color: var(--light); border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03); }
+        .chart { width: 100%; height: 100%; display: flex; align-items: flex-end; gap: 15px; padding-bottom: 35px; }
+        .chart-bar { flex: 1; background: linear-gradient(180deg, var(--primary), var(--primary-dark)); position: relative; transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); min-height: 20px; border-radius: 5px 5px 0 0; }
+        .chart-bar::after { content: attr(data-value); position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; color: var(--dark); font-weight: 500; }
+        .chart-x-axis { position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--gray); margin: 1.5rem; }
         
-        .sidebar-menu li {
-            margin-bottom: 0.7rem;
-        }
+        .tasks-list { margin-bottom: 2.5rem; }
+        .task-item { display: flex; align-items: center; padding: 1.2rem; border-bottom: 1px solid var(--light-gray); transition: var(--transition); }
+        .task-item:hover { background-color: var(--light); }
+        .task-item.completed .task-title { text-decoration: line-through; color: var(--gray); }
+        .dark-mode .task-item.completed .task-title { color: var(--light-gray); opacity: 0.7; }
+        .task-status { margin-right: 1.2rem; }
+        .task-status input { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); }
+        .task-details { flex: 1; }
+        .task-title { font-weight: 600; margin-bottom: 0.4rem; font-size: 1.1rem; color: var(--dark); }
+        .task-meta { font-size: 0.9rem; color: var(--gray); display: flex; gap: 1.2rem; }
+        .task-actions { display: flex; gap: 0.7rem; }
         
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 0.9rem 1rem;
-            border-radius: 10px;
-            color: var(--dark);
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 500;
-            font-size: 1.05rem;
-        }
-        
-        .sidebar-menu a:hover, .sidebar-menu a.active {
-            background-color: var(--primary-light);
-            color: var(--primary-dark);
-        }
-        
-        .sidebar-menu i {
-            font-size: 1.3rem;
-            color: var(--primary);
-            width: 24px;
-            text-align: center;
-        }
-        
-        .main-content {
-            background-color: var(--white);
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            padding: 2rem;
-            overflow: hidden;
-        }
-        
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--light-gray);
-        }
-        
-        .dashboard-title {
-            font-size: 1.8rem;
-            color: var(--primary-dark);
-            font-weight: 700;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.8rem;
-            margin-bottom: 2.5rem;
-        }
-        
-        .card {
-            background-color: var(--light);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-        }
-        
-        .card-header {
-            padding: 1.2rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        
-        .card-body {
-            padding: 1.5rem;
-        }
-        
-        .card-footer {
-            padding: 1.2rem;
-            background-color: var(--light-gray);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .resource-card-img {
-            height: 160px;
-            background-color: var(--light-gray);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            color: var(--primary);
-        }
-        
-        .weather-widget {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
-        
-        .weather-item {
-            background: linear-gradient(135deg, var(--white), var(--light));
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-        
-        .weather-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
-        
-        .weather-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.8rem;
-            color: var(--primary);
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .weather-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-        
-        .weather-label {
-            font-size: 0.9rem;
-            color: var(--gray);
-            font-weight: 500;
-        }
-        
-        h3 {
+        .mobile-menu-btn {
+            display: none; /* Shown via media query */
+            background: none;
+            border: none;
+            color: var(--white);
             font-size: 1.5rem;
-            color: var(--primary-dark);
-            margin: 2rem 0 1.5rem;
-            font-weight: 600;
-        }
-        
-        .chart-container {
-            height: 300px;
-            margin-bottom: 2.5rem;
-            position: relative;
-            background-color: var(--light);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-        
-        .chart {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: flex-end;
-            gap: 15px;
-            padding-bottom: 35px;
-        }
-        
-        .chart-bar {
-            flex: 1;
-            background: linear-gradient(180deg, var(--primary), var(--primary-dark));
-            position: relative;
-            transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            min-height: 20px;
-            border-radius: 5px 5px 0 0;
-        }
-        
-        .chart-bar::after {
-            content: attr(data-value);
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.85rem;
-            color: var(--dark);
-            font-weight: 500;
-        }
-        
-        .chart-x-axis {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--gray);
-            margin: 1.5rem;
-        }
-        
-        .tasks-list {
-            margin-bottom: 2.5rem;
-        }
-        
-        .task-item {
-            display: flex;
-            align-items: center;
-            padding: 1.2rem;
-            border-bottom: 1px solid var(--light-gray);
-            transition: var(--transition);
-        }
-        
-        .task-item:hover {
-            background-color: var(--light);
-        }
-        
-        .task-status {
-            margin-right: 1.2rem;
-        }
-        
-        .task-status input {
-            width: 22px;
-            height: 22px;
             cursor: pointer;
-            accent-color: var(--primary);
+            position: fixed;
+            top: 20px;
+            left: 20px; /* Corrected from a20px */
+            z-index: 1051;
+            background-color: var(--primary);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            align-items: center; /* Added for flex centering */
+            justify-content: center; /* Added for flex centering */
         }
-        
-        .task-details {
-            flex: 1;
-        }
-        
-        .task-title {
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-            font-size: 1.1rem;
-            color: var(--dark);
-        }
-        
-        .task-meta {
-            font-size: 0.9rem;
-            color: var(--gray);
-            display: flex;
-            gap: 1.2rem;
-        }
-        
-        .task-actions {
-            display: flex;
-            gap: 0.7rem;
-        }
-        
         .exit-prototype-btn {
             position: fixed;
-            top: 100px;
+            top: 20px; /* Adjusted as main header is hidden */
             right: 20px;
             z-index: 1050;
             padding: 0.8rem 1.2rem;
@@ -895,435 +481,173 @@
         }
         
         /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            z-index: 1100;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 1100; align-items: center; justify-content: center; backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease; }
+        .modal.show { opacity: 1; }
+        .modal-content { background-color: white; border-radius: 15px; width: 100%; max-width: 550px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); overflow: hidden; transform: translateY(20px); transition: transform 0.3s ease; }
+        .modal.show .modal-content { transform: translateY(0); }
+        .modal-header { padding: 1.5rem; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1.3rem; font-weight: 600; }
+        .modal-close { background: none; border: none; font-size: 1.8rem; color: white; cursor: pointer; transition: var(--transition); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .modal-close:hover { background-color: rgba(255,255,255,0.1); }
+        .modal-body { padding: 2rem; max-height: 70vh; overflow-y: auto; }
+        .modal-footer { padding: 1.5rem; background-color: var(--light-gray); display: flex; justify-content: flex-end; gap: 1rem; }
         
-        .modal.show {
-            opacity: 1;
-        }
-        
-        .modal-content {
-            background-color: white;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 550px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            overflow: hidden;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-        
-        .modal.show .modal-content {
-            transform: translateY(0);
-        }
-        
-        .modal-header {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            color: white;
-            cursor: pointer;
-            transition: var(--transition);
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .modal-close:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-        
-        .modal-body {
-            padding: 2rem;
-        }
-        
-        .modal-footer {
-            padding: 1.5rem;
-            background-color: var(--light-gray);
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.8rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.7rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            border: 1px solid var(--light-gray);
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: var(--transition);
-            background-color: var(--light);
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
-            background-color: white;
-        }
-        
+        .form-group { margin-bottom: 1.8rem; }
+        .form-label { display: block; margin-bottom: 0.7rem; font-weight: 600; color: var(--dark); }
+        .form-control { width: 100%; padding: 0.9rem 1.2rem; border: 1px solid var(--light-gray); border-radius: 10px; font-size: 1rem; transition: var(--transition); background-color: var(--light); }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15); background-color: white; }
+        .checkbox-group div { margin-bottom: 0.5rem; }
+        .checkbox-group input[type="checkbox"] { margin-right: 0.5rem; accent-color: var(--primary); }
+
+
         /* Dark mode styles */
-        .dark-mode {
-            background-color: #121212;
-            color: var(--light);
-        }
-        
-        .dark-mode .sidebar,
-        .dark-mode .main-content,
-        .dark-mode .card,
-        .dark-mode .modal-content,
-        .dark-mode .info-card,
-        .dark-mode .content-section.bg-white,
-        .dark-mode .about-founder {
-            background-color: #1e1e1e;
-            color: var(--light);
-        }
-        
-        .dark-mode .card-header,
-        .dark-mode .modal-header {
-            background: linear-gradient(135deg, #2c5e2e, #1a4a1a);
-        }
-        
-        .dark-mode .card-footer,
-        .dark-mode .modal-footer {
-            background-color: #2a2a2a;
-        }
-        
-        .dark-mode .form-control {
-            background-color: #2a2a2a;
-            border-color: #3a3a3a;
-            color: var(--light);
-        }
-        
-        .dark-mode .form-control:focus {
-            background-color: #333;
-            border-color: var(--primary-dark);
-        }
-        
-        .dark-mode .sidebar-menu a {
-            color: var(--light);
-        }
-        
-        .dark-mode .sidebar-menu a:hover,
-        .dark-mode .sidebar-menu a.active {
-            background-color: rgba(76, 175, 80, 0.15);
-        }
-        
-        .dark-mode .section-title,
-        .dark-mode .info-card h3,
-        .dark-mode .founder-info h3,
-        .dark-mode h3,
-        .dark-mode .dashboard-title,
-        .dark-mode .task-title {
-            color: #8BC34A;
-        }
-        
-        .dark-mode .section-subtitle,
-        .dark-mode .info-card p,
-        .dark-mode .founder-info p,
-        .dark-mode .manifesto-text {
-            color: #bdbdbd;
-        }
-        
-        .dark-mode .manifesto-section {
-            background: linear-gradient(135deg, #1a4a1a, #1e272e);
-        }
-        
-        .dark-mode .content-section.bg-light-gray {
-            background-color: #181818;
-        }
-        
-        .dark-mode .chart-container,
-        .dark-mode .weather-item {
-            background-color: #2a2a2a;
-            border-color: #333;
-        }
-        
-        .dark-mode .task-item:hover {
-            background-color: #2a2a2a;
-        }
-        
-        .dark-mode .weather-value {
-            color: var(--light);
-        }
-        
-        .dark-mode .chart-bar::after {
-            color: var(--light-gray);
-        }
-        
-        .dark-mode .app-container {
-            background-color: #121212;
-        }
+        .dark-mode { background-color: #121212; color: var(--light); }
+        .dark-mode .sidebar, .dark-mode .main-content, .dark-mode .card, .dark-mode .modal-content, .dark-mode .info-card, .dark-mode .content-section.bg-white, .dark-mode .about-founder { background-color: #1e1e1e; color: var(--light); }
+        .dark-mode .card-header, .dark-mode .modal-header { background: linear-gradient(135deg, #2c5e2e, #1a4a1a); }
+        .dark-mode .card-footer, .dark-mode .modal-footer { background-color: #2a2a2a; }
+        .dark-mode .form-control { background-color: #2a2a2a; border-color: #3a3a3a; color: var(--light); }
+        .dark-mode .form-control:focus { background-color: #333; border-color: var(--primary-dark); }
+        .dark-mode .sidebar-menu a { color: var(--light); }
+        .dark-mode .sidebar-menu a:hover, .dark-mode .sidebar-menu a.active { background-color: rgba(76, 175, 80, 0.15); }
+        .dark-mode .section-title, .dark-mode .info-card h3, .dark-mode .founder-info h3, .dark-mode h3, .dark-mode .dashboard-title, .dark-mode .task-title { color: #8BC34A; }
+        .dark-mode .section-subtitle, .dark-mode .info-card p, .dark-mode .founder-info p, .dark-mode .manifesto-text { color: #bdbdbd; }
+        .dark-mode .manifesto-section { background: linear-gradient(135deg, #1a4a1a, #1e272e); }
+        .dark-mode .content-section.bg-light-gray { background-color: #181818; }
+        .dark-mode .chart-container, .dark-mode .weather-item { background-color: #2a2a2a; border-color: #333; }
+        .dark-mode .task-item:hover { background-color: #2a2a2a; }
+        .dark-mode .weather-value { color: #e0e0e0; }
+        .dark-mode .chart-bar::after { color: var(--light-gray); }
+        .dark-mode .app-container { background-color: #121212; }
         
         /* Theme Toggle */
-        .toggle-container {
+        .toggle-container { position: fixed; bottom: 20px; right: 20px; z-index: 1001; }
+        .theme-toggle { width: 60px; height: 30px; background-color: var(--dark); border-radius: 15px; position: relative; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: var(--transition); }
+        .theme-toggle::before { content: ''; position: absolute; width: 24px; height: 24px; background-color: white; border-radius: 50%; top: 3px; left: 3px; transition: var(--transition); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .dark-mode .theme-toggle { background-color: #7cb342; }
+        .dark-mode .theme-toggle::before { background-color: #121212; transform: translateX(30px); }
+
+        /* Toast Notification Styles */
+        .toast {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            z-index: 1001;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px); /* Start off-screen */
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            font-size: 0.95rem;
         }
-        
-        .theme-toggle {
-            width: 60px;
-            height: 30px;
-            background-color: var(--dark);
-            border-radius: 15px;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: var(--transition);
-        }
-        
-        .theme-toggle::before {
-            content: '';
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background-color: white;
-            border-radius: 50%;
-            top: 3px;
-            left: 3px;
-            transition: var(--transition);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .dark-mode .theme-toggle {
-            background-color: #7cb342;
-        }
-        
-        .dark-mode .theme-toggle::before {
-            background-color: #121212;
-            transform: translateX(30px);
-        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast-success { background-color: var(--primary); }
+        .toast-error { background-color: #E53935; } 
+        .toast-info { background-color: #1E88E5; } 
+        .dark-mode .toast-success { background-color: var(--primary-dark); }
+        .dark-mode .toast-error { background-color: #c62828; } 
+        .dark-mode .toast-info { background-color: #0D47A1; } 
         
         /* Responsive styles */
         @media (max-width: 1024px) {
-            .dashboard {
-                grid-template-columns: 250px 1fr;
-            }
-            
-            .hero h1 {
-                font-size: 3rem;
-            }
+            .dashboard { grid-template-columns: 250px 1fr; }
+            .hero h1 { font-size: 3rem; }
         }
         
         @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 0.8rem 0;
+            .nav-toggle { display: block; }
+            .main-nav {
+                position: absolute;
+                top: 100%; /* Position below header */
+                left: 0;
+                right: 0;
+                background: var(--primary-dark);
+                padding: 1rem 0;
+                display: none;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             }
+            header.nav-open .main-nav { display: block; }
+            .main-nav ul { flex-direction: column; padding: 0; margin: 0; }
+            .main-nav ul li { width: 100%; }
+            .main-nav ul li a { padding: 1rem 2rem; display: block; text-align: center; }
+            .main-nav ul li a::after { display: none; }
+            .body-no-scroll { overflow: hidden; } /* Prevent content shift when nav is open */
             
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 1rem;
-            }
+            .hero { padding: 6rem 0; }
+            .hero h1 { font-size: 2.3rem; }
+            .hero p { font-size: 1.1rem; }
+            .section-title { font-size: 2rem; }
             
-            nav a {
-                padding: 0.5rem 0.8rem;
-                font-size: 0.9rem;
-            }
-            
-            .hero {
-                padding: 6rem 0;
-            }
-            
-            .hero h1 {
-                font-size: 2.3rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-            
+            .dashboard { grid-template-columns: 1fr; }
             .sidebar {
                 position: fixed;
-                left: -300px;
+                left: -300px; /* Start off-screen */
                 top: 0;
                 height: 100vh;
+                width: 300px; /* Explicit width for transition */
                 z-index: 1050;
                 border-radius: 0;
-                transition: var(--transition);
+                transition: left 0.3s ease; /* Changed to left for smoother transition */
+                overflow-y: auto; /* For many menu items */
             }
+            .sidebar.show { left: 0; }
+            .mobile-menu-btn { display: flex; /* Was block, flex for icon centering */ }
             
-            .sidebar.show {
-                left: 0;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
+            /* When app is active and sidebar is open, add overlay for main content */
+            .app-overlay {
+                display: none;
                 position: fixed;
-                top: 20px;
-                left: 20px;
-                z-index: 1051;
-                background-color: var(--primary);
-                width: 45px;
-                height: 45px;
-                border-radius: 50%;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 1040; /* Below sidebar, above main content */
             }
-            
-            .exit-prototype-btn {
-                top: 20px;
-                right: 20px;
+            .sidebar.show + .main-content + .app-overlay, /* If structure is sidebar, main-content, overlay */
+            .sidebar.show ~ .app-overlay { /* More general if overlay is sibling */
+                display: block;
             }
-            
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .info-card {
-                padding: 1.8rem;
-            }
-            
-            .founder-info p em {
-                padding: 1rem;
-            }
-            
-            .modal-content {
-                width: 90%;
-            }
+
+
+            .exit-prototype-btn { top: 20px; right: 20px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .info-card { padding: 1.8rem; }
+            .founder-info p em { padding: 1rem; }
+            .modal-content { width: 90%; }
         }
         
         @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 1.9rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .btn {
-                font-size: 0.9rem;
-                padding: 0.7rem 1.2rem;
-            }
-            
-            .hero .btn {
-                font-size: 1rem;
-                padding: 0.8rem 1.5rem;
-                display: block;
-                margin: 0 auto 1rem;
-                width: 80%;
-            }
-            
-            .section-title {
-                font-size: 1.7rem;
-            }
-            
-            .section-subtitle {
-                font-size: 1rem;
-            }
-            
-            .content-section {
-                padding: 4rem 0;
-            }
-            
-            .weather-widget {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .chart-container {
-                height: 250px;
-            }
-            
-            .modal-body {
-                padding: 1.5rem;
-            }
-            
-            .modal-header {
-                padding: 1.2rem;
-            }
-            
-            .modal-title {
-                font-size: 1.2rem;
-            }
+            .hero h1 { font-size: 1.9rem; }
+            .hero p { font-size: 1rem; }
+            .btn { font-size: 0.9rem; padding: 0.7rem 1.2rem; }
+            .hero .btn { font-size: 1rem; padding: 0.8rem 1.5rem; display: block; margin: 0 auto 1rem; width: 80%; }
+            .section-title { font-size: 1.7rem; }
+            .section-subtitle { font-size: 1rem; }
+            .content-section { padding: 4rem 0; }
+            .weather-widget { grid-template-columns: repeat(2, 1fr); }
+            .chart-container { height: 250px; }
+            .modal-body { padding: 1.5rem; }
+            .modal-header { padding: 1.2rem; }
+            .modal-title { font-size: 1.2rem; }
         }
         
         /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* Scroll Reveal Animation */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        
-        @keyframes gradient-shift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -1338,7 +662,10 @@
                     <span class="company-name">by Vylex Nexys</span>
                 </div>
             </div>
-            <nav>
+            <button class="nav-toggle" aria-label="toggle navigation" aria-expanded="false" aria-controls="main-navigation">
+                <span class="hamburger-icon"></span>
+            </button>
+            <nav class="main-nav" id="main-navigation">
                 <ul>
                     <li><a href="#home" class="nav-link">Home</a></li>
                     <li><a href="#what-is-AgriSynth" class="nav-link">What is AgriSynth?</a></li>
@@ -1461,35 +788,34 @@
             </section>
 
             <section id="manifesto" class="manifesto-section">
-    <div class="container">
-        <h2 class="section-title">The AgriSynth Manifesto</h2>
-        <p class="section-subtitle">This is more than a project; it's a movement. Our manifesto is a digital declaration of regenerative independence.</p>
-        
-        <div class="manifesto-text">
-            <p>In an age where megacities grow taller, and food insecurity deepens in the shadows of their towers, we stand at the intersection of decay and innovation. Humanity, while more connected than ever, has become alienated from its own sustenance...</p>
-            <p><strong>We call it AgriSynth: a decentralized, intelligent, and cooperative operating system for urban agriculture.</strong></p>
-            <p>Our MVP will launch in <strong>Johannesburg</strong>, starting with urban rooftops, IoT sensors, farming cooperatives, drone partners, and local markets. We build from the bottom up. Open-source. Transparent. Inclusive.</p>
-            <p><strong>AgriSynth is the digital seed. You are the soil. Plant it. Water it. Watch it grow.</strong></p>
-        </div>
-
-        <!-- Centered Button -->
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="#" class="btn btn-primary" id="read-manifesto-btn">
-                <i class="fas fa-book-open"></i> Read the Full Manifesto
-            </a>
-        </div>
-    </div>
-</section>
-
+                <div class="container">
+                    <h2 class="section-title">The AgriSynth Manifesto</h2>
+                    <p class="section-subtitle">This is more than a project; it's a movement. Our manifesto is a digital declaration of regenerative independence.</p>
+                    
+                    <div class="manifesto-text">
+                        <p>In an age where megacities grow taller, and food insecurity deepens in the shadows of their towers, we stand at the intersection of decay and innovation. Humanity, while more connected than ever, has become alienated from its own sustenance...</p>
+                        <p><strong>We call it AgriSynth: a decentralized, intelligent, and cooperative operating system for urban agriculture.</strong></p>
+                        <p>Our MVP will launch in <strong>Johannesburg</strong>, starting with urban rooftops, IoT sensors, farming cooperatives, drone partners, and local markets. We build from the bottom up. Open-source. Transparent. Inclusive.</p>
+                        <p><strong>AgriSynth is the digital seed. You are the soil. Plant it. Water it. Watch it grow.</strong></p>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a href="#" class="btn btn-primary" id="read-manifesto-btn">
+                            <i class="fas fa-book-open"></i> Read the Full Manifesto
+                        </a>
+                    </div>
+                </div>
+            </section>
             
             <section class="content-section about-founder bg-white">
-                <div class="container founder-info">
-                    <h2 class="section-title">From the Founder</h2>
-                    <div class="user-avatar">AM</div>
-                    <h3>Avuyile Mthembu</h3>
-                    <p>Visionary Technologist, Disruptor, and Builder of the Next Agricultural Operating System.</p>
-                    <p>Founder, Vylex Nexys IT Corp (vylexnexys.co.za)</p>
-                    <p><em>"We believe AgriSynth will become the standard for smart farming globally, from Johannesburg to Mumbai, from Cape Town to Cairo. Cities will no longer be consumers. They will become regenerative engines."</em></p>
+                <div class="container">
+                    <div class="founder-info">
+                        <h2 class="section-title">From the Founder</h2>
+                        <div class="user-avatar">AM</div>
+                        <h3>Avuyile Mthembu</h3>
+                        <p>Visionary Technologist, Disruptor, and Builder of the Next Agricultural Operating System.</p>
+                        <p>Founder, Vylex Nexys IT Corp (vylexnexys.co.za)</p>
+                        <p><em>"We believe AgriSynth will become the standard for smart farming globally, from Johannesburg to Mumbai, from Cape Town to Cairo. Cities will no longer be consumers. They will become regenerative engines."</em></p>
+                    </div>
                 </div>
             </section>
 
@@ -1499,12 +825,11 @@
                     <p>Conceptualized and Driven by Avuyile Mthembu.</p>
                     <p>Contact: <a href="mailto:info@avuyilemthembu.com">info@avuyilemthembu.com</a> | <a href="mailto:admin@AgriSynth.io">admin@AgriSynth.io</a></p>
                     <div class="social-links">
-                        <a href="https://twitter.com/AgriSynthapp" target="_blank" title="AgriSynth on Twitter/X"><i class="fab fa-twitter"></i></a>
-                        <a href="#" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-
+                        <a href="https://twitter.com/AgriSynthapp" target="_blank" title="AgriSynth on Twitter/X" aria-label="AgriSynth on Twitter/X"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank" title="LinkedIn" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" target="_blank" title="Instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" target="_blank" title="GitHub" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
             </footer>
@@ -1513,11 +838,11 @@
         <!-- App Dashboard (Hidden by default) -->
         <div class="app-container" id="app-dashboard">
             <button class="btn btn-secondary exit-prototype-btn" id="exit-prototype-btn"><i class="fas fa-arrow-left"></i> Exit Prototype</button>
-            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle App Menu" aria-expanded="false" aria-controls="app-sidebar"><i class="fas fa-bars"></i></button>
             
             <div class="container">
                 <div class="dashboard">
-                    <aside class="sidebar">
+                    <aside class="sidebar" id="app-sidebar">
                         <div class="user-info">
                             <div class="user-avatar" id="user-avatar">GS</div>
                             <div class="user-details">
@@ -1571,50 +896,22 @@
                             
                             <h3>This Week's Tasks</h3>
                             <div class="tasks-list" id="dashboard-tasks-list">
+                                <!-- Tasks will be populated here or pre-filled if static -->
                                 <div class="task-item">
-                                    <div class="task-status">
-                                        <input type="checkbox" id="task1">
-                                    </div>
+                                    <div class="task-status"><input type="checkbox" id="dash-task1"></div>
                                     <div class="task-details">
                                         <div class="task-title">Water tomato plants</div>
-                                        <div class="task-meta">
-                                            <span><i class="fas fa-calendar"></i> Today</span>
-                                            <span><i class="fas fa-clock"></i> Morning</span>
-                                        </div>
+                                        <div class="task-meta"><span><i class="fas fa-calendar"></i> Today</span><span><i class="fas fa-clock"></i> Morning</span></div>
                                     </div>
-                                    <div class="task-actions">
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></button>
-                                    </div>
+                                    <div class="task-actions"><button class="btn btn-sm btn-outline" aria-label="Edit Task"><i class="fas fa-edit"></i></button></div>
                                 </div>
                                 <div class="task-item">
-                                    <div class="task-status">
-                                        <input type="checkbox" id="task2">
-                                    </div>
+                                    <div class="task-status"><input type="checkbox" id="dash-task2" checked></div>
                                     <div class="task-details">
                                         <div class="task-title">Add compost to herb garden</div>
-                                        <div class="task-meta">
-                                            <span><i class="fas fa-calendar"></i> Tomorrow</span>
-                                            <span><i class="fas fa-clock"></i> Afternoon</span>
-                                        </div>
+                                        <div class="task-meta"><span><i class="fas fa-calendar"></i> Tomorrow</span><span><i class="fas fa-clock"></i> Afternoon</span></div>
                                     </div>
-                                    <div class="task-actions">
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></button>
-                                    </div>
-                                </div>
-                                <div class="task-item">
-                                    <div class="task-status">
-                                        <input type="checkbox" id="task3">
-                                    </div>
-                                    <div class="task-details">
-                                        <div class="task-title">Harvest lettuce</div>
-                                        <div class="task-meta">
-                                            <span><i class="fas fa-calendar"></i> Friday</span>
-                                            <span><i class="fas fa-clock"></i> Morning</span>
-                                        </div>
-                                    </div>
-                                    <div class="task-actions">
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></button>
-                                    </div>
+                                    <div class="task-actions"><button class="btn btn-sm btn-outline" aria-label="Edit Task"><i class="fas fa-edit"></i></button></div>
                                 </div>
                             </div>
                             
@@ -1630,550 +927,219 @@
                             </div>
                         </div>
                         
-                        <!-- Resources Tab -->
                         <div class="tab-content" id="resources-tab">
                             <div class="dashboard-header">
                                 <h2 class="dashboard-title">Resource Sharing</h2>
-                                <div class="dashboard-actions">
-                                    <button class="btn btn-primary" id="add-resource-btn"><i class="fas fa-plus"></i> Add Resource</button>
-                                </div>
+                                <button class="btn btn-primary" id="add-resource-btn"><i class="fas fa-plus"></i> Add Resource</button>
                             </div>
                             <div class="card-grid" id="resources-grid">
+                                <!-- Pre-filled resources -->
                                 <div class="card">
                                     <div class="card-header">Garden Shovel</div>
                                     <div class="resource-card-img"><i class="fas fa-trowel"></i></div>
-                                    <div class="card-body">
-                                        <p>High-quality stainless steel garden shovel available for community use.</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <span><i class="fas fa-check-circle"></i> Available</span>
-                                        <button class="btn btn-sm btn-primary">Request</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Tomato Seedlings</div>
-                                    <div class="resource-card-img"><i class="fas fa-seedling"></i></div>
-                                    <div class="card-body">
-                                        <p>Organic cherry tomato seedlings ready for planting. Great for beginners.</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <span><i class="fas fa-check-circle"></i> Available</span>
-                                        <button class="btn btn-sm btn-primary">Request</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Compost</div>
-                                    <div class="resource-card-img"><i class="fas fa-recycle"></i></div>
-                                    <div class="card-body">
-                                        <p>Nutrient-rich compost made from kitchen scraps and garden waste.</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <span><i class="fas fa-clock"></i> Limited</span>
-                                        <button class="btn btn-sm btn-primary">Request</button>
-                                    </div>
+                                    <div class="card-body"><p>High-quality stainless steel garden shovel.</p></div>
+                                    <div class="card-footer"><span><i class="fas fa-check-circle"></i> Available</span><button class="btn btn-sm btn-primary">Request</button></div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Tasks Tab -->
                         <div class="tab-content" id="tasks-tab">
                             <div class="dashboard-header">
                                 <h2 class="dashboard-title">Task Scheduler</h2>
-                                <div class="dashboard-actions">
-                                    <button class="btn btn-primary" id="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
-                                </div>
+                                <button class="btn btn-primary" id="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
                             </div>
                             <div class="tasks-list" id="all-tasks-list">
+                                <!-- Pre-filled tasks -->
                                 <div class="task-item">
-                                    <div class="task-status">
-                                        <input type="checkbox" id="all-task1">
-                                    </div>
-                                    <div class="task-details">
-                                        <div class="task-title">Water tomato plants</div>
-                                        <div class="task-meta">
-                                            <span><i class="fas fa-calendar"></i> Today</span>
-                                            <span><i class="fas fa-clock"></i> Morning</span>
-                                        </div>
-                                    </div>
-                                    <div class="task-actions">
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                                <div class="task-item">
-                                    <div class="task-status">
-                                        <input type="checkbox" id="all-task2">
-                                    </div>
-                                    <div class="task-details">
-                                        <div class="task-title">Add compost to herb garden</div>
-                                        <div class="task-meta">
-                                            <span><i class="fas fa-calendar"></i> Tomorrow</span>
-                                            <span><i class="fas fa-clock"></i> Afternoon</span>
-                                        </div>
-                                    </div>
-                                    <div class="task-actions">
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                                <div class="task-item">
-                                    <div class="task-status">
-                                        <input type="checkbox" id="all-task3">
-                                    </div>
+                                    <div class="task-status"><input type="checkbox" id="all-task1"></div>
                                     <div class="task-details">
                                         <div class="task-title">Harvest lettuce</div>
-                                        <div class="task-meta">
-                                            <span><i class="fas fa-calendar"></i> Friday</span>
-                                            <span><i class="fas fa-clock"></i> Morning</span>
-                                        </div>
+                                        <div class="task-meta"><span><i class="fas fa-calendar"></i> Friday</span><span><i class="fas fa-clock"></i> Morning</span></div>
                                     </div>
                                     <div class="task-actions">
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                                <div class="task-item">
-                                    <div class="task-status">
-                                        <input type="checkbox" id="all-task4">
-                                    </div>
-                                    <div class="task-details">
-                                        <div class="task-title">Set up drip irrigation</div>
-                                        <div class="task-meta">
-                                            <span><i class="fas fa-calendar"></i> Next Monday</span>
-                                            <span><i class="fas fa-clock"></i> Anytime</span>
-                                        </div>
-                                    </div>
-                                    <div class="task-actions">
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                                <div class="task-item">
-                                    <div class="task-status">
-                                        <input type="checkbox" id="all-task5">
-                                    </div>
-                                    <div class="task-details">
-                                        <div class="task-title">Check for pests</div>
-                                        <div class="task-meta">
-                                            <span><i class="fas fa-calendar"></i> Weekly</span>
-                                            <span><i class="fas fa-clock"></i> Evening</span>
-                                        </div>
-                                    </div>
-                                    <div class="task-actions">
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-outline"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline task-edit-btn" aria-label="Edit Task"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline task-delete-btn" aria-label="Delete Task"><i class="fas fa-trash"></i></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Sensors Tab -->
                         <div class="tab-content" id="sensors-tab">
                             <div class="dashboard-header">
                                 <h2 class="dashboard-title">Environmental Monitoring</h2>
-                                <div class="dashboard-actions">
-                                    <button class="btn btn-primary" id="add-sensor-btn"><i class="fas fa-plus"></i> Add Sensor</button>
-                                </div>
+                                <button class="btn btn-primary" id="add-sensor-btn"><i class="fas fa-plus"></i> Add Sensor</button>
                             </div>
                             <div class="card-grid" id="sensors-grid">
                                 <div class="card">
                                     <div class="card-header">Main Garden Soil Sensor</div>
-                                    <div class="card-body">
-                                        <p><strong>Status:</strong> <span class="text-success">Active</span></p>
-                                        <p><strong>pH Level:</strong> 6.8</p>
-                                        <p><strong>Moisture:</strong> 65%</p>
-                                        <p><strong>Temperature:</strong> 22°C</p>
-                                        <p><strong>Last Updated:</strong> 10 minutes ago</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">View Details</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Herb Garden Soil Sensor</div>
-                                    <div class="card-body">
-                                        <p><strong>Status:</strong> <span class="text-success">Active</span></p>
-                                        <p><strong>pH Level:</strong> 7.2</p>
-                                        <p><strong>Moisture:</strong> 58%</p>
-                                        <p><strong>Temperature:</strong> 21°C</p>
-                                        <p><strong>Last Updated:</strong> 15 minutes ago</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">View Details</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Weather Station</div>
-                                    <div class="card-body">
-                                        <p><strong>Status:</strong> <span class="text-success">Active</span></p>
-                                        <p><strong>Temperature:</strong> 24°C</p>
-                                        <p><strong>Humidity:</strong> 45%</p>
-                                        <p><strong>Wind:</strong> 10 km/h NE</p>
-                                        <p><strong>Last Updated:</strong> 5 minutes ago</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">View Details</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <h3>Soil Health Trends</h3>
-                            <div class="chart-container">
-                                <div class="chart" id="sensor-chart">
-                                    <div class="chart-bar" style="height: 40%;" data-value="Mon"></div>
-                                    <div class="chart-bar" style="height: 60%;" data-value="Tue"></div>
-                                    <div class="chart-bar" style="height: 45%;" data-value="Wed"></div>
-                                    <div class="chart-bar" style="height: 70%;" data-value="Thu"></div>
-                                    <div class="chart-bar" style="height: 65%;" data-value="Fri"></div>
-                                    <div class="chart-bar" style="height: 80%;" data-value="Sat"></div>
-                                    <div class="chart-bar" style="height: 75%;" data-value="Sun"></div>
+                                    <div class="card-body"><p><strong>Status:</strong> <span style="color: var(--primary)">Active</span></p><p>pH: 6.8, Moisture: 65%</p></div>
+                                    <div class="card-footer"><button class="btn btn-sm btn-primary sensor-details-btn">View Details</button></div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Market Tab -->
+
                         <div class="tab-content" id="market-tab">
                             <div class="dashboard-header">
                                 <h2 class="dashboard-title">Local Market</h2>
-                                <div class="dashboard-actions">
-                                    <button class="btn btn-primary" id="add-listing-btn"><i class="fas fa-plus"></i> Add Listing</button>
-                                </div>
+                                <button class="btn btn-primary" id="add-listing-btn"><i class="fas fa-plus"></i> Add Listing</button>
                             </div>
                             <div class="card-grid" id="market-listings-grid">
                                 <div class="card">
                                     <div class="card-header">Organic Lettuce</div>
                                     <div class="resource-card-img"><i class="fas fa-leaf"></i></div>
-                                    <div class="card-body">
-                                        <p><strong>Price:</strong> $3.50 per bunch</p>
-                                        <p><strong>Quantity:</strong> 10 bunches available</p>
-                                        <p><strong>Seller:</strong> Urban Rooftop Farm</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Purchase</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Fresh Basil</div>
-                                    <div class="resource-card-img"><i class="fas fa-seedling"></i></div>
-                                    <div class="card-body">
-                                        <p><strong>Price:</strong> $2.00 per bunch</p>
-                                        <p><strong>Quantity:</strong> 15 bunches available</p>
-                                        <p><strong>Seller:</strong> Community Garden Co-op</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Purchase</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Cherry Tomatoes</div>
-                                    <div class="resource-card-img"><i class="fas fa-apple-alt"></i></div>
-                                    <div class="card-body">
-                                        <p><strong>Price:</strong> $4.50 per pint</p>
-                                        <p><strong>Quantity:</strong> 8 pints available</p>
-                                        <p><strong>Seller:</strong> Downtown Hydroponic Farm</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Purchase</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <h3>Buyer Requests</h3>
-                            <div class="card-grid" id="market-requests-grid">
-                                <div class="card">
-                                    <div class="card-header">Looking for Kale</div>
-                                    <div class="card-body">
-                                        <p><strong>Requested by:</strong> Local Cafe</p>
-                                        <p><strong>Quantity Needed:</strong> 20 bunches weekly</p>
-                                        <p><strong>Price Offering:</strong> $4.00 per bunch</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Respond</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Seeking Fresh Herbs</div>
-                                    <div class="card-body">
-                                        <p><strong>Requested by:</strong> Family Restaurant</p>
-                                        <p><strong>Quantity Needed:</strong> Various herbs, regular supply</p>
-                                        <p><strong>Price Offering:</strong> Negotiable</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Respond</button>
-                                    </div>
+                                    <div class="card-body"><p>Price: $3.50/bunch</p></div>
+                                    <div class="card-footer"><button class="btn btn-sm btn-primary market-action-btn">Purchase</button></div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Learn Tab -->
+
                         <div class="tab-content" id="learn-tab">
                            <div class="dashboard-header">
                                 <h2 class="dashboard-title">Learning Resources</h2>
-                                <div class="dashboard-actions">
-                                    <button class="btn btn-primary" id="share-knowledge-btn"><i class="fas fa-share"></i> Share Knowledge</button>
-                                </div>
+                                <button class="btn btn-primary" id="share-knowledge-btn"><i class="fas fa-share"></i> Share Knowledge</button>
                             </div>
-                            <h3>Popular Articles</h3>
                             <div class="card-grid" id="learn-articles-grid">
                                 <div class="card">
-                                    <div class="card-header">Balcony Vegetable Gardening</div>
-                                    <div class="card-body">
-                                        <p>Learn how to maximize your small balcony space for productive vegetable growing.</p>
-                                        <p><strong>Author:</strong> Urban Farming Expert</p>
-                                        <p><strong>Reading Time:</strong> 8 minutes</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Read Article</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Composting Basics</div>
-                                    <div class="card-body">
-                                        <p>Everything you need to know about starting and maintaining your own compost system.</p>
-                                        <p><strong>Author:</strong> Soil Health Specialist</p>
-                                        <p><strong>Reading Time:</strong> 12 minutes</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Read Article</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Natural Pest Control</div>
-                                    <div class="card-body">
-                                        <p>Techniques for managing pests without harmful chemicals in your urban garden.</p>
-                                        <p><strong>Author:</strong> Organic Farming Advocate</p>
-                                        <p><strong>Reading Time:</strong> 10 minutes</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Read Article</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <h3>Video Tutorials</h3>
-                            <div class="card-grid" id="learn-videos-grid">
-                                <div class="card">
-                                    <div class="card-header">Setting Up Your First Garden</div>
-                                    <div class="card-body">
-                                        <p>A step-by-step guide to preparing your space, selecting plants, and basic care.</p>
-                                        <p><strong>Instructor:</strong> Master Gardener</p>
-                                        <p><strong>Duration:</strong> 22 minutes</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Watch Video</button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Hydroponics 101</div>
-                                    <div class="card-body">
-                                        <p>Learn how to grow plants without soil using simple DIY hydroponic systems.</p>
-                                        <p><strong>Instructor:</strong> Hydroponic Specialist</p>
-                                        <p><strong>Duration:</strong> 18 minutes</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-sm btn-primary">Watch Video</button>
-                                    </div>
+                                    <div class="card-header">Balcony Gardening</div>
+                                    <div class="card-body"><p>Maximize small spaces.</p></div>
+                                    <div class="card-footer"><button class="btn btn-sm btn-primary learn-action-btn">Read Article</button></div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Settings Tab -->
                         <div class="tab-content" id="settings-tab">
                             <div class="dashboard-header">
                                 <h2 class="dashboard-title">Settings</h2>
-                                <div class="dashboard-actions">
-                                    <button class="btn btn-primary" id="save-settings-btn"><i class="fas fa-save"></i> Save Changes</button>
-                                </div>
+                                <button class="btn btn-primary" id="save-settings-btn"><i class="fas fa-save"></i> Save Changes</button>
                             </div>
-                            <p>Settings are for demonstration purposes.</p>
                             <h3>Profile Settings</h3>
                             <div class="form-group">
                                 <label class="form-label" for="profile-name">Name</label>
                                 <input type="text" id="profile-name" class="form-control" value="Guest User">
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="profile-email">Email</label>
-                                <input type="email" id="profile-email" class="form-control" value="guest@AgriSynth.io" readonly>
-                            </div>
                             <h3>Notification Settings</h3>
-                            <div class="form-group">
-                                <label class="form-label">Email Notifications</label>
-                                <div class="checkbox-group">
-                                    <div>
-                                        <input type="checkbox" id="notify-tasks" checked>
-                                        <label for="notify-tasks">Task Reminders</label>
-                                    </div>
-                                    <div>
-                                        <input type="checkbox" id="notify-market" checked>
-                                        <label for="notify-market">Market Activity</label>
-                                    </div>
-                                    <div>
-                                        <input type="checkbox" id="notify-sensors">
-                                        <label for="notify-sensors">Sensor Alerts</label>
-                                    </div>
-                                    <div>
-                                        <input type="checkbox" id="notify-community" checked>
-                                        <label for="notify-community">Community Updates</label>
-                                    </div>
-                                </div>
+                            <div class="form-group checkbox-group">
+                                <div><input type="checkbox" id="notify-tasks" checked> <label for="notify-tasks">Task Reminders</label></div>
+                                <div><input type="checkbox" id="notify-market"> <label for="notify-market">Market Activity</label></div>
                             </div>
                         </div>
                     </div> <!-- END .main-content -->
+                     <div class="app-overlay" id="app-overlay"></div> <!-- Overlay for mobile sidebar -->
                 </div> <!-- END .dashboard -->
             </div> <!-- END .container for dashboard -->
         </div> <!-- END .app-container -->
 
-        <!-- Add Resource Modal -->
-        <div class="modal" id="add-resource-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Add Resource</h3>
-                    <button class="modal-close" id="close-resource-modal">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label" for="resource-title">Resource Name</label>
-                        <input type="text" id="resource-title" class="form-control" placeholder="e.g., Garden Shovel">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="resource-type">Resource Type</label>
-                        <select id="resource-type" class="form-control">
-                            <option value="tool">Tool</option>
-                            <option value="seed">Seeds</option>
-                            <option value="compost">Compost</option>
-                            <option value="seedling">Seedlings</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="resource-description">Description</label>
-                        <textarea id="resource-description" class="form-control" rows="3" placeholder="Describe the resource..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="resource-availability">Availability</label>
-                        <select id="resource-availability" class="form-control">
-                            <option value="available">Available Now</option>
-                            <option value="future">Available Later</option>
-                            <option value="limited">Limited Availability</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" id="cancel-resource">Cancel</button>
-                    <button class="btn btn-primary" id="save-resource">Save Resource</button>
-                </div>
-            </div>
-        </div>
+        <!-- Modals -->
+        <div class="modal" id="add-resource-modal"> <div class="modal-content"> <div class="modal-header"><h3 class="modal-title">Add Resource</h3><button class="modal-close" data-modal-id="add-resource-modal" aria-label="Close">×</button></div> <div class="modal-body"> <div class="form-group"><label for="resource-title" class="form-label">Name</label><input type="text" id="resource-title" class="form-control"></div> <div class="form-group"><label for="resource-type" class="form-label">Type</label><select id="resource-type" class="form-control"><option value="tool">Tool</option><option value="seed">Seed</option></select></div> <div class="form-group"><label for="resource-description" class="form-label">Description</label><textarea id="resource-description" class="form-control" rows="3"></textarea></div> </div> <div class="modal-footer"><button class="btn btn-secondary modal-cancel" data-modal-id="add-resource-modal">Cancel</button><button class="btn btn-primary" id="save-resource">Save</button></div> </div> </div>
+        <div class="modal" id="add-task-modal"> <div class="modal-content"> <div class="modal-header"><h3 class="modal-title">Add Task</h3><button class="modal-close" data-modal-id="add-task-modal" aria-label="Close">×</button></div> <div class="modal-body"> <div class="form-group"><label for="task-title-input" class="form-label">Title</label><input type="text" id="task-title-input" class="form-control"></div> <div class="form-group"><label for="task-date" class="form-label">Date</label><input type="date" id="task-date" class="form-control"></div> </div> <div class="modal-footer"><button class="btn btn-secondary modal-cancel" data-modal-id="add-task-modal">Cancel</button><button class="btn btn-primary" id="save-task">Save</button></div> </div> </div>
+        <div class="modal" id="add-sensor-modal"> <div class="modal-content"> <div class="modal-header"><h3 class="modal-title">Add Sensor</h3><button class="modal-close" data-modal-id="add-sensor-modal" aria-label="Close">×</button></div> <div class="modal-body"><p>Form to add sensor details...</p></div> <div class="modal-footer"><button class="btn btn-secondary modal-cancel" data-modal-id="add-sensor-modal">Cancel</button><button class="btn btn-primary">Save</button></div> </div> </div>
+        <div class="modal" id="add-listing-modal"> <div class="modal-content"> <div class="modal-header"><h3 class="modal-title">Add Market Listing</h3><button class="modal-close" data-modal-id="add-listing-modal" aria-label="Close">×</button></div> <div class="modal-body"><p>Form to add market listing...</p></div> <div class="modal-footer"><button class="btn btn-secondary modal-cancel" data-modal-id="add-listing-modal">Cancel</button><button class="btn btn-primary">Save</button></div> </div> </div>
+        <div class="modal" id="share-knowledge-modal"> <div class="modal-content"> <div class="modal-header"><h3 class="modal-title">Share Knowledge</h3><button class="modal-close" data-modal-id="share-knowledge-modal" aria-label="Close">×</button></div> <div class="modal-body"><p>Form to share article/video...</p></div> <div class="modal-footer"><button class="btn btn-secondary modal-cancel" data-modal-id="share-knowledge-modal">Cancel</button><button class="btn btn-primary">Share</button></div> </div> </div>
+        <div class="modal" id="manifesto-modal"> <div class="modal-content"> <div class="modal-header"><h3 class="modal-title">The AgriSynth Manifesto</h3><button class="modal-close" data-modal-id="manifesto-modal" aria-label="Close">×</button></div> <div class="modal-body" style="line-height:1.8;"> <p>In an age where megacities grow taller, and food insecurity deepens in the shadows of their towers, we stand at the intersection of decay and innovation. Humanity, while more connected than ever, has become alienated from its own sustenance.</p><p>The current food system is broken: lengthy supply chains, vulnerable to disruption; excessive carbon footprints; exploitation of land and labor; and an epidemic of food waste while millions go hungry.</p><p><strong>We believe this inefficiency is not natural. It is systemic. It is solvable.</strong></p><p>We envision a world where:<ul><li>Every urban space—from rooftops to balconies—becomes productive.</li><li>Communities coordinate their growing efforts for maximum impact.</li><li>Technology empowers rather than replaces human connection to the land.</li><li>Food sovereignty becomes a reality, not a slogan.</li></ul></p><p><strong>We call it AgriSynth: a decentralized, intelligent, and cooperative operating system for urban agriculture.</strong></p><p>Neither purely private nor purely public, AgriSynth is commons-based: governed by the communities who use it. Open-source, modular, and extensible.</p><p>Our MVP will launch in <strong>Johannesburg</strong>, starting with urban rooftops, IoT sensors, farming cooperatives, drone partners, and local markets. We build from the bottom up. Open-source. Transparent. Inclusive.</p><p>The time for siloed thinking is over. Soil health, community wealth, and technology must merge into a unified system that nurtures both people and planet.</p><p><strong>AgriSynth is the digital seed. You are the soil. Plant it. Water it. Watch it grow.</strong></p> </div> <div class="modal-footer"><button class="btn btn-primary modal-cancel" data-modal-id="manifesto-modal">Close</button></div> </div> </div>
 
-        <!-- Add Task Modal -->
-        <div class="modal" id="add-task-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Add Task</h3>
-                    <button class="modal-close" id="close-task-modal">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label" for="task-title-input">Task Title</label>
-                        <input type="text" id="task-title-input" class="form-control" placeholder="e.g., Water tomato plants">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="task-date">Date</label>
-                        <input type="date" id="task-date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="task-time">Time</label>
-                        <select id="task-time" class="form-control">
-                            <option value="Morning">Morning</option>
-                            <option value="Afternoon">Afternoon</option>
-                            <option value="Evening">Evening</option>
-                            <option value="Anytime">Anytime</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="task-assignment">Assign To</label>
-                        <select id="task-assignment" class="form-control">
-                            <option value="guest">Guest (Demo)</option>
-                            <option value="community">Community (Demo)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" id="cancel-task">Cancel</button>
-                    <button class="btn btn-primary" id="save-task">Save Task</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Manifesto Modal -->
-        <div class="modal" id="manifesto-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">The AgriSynth Manifesto</h3>
-                    <button class="modal-close" id="close-manifesto-modal">×</button>
-                </div>
-                <div class="modal-body">
-                    <p>In an age where megacities grow taller, and food insecurity deepens in the shadows of their towers, we stand at the intersection of decay and innovation. Humanity, while more connected than ever, has become alienated from its own sustenance.</p>
-                    
-                    <p>The current food system is broken: lengthy supply chains, vulnerable to disruption; excessive carbon footprints; exploitation of land and labor; and an epidemic of food waste while millions go hungry.</p>
-                    
-                    <p>We believe this inefficiency is not natural. It is systemic. It is solvable.</p>
-                    
-                    <p>We envision a world where:
-                    <ul>
-                        <li>Every urban space—from rooftops to balconies—becomes productive</li>
-                        <li>Communities coordinate their growing efforts for maximum impact</li>
-                        <li>Technology empowers rather than replaces human connection to the land</li>
-                        <li>Food sovereignty becomes a reality, not a slogan</li>
-                    </ul>
-                    </p>
-                    
-                    <p>We call it AgriSynth: a decentralized, intelligent, and cooperative operating system for urban agriculture.</p>
-                    
-                    <p>Neither purely private nor purely public, AgriSynth is commons-based: governed by the communities who use it. Open-source, modular, and extensible.</p>
-                    
-                    <p>Our MVP will launch in Johannesburg, starting with urban rooftops, IoT sensors, farming cooperatives, drone partners, and local markets. We build from the bottom up. Open-source. Transparent. Inclusive.</p>
-                    
-                    <p>The time for siloed thinking is over. Soil health, community wealth, and technology must merge into a unified system that nurtures both people and planet.</p>
-                    
-                    <p>AgriSynth is the digital seed. You are the soil. Plant it. Water it. Watch it grow.</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="close-reading-btn">Close</button>
-                </div>
-            </div>
-        </div>
     </main>
 
     <div class="toggle-container">
-        <div class="theme-toggle" id="theme-toggle"></div>
+        <div class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode"></div>
     </div>
 
     <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const siteHeader = document.querySelector('header');
+        const navToggle = document.querySelector('.nav-toggle');
+        const mainNav = document.querySelector('.main-nav');
+        const body = document.body;
+        let isSiteNavOpen = false;
+
+        function updateHeaderPadding() {
+            if (siteHeader && getComputedStyle(siteHeader).display !== 'none') {
+                body.style.paddingTop = siteHeader.offsetHeight + 'px';
+            } else {
+                body.style.paddingTop = '0';
+            }
+        }
+
+        function closeSiteNav() {
+            if (siteHeader) siteHeader.classList.remove('nav-open');
+            if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+            body.classList.remove('body-no-scroll');
+            isSiteNavOpen = false;
+        }
+
+        if (navToggle) {
+            navToggle.addEventListener('click', function() {
+                isSiteNavOpen = !isSiteNavOpen;
+                if (siteHeader) siteHeader.classList.toggle('nav-open', isSiteNavOpen);
+                navToggle.setAttribute('aria-expanded', isSiteNavOpen ? 'true' : 'false');
+                body.classList.toggle('body-no-scroll', isSiteNavOpen);
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (isSiteNavOpen && siteHeader && !siteHeader.contains(e.target)) {
+                closeSiteNav();
+            }
+        });
+
+        const siteNavLinks = document.querySelectorAll('.nav-link');
+        siteNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (isSiteNavOpen) closeSiteNav();
+                // Smooth scroll for landing page links
+                const targetId = link.getAttribute('href');
+                 if (targetId.startsWith('#') && targetId.length > 1) {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - (siteHeader ? siteHeader.offsetHeight : 0),
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        let lastScroll = 0;
+        const scrollThreshold = 5;
+        window.addEventListener('scroll', () => {
+            if (!siteHeader || getComputedStyle(siteHeader).display === 'none') return;
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 0) {
+                siteHeader.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                siteHeader.style.backgroundColor = 'rgba(76, 175, 80, 0.98)';
+                if (body.classList.contains('dark-mode')) {
+                     siteHeader.style.backgroundColor = 'rgba(44, 94, 46, 0.98)'; // Darker green for dark mode
+                }
+            } else {
+                siteHeader.style.boxShadow = 'none';
+                siteHeader.style.backgroundColor = ''; // Reverts to CSS gradient
+            }
+
+            if (Math.abs(currentScroll - lastScroll) > scrollThreshold) {
+                if (currentScroll > lastScroll && currentScroll > siteHeader.offsetHeight) {
+                    if (!isSiteNavOpen) siteHeader.style.transform = 'translateY(-100%)';
+                } else {
+                    siteHeader.style.transform = 'translateY(0)';
+                }
+                lastScroll = currentScroll;
+            }
+        });
+        
+        updateHeaderPadding();
+        window.addEventListener('resize', updateHeaderPadding);
+
         // Set current year in the footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
         
         // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
         themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
-        
-        // Navigation Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+            body.classList.toggle('dark-mode');
+            // Adjust scrolled header color if visible and scrolled
+            if (window.pageYOffset > 0 && siteHeader && getComputedStyle(siteHeader).display !== 'none') {
+                 siteHeader.style.backgroundColor = body.classList.contains('dark-mode') ? 'rgba(44, 94, 46, 0.98)' : 'rgba(76, 175, 80, 0.98)';
+            }
         });
         
         // Prototype Exploration
@@ -2182,17 +1148,26 @@
         const landingContent = document.querySelector('.landing-content');
         const appDashboard = document.getElementById('app-dashboard');
         
-        exploreBtn.addEventListener('click', () => {
-            landingContent.style.display = 'none';
-            appDashboard.style.display = 'block';
-            window.scrollTo(0, 0);
-        });
+        if (exploreBtn) {
+            exploreBtn.addEventListener('click', () => {
+                if (landingContent) landingContent.style.display = 'none';
+                if (appDashboard) appDashboard.style.display = 'block';
+                if (siteHeader) siteHeader.style.display = 'none';
+                updateHeaderPadding(); // Recalculate padding (will be 0)
+                window.scrollTo(0, 0);
+            });
+        }
         
-        exitBtn.addEventListener('click', () => {
-            appDashboard.style.display = 'none';
-            landingContent.style.display = 'block';
-            window.scrollTo(0, 0);
-        });
+        if (exitBtn) {
+            exitBtn.addEventListener('click', () => {
+                if (appDashboard) appDashboard.style.display = 'none';
+                if (landingContent) landingContent.style.display = 'block';
+                if (siteHeader) siteHeader.style.display = ''; // Revert to default (flex/block)
+                updateHeaderPadding(); // Recalculate with header visible
+                window.scrollTo(0, 0);
+                if (isAppSidebarOpen) closeAppSidebar(); // Close app sidebar if open
+            });
+        }
         
         // Dashboard Tab Navigation
         const tabLinks = document.querySelectorAll('.sidebar-menu a');
@@ -2201,160 +1176,248 @@
         tabLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                
-                // Remove active class from all links and tabs
                 tabLinks.forEach(l => l.classList.remove('active'));
                 tabContents.forEach(t => t.classList.remove('active'));
-                
-                // Add active class to clicked link
                 link.classList.add('active');
-                
-                // Show corresponding tab
                 const tabId = link.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
+                const targetTab = document.getElementById(tabId);
+                if (targetTab) targetTab.classList.add('active');
+                if (isAppSidebarOpen) closeAppSidebar(); // Close sidebar on mobile after tab selection
             });
         });
         
-        // Mobile Menu Toggle
+        // Mobile App Menu Toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const sidebar = document.querySelector('.sidebar');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
-        });
-        
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (sidebar.classList.contains('show') && 
-                !sidebar.contains(e.target) && 
-                e.target !== mobileMenuBtn) {
-                sidebar.classList.remove('show');
-            }
-        });
-        
-        // Modal handling
-        const modals = document.querySelectorAll('.modal');
-        const addResourceBtn = document.getElementById('add-resource-btn');
-        const addTaskBtn = document.getElementById('add-task-btn');
-        const readManifestoBtn = document.getElementById('read-manifesto-btn');
-        
-        // Function to open modal
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.classList.add('show');
-            }, 10);
-            document.body.style.overflow = 'hidden';
+        const appSidebar = document.getElementById('app-sidebar');
+        const appOverlay = document.getElementById('app-overlay');
+        let isAppSidebarOpen = false;
+
+        function openAppSidebar() {
+            if (appSidebar) appSidebar.classList.add('show');
+            if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            if (appOverlay) appOverlay.style.display = 'block';
+            body.classList.add('body-no-scroll');
+            isAppSidebarOpen = true;
+        }
+        function closeAppSidebar() {
+            if (appSidebar) appSidebar.classList.remove('show');
+            if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            if (appOverlay) appOverlay.style.display = 'none';
+            body.classList.remove('body-no-scroll');
+            isAppSidebarOpen = false;
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                isAppSidebarOpen ? closeAppSidebar() : openAppSidebar();
+            });
+        }
+        if (appOverlay) {
+            appOverlay.addEventListener('click', () => {
+                if (isAppSidebarOpen) closeAppSidebar();
+            });
         }
         
-        // Function to close modal
-        function closeModal(modal) {
+        // Modal handling
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+            body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modalOrId) {
+            const modal = (typeof modalOrId === 'string') ? document.getElementById(modalOrId) : modalOrId;
+            if (!modal) return;
             modal.classList.remove('show');
             setTimeout(() => {
                 modal.style.display = 'none';
-                document.body.style.overflow = '';
+                body.style.overflow = '';
             }, 300);
         }
-        
-        // Add Resource Modal
-        addResourceBtn.addEventListener('click', () => {
-            openModal('add-resource-modal');
-        });
-        
-        document.getElementById('close-resource-modal').addEventListener('click', () => {
-            closeModal(document.getElementById('add-resource-modal'));
-        });
-        
-        document.getElementById('cancel-resource').addEventListener('click', () => {
-            closeModal(document.getElementById('add-resource-modal'));
-        });
-        
-        document.getElementById('save-resource').addEventListener('click', () => {
-            // Here you would normally save the resource data
-            closeModal(document.getElementById('add-resource-modal'));
-            // Optional: Add the new resource to the grid
-        });
-        
-        // Add Task Modal
-        addTaskBtn.addEventListener('click', () => {
-            openModal('add-task-modal');
-        });
-        
-        document.getElementById('close-task-modal').addEventListener('click', () => {
-            closeModal(document.getElementById('add-task-modal'));
-        });
-        
-        document.getElementById('cancel-task').addEventListener('click', () => {
-            closeModal(document.getElementById('add-task-modal'));
-        });
-        
-        document.getElementById('save-task').addEventListener('click', () => {
-            // Here you would normally save the task data
-            closeModal(document.getElementById('add-task-modal'));
-            // Optional: Add the new task to the list
-        });
-        
-        // Manifesto Modal
-        readManifestoBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal('manifesto-modal');
-        });
-        
-        document.getElementById('close-manifesto-modal').addEventListener('click', () => {
-            closeModal(document.getElementById('manifesto-modal'));
-        });
-        
-        document.getElementById('close-reading-btn').addEventListener('click', () => {
-            closeModal(document.getElementById('manifesto-modal'));
-        });
-        
-        // Close modal when clicking outside of modal content
-        modals.forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal(modal);
+
+        document.querySelectorAll('[data-modal-id]').forEach(el => {
+            el.addEventListener('click', function() {
+                const modalId = this.dataset.modalId;
+                if (this.classList.contains('modal-close') || this.classList.contains('modal-cancel')) {
+                    closeModal(modalId);
+                } else {
+                     openModal(modalId); // For buttons that open modals
                 }
             });
         });
         
-        // Demo function for refresh button animation
-        document.getElementById('refresh-btn').addEventListener('click', function() {
-            this.querySelector('i').classList.add('fa-spin');
-            setTimeout(() => {
-                this.querySelector('i').classList.remove('fa-spin');
-            }, 1000);
-        });
-        
-        // Initialize some demo data for charts
-        document.addEventListener('DOMContentLoaded', () => {
-            // Dynamic animation for soil chart bars
-            const soilChartBars = document.querySelectorAll('#soil-chart .chart-bar');
-            soilChartBars.forEach(bar => {
-                const height = bar.style.height;
-                bar.style.height = '0';
-                setTimeout(() => {
-                    bar.style.height = height;
-                }, 300);
-            });
-            
-            // Sensor chart animation
-            const sensorChartBars = document.querySelectorAll('#sensor-chart .chart-bar');
-            sensorChartBars.forEach((bar, index) => {
-                const height = bar.style.height;
-                bar.style.height = '0';
-                setTimeout(() => {
-                    bar.style.height = height;
-                }, 300 + (index * 100));
-            });
-            
-            // Pre-fill task data in dashboard
-            const dashboardTasksList = document.getElementById('dashboard-tasks-list');
-            if (dashboardTasksList && dashboardTasksList.children.length === 0) {
-                // This would be populated from API in a real app
-                // Demo data is now hardcoded in the HTML
+        // Specific modal openers
+        ['add-resource-btn', 'add-task-btn', 'read-manifesto-btn', 'add-sensor-btn', 'add-listing-btn', 'share-knowledge-btn'].forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) {
+                const modalId = id.replace('-btn', '-modal');
+                btn.addEventListener('click', (e) => {
+                     e.preventDefault(); // For <a> tags
+                     openModal(modalId);
+                });
             }
         });
+        
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.show').forEach(closeModal);
+            }
+        });
+
+        // Close modal when clicking outside of modal content
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+        });
+
+        // Simple Toast Notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // App Interactivity
+        // Refresh Data
+        const refreshBtn = document.getElementById('refresh-btn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                icon.classList.add('fa-spin');
+                // Simulate weather update
+                document.querySelectorAll('.weather-value').forEach(val => {
+                    const currentText = val.textContent; val.textContent = '...';
+                    setTimeout(() => {
+                        if (currentText.includes('°C')) val.textContent = (Math.floor(Math.random() * 10) + 20) + '°C';
+                        else if (currentText.includes('%')) val.textContent = (Math.floor(Math.random() * 50) + 30) + '%';
+                        else if (currentText.startsWith('UV')) val.textContent = 'UV ' + (Math.floor(Math.random() * 5) + 3);
+                        else if (currentText.includes('km/h')) val.textContent = (Math.floor(Math.random() * 15) + 5) + ' km/h';
+                        else val.textContent = currentText;
+                    }, 800);
+                });
+                // Simulate chart update
+                document.querySelectorAll('#soil-chart .chart-bar').forEach(bar => {
+                    bar.style.height = '0%';
+                    setTimeout(() => bar.style.height = (Math.floor(Math.random() * 70) + 20) + '%', Math.random() * 500 + 300);
+                });
+                setTimeout(() => icon.classList.remove('fa-spin'), 1200);
+            });
+        }
+        
+        // Save Resource
+        const saveResourceBtn = document.getElementById('save-resource');
+        if (saveResourceBtn) {
+            saveResourceBtn.addEventListener('click', () => {
+                const title = document.getElementById('resource-title').value;
+                if (!title) { alert('Resource name is required.'); return; }
+                const newCard = document.createElement('div');
+                newCard.className = 'card';
+                newCard.innerHTML = `<div class="card-header">${title}</div><div class="resource-card-img"><i class="fas fa-cogs"></i></div><div class="card-body"><p>New resource added.</p></div><div class="card-footer"><span><i class="fas fa-check-circle"></i> Available</span><button class="btn btn-sm btn-primary">Request</button></div>`;
+                const grid = document.getElementById('resources-grid');
+                if (grid) grid.appendChild(newCard);
+                document.getElementById('resource-title').value = '';
+                document.getElementById('resource-description').value = '';
+                closeModal('add-resource-modal');
+                showToast('Resource added!', 'success');
+            });
+        }
+
+        // Save Task
+        const saveTaskBtn = document.getElementById('save-task');
+        if (saveTaskBtn) {
+            saveTaskBtn.addEventListener('click', () => {
+                const title = document.getElementById('task-title-input').value;
+                if (!title) { alert('Task title is required.'); return; }
+                const newTaskItem = document.createElement('div');
+                newTaskItem.className = 'task-item';
+                const taskId = 'task-' + Date.now();
+                newTaskItem.innerHTML = `<div class="task-status"><input type="checkbox" id="${taskId}"></div><div class="task-details"><div class="task-title">${title}</div><div class="task-meta"><span><i class="fas fa-calendar"></i> Just Now</span></div></div><div class="task-actions"><button class="btn btn-sm btn-outline task-edit-btn" aria-label="Edit Task"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-outline task-delete-btn" aria-label="Delete Task"><i class="fas fa-trash"></i></button></div>`;
+                const list = document.getElementById('all-tasks-list');
+                if (list) list.appendChild(newTaskItem);
+                document.getElementById('task-title-input').value = '';
+                document.getElementById('task-date').value = '';
+                closeModal('add-task-modal');
+                showToast('Task added!', 'success');
+            });
+        }
+
+        // Task item interactions (checkbox, edit, delete) - Event delegation
+        ['all-tasks-list', 'dashboard-tasks-list'].forEach(listId => {
+            const taskList = document.getElementById(listId);
+            if (taskList) {
+                taskList.addEventListener('change', function(e) {
+                    if (e.target.matches('input[type="checkbox"]')) {
+                        const taskItem = e.target.closest('.task-item');
+                        if (taskItem) taskItem.classList.toggle('completed', e.target.checked);
+                    }
+                });
+                taskList.addEventListener('click', function(e) {
+                    const targetButton = e.target.closest('button');
+                    if (!targetButton) return;
+
+                    if (targetButton.classList.contains('task-edit-btn')) {
+                        alert('Edit task (demo)');
+                    } else if (targetButton.classList.contains('task-delete-btn')) {
+                        if (confirm('Delete this task? (demo)')) {
+                            targetButton.closest('.task-item').remove();
+                            showToast('Task deleted', 'info');
+                        }
+                    }
+                });
+            }
+        });
+         // Initial check for completed tasks to style them
+        document.querySelectorAll('.tasks-list input[type="checkbox"]:checked').forEach(cb => {
+            const taskItem = cb.closest('.task-item');
+            if (taskItem) taskItem.classList.add('completed');
+        });
+
+
+        // Settings Save
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+        if (saveSettingsBtn) {
+            saveSettingsBtn.addEventListener('click', () => {
+                showToast('Settings saved (demo)!', 'success');
+            });
+        }
+        
+        // Other app button interactions (mock alerts)
+        document.addEventListener('click', function(e){
+            if (e.target.closest('.sensor-details-btn')) alert('Viewing sensor details (demo).');
+            if (e.target.closest('.market-action-btn')) alert('Market action (demo).');
+            if (e.target.closest('.learn-action-btn')) alert('Learning action (demo).');
+        });
+
+        // Scroll Reveal Animations
+        const animatedElements = document.querySelectorAll('.info-card, .section-title, .section-subtitle, .hero h1, .hero p, .hero .btn, .manifesto-text, .founder-info > *, footer > .container > *');
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // observer.unobserve(entry.target); // Optional: unobserve after first animation
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(el => {
+                el.classList.add('animate-on-scroll');
+                observer.observe(el);
+            });
+        } else { // Fallback for older browsers
+            animatedElements.forEach(el => el.classList.add('is-visible'));
+        }
+
+    });
     </script>
 </body>
 </html>
