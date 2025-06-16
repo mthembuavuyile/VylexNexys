@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitNexys - Crypto Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    <style>
+        :root {
+            --background-primary: #1a1c23;
+            --background-secondary: #242731;
+            --background-tertiary: #2a2d39;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --accent-color: #f7931a; /* Bitcoin Orange */
+            --positive-change: #4caf50;
+            --negative-change: #f44336;
+            --border-color: #3a3f4c;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            --border-radius: 8px;
+        }
+
+        body.light-mode {
+            --background-primary: #f4f6f8;
+            --background-secondary: #ffffff;
+            --background-tertiary: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        a{
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: var(--accent-color);
+            font-size: 2em;
+        }
+        header h1 .vylex { color: var(--text-primary); }
+
+        .dark-mode-toggle-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .dark-mode-toggle-container label {
+            margin-right: 8px;
+            font-size: 0.9em;
+        }
+
+        .card {
+            background-color: var(--background-secondary);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .card h2, .card h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .full-width-card {
+            grid-column: 1 / -1;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--background-tertiary);
+        }
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+        .metric-label {
+            color: var(--text-secondary);
+        }
+        .metric-value, .value {
+            font-weight: bold;
+        }
+
+        #btcPrice {
+            font-size: 2.5em;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        .price-change {
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+        .positive { color: var(--positive-change); }
+        .negative { color: var(--negative-change); }
+
+        select, input[type="number"], input[type="text"], button {
+            padding: 10px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--background-tertiary);
+            color: var(--text-primary);
+            font-size: 1em;
+            margin: 5px 0;
+        }
+        button {
+            cursor: pointer;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            transition: background-color 0.2s ease;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button:disabled {
+            background-color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+        button.active {
+            background-color: #d67c10;
+        }
+        .timeframe-btn { margin-right: 5px; }
+
+        #priceChartContainer {
+            height: 400px;
+            position: relative;
+        }
+
+        #fearGreedGauge {
+            width: 100%;
+            max-width: 250px; /* Control gauge size */
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+        }
+        #fearGreedInfo { text-align: center; }
+        #fearGreedValue { font-size: 2em; font-weight: bold; }
+        #fearGreedLabel { font-size: 1.2em; margin-bottom: 5px;}
+        #fearGreedUpdate { font-size: 0.8em; color: var(--text-secondary); }
+
+        #supplyProgressContainer {
+            width: 100%;
+            background-color: var(--background-tertiary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            height: 10px;
+            margin-top: 5px;
+        }
+        #supplyProgress {
+            height: 100%;
+            background-color: var(--accent-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .news-item {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: var(--border-radius);
+            background-color: var(--background-tertiary);
+        }
+        .news-item h3 a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        .news-item h3 a:hover { text-decoration: underline; }
+        .news-item p { margin: 5px 0; font-size: 0.9em; }
+        .news-item .meta-info { color: var(--text-secondary); font-size: 0.8em;}
+        .news-item img {
+            max-width: 100px;
+            float: right;
+            margin-left: 10px;
+            border-radius: 4px;
+        }
+
+        #news-controls button { margin-right: 5px; }
+        .loading-text, .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+        }
+        .error, .widget-error-message {
+            color: var(--negative-change);
+            background-color: rgba(244, 67, 54, 0.1);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            border: 1px solid var(--negative-change);
+        }
+        #error-container { margin-top: 10px; }
+
+        /* Removed orphaned CSS rule for #connect-wallet-btn.connected */
+
+        .coin-logo { width: 20px; height: 20px; margin-right: 8px; vertical-align: middle; }
+        .data-source-notice {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        
+        /* Switch for dark mode toggle */
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 50px;
+          height: 24px;
+        }
+        .switch input { 
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          transition: .4s;
+          border-radius: 24px;
+        }
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 18px;
+          width: 18px;
+          left: 3px;
+          bottom: 3px;
+          background-color: white;
+          transition: .4s;
+          border-radius: 50%;
+        }
+        input:checked + .slider {
+          background-color: var(--accent-color);
+        }
+        input:focus + .slider {
+          box-shadow: 0 0 1px var(--accent-color);
+        }
+        input:checked + .slider:before {
+          transform: translateX(26px);
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr; /* Stack on smaller screens */
+            }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            header h1 { margin-bottom: 10px; }
+            .dark-mode-toggle-container { margin-top: 10px; /* Adjust spacing on mobile if needed */ }
+            .news-item img { float: none; display: block; margin: 0 auto 10px; max-width: 150px; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bit<span class="vylex">Nexys</span></h1>
+            <!-- Added Dark Mode Toggle HTML -->
+            <div class="dark-mode-toggle-container">
+                <label for="dark-mode-toggle" style="cursor: pointer;">Dark Mode</label>
+                <label class="switch">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </header>
+
+        <div id="error-container"></div>
+
+        <div class="grid-container">
+            <!-- Bitcoin Price Widget -->
+            <div class="card" id="bitcoin-price-widget">
+                <h2>Bitcoin (BTC) Price
+                    <select id="currencySelect">
+                        <option value="usd">USD</option>
+                        <option value="eur">EUR</option>
+                        <option value="jpy">JPY</option>
+                        <option value="gbp">GBP</option>
+                        <option value="zar">ZAR</option>
+                    </select>
+                </h2>
+                <div>
+                    <span id="btcPrice">Loading...</span>
+                    <span id="priceChange" class="price-change">--%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Market Cap:</span>
+                    <span id="marketCap" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">24h Volume:</span>
+                    <span id="volume24h" class="metric-value">Loading...</span>
+                </div>
+                 <div class="metric-row">
+                    <span class="metric-label">24h High:</span>
+                    <span id="high24h" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">24h Low:</span>
+                    <span id="low24h" class="metric-value">Loading...</span>
+                </div>
+                <p class="data-source-notice">Data: CoinGecko</p>
+            </div>
+
+            <!-- Market Data / Supply Widget -->
+            <div class="card" id="market-data-widget">
+                <h2>Market Data</h2>
+                <div class="metric-row">
+                    <span class="metric-label">BTC Dominance:</span>
+                    <span id="dominance" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Circulating Supply:</span>
+                    <span id="circulating" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Total Supply (Approx.):</span>
+                    <span id="totalSupply" class="metric-value">Loading...</span>
+                </div>
+                <div id="supplyProgressContainer">
+                    <div id="supplyProgress"></div>
+                </div>
+                <p class="data-source-notice">Data: CoinGecko</p>
+            </div>
+
+            <!-- Fear & Greed Index -->
+            <div class="card" id="fear-greed-widget">
+                <h2>Fear & Greed Index</h2>
+                <canvas id="fearGreedGauge" width="250" height="135"></canvas>
+                <div id="fearGreedInfo">
+                    <div id="fearGreedValue">--</div>
+                    <div id="fearGreedLabel">Loading...</div>
+                    <div id="fearGreedUpdate">Loading...</div>
+                </div>
+                <p class="data-source-notice">Data: alternative.me</p>
+            </div>
+            
+            <!-- Price Chart -->
+            <div class="card full-width-card" id="price-chart-widget">
+                <h2>Bitcoin Price Chart</h2>
+                <div>
+                    <button class="timeframe-btn active" data-days="1">1D</button>
+                    <button class="timeframe-btn" data-days="7">7D</button>
+                    <button class="timeframe-btn" data-days="30">1M</button>
+                    <button class="timeframe-btn" data-days="90">3M</button>
+                    <button class="timeframe-btn" data-days="365">1Y</button>
+                    <button class="timeframe-btn" data-days="max">Max</button>
+                </div>
+                <div id="priceChartContainer">
+                    <canvas id="priceChart"></canvas>
+                </div>
+                <p class="data-source-notice">Data: CoinGecko</p>
+            </div>
+
+            <!-- Network Stats -->
+            <div class="card" id="network-stats-widget">
+                <h2>Network Stats</h2>
+                <div class="metric-row">
+                    <span class="metric-label">Hash Rate (7d Avg):</span>
+                    <span id="hashRate" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Difficulty:</span>
+                    <span id="difficulty" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Next Difficulty Adj:</span>
+                    <span id="nextDifficulty" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Current Block Height:</span>
+                    <span id="blockHeight" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Halving Countdown:</span>
+                    <span id="halvingCountdown" class="metric-value">Loading...</span>
+                </div>
+                <p class="data-source-notice">Data: mempool.space</p>
+            </div>
+
+            <!-- Mempool Data -->
+            <div class="card" id="mempool-data-widget">
+                <h2>Mempool & Fees</h2>
+                <div class="metric-row">
+                    <span class="metric-label">High Priority Fee:</span>
+                    <span id="highPriorityFee" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Medium Priority Fee:</span>
+                    <span id="mediumPriorityFee" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Low Priority Fee:</span>
+                    <span id="lowPriorityFee" class="metric-value">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Mempool Size:</span>
+                    <span id="mempoolSize" class="metric-value">Loading...</span>
+                </div>
+                <p class="data-source-notice">Data: mempool.space</p>
+            </div>
+
+            <!-- Recent Blocks -->
+            <div class="card" id="recent-blocks-widget">
+                <h2>Recent Blocks</h2>
+                <div id="recentBlocks">
+                    <p class="loading-text">Loading recent blocks...</p>
+                </div>
+                <p class="data-source-notice">Data: mempool.space</p>
+            </div>
+
+            <!-- Currency Converter -->
+            <div class="card">
+                <h2>Currency Converter</h2>
+                <div>
+                    <input type="number" id="amount" value="1">
+                    <select id="fromCurrency"></select>
+                    <span>to</span>
+                    <select id="toCurrency"></select>
+                    <button onclick="convert()">Convert</button>
+                </div>
+                <p id="result" style="margin-top: 10px; font-weight: bold;">Enter an amount to convert.</p>
+                <p class="data-source-notice">Rates: CoinGecko / Frankfurter.app</p>
+            </div>
+            
+            <!-- Market Overview (Other Coins) -->
+            <div class="card" id="market-overview-widget">
+                <h2>Market Overview</h2>
+                <div id="market-overview-content">
+                    <p class="loading-text">Loading market data...</p>
+                </div>
+                 <p class="data-source-notice">Data: CoinGecko</p>
+            </div>
+            
+            <!-- Crypto Terminology -->
+            <div class="card">
+                <h2>Crypto Term of the Moment</h2>
+                <h3 id="term-title">Loading...</h3>
+                <p id="term-definition">Loading definition...</p>
+                <button id="new-term-button" style="margin-top:10px;">New Term</button>
+            </div>
+
+            <!-- Crypto Quote -->
+            <div class="card">
+                <h2>Crypto Wisdom</h2>
+                <p id="quote-text" style="font-style: italic;">Loading quote...</p>
+                <button id="quote-button" style="margin-top:10px;">💬 Get Quote</button>
+            </div>
+
+            <!-- News Section -->
+            <div class="card full-width-card" id="news-feed-widget">
+                <h2>Crypto News Feed (from Reddit)</h2>
+                <div id="news-controls">
+                    <button class="category-btn active" data-source="all_crypto">All Crypto</button>
+                    <button class="category-btn" data-source="bitcoin">Bitcoin</button>
+                    <button class="category-btn" data-source="ethereum">Ethereum</button>
+                    <button class="category-btn" data-source="altcoins">Altcoins</button>
+                    <button class="category-btn" data-source="defi">DeFi</button>
+                    <button class="category-btn" data-source="nfts">NFTs</button>
+                </div>
+                <div id="loading" style="display: none;">Loading news...</div>
+                <div id="news-container" style="margin-top: 15px;">
+                    <!-- News items will be injected here -->
+                </div>
+                 <p class="data-source-notice">Data: Reddit</p>
+            </div>
+        </div> <!-- end grid-container -->
+
+        <footer>
+            <p id="copyright-year">© 2025 BitNexys by <a href="https://vylexnexys.co.za/">VylexNexys</a>. All rights reserved.</p>
+            <p>Disclaimer: This tool is for informational purposes only. Not financial advice.</p>
+        </footer>
+    </div> <!-- end container -->
+
+    <script>
+    // --- APP CONFIG & STATE ---
+    const appConfig = {
+        coinGeckoApiUrl: 'https://api.coingecko.com/api/v3',
+        fearGreedApiUrl: 'https://api.alternative.me/fng/?limit=1', // Used by BitNexys
+        mempoolSpaceApiUrl: 'https://mempool.space/api', // Base for mempool.space
+        defaultCurrency: 'usd',
+        storageKeys: {
+            darkMode: 'bitnexys_dark_mode',
+            selectedCurrency: 'bitnexys_currency',
+        },
+        cryptoQuotes: [
+            "HODL: Hold On for Dear Life.", "To the moon! 🚀", "Not your keys, not your coins.", "DYOR: Do Your Own Research.", "Buy the dip!", "WAGMI: We're All Gonna Make It.", "Decentralization is not a destination, it's a journey.", "The blockchain is a solution in search of a problem... and finding many.", "If you don't believe it or don't get it, I don't have the time to try to convince you, sorry. - Satoshi Nakamoto (paraphrased)", "Stay humble, stack sats.", "Bitcoin is digital gold.", "The future of money is decentralized.", "Be your own bank.", "In code we trust.", "Sats are the new cents.", "Scarcity creates value — only 21 million BTC.", "Crypto never sleeps.", "Volatility is the price of opportunity.", "Bear markets build strong hands.", "Stack sats like your future depends on it — because it does."
+        ],
+        cryptoTerms: [
+            { term: "Blockchain", definition: "A distributed, immutable ledger that records transactions and tracks assets across a network." },
+            { term: "Cryptocurrency", definition: "A digital or virtual currency secured by cryptography, making it nearly impossible to counterfeit." },
+            { term: "Bitcoin (BTC)", definition: "The first decentralized cryptocurrency, created in 2009 by Satoshi Nakamoto." },
+            { term: "Ethereum (ETH)", definition: "A decentralized, open-source blockchain with smart contract functionality." },
+            { term: "Smart Contract", definition: "Self-executing contracts with the terms of the agreement directly written into code." },
+            { term: "DeFi (Decentralized Finance)", definition: "Financial services built on blockchain technology, without relying on central intermediaries." },
+            { term: "NFT (Non-Fungible Token)", definition: "A unique digital asset representing ownership of items like art, collectibles, or virtual land." },
+            { term: "HODL", definition: "A popular crypto slang term meaning 'Hold On for Dear Life', encouraging long-term holding." },
+            { term: "Mining", definition: "The process of verifying and adding transactions to a blockchain, often rewarded with new cryptocurrency." },
+            { term: "Wallet (Crypto)", definition: "A digital wallet used to store, send, and receive cryptocurrencies, holding private and public keys." },
+            { term: "Altcoin", definition: "Any cryptocurrency other than Bitcoin." },
+            { term: "Market Cap", definition: "The total market value of a cryptocurrency's circulating supply. (Current Price x Circulating Supply)" },
+            { term: "Gas Fees", definition: "Transaction fees on the Ethereum network, paid to miners/validators for processing transactions." },
+            { term: "Whitepaper", definition: "An authoritative report or guide that informs readers concisely about a complex issue, often used to launch new crypto projects." },
+            { term: "Whale", definition: "An individual or entity that holds a large amount of a specific cryptocurrency."}
+        ]
+    };
+
+    const redditSources = {
+        all_crypto: 'https://www.reddit.com/r/CryptoCurrency/.json?limit=20&sort=hot',
+        bitcoin: 'https://www.reddit.com/r/Bitcoin/.json?limit=20&sort=hot',
+        ethereum: 'https://www.reddit.com/r/ethereum/.json?limit=20&sort=hot',
+        altcoins: 'https://www.reddit.com/r/altcoin/.json?limit=20&sort=hot',
+        defi: 'https://www.reddit.com/r/defi/.json?limit=20&sort=hot',
+        nfts: 'https://www.reddit.com/r/NFT/.json?limit=20&sort=hot'
+    };
+    
+    let currentNewsCategory = 'all_crypto';
+    let cachedNews = {};
+    let bitnexysApp; // Will hold the BitNexys instance
+
+    // --- HELPER & ERROR FUNCTIONS ---
+    function showError(message, contextId = null, isCritical = false) {
+        clearError(contextId); 
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error'; // General error class
+        errorDiv.innerHTML = `<strong>Error:</strong> ${message}`;
+
+        if (contextId) {
+            const widgetContainer = document.getElementById(contextId);
+            if (widgetContainer) {
+                let widgetErrorDisplay = widgetContainer.querySelector('.widget-error-message');
+                if (!widgetErrorDisplay) {
+                    widgetErrorDisplay = document.createElement('p');
+                    widgetErrorDisplay.className = 'widget-error-message';
+                    const dataSourceNotice = widgetContainer.querySelector('.data-source-notice');
+                    if (dataSourceNotice) {
+                        widgetContainer.insertBefore(widgetErrorDisplay, dataSourceNotice);
+                    } else {
+                        const firstContentElement = Array.from(widgetContainer.children).find(child => child.tagName !== 'H2');
+                        if (firstContentElement) {
+                            widgetContainer.insertBefore(widgetErrorDisplay, firstContentElement);
+                        } else {
+                            widgetContainer.appendChild(widgetErrorDisplay);
+                        }
+                    }
+                }
+                widgetErrorDisplay.textContent = `Error: ${message.substring(0,150)}${message.length > 150 ? '...' : ''}`;
+            } else if (isCritical) { 
+                 document.getElementById('error-container').appendChild(errorDiv);
+            }
+        } else { 
+            document.getElementById('error-container').appendChild(errorDiv);
+        }
+        console.error(`Error Displayed (Context: ${contextId || 'General'}):`, message);
+    }
+
+    function clearError(contextId = null) {
+        if (contextId) {
+            const widgetContainer = document.getElementById(contextId);
+            if (widgetContainer) {
+                const widgetError = widgetContainer.querySelector('.widget-error-message');
+                if (widgetError) widgetError.remove();
+            }
+        } else { 
+            const generalErrorContainer = document.getElementById('error-container');
+            const generalErrors = generalErrorContainer.querySelectorAll('.error');
+            generalErrors.forEach(err => err.remove());
+        }
+    }
+
+    // --- BitNexys CLASS (Modified and Integrated) ---
+    class BitNexys {
+        constructor(initialCurrency = 'usd') {
+            this.currency = initialCurrency;
+            this.currentTimeframe = '1';
+            this.priceChart = null;
+            this.currentBlockHeight = null; 
+            setTimeout(() => this.init(), 0);
+        }
+
+        async init() {
+            this.setupEventListeners();
+            await this.loadAllData();
+            this.setupPeriodicUpdates();
+        }
+
+        setupEventListeners() {
+            document.getElementById('currencySelect').addEventListener('change', async (e) => {
+                this.currency = e.target.value;
+                localStorage.setItem(appConfig.storageKeys.selectedCurrency, this.currency);
+                clearError('bitcoin-price-widget');
+                clearError('price-chart-widget');
+                clearError('market-data-widget');
+                
+                await this.loadPriceData(); 
+                this.loadPriceChart();
+                fetchMarketOverviewData(this.currency); 
+            });
+
+            document.querySelectorAll('.timeframe-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    this.currentTimeframe = e.target.dataset.days;
+                    clearError('price-chart-widget');
+                    this.loadPriceChart();
+                });
+            });
+        }
+
+        async loadAllData() {
+            await Promise.allSettled([ 
+                this.loadPriceData(),      
+                this.loadFearGreedIndex(),
+                this.loadNetworkStats(),   
+                this.loadMempoolData(),
+                this.loadPriceChart(),
+                this.loadRecentBlocks(),
+            ]);
+        }
+
+        async loadPriceData() {
+            const widgetId = 'bitcoin-price-widget';
+            try {
+                const response = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${this.currency}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`);
+                if (!response.ok) throw new Error(`CoinGecko API error (${response.status}) for price`);
+                const data = await response.json();
+
+                if (!data.bitcoin || !data.bitcoin[this.currency.toLowerCase()]) {
+                    throw new Error(`Bitcoin data not found for currency: ${this.currency.toUpperCase()}`);
+                }
+                const btcInfo = data.bitcoin;
+                const price = btcInfo[this.currency.toLowerCase()];
+                const change = btcInfo[`${this.currency.toLowerCase()}_24h_change`];
+                const marketCap = btcInfo[`${this.currency.toLowerCase()}_market_cap`];
+                const volume = btcInfo[`${this.currency.toLowerCase()}_24h_vol`];
+
+                document.getElementById('btcPrice').textContent = this.formatCurrency(price, this.currency);
+
+                const changeEl = document.getElementById('priceChange');
+                changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+                changeEl.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+
+                document.getElementById('marketCap').textContent = this.formatLargeNumber(marketCap, this.currency);
+                document.getElementById('volume24h').textContent = this.formatLargeNumber(volume, this.currency);
+                
+                clearError(widgetId);
+                await this.loadMarketData(); 
+            } catch (error) {
+                console.error('Error loading price data:', error);
+                showError(error.message, widgetId);
+                document.getElementById('btcPrice').textContent = 'Error';
+            }
+        }
+
+        async loadMarketData() { 
+            const widgetId = 'market-data-widget'; 
+            try {
+                const [globalResponse, btcResponse] = await Promise.all([
+                    fetch(`${appConfig.coinGeckoApiUrl}/global`),
+                    fetch(`${appConfig.coinGeckoApiUrl}/coins/bitcoin`)
+                ]);
+
+                if (!globalResponse.ok) throw new Error(`CoinGecko API error (${globalResponse.status}) for global data`);
+                const globalData = await globalResponse.json();
+
+                if (!btcResponse.ok) throw new Error(`CoinGecko API error (${btcResponse.status}) for Bitcoin coin data`);
+                const btcData = await btcResponse.json();
+
+                const dominance = globalData.data.market_cap_percentage.btc;
+                document.getElementById('dominance').textContent = `${dominance.toFixed(1)}%`;
+
+                const circulating = btcData.market_data.circulating_supply;
+                document.getElementById('circulating').textContent = `${this.formatNumber(circulating)} BTC`;
+                document.getElementById('totalSupply').textContent = `${this.formatNumber(21000000)} BTC`; 
+
+                const supplyPercentage = (circulating / 21000000) * 100;
+                document.getElementById('supplyProgress').style.width = `${supplyPercentage}%`;
+
+                const high24h = btcData.market_data.high_24h[this.currency.toLowerCase()];
+                const low24h = btcData.market_data.low_24h[this.currency.toLowerCase()];
+                document.getElementById('high24h').textContent = this.formatCurrency(high24h, this.currency);
+                document.getElementById('low24h').textContent = this.formatCurrency(low24h, this.currency);
+                
+                clearError(widgetId);
+                clearError('bitcoin-price-widget'); 
+            } catch (error) {
+                console.error('Error loading market data:', error);
+                showError(error.message, widgetId);
+                showError(error.message, 'bitcoin-price-widget'); 
+            }
+        }
+
+        async loadFearGreedIndex() {
+            const widgetId = 'fear-greed-widget';
+            try {
+                const response = await fetch(appConfig.fearGreedApiUrl);
+                if (!response.ok) throw new Error(`Alternative.me API error (${response.status})`);
+                const data = await response.json();
+
+                if (data.data && data.data[0]) {
+                    const fearGreedData = data.data[0];
+                    const value = parseInt(fearGreedData.value);
+                    this.updateFearGreedGauge(value, fearGreedData.value_classification);
+
+                    const timestamp = new Date(parseInt(fearGreedData.timestamp) * 1000);
+                    document.getElementById('fearGreedUpdate').textContent = `Updated: ${timestamp.toLocaleDateString()}`;
+                    clearError(widgetId);
+                } else {
+                    throw new Error('No data received from Fear & Greed API.');
+                }
+            } catch (error) {
+                console.error('Error loading fear & greed index:', error);
+                showError(error.message, widgetId);
+                this.updateFearGreedGauge(50, "Neutral (Error)"); 
+            }
+        }
+
+        updateFearGreedGauge(value, labelText = null) {
+            const canvas = document.getElementById('fearGreedGauge');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height - 10; 
+            const radius = Math.min(centerX, centerY) - 15; 
+            const lineWidth = 15; 
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, 0);
+            ctx.strokeStyle = 'rgba(120, 120, 120, 0.3)'; 
+            ctx.lineWidth = lineWidth;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            let color;
+            if (value <= 24) color = '#D32F2F'; 
+            else if (value <= 46) color = '#F57C00'; 
+            else if (value <= 54) color = '#FBC02D'; 
+            else if (value <= 74) color = '#7CB342'; 
+            else color = '#388E3C'; 
+
+            const angle = Math.PI * (value / 100);
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + angle);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            document.getElementById('fearGreedValue').textContent = value;
+            document.getElementById('fearGreedValue').style.color = color;
+
+            let finalLabel = labelText;
+            if (!finalLabel) { 
+                if (value <= 24) finalLabel = 'Extreme Fear';
+                else if (value <= 46) finalLabel = 'Fear';
+                else if (value <= 54) finalLabel = 'Neutral';
+                else if (value <= 74) finalLabel = 'Greed';
+                else finalLabel = 'Extreme Greed';
+            }
+            
+            document.getElementById('fearGreedLabel').textContent = finalLabel;
+            document.getElementById('fearGreedLabel').style.color = color;
+        }
+
+        async loadNetworkStats() {
+            const widgetId = 'network-stats-widget';
+            try {
+                const [hashRateResponse, difficultyResponse, blockHeightResponse] = await Promise.all([
+                    fetch(`${appConfig.mempoolSpaceApiUrl}/v1/mining/hashrate/1w`),
+                    fetch(`${appConfig.mempoolSpaceApiUrl}/v1/difficulty-adjustment`),
+                    fetch(`${appConfig.mempoolSpaceApiUrl}/blocks/tip/height`)
+                ]);
+
+                if (!hashRateResponse.ok) throw new Error(`Mempool API error (${hashRateResponse.status}) for hashrate`);
+                const hashRateData = await hashRateResponse.json();
+                
+                if (!difficultyResponse.ok) throw new Error(`Mempool API error (${difficultyResponse.status}) for difficulty`);
+                const difficultyData = await difficultyResponse.json();
+
+                if (!blockHeightResponse.ok) throw new Error(`Mempool API error (${blockHeightResponse.status}) for block height`);
+                const blockHeight = await blockHeightResponse.text();
+
+                const currentHashRate = hashRateData.currentHashrate;
+                document.getElementById('hashRate').textContent = `${(currentHashRate / 1e18).toFixed(2)} EH/s`;
+
+                const currentDifficulty = difficultyData.currentDifficulty;
+                document.getElementById('difficulty').textContent = `${(currentDifficulty / 1e12).toFixed(2)} T`;
+
+                const difficultyChange = difficultyData.difficultyChange;
+                const changeDirection = difficultyChange >= 0 ? '+' : ''; 
+                const nextDiffEl = document.getElementById('nextDifficulty');
+                nextDiffEl.textContent = `${changeDirection}${difficultyChange.toFixed(2)}%`;
+                nextDiffEl.className = `metric-value ${difficultyChange >= 0 ? 'positive' : 'negative'}`;
+
+                const blockHeightNum = parseInt(blockHeight);
+                this.currentBlockHeight = blockHeightNum;
+                document.getElementById('blockHeight').textContent = blockHeightNum.toLocaleString();
+                
+                clearError(widgetId);
+                await this.updateHalvingCountdown(); 
+
+            } catch (error) {
+                console.error('Error loading network stats:', error);
+                showError(error.message, widgetId);
+            }
+        }
+        
+        async updateHalvingCountdown() {
+            const widgetId = 'network-stats-widget'; 
+            try {
+                let currentBlock = this.currentBlockHeight;
+                if (currentBlock === null || currentBlock === undefined) { 
+                    const blockHeightResponse = await fetch(`${appConfig.mempoolSpaceApiUrl}/blocks/tip/height`);
+                    if (!blockHeightResponse.ok) throw new Error('Could not fetch block height for halving');
+                    currentBlock = parseInt(await blockHeightResponse.text());
+                    this.currentBlockHeight = currentBlock; 
+                }
+                if (isNaN(currentBlock)) throw new Error("Invalid block height data for halving.");
+
+                const halvingBlockInterval = 210000;
+                const currentEpoch = Math.floor(currentBlock / halvingBlockInterval);
+                const nextHalvingBlockTarget = (currentEpoch + 1) * halvingBlockInterval;
+
+                if (currentBlock >= nextHalvingBlockTarget) {
+                    document.getElementById('halvingCountdown').textContent = `Halving passed/imminent (Block ${nextHalvingBlockTarget.toLocaleString()})`;
+                    return;
+                }
+
+                const blocksRemaining = nextHalvingBlockTarget - currentBlock;
+                const avgBlockTime = 10; 
+                const minutesRemaining = blocksRemaining * avgBlockTime;
+                const daysRemaining = Math.floor(minutesRemaining / (60 * 24));
+                const hoursRemaining = Math.floor((minutesRemaining % (60*24)) / 60);
+
+                document.getElementById('halvingCountdown').textContent = `~${daysRemaining}d ${hoursRemaining}h (to block ${nextHalvingBlockTarget.toLocaleString()})`;
+            } catch (error) {
+                 console.error('Error updating halving countdown:', error);
+                 showError(`Halving countdown: ${error.message}`, widgetId);
+                 document.getElementById('halvingCountdown').textContent = `~ N/A`;
+            }
+        }
+
+        async loadMempoolData() {
+            const widgetId = 'mempool-data-widget';
+            try {
+                const [feeResponse, mempoolResponse] = await Promise.all([
+                    fetch(`${appConfig.mempoolSpaceApiUrl}/v1/fees/recommended`),
+                    fetch(`${appConfig.mempoolSpaceApiUrl}/mempool`)
+                ]);
+
+                if (!feeResponse.ok) throw new Error(`Mempool API error (${feeResponse.status}) for fees`);
+                const feeData = await feeResponse.json();
+                
+                if (!mempoolResponse.ok) throw new Error(`Mempool API error (${mempoolResponse.status}) for mempool size`);
+                const mempoolData = await mempoolResponse.json();
+
+                document.getElementById('highPriorityFee').textContent = `${feeData.fastestFee} sat/vB`;
+                document.getElementById('mediumPriorityFee').textContent = `${feeData.halfHourFee} sat/vB`;
+                document.getElementById('lowPriorityFee').textContent = `${feeData.hourFee} sat/vB`;
+                document.getElementById('mempoolSize').textContent = `${(mempoolData.vsize / 1e6).toFixed(2)} vMB`; 
+                clearError(widgetId);
+            } catch (error) {
+                console.error('Error loading mempool data:', error);
+                showError(error.message, widgetId);
+            }
+        }
+
+        async loadRecentBlocks() {
+            const widgetId = 'recent-blocks-widget';
+            try {
+                const response = await fetch(`${appConfig.mempoolSpaceApiUrl}/v1/blocks`);
+                if (!response.ok) throw new Error(`Mempool API error (${response.status}) for recent blocks`);
+                const blocks = await response.json();
+
+                const recentBlocksHtml = blocks.slice(0, 5).map(block => `
+                    <div class="metric-row">
+                        <span class="metric-label">#${block.height.toLocaleString()}</span>
+                        <span class="metric-value">${block.tx_count} txs • ${(block.size / 1e6).toFixed(2)} MB</span>
+                    </div>`).join('');
+                document.getElementById('recentBlocks').innerHTML = recentBlocksHtml;
+                clearError(widgetId);
+            } catch (error) {
+                console.error('Error loading recent blocks:', error);
+                showError(error.message, widgetId);
+                document.getElementById('recentBlocks').innerHTML = `<p class="loading-text" style="color:var(--negative-change)">Failed to load blocks.</p>`;
+            }
+        }
+
+        async loadPriceChart() {
+            const widgetId = 'price-chart-widget';
+            clearError(widgetId);
+            const canvas = document.getElementById('priceChart');
+            const ctx = canvas.getContext('2d');
+
+            if (this.priceChart) {
+                this.priceChart.destroy();
+                this.priceChart = null;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = document.body.classList.contains('dark-mode') ? '#cccccc' : '#666666';
+            ctx.font = '16px Arial, sans-serif'; // Added sans-serif fallback
+            ctx.fillText('Loading chart data...', canvas.width / 2, canvas.height / 2);
+            ctx.restore();
+
+            try {
+                const days = this.currentTimeframe === 'max' ? 'max' : this.currentTimeframe;
+                const interval = (days === '1' || parseInt(days) <= 2) ? 'hourly' : 'daily'; 
+                
+                const response = await fetch(`${appConfig.coinGeckoApiUrl}/coins/bitcoin/market_chart?vs_currency=${this.currency.toLowerCase()}&days=${days}&interval=${interval}`);
+                
+                if (!response.ok) {
+                    let errorMsg = `CoinGecko API error (${response.status})`;
+                    try {
+                        const errorData = await response.json();
+                        errorMsg = `Chart data error: ${errorData.error || response.statusText || 'Unknown API issue'}`;
+                    } catch (e) { /* Failed to parse error JSON */ }
+                    throw new Error(errorMsg);
+                }
+                const data = await response.json();
+
+                if (!data.prices || data.prices.length === 0) {
+                    throw new Error('No price data returned from API.');
+                }
+                
+                this.renderPriceChart(data.prices);
+                clearError(widgetId); 
+            } catch (error) {
+                console.error('Error loading price chart:', error);
+                showError(`Chart: ${error.message}`, widgetId);
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = 'red';
+                ctx.font = '14px Arial, sans-serif'; // Added sans-serif fallback
+                const maxErrorWidth = canvas.width * 0.9;
+                let displayError = error.message;
+                if (ctx.measureText(displayError).width > maxErrorWidth) {
+                    while(ctx.measureText(displayError + '...').width > maxErrorWidth && displayError.length > 10) {
+                        displayError = displayError.slice(0, -1);
+                    }
+                    displayError += '...';
+                }
+                ctx.fillText(displayError, canvas.width / 2, canvas.height / 2);
+                ctx.restore();
+            }
+        }
+
+        renderPriceChart(priceData) {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            
+            if (this.priceChart) { 
+                this.priceChart.destroy();
+            }
+
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
+            const tickColor = isDarkMode ? '#b0b0b0' : '#555555';
+            const legendLabelColor = isDarkMode ? '#e0e0e0' : '#333333';
+            const tooltipBgColor = isDarkMode ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.9)';
+            const tooltipFontColor = isDarkMode ? '#f0f0f0' : '#333333';
+            const chartBorderColor = '#f7931a'; 
+            const chartBackgroundColor = isDarkMode ? 'rgba(247, 147, 26, 0.15)' : 'rgba(247, 147, 26, 0.07)';
+
+            const labels = priceData.map(point => {
+                const date = new Date(point[0]);
+                if (this.currentTimeframe === '1' || parseInt(this.currentTimeframe) <= 2) { 
+                    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                }
+                return date.toLocaleDateString([], {month: 'short', day: 'numeric'}); 
+            });
+            
+            const prices = priceData.map(point => point[1]);
+            
+            this.priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `Bitcoin Price (${this.currency.toUpperCase()})`,
+                        data: prices,
+                        borderColor: chartBorderColor,
+                        backgroundColor: chartBackgroundColor,
+                        borderWidth: 1.5,
+                        fill: true,
+                        tension: 0.2, 
+                        pointRadius: (this.currentTimeframe === '1' || parseInt(this.currentTimeframe) <= 7) ? 1.5 : 0, 
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: chartBorderColor,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, 
+                    animation: {
+                        duration: 300 
+                    },
+                    plugins: {
+                        legend: {
+                            display: true, 
+                            position: 'top',
+                            labels: {
+                                color: legendLabelColor,
+                                font: {
+                                    size: 12,
+                                    family: 'Arial, sans-serif' // Added fallback
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: tooltipBgColor,
+                            titleColor: tooltipFontColor,
+                            bodyColor: tooltipFontColor,
+                            borderColor: chartBorderColor,
+                            borderWidth: 1,
+                            titleFont: { family: 'Arial, sans-serif', weight: 'bold'}, // Added fallback
+                            bodyFont: { family: 'Arial, sans-serif' }, // Added fallback
+                            padding: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += this.formatCurrency(context.parsed.y, this.currency, { 
+                                            minimumFractionDigits: 2, 
+                                            maximumFractionDigits: (this.currency.toLowerCase() === 'btc' ? 8 : 2)
+                                        });
+                                    }
+                                    return label;
+                                }.bind(this) 
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: gridColor,
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                color: tickColor,
+                                maxTicksLimit: (this.currentTimeframe === '1' || parseInt(this.currentTimeframe) <=2) ? 10 : 7, 
+                                font: {
+                                    size: 10,
+                                    family: 'Arial, sans-serif' // Added fallback
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: gridColor,
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                color: tickColor,
+                                font: {
+                                    size: 10,
+                                    family: 'Arial, sans-serif' // Added fallback
+                                },
+                                callback: function(value) {
+                                    return this.formatCurrency(value, this.currency);
+                                }.bind(this)
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        setupPeriodicUpdates() {
+            setInterval(() => {
+                this.loadPriceData(); 
+                this.loadMempoolData();
+            }, 60000); 
+
+            setInterval(() => {
+                this.loadNetworkStats(); 
+                this.loadRecentBlocks();
+            }, 120000); 
+
+            setInterval(() => {
+                this.loadFearGreedIndex();
+            }, 300000); 
+        }
+
+        formatCurrency(value, currencyCode, options = {}) {
+            const defaultOptions = { style: 'currency', currency: currencyCode.toUpperCase() };
+             const effectiveOptions = {...defaultOptions, ...options};
+
+            if (currencyCode.toLowerCase() === 'usd' || currencyCode.toLowerCase() === 'eur' || currencyCode.toLowerCase() === 'gbp' ){
+                if (value < 1 && value > -1 && value !==0) { 
+                     effectiveOptions.minimumFractionDigits = 2;
+                     effectiveOptions.maximumFractionDigits = 2;
+                } else {
+                     effectiveOptions.minimumFractionDigits = (value % 1 === 0 && !options.minimumFractionDigits) ? 0 : 2; 
+                     effectiveOptions.maximumFractionDigits = 2;
+                }
+            } else { 
+                effectiveOptions.minimumFractionDigits = (value % 1 === 0 && !options.minimumFractionDigits) ? 0 : 2;
+                effectiveOptions.maximumFractionDigits = (currencyCode.toLowerCase() === 'btc' ? 8 : 2);
+            }
+             if (value === null || value === undefined) return 'N/A';
+
+            return new Intl.NumberFormat('en-US', effectiveOptions).format(value);
+        }
+
+        formatLargeNumber(value, currency) {
+            if (value === null || value === undefined) return 'N/A';
+            if (value >= 1e12) {
+                return this.formatCurrency(value / 1e12, currency, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'T';
+            } else if (value >= 1e9) {
+                return this.formatCurrency(value / 1e9, currency, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'B';
+            } else if (value >= 1e6) {
+                return this.formatCurrency(value / 1e6, currency, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'M';
+            }
+            return this.formatCurrency(value, currency);
+        }
+
+        formatNumber(value) {
+            if (value === null || value === undefined) return 'N/A';
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+    } // End of BitNexys class
+
+
+    // --- CURRENCY CONVERTER ---
+    const CONVERTER_CURRENCIES = ["USD", "EUR", "ZAR", "JPY", "GBP", "BTC"];
+    const fromEl = document.getElementById('fromCurrency');
+    const toEl = document.getElementById('toCurrency');
+    const amountEl = document.getElementById('amount');
+    const resultEl = document.getElementById('result');
+
+    CONVERTER_CURRENCIES.forEach(c => {
+        fromEl.add(new Option(c, c)); toEl.add(new Option(c, c));
+    });
+    fromEl.value = "USD"; toEl.value = "BTC"; 
+
+    async function convert() {
+        const amount = parseFloat(amountEl.value);
+        const fromC = fromEl.value;
+        const toC = toEl.value;
+        resultEl.textContent = 'Converting...';
+
+        if (isNaN(amount) || amount < 0) { resultEl.textContent = 'Please enter a valid amount.'; return; }
+        if (fromC === toC) {
+            const precision = (fromC === 'BTC') ? 8 : 2;
+            resultEl.textContent = `${amount.toFixed(precision)} ${fromC}`; return;
+        }
+
+        try {
+            let convertedAmount;
+            if (fromC === 'BTC' && toC !== 'BTC') { 
+                const res = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${toC.toLowerCase()}`);
+                if (!res.ok) throw new Error(`CoinGecko API error (${res.status})`);
+                const data = await res.json();
+                if (!data.bitcoin || !data.bitcoin[toC.toLowerCase()]) throw new Error(`Rate BTC to ${toC} unavailable`);
+                convertedAmount = amount * data.bitcoin[toC.toLowerCase()];
+            } else if (fromC !== 'BTC' && toC === 'BTC') { 
+                const res = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${fromC.toLowerCase()}`);
+                if (!res.ok) throw new Error(`CoinGecko API error (${res.status})`);
+                const data = await res.json();
+                if (!data.bitcoin || !data.bitcoin[fromC.toLowerCase()]) throw new Error(`Rate ${fromC} to BTC unavailable`);
+                convertedAmount = amount / data.bitcoin[fromC.toLowerCase()];
+            } else { 
+                const res = await fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${fromC}&to=${toC}`);
+                if (!res.ok) throw new Error(`Frankfurter API error (${res.status})`);
+                const data = await res.json();
+                if (!data.rates || data.rates[toC] === undefined) throw new Error(`Rate ${fromC} to ${toC} unavailable`);
+                convertedAmount = data.rates[toC];
+            }
+            const outputPrecision = (toC === 'BTC') ? 8 : 2;
+            const inputDisplayAmount = (fromC === 'BTC') ? amount.toFixed(8) : amount.toFixed(2);
+            resultEl.textContent = `${inputDisplayAmount} ${fromC} = ${convertedAmount.toFixed(outputPrecision)} ${toC}`;
+        } catch (err) {
+            resultEl.textContent = `Error: ${err.message}`; console.error("Conversion Error:", err);
+        }
+    }
+    
+    // --- ADDITIONAL WIDGETS AND FEATURES (News, Wallet, Terms, Quotes) ---
+    const newsContainer = document.getElementById('news-container');
+    const newsLoadingElement = document.getElementById('loading');
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const copyrightYearEl = document.getElementById('copyright-year');
+    const quoteButton = document.getElementById('quote-button');
+    const marketOverviewContent = document.getElementById('market-overview-content');
+    const termTitleEl = document.getElementById('term-title');
+    const termDefinitionEl = document.getElementById('term-definition');
+    const newTermButton = document.getElementById('new-term-button');
+    const mainCurrencySelect = document.getElementById('currencySelect'); 
+
+    function loadPreferences() {
+        const darkModeSaved = localStorage.getItem(appConfig.storageKeys.darkMode);
+        if (darkModeToggle) { 
+            if (darkModeSaved === 'true') { 
+                document.body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            } else {
+                document.body.classList.remove('dark-mode');
+                darkModeToggle.checked = false;
+            }
+        }
+
+        const savedCurrency = localStorage.getItem(appConfig.storageKeys.selectedCurrency) || appConfig.defaultCurrency;
+        if(mainCurrencySelect) {
+             mainCurrencySelect.value = savedCurrency;
+        }
+    }
+
+    // This is the primary toggleDarkMode function that will be used.
+    // It updates chart styles directly without re-fetching data.
+    function toggleDarkMode() {
+        const isDarkMode = document.body.classList.toggle('dark-mode');
+        localStorage.setItem(appConfig.storageKeys.darkMode, isDarkMode);
+        
+        if (bitnexysApp && bitnexysApp.priceChart) {
+            // Update chart options directly for theme change without re-fetching data
+            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
+            const tickColor = isDarkMode ? '#b0b0b0' : '#555555';
+            const legendLabelColor = isDarkMode ? '#e0e0e0' : '#333333';
+            const tooltipBgColor = isDarkMode ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.9)';
+            const tooltipFontColor = isDarkMode ? '#f0f0f0' : '#333333';
+            const chartBackgroundColor = isDarkMode ? 'rgba(247, 147, 26, 0.15)' : 'rgba(247, 147, 26, 0.07)';
+
+            const chart = bitnexysApp.priceChart;
+            chart.options.scales.x.grid.color = gridColor;
+            chart.options.scales.x.ticks.color = tickColor;
+            chart.options.scales.y.grid.color = gridColor;
+            chart.options.scales.y.ticks.color = tickColor;
+            
+            chart.options.plugins.legend.labels.color = legendLabelColor;
+            
+            chart.options.plugins.tooltip.backgroundColor = tooltipBgColor;
+            chart.options.plugins.tooltip.titleColor = tooltipFontColor;
+            chart.options.plugins.tooltip.bodyColor = tooltipFontColor;
+
+            chart.data.datasets.forEach(dataset => {
+                dataset.backgroundColor = chartBackgroundColor;
+            });
+
+            chart.update('none'); // 'none' to prevent re-animation
+        } else if (bitnexysApp) {
+            // If chart doesn't exist yet but app does, trigger a load (it will pick up new theme)
+             bitnexysApp.loadPriceChart();
+        }
+    }
+
+    function globalFormatCurrency(amount, currencyCode, options = {}) {
+        const defaultOptions = { style: 'currency', currency: currencyCode.toUpperCase(), minimumFractionDigits: 2, maximumFractionDigits: 2 };
+        try {
+            return new Intl.NumberFormat(undefined, {...defaultOptions, ...options}).format(amount);
+        } catch (e) {
+            console.warn(`Formatting failed for ${currencyCode}, using fallback. Error: ${e.message}`);
+            const symbolMap = { 'usd': '$', 'eur': '€', 'gbp': '£', 'jpy': '¥', 'zar': 'R' };
+            const prefix = symbolMap[currencyCode.toLowerCase()] || currencyCode.toUpperCase() + ' ';
+            return `${prefix}${amount.toFixed(options.maximumFractionDigits !== undefined ? options.maximumFractionDigits : 2)}`;
+        }
+    }
+    
+    // MARKET OVERVIEW (Other Coins)
+    async function fetchMarketOverviewData(currency) {
+        const widgetId = 'market-overview-widget';
+        clearError(widgetId);
+        marketOverviewContent.innerHTML = '<p class="loading-text">Loading market data...</p>';
+        const coinIds = 'ethereum,solana,binancecoin,cardano,ripple'; 
+        const coinDetails = {
+            'ethereum': { name: 'Ethereum', symbol: 'ETH', logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
+            'solana': { name: 'Solana', symbol: 'SOL', logo: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
+            'binancecoin': { name: 'BNB', symbol: 'BNB', logo: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' },
+            'cardano': { name: 'Cardano', symbol: 'ADA', logo: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' },
+            'ripple': { name: 'XRP', symbol: 'XRP', logo: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' }
+        };
+
+        try {
+            const response = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=${coinIds}&vs_currencies=${currency.toLowerCase()}&include_24hr_change=true`);
+            if (!response.ok) throw new Error(`CoinGecko API Error: ${response.statusText} (Status ${response.status})`);
+            const data = await response.json();
+
+            let html = '';
+            for (const id in data) {
+                if (data[id] && coinDetails[id]) {
+                    const price = data[id][currency.toLowerCase()];
+                    const change = data[id][`${currency.toLowerCase()}_24h_change`];
+                    html += `
+                        <div class="metric-row">
+                            <span class="metric-label">
+                                <img src="${coinDetails[id].logo}" alt="${coinDetails[id].name} logo" class="coin-logo" loading="lazy">
+                                ${coinDetails[id].name} (${coinDetails[id].symbol})
+                            </span>
+                            <span class="metric-value">
+                                ${bitnexysApp ? bitnexysApp.formatCurrency(price, currency) : globalFormatCurrency(price, currency)}
+                                <small class="${change >= 0 ? 'positive' : 'negative'}">(${change ? change.toFixed(2) : 'N/A'}%)</small>
+                            </span>
+                        </div>`;
+                }
+            }
+            marketOverviewContent.innerHTML = html || '<p>No data available for other coins.</p>';
+            clearError(widgetId);
+        } catch (error) {
+            showError(error.message || 'Failed to load market overview.', widgetId);
+            marketOverviewContent.innerHTML = '<p class="loading-text" style="color: var(--negative-change);">Error loading data.</p>';
+        }
+    }
+
+    // CRYPTO TERM
+    function displayCryptoTerm() {
+        const randomIndex = Math.floor(Math.random() * appConfig.cryptoTerms.length);
+        const term = appConfig.cryptoTerms[randomIndex];
+        if (termTitleEl && termDefinitionEl) {
+            termTitleEl.textContent = term.term;
+            termDefinitionEl.textContent = term.definition;
+        }
+    }
+
+    // NEWS FEED (Reddit)
+    async function fetchNews(category = 'all_crypto') {
+        const widgetId = 'news-feed-widget';
+        clearError(widgetId);
+        newsLoadingElement.style.display = 'block';
+        newsContainer.innerHTML = '';
+
+        if (cachedNews[category] && (Date.now() - cachedNews[category].timestamp < 300000)) { 
+            displayNews(cachedNews[category].data);
+            newsLoadingElement.style.display = 'none';
+            return;
+        }
+
+        try {
+            const redditUrl = redditSources[category];
+            if (!redditUrl) throw new Error(`Invalid news category: ${category}`);
+
+            const response = await fetch(redditUrl);
+            if (!response.ok) {
+                let errorMsg = `Failed to fetch news (status: ${response.status} ${response.statusText})`;
+                try { const errorData = await response.json(); errorMsg = `Reddit API Error: ${errorData.message || response.statusText} (status: ${response.status})`; } catch (e) { /*ignore*/ }
+                throw new Error(errorMsg);
+            }
+            const data = await response.json();
+            const posts = data?.data?.children
+                .filter(post => !post?.data?.stickied && !post?.data?.over_18 && post?.data?.title && post?.data?.permalink)
+                .slice(0, 10) || []; 
+
+            cachedNews[category] = { data: posts, timestamp: Date.now() };
+            displayNews(posts);
+            clearError(widgetId);
+        } catch (error) {
+            showError(error.message || 'Failed to load news. Try again later.', widgetId, true); 
+            newsContainer.innerHTML = ''; 
+        } finally {
+            newsLoadingElement.style.display = 'none';
+        }
+    }
+    
+    function escapeHTML(str) {
+        if (typeof str !== 'string') return '';
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    function displayNews(posts) {
+        newsContainer.innerHTML = '';
+        if (!posts || posts.length === 0) {
+            newsContainer.innerHTML = '<p style="text-align: center; opacity: 0.8; padding: 20px;">No news found in this category, or Reddit is rate-limiting. Try again later!</p>';
+            return;
+        }
+        posts.forEach(post => {
+            const item = post.data;
+            const card = document.createElement('div');
+            card.className = 'news-item'; 
+            const createdDate = new Date(item.created_utc * 1000);
+            const formattedDate = createdDate.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+
+            const title = escapeHTML(item.title);
+            let selftext = item.selftext ? escapeHTML(item.selftext) : '';
+            if (selftext.length > 150) selftext = selftext.substring(0, 150) + '...';
+
+            let imageUrl = '';
+            if (item.preview?.images?.[0]?.source?.url) {
+                imageUrl = item.preview.images[0].source.url.replace(/&/g, '&'); 
+            } else if (item.thumbnail && item.thumbnail.startsWith('http')) {
+                imageUrl = item.thumbnail.replace(/&/g, '&');
+            }
+            
+            card.innerHTML = `
+                ${imageUrl ? `<img src="${imageUrl}" alt="Preview for ${title.substring(0,30)}..." loading="lazy">` : ''}
+                <h3><a href="https://reddit.com${item.permalink}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+                <p class="meta-info">r/${escapeHTML(item.subreddit)} • ${formattedDate}</p>
+                <p class="meta-info">👍 ${item.ups?.toLocaleString() || 0} | 💬 ${item.num_comments?.toLocaleString() || 0}</p>
+                ${selftext ? `<p>${selftext}</p>` : ''}
+                <a href="https://reddit.com${item.permalink}" target="_blank" rel="noopener noreferrer" style="font-size: 0.9em; display: inline-block; margin-top: auto; padding-top:10px; color: var(--accent-color);">Read on Reddit →</a>
+            `;
+            newsContainer.appendChild(card);
+        });
+    }
+
+    function changeNewsCategory(category) {
+        if (currentNewsCategory === category) return;
+        currentNewsCategory = category;
+        categoryButtons.forEach(button => {
+            button.classList.toggle('active', button.dataset.source === category);
+        });
+        fetchNews(category);
+    }
+
+    // CRYPTO QUOTE
+    function getCryptoQuote() {
+        const quoteElement = document.getElementById('quote-text');
+        const quotes = appConfig.cryptoQuotes;
+
+        if (quoteElement && quoteButton) {
+            const originalButtonText = quoteButton.innerHTML;
+            quoteElement.style.opacity = '0.5';
+            quoteElement.textContent = 'Thinking... 🤔';
+            quoteButton.disabled = true;
+            quoteButton.innerHTML = '💬 Fetching...';
+
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                quoteElement.textContent = `"${quotes[randomIndex]}"`;
+                quoteElement.style.opacity = '1';
+                quoteButton.disabled = false;
+                quoteButton.innerHTML = originalButtonText;
+            }, 300);
+        }
+    }
+
+    function setCopyrightYear() {
+        const currentYear = new Date().getFullYear();
+        if(copyrightYearEl) {
+            copyrightYearEl.innerHTML = `© ${currentYear} <a href="https://vylexnexys.co.za/">VylexNexys</a>. All rights reserved.`;
+        }
+    }
+
+    // --- INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPreferences(); 
+
+        const savedCurrency = (mainCurrencySelect && mainCurrencySelect.value) || localStorage.getItem(appConfig.storageKeys.selectedCurrency) || appConfig.defaultCurrency;
+        bitnexysApp = new BitNexys(savedCurrency); 
+
+        fetchMarketOverviewData(savedCurrency); 
+        fetchNews(currentNewsCategory);
+        displayCryptoTerm();
+        getCryptoQuote();
+        setCopyrightYear();
+        
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', toggleDarkMode);
+        }
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                changeNewsCategory(button.dataset.source);
+            });
+        });
+        
+        if (newTermButton) {
+            newTermButton.addEventListener('click', displayCryptoTerm);
+        }
+
+        if (quoteButton) {
+            quoteButton.addEventListener('click', getCryptoQuote);
+        }
+    });
+
+    </script>
+</body>
+</html>
