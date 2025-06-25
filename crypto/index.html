@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BitNexys - Crypto Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    <title>BitNexys - Advanced Crypto Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.0/dist/chartjs-chart-financial.min.js"></script>
+
     <style>
         :root {
-            --background-primary: #1a1c23;
-            --background-secondary: #242731;
-            --background-tertiary: #2a2d39;
-            --text-primary: #e0e0e0;
-            --text-secondary: #b0b0b0;
+            --background-primary: #0D1117; /* GitHub Dark Dimmed BG */
+            --background-secondary: #161B22; /* GitHub Dark Dimmed Borders, Cards */
+            --background-tertiary: #21262D; /* GitHub Dark Dimmed UI elements */
+            --background-card: #1C2128; /* Slightly lighter card */
+            --text-primary: #C9D1D9; /* GitHub Dark Dimmed Primary Text */
+            --text-secondary: #8B949E; /* GitHub Dark Dimmed Secondary Text */
+            --text-muted: #586069;   /* GitHub Dark Dimmed Muted Text */
             --accent-color: #f7931a; /* Bitcoin Orange */
-            --positive-change: #4caf50;
-            --negative-change: #f44336;
-            --border-color: #3a3f4c;
-            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            --accent-secondary: #58A6FF; /* GitHub Blue */
+            --positive-change: #3FB950; /* GitHub Green */
+            --negative-change: #F85149; /* GitHub Red */
+            --border-color: #30363D;   /* GitHub Dark Dimmed Borders */
+            --border-light: #484F58;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2);
+            --card-hover-shadow: 0 3px 8px rgba(0,0,0,0.15), 0 8px 25px rgba(0,0,0,0.3);
             --border-radius: 8px;
-        }
-
-        body.light-mode {
-            --background-primary: #f4f6f8;
-            --background-secondary: #ffffff;
-            --background-tertiary: #e9ecef;
-            --text-primary: #212529;
-            --text-secondary: #495057;
-            --border-color: #dee2e6;
-            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -43,1319 +43,1360 @@
             background-color: var(--background-primary);
             color: var(--text-primary);
             line-height: 1.6;
-            transition: background-color 0.3s, color 0.3s;
+            font-size: 16px;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 20px;
         }
-        a{
-            color: var(--accent-color);
-            text-decoration: none;
-        }
 
-        header {
+        /* --- HEADER --- */
+        .app-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 20px;
+            padding: 15px 25px;
+            background-color: var(--background-secondary);
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
         }
 
-        header h1 {
+        .app-header .logo {
+            font-size: 1.8em;
+            font-weight: 700;
             color: var(--accent-color);
-            font-size: 2em;
         }
-        header h1 .vylex { color: var(--text-primary); }
+        .app-header .logo span {
+            color: var(--text-primary);
+            font-weight: 400;
+        }
 
-        .dark-mode-toggle-container {
+        .header-controls {
             display: flex;
             align-items: center;
-        }
-
-        .dark-mode-toggle-container label {
-            margin-right: 8px;
-            font-size: 0.9em;
-        }
-
-        .card {
-            background-color: var(--background-secondary);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border-color);
-        }
-
-        .card h2, .card h3 {
-            color: var(--text-primary);
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            gap: 20px;
         }
         
-        .grid-container {
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9em;
+        }
+        .header-stats .stat-item {
+            color: var(--text-secondary);
+        }
+        .header-stats .stat-item strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+
+        /* --- WIDGETS & LAYOUT --- */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
 
-        .full-width-card {
-            grid-column: 1 / -1;
+        .widget-card {
+            background-color: var(--background-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
+        .widget-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .widget-card h2, .widget-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 10px;
+        }
+        .widget-card h2 { font-size: 1.3em; }
+        .widget-card h3 { font-size: 1.1em; }
+
 
         .metric-row {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 8px 0;
-            border-bottom: 1px solid var(--background-tertiary);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95em;
         }
         .metric-row:last-child {
             border-bottom: none;
         }
         .metric-label {
             color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .metric-value, .value {
-            font-weight: bold;
-        }
-
-        #btcPrice {
-            font-size: 2.5em;
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-        .price-change {
-            font-size: 1.2em;
-            margin-left: 10px;
-        }
-        .positive { color: var(--positive-change); }
-        .negative { color: var(--negative-change); }
-
-        select, input[type="number"], input[type="text"], button {
-            padding: 10px;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            background-color: var(--background-tertiary);
+        .metric-value {
             color: var(--text-primary);
-            font-size: 1em;
-            margin: 5px 0;
+            font-weight: 500;
         }
-        button {
-            cursor: pointer;
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            transition: background-color 0.2s ease;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-        button:disabled {
-            background-color: var(--text-secondary);
-            cursor: not-allowed;
-        }
-        button.active {
-            background-color: #d67c10;
-        }
-        .timeframe-btn { margin-right: 5px; }
+        .coin-logo { width: 20px; height: 20px; }
 
-        #priceChartContainer {
-            height: 400px;
-            position: relative;
-        }
+        .price-change.positive, .positive { color: var(--positive-change); }
+        .price-change.negative, .negative { color: var(--negative-change); }
 
-        #fearGreedGauge {
-            width: 100%;
-            max-width: 250px; /* Control gauge size */
-            height: auto;
-            display: block;
-            margin: 0 auto 10px;
-        }
-        #fearGreedInfo { text-align: center; }
-        #fearGreedValue { font-size: 2em; font-weight: bold; }
-        #fearGreedLabel { font-size: 1.2em; margin-bottom: 5px;}
-        #fearGreedUpdate { font-size: 0.8em; color: var(--text-secondary); }
-
-        #supplyProgressContainer {
-            width: 100%;
-            background-color: var(--background-tertiary);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            height: 10px;
-            margin-top: 5px;
-        }
-        #supplyProgress {
-            height: 100%;
-            background-color: var(--accent-color);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .news-item {
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: var(--border-radius);
-            background-color: var(--background-tertiary);
-        }
-        .news-item h3 a {
-            color: var(--accent-color);
-            text-decoration: none;
-        }
-        .news-item h3 a:hover { text-decoration: underline; }
-        .news-item p { margin: 5px 0; font-size: 0.9em; }
-        .news-item .meta-info { color: var(--text-secondary); font-size: 0.8em;}
-        .news-item img {
-            max-width: 100px;
-            float: right;
-            margin-left: 10px;
-            border-radius: 4px;
-        }
-
-        #news-controls button { margin-right: 5px; }
-        .loading-text, .loading {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-secondary);
-        }
+        .loading-text { text-align: center; color: var(--text-muted); padding: 20px 0; }
         .error, .widget-error-message {
+            background-color: rgba(239, 68, 68, 0.1);
             color: var(--negative-change);
-            background-color: rgba(244, 67, 54, 0.1);
             padding: 10px;
             border-radius: var(--border-radius);
             margin-bottom: 10px;
+            font-size: 0.9em;
             border: 1px solid var(--negative-change);
         }
-        #error-container { margin-top: 10px; }
+        #error-container { margin-bottom: 20px; }
 
-        /* Removed orphaned CSS rule for #connect-wallet-btn.connected */
 
-        .coin-logo { width: 20px; height: 20px; margin-right: 8px; vertical-align: middle; }
-        .data-source-notice {
-            font-size: 0.8em;
-            color: var(--text-secondary);
-            text-align: right;
-            margin-top: 10px;
+        /* --- SPECIFIC WIDGET STYLES --- */
+        /* Bitcoin Price & Market Data */
+        #bitcoin-price-widget, #market-data-widget { grid-column: span 1; }
+        .main-price-display {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+        .price-sub-info { font-size: 1em; margin-bottom: 15px; }
+
+        #supplyProgressContainer {
+            width: 100%;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            height: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        #supplyProgress {
+            background-color: var(--accent-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
         }
 
+        /* Fear & Greed */
+        #fearGreedGauge { width: 100%; max-width: 280px; height: auto; aspect-ratio: 2 / 1; margin: 0 auto; }
+        #fearGreedValue, #fearGreedLabel { text-align: center; font-weight: 600; }
+        #fearGreedValue { font-size: 1.8em; margin-top: -30px; }
+        #fearGreedLabel { font-size: 1.1em; margin-top: 5px; margin-bottom: 10px; }
+        #fearGreedUpdate { font-size: 0.8em; text-align: center; color: var(--text-muted); }
+
+        /* Chart Widget */
+        .chart-widget { grid-column: 1 / -1; /* Full width */ }
+        .chart-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
+        .chart-summary { display: flex; flex-direction: column; }
+        .chart-summary .price { font-size: 1.8em; font-weight: 700; color: var(--text-primary); }
+        .chart-summary .change { font-size: 1em; }
+        .chart-stats { display: flex; gap: 15px; font-size: 0.9em; color: var(--text-secondary); margin-top:5px; }
+        .chart-stats span strong { color: var(--text-primary); }
+
+        .chart-controls { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .timeframe-buttons { display: flex; gap: 0.5rem; }
+        .timeframe-btn, .styled-button {
+            background: var(--background-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .timeframe-btn:hover, .styled-button:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+        }
+        .timeframe-btn.active {
+            background: var(--accent-color);
+            color: var(--background-primary);
+            border-color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .toggle-switch { display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
+        .toggle-switch input[type="checkbox"] { /* Basic styling, can be improved */
+            height: 18px; width: 18px; accent-color: var(--accent-color);
+        }
+
+        .chart-container-wrapper { position: relative; height: 450px; margin-top: 1rem; background: var(--background-secondary); border-radius: var(--border-radius); padding:10px; }
+        #chartContainer { width: 100%; height: 100%; }
+        #loadingSpinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--border-color);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none; /* Controlled by JS */
+        }
+        #loadingSpinner.visible { display: block; }
+        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        #statusMessage { font-size: 0.85em; margin-top: 10px; text-align: right; }
+        #statusMessage.success { color: var(--positive-change); }
+        #statusMessage.error { color: var(--negative-change); }
+        #lastUpdated, #lastUpdateTime { font-size: 0.8em; color: var(--text-muted); }
+
+
+        #refreshButton {
+            display: flex; align-items: center; gap: 0.5rem;
+            background: var(--accent-color); color: var(--background-primary);
+            border: none; padding: 10px 15px; border-radius: 6px;
+            cursor: pointer; font-weight: 600; transition: background 0.2s;
+            font-size: 0.9em;
+        }
+        #refreshButton:hover { background: #e0800f; }
+        #refreshButton svg { width: 18px; height: 18px; }
+
+        /* Converter */
+        .converter-form { display: flex; flex-direction: column; gap: 15px; }
+        .converter-row { display: flex; align-items: center; gap: 10px; }
+        .converter-row select, .converter-row input {
+            flex-grow: 1; padding: 10px;
+            background-color: var(--background-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+        .converter-row input { width: 100px; flex-grow: 0.5; }
+        #convertButton { margin-top: 5px; }
+        #result { margin-top: 10px; font-weight: 500; font-size: 1.05em; text-align: center; }
+
+        /* News Feed */
+        #news-feed-widget { grid-column: 1 / -1; } /* Full width */
+        .news-categories { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .news-item {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: var(--background-secondary);
+        }
+        .news-item img {
+            max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 10px;
+            max-height: 200px; object-fit: cover; width: 100%;
+        }
+        .news-item h3 { font-size: 1.1em; margin-bottom: 8px; border: none; padding-bottom: 0; }
+        .news-item h3 a { color: var(--accent-secondary); text-decoration: none; }
+        .news-item h3 a:hover { text-decoration: underline; }
+        .news-item .meta-info { font-size: 0.85em; color: var(--text-muted); margin-bottom: 8px; }
+        .news-item .meta-info span { margin-right: 5px; }
+        .news-item p { font-size: 0.95em; color: var(--text-secondary); }
+        .news-item a.read-more { font-size: 0.9em; display: inline-block; margin-top: 10px; color: var(--accent-color); font-weight: 500; text-decoration: none; }
+        .news-item a.read-more:hover { text-decoration: underline; }
+
+        #loading { text-align: center; padding: 20px; font-size: 1.1em; color: var(--text-muted); }
+
+        /* Crypto Term & Quote */
+        #term-title { font-size: 1.2em; font-weight: 600; color: var(--accent-secondary); margin-bottom: 5px; }
+        #term-definition { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 15px; }
+        #quote-text { font-size: 1.1em; font-style: italic; color: var(--text-secondary); margin-bottom: 15px; text-align: center; }
+
+        /* Select styling */
+        select, input[type="number"], input[type="text"] {
+            padding: 10px;
+            background-color: var(--background-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(247, 147, 26, 0.3);
+        }
+
+
         /* Footer */
-        footer {
+        .app-footer {
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             margin-top: 30px;
             border-top: 1px solid var(--border-color);
             font-size: 0.9em;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
-        
-        /* Switch for dark mode toggle */
-        .switch {
-          position: relative;
-          display: inline-block;
-          width: 50px;
-          height: 24px;
-        }
-        .switch input { 
-          opacity: 0;
-          width: 0;
-          height: 0;
-        }
-        .slider {
-          position: absolute;
-          cursor: pointer;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: #ccc;
-          transition: .4s;
-          border-radius: 24px;
-        }
-        .slider:before {
-          position: absolute;
-          content: "";
-          height: 18px;
-          width: 18px;
-          left: 3px;
-          bottom: 3px;
-          background-color: white;
-          transition: .4s;
-          border-radius: 50%;
-        }
-        input:checked + .slider {
-          background-color: var(--accent-color);
-        }
-        input:focus + .slider {
-          box-shadow: 0 0 1px var(--accent-color);
-        }
-        input:checked + .slider:before {
-          transform: translateX(26px);
+        .app-footer a { color: var(--accent-secondary); text-decoration: none; }
+        .app-footer a:hover { text-decoration: underline; }
+
+        /* Data Source Notice (Generic) */
+        .data-source-notice {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 15px;
         }
 
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .grid-container {
-                grid-template-columns: 1fr; /* Stack on smaller screens */
-            }
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            header h1 { margin-bottom: 10px; }
-            .dark-mode-toggle-container { margin-top: 10px; /* Adjust spacing on mobile if needed */ }
-            .news-item img { float: none; display: block; margin: 0 auto 10px; max-width: 150px; }
+            .app-header { flex-direction: column; gap: 15px; }
+            .header-controls { flex-direction: column; width: 100%; gap: 10px; }
+            .header-stats { justify-content: space-around; width: 100%; }
+            .chart-header { flex-direction: column; align-items: stretch; }
+            .chart-controls { flex-direction: column; align-items: stretch; }
+            .timeframe-buttons { justify-content: space-between; width: 100%; }
+            .timeframe-btn { flex-grow: 1; text-align: center; }
         }
+         @media (max-width: 480px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr; /* Stack all widgets */
+            }
+             .widget-card h2 { font-size: 1.1em; }
+             .widget-card h3 { font-size: 1em; }
+             body { font-size: 14px; }
+         }
 
     </style>
 </head>
+
 <body>
     <div class="container">
-        <header>
-            <h1>Bit<span class="vylex">Nexys</span></h1>
-            <!-- Added Dark Mode Toggle HTML -->
-            <div class="dark-mode-toggle-container">
-                <label for="dark-mode-toggle" style="cursor: pointer;">Dark Mode</label>
-                <label class="switch">
-                    <input type="checkbox" id="dark-mode-toggle">
-                    <span class="slider"></span>
-                </label>
+        <!-- APP HEADER -->
+        <header class="app-header">
+            <div class="logo">Bit<span>Nexys</span></div>
+            <div class="header-controls">
+                <div class="header-stats">
+                    <span class="stat-item">Dominance: <strong id="headerDominance">N/A</strong></span>
+                    <span class="stat-item">F&amp;G: <strong id="headerFearGreed">N/A</strong></span>
+                    <span class="stat-item">Blocks: <strong id="headerBlocks">N/A</strong></span>
+                </div>
+                <select id="currencySelect">
+                    <option value="usd">USD</option>
+                    <option value="eur">EUR</option>
+                    <option value="gbp">GBP</option>
+                    <option value="jpy">JPY</option>
+                    <option value="zar">ZAR</option>
+                    <!-- Add more currencies as needed -->
+                </select>
             </div>
         </header>
 
+        <!-- GENERAL ERROR CONTAINER -->
         <div id="error-container"></div>
 
-        <div class="grid-container">
-            <!-- Bitcoin Price Widget -->
-            <div class="card" id="bitcoin-price-widget">
-                <h2>Bitcoin (BTC) Price
-                    <select id="currencySelect">
-                        <option value="usd">USD</option>
-                        <option value="eur">EUR</option>
-                        <option value="jpy">JPY</option>
-                        <option value="gbp">GBP</option>
-                        <option value="zar">ZAR</option>
-                    </select>
-                </h2>
-                <div>
-                    <span id="btcPrice">Loading...</span>
-                    <span id="priceChange" class="price-change">--%</span>
+        <!-- DASHBOARD GRID -->
+        <main class="dashboard-grid">
+
+            <!-- BITCOIN PRICE WIDGET (From Script 1) -->
+            <div class="widget-card" id="bitcoin-price-widget">
+                <h2>Bitcoin (BTC) Live</h2>
+                <div id="btcPrice" class="main-price-display">Loading...</div>
+                <div class="price-sub-info">
+                    24h Change: <span id="priceChange" class="price-change">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Market Cap:</span>
-                    <span id="marketCap" class="metric-value">Loading...</span>
+                    <span class="metric-label">Market Cap</span>
+                    <span id="marketCap" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">24h Volume:</span>
-                    <span id="volume24h" class="metric-value">Loading...</span>
-                </div>
-                 <div class="metric-row">
-                    <span class="metric-label">24h High:</span>
-                    <span id="high24h" class="metric-value">Loading...</span>
+                    <span class="metric-label">24h Volume</span>
+                    <span id="volume24h" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">24h Low:</span>
-                    <span id="low24h" class="metric-value">Loading...</span>
+                    <span class="metric-label">24h High</span>
+                    <span id="high24h" class="metric-value">N/A</span>
                 </div>
-                <p class="data-source-notice">Data: CoinGecko</p>
+                <div class="metric-row">
+                    <span class="metric-label">24h Low</span>
+                    <span id="low24h" class="metric-value">N/A</span>
+                </div>
+                <p class="data-source-notice">Data from CoinGecko</p>
             </div>
 
-            <!-- Market Data / Supply Widget -->
-            <div class="card" id="market-data-widget">
-                <h2>Market Data</h2>
+            <!-- MARKET DATA WIDGET (From Script 1) -->
+            <div class="widget-card" id="market-data-widget">
+                <h2>Market Stats</h2>
                 <div class="metric-row">
-                    <span class="metric-label">BTC Dominance:</span>
-                    <span id="dominance" class="metric-value">Loading...</span>
-                </div>
-                <div class="metric-row">
-                    <span class="metric-label">Circulating Supply:</span>
-                    <span id="circulating" class="metric-value">Loading...</span>
+                    <span class="metric-label">BTC Dominance</span>
+                    <span id="dominance" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Total Supply (Approx.):</span>
-                    <span id="totalSupply" class="metric-value">Loading...</span>
+                    <span class="metric-label">Circulating Supply</span>
+                    <span id="circulating" class="metric-value">N/A</span>
                 </div>
-                <div id="supplyProgressContainer">
-                    <div id="supplyProgress"></div>
+                <div class="metric-row" style="flex-direction: column; align-items: flex-start;">
+                    <span class="metric-label" style="width:100%; justify-content:space-between;">
+                        Total Supply Progress
+                        <span id="supplyPercentage" class="metric-value">N/A</span>
+                    </span>
+                    <div id="supplyProgressContainer">
+                        <div id="supplyProgress"></div>
+                    </div>
                 </div>
-                <p class="data-source-notice">Data: CoinGecko</p>
+                 <p class="data-source-notice">Data from CoinGecko</p>
             </div>
 
-            <!-- Fear & Greed Index -->
-            <div class="card" id="fear-greed-widget">
+            <!-- BITCOIN CHART WIDGET (From Script 2) -->
+            <div class="widget-card chart-widget">
+                <div class="chart-header">
+                    <div class="chart-summary">
+                        <span id="currentPrice" class="price">Loading...</span>
+                        <span id="priceChange24h" class="change">N/A</span>
+                        <div class="chart-stats">
+                            <span>High 24h: <strong id="chartHigh24h">N/A</strong></span>
+                            <span>Low 24h: <strong id="chartLow24h">N/A</strong></span>
+                            <span>Volume 24h: <strong id="chartVolume24h">N/A</strong></span>
+                        </div>
+                         <small id="lastUpdateTime" style="margin-top:5px;">Last fetch: N/A</small>
+                    </div>
+                    <div class="controls chart-controls">
+                        <div class="timeframe-buttons">
+                            <button class="timeframe-btn active" data-timeframe="1H">1H</button>
+                            <button class="timeframe-btn" data-timeframe="4H">4H</button>
+                            <button class="timeframe-btn" data-timeframe="1D">1D</button>
+                            <button class="timeframe-btn" data-timeframe="1W">1W</button>
+                        </div>
+                        <div class="toggle-switch">
+                            <label for="chartTypeToggle">Candlestick:</label>
+                            <input type="checkbox" id="chartTypeToggle">
+                        </div>
+                        <div class="toggle-switch">
+                            <label for="autoRefreshToggle">Auto Refresh:</label>
+                            <input type="checkbox" id="autoRefreshToggle" checked>
+                        </div>
+                        <button id="refreshButton">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/></svg>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="chart-container-wrapper">
+                    <canvas id="chartContainer"></canvas>
+                    <div id="loadingSpinner"></div>
+                </div>
+                <div id="statusMessage">Initializing chart...</div>
+                <small id="lastUpdated" style="text-align: right; display:block; margin-top:5px;">N/A</small>
+                <p><a href="charts/btc.html" style="text-decoration: none; color: rgb(255, 0, 0);">bitcoin chart page &gt;</a></p>
+            </div>
+
+
+            <!-- FEAR & GREED WIDGET -->
+            <div class="widget-card" id="fear-greed-widget">
                 <h2>Fear & Greed Index</h2>
-                <canvas id="fearGreedGauge" width="250" height="135"></canvas>
-                <div id="fearGreedInfo">
-                    <div id="fearGreedValue">--</div>
-                    <div id="fearGreedLabel">Loading...</div>
-                    <div id="fearGreedUpdate">Loading...</div>
-                </div>
-                <p class="data-source-notice">Data: alternative.me</p>
-            </div>
-            
-            <!-- Price Chart -->
-            <div class="card full-width-card" id="price-chart-widget">
-                <h2>Bitcoin Price Chart</h2>
-                <div>
-                    <button class="timeframe-btn active" data-days="1">1D</button>
-                    <button class="timeframe-btn" data-days="7">7D</button>
-                    <button class="timeframe-btn" data-days="30">1M</button>
-                    <button class="timeframe-btn" data-days="90">3M</button>
-                    <button class="timeframe-btn" data-days="365">1Y</button>
-                    <button class="timeframe-btn" data-days="max">Max</button>
-                </div>
-                <div id="priceChartContainer">
-                    <canvas id="priceChart"></canvas>
-                </div>
-                <p class="data-source-notice">Data: CoinGecko</p>
+                <canvas id="fearGreedGauge"></canvas>
+                <div id="fearGreedValue">--</div>
+                <div id="fearGreedLabel">Loading...</div>
+                <div id="fearGreedUpdate"></div>
+                <p class="data-source-notice">Data from Alternative.me</p>
             </div>
 
-            <!-- Network Stats -->
-            <div class="card" id="network-stats-widget">
+            <!-- NETWORK STATS WIDGET -->
+            <div class="widget-card" id="network-stats-widget">
                 <h2>Network Stats</h2>
                 <div class="metric-row">
-                    <span class="metric-label">Hash Rate (7d Avg):</span>
-                    <span id="hashRate" class="metric-value">Loading...</span>
+                    <span class="metric-label">Hash Rate</span>
+                    <span id="hashRate" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Difficulty:</span>
-                    <span id="difficulty" class="metric-value">Loading...</span>
+                    <span class="metric-label">Difficulty</span>
+                    <span id="difficulty" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Next Difficulty Adj:</span>
-                    <span id="nextDifficulty" class="metric-value">Loading...</span>
+                    <span class="metric-label">Next Difficulty Adj.</span>
+                    <span id="nextDifficulty" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Current Block Height:</span>
-                    <span id="blockHeight" class="metric-value">Loading...</span>
+                    <span class="metric-label">Current Block</span>
+                    <span id="blockHeight" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Halving Countdown:</span>
-                    <span id="halvingCountdown" class="metric-value">Loading...</span>
+                    <span class="metric-label">Halving Countdown</span>
+                    <span id="halvingCountdown" class="metric-value">N/A</span>
                 </div>
-                <p class="data-source-notice">Data: mempool.space</p>
+                 <p class="data-source-notice">Data from Mempool.space</p>
             </div>
 
-            <!-- Mempool Data -->
-            <div class="card" id="mempool-data-widget">
-                <h2>Mempool & Fees</h2>
+            <!-- MEMPOOL DATA WIDGET -->
+            <div class="widget-card" id="mempool-data-widget">
+                <h2>Mempool Fees</h2>
                 <div class="metric-row">
-                    <span class="metric-label">High Priority Fee:</span>
-                    <span id="highPriorityFee" class="metric-value">Loading...</span>
+                    <span class="metric-label">High Priority</span>
+                    <span id="highPriorityFee" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Medium Priority Fee:</span>
-                    <span id="mediumPriorityFee" class="metric-value">Loading...</span>
+                    <span class="metric-label">Medium Priority</span>
+                    <span id="mediumPriorityFee" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Low Priority Fee:</span>
-                    <span id="lowPriorityFee" class="metric-value">Loading...</span>
+                    <span class="metric-label">Low Priority</span>
+                    <span id="lowPriorityFee" class="metric-value">N/A</span>
                 </div>
                 <div class="metric-row">
-                    <span class="metric-label">Mempool Size:</span>
-                    <span id="mempoolSize" class="metric-value">Loading...</span>
+                    <span class="metric-label">Mempool Size</span>
+                    <span id="mempoolSize" class="metric-value">N/A</span>
                 </div>
-                <p class="data-source-notice">Data: mempool.space</p>
+                 <p class="data-source-notice">Data from Mempool.space</p>
             </div>
 
-            <!-- Recent Blocks -->
-            <div class="card" id="recent-blocks-widget">
+            <!-- RECENT BLOCKS WIDGET -->
+            <div class="widget-card" id="recent-blocks-widget">
                 <h2>Recent Blocks</h2>
                 <div id="recentBlocks">
                     <p class="loading-text">Loading recent blocks...</p>
                 </div>
-                <p class="data-source-notice">Data: mempool.space</p>
+                 <p class="data-source-notice">Data from Mempool.space</p>
             </div>
 
-            <!-- Currency Converter -->
-            <div class="card">
-                <h2>Currency Converter</h2>
-                <div>
-                    <input type="number" id="amount" value="1">
-                    <select id="fromCurrency"></select>
-                    <span>to</span>
-                    <select id="toCurrency"></select>
-                    <button onclick="convert()">Convert</button>
-                </div>
-                <p id="result" style="margin-top: 10px; font-weight: bold;">Enter an amount to convert.</p>
-                <p class="data-source-notice">Rates: CoinGecko / Frankfurter.app</p>
-            </div>
-            
-            <!-- Market Overview (Other Coins) -->
-            <div class="card" id="market-overview-widget">
+            <!-- MARKET OVERVIEW (OTHER COINS) -->
+            <div class="widget-card" id="market-overview-widget">
                 <h2>Market Overview</h2>
-                <div id="market-overview-content">
+                <div id="marketOverviewContent">
                     <p class="loading-text">Loading market data...</p>
                 </div>
-                 <p class="data-source-notice">Data: CoinGecko</p>
+                 <p class="data-source-notice">Data from CoinGecko</p>
             </div>
-            
-            <!-- Crypto Terminology -->
-            <div class="card">
-                <h2>Crypto Term of the Moment</h2>
-                <h3 id="term-title">Loading...</h3>
+
+            <!-- CURRENCY CONVERTER -->
+            <div class="widget-card" id="converter-widget">
+                <h2>Currency Converter</h2>
+                <div class="converter-form">
+                    <div class="converter-row">
+                        <input type="number" id="amount" value="1" step="any">
+                        <select id="fromCurrency"></select>
+                    </div>
+                    <div style="text-align:center; font-size: 1.2em; color: var(--text-muted);">➔</div>
+                    <div class="converter-row">
+                        <select id="toCurrency"></select>
+                    </div>
+                    <button id="convertButton" class="styled-button" onclick="convert()">Convert</button>
+                    <p id="result">Enter amount and convert.</p>
+                </div>
+                <p class="data-source-notice">Rates from CoinGecko & Frankfurter.app</p>
+            </div>
+
+            <!-- CRYPTO TERM WIDGET -->
+            <div class="widget-card" id="crypto-term-widget">
+                <h2>Crypto Terminology</h2>
+                <h3 id="term-title">Loading Term...</h3>
                 <p id="term-definition">Loading definition...</p>
-                <button id="new-term-button" style="margin-top:10px;">New Term</button>
+                <button id="new-term-button" class="styled-button" style="margin-top: auto;">📖 New Term</button>
             </div>
 
-            <!-- Crypto Quote -->
-            <div class="card">
+            <!-- CRYPTO QUOTE WIDGET -->
+            <div class="widget-card" id="crypto-quote-widget">
                 <h2>Crypto Wisdom</h2>
-                <p id="quote-text" style="font-style: italic;">Loading quote...</p>
-                <button id="quote-button" style="margin-top:10px;">💬 Get Quote</button>
+                <p id="quote-text">Loading quote...</p>
+                <button id="quote-button" class="styled-button" style="margin-top: auto;">💬 New Quote</button>
             </div>
 
-            <!-- News Section -->
-            <div class="card full-width-card" id="news-feed-widget">
-                <h2>Crypto News Feed (from Reddit)</h2>
-                <div id="news-controls">
-                    <button class="category-btn active" data-source="all_crypto">All Crypto</button>
-                    <button class="category-btn" data-source="bitcoin">Bitcoin</button>
-                    <button class="category-btn" data-source="ethereum">Ethereum</button>
-                    <button class="category-btn" data-source="altcoins">Altcoins</button>
-                    <button class="category-btn" data-source="defi">DeFi</button>
-                    <button class="category-btn" data-source="nfts">NFTs</button>
+
+            <!-- NEWS FEED WIDGET -->
+            <div class="widget-card" id="news-feed-widget">
+                <h2>Crypto News Feed</h2>
+                <div class="news-categories">
+                    <button class="styled-button category-btn active" data-source="all_crypto">All Crypto</button>
+                    <button class="styled-button category-btn" data-source="bitcoin">Bitcoin</button>
+                    <button class="styled-button category-btn" data-source="ethereum">Ethereum</button>
+                    <button class="styled-button category-btn" data-source="altcoins">Altcoins</button>
+                    <button class="styled-button category-btn" data-source="defi">DeFi</button>
+                    <button class="styled-button category-btn" data-source="nfts">NFTs</button>
                 </div>
                 <div id="loading" style="display: none;">Loading news...</div>
-                <div id="news-container" style="margin-top: 15px;">
-                    <!-- News items will be injected here -->
+                <div id="news-container">
+                    <p class="loading-text">Select a category to see news.</p>
                 </div>
-                 <p class="data-source-notice">Data: Reddit</p>
+                <p class="data-source-notice">News from Reddit</p>
             </div>
-        </div> <!-- end grid-container -->
 
-        <footer>
-            <p id="copyright-year">© 2025 BitNexys by <a href="https://vylexnexys.co.za/">VylexNexys</a>. All rights reserved.</p>
-            <p>Disclaimer: This tool is for informational purposes only. Not financial advice.</p>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p id="copyright-year">© 2024 BitNexys. All rights reserved.</p>
+            <p>Partner <a href="bitcoin.html">VylexNexys₿</a></p>
+            <p>Cryptocurrency data provided by <a href="https://www.coingecko.com/" target="_blank" rel="noopener">CoinGecko</a>, <a href="https://alternative.me/" target="_blank" rel="noopener">Alternative.me</a>, and <a href="https://mempool.space/" target="_blank" rel="noopener">Mempool.space</a>. News from <a href="https://www.reddit.com/" target="_blank" rel="noopener">Reddit</a>.</p>
         </footer>
-    </div> <!-- end container -->
 
+    </div> <!-- .container -->
+
+    <!-- SCRIPT 1: BitNexys Core Logic -->
     <script>
-    // --- APP CONFIG & STATE ---
-    const appConfig = {
-        coinGeckoApiUrl: 'https://api.coingecko.com/api/v3',
-        fearGreedApiUrl: 'https://api.alternative.me/fng/?limit=1', // Used by BitNexys
-        mempoolSpaceApiUrl: 'https://mempool.space/api', // Base for mempool.space
-        defaultCurrency: 'usd',
-        storageKeys: {
-            darkMode: 'bitnexys_dark_mode',
-            selectedCurrency: 'bitnexys_currency',
-        },
-        cryptoQuotes: [
-            "HODL: Hold On for Dear Life.", "To the moon! 🚀", "Not your keys, not your coins.", "DYOR: Do Your Own Research.", "Buy the dip!", "WAGMI: We're All Gonna Make It.", "Decentralization is not a destination, it's a journey.", "The blockchain is a solution in search of a problem... and finding many.", "If you don't believe it or don't get it, I don't have the time to try to convince you, sorry. - Satoshi Nakamoto (paraphrased)", "Stay humble, stack sats.", "Bitcoin is digital gold.", "The future of money is decentralized.", "Be your own bank.", "In code we trust.", "Sats are the new cents.", "Scarcity creates value — only 21 million BTC.", "Crypto never sleeps.", "Volatility is the price of opportunity.", "Bear markets build strong hands.", "Stack sats like your future depends on it — because it does."
-        ],
-        cryptoTerms: [
-            { term: "Blockchain", definition: "A distributed, immutable ledger that records transactions and tracks assets across a network." },
-            { term: "Cryptocurrency", definition: "A digital or virtual currency secured by cryptography, making it nearly impossible to counterfeit." },
-            { term: "Bitcoin (BTC)", definition: "The first decentralized cryptocurrency, created in 2009 by Satoshi Nakamoto." },
-            { term: "Ethereum (ETH)", definition: "A decentralized, open-source blockchain with smart contract functionality." },
-            { term: "Smart Contract", definition: "Self-executing contracts with the terms of the agreement directly written into code." },
-            { term: "DeFi (Decentralized Finance)", definition: "Financial services built on blockchain technology, without relying on central intermediaries." },
-            { term: "NFT (Non-Fungible Token)", definition: "A unique digital asset representing ownership of items like art, collectibles, or virtual land." },
-            { term: "HODL", definition: "A popular crypto slang term meaning 'Hold On for Dear Life', encouraging long-term holding." },
-            { term: "Mining", definition: "The process of verifying and adding transactions to a blockchain, often rewarded with new cryptocurrency." },
-            { term: "Wallet (Crypto)", definition: "A digital wallet used to store, send, and receive cryptocurrencies, holding private and public keys." },
-            { term: "Altcoin", definition: "Any cryptocurrency other than Bitcoin." },
-            { term: "Market Cap", definition: "The total market value of a cryptocurrency's circulating supply. (Current Price x Circulating Supply)" },
-            { term: "Gas Fees", definition: "Transaction fees on the Ethereum network, paid to miners/validators for processing transactions." },
-            { term: "Whitepaper", definition: "An authoritative report or guide that informs readers concisely about a complex issue, often used to launch new crypto projects." },
-            { term: "Whale", definition: "An individual or entity that holds a large amount of a specific cryptocurrency."}
-        ]
-    };
+        // --- APP CONFIG & STATE ---
+        const appConfig = {
+            coinGeckoApiUrl: 'https://api.coingecko.com/api/v3',
+            // Use a CORS proxy for Reddit if direct calls fail due to browser restrictions or Reddit blocking
+            // For example: 'https://corsproxy.io/?' or your own proxy
+            // If Reddit API is flaky, consider this for news:
+            // redditApiProxy: 'https://corsproxy.io/?', // Example proxy
+            redditApiProxy: '', // Set to a proxy URL if needed, e.g. 'https://api.allorigins.win/raw?url='
+            fearGreedApiUrl: 'https://api.alternative.me/fng/?limit=1',
+            mempoolSpaceApiUrl: 'https://mempool.space/api',
+            defaultCurrency: 'usd',
+            storageKeys: {
+                selectedCurrency: 'bitnexys_currency',
+            },
+            cryptoQuotes: [
+                "HODL: Hold On for Dear Life.", "To the moon! 🚀", "Not your keys, not your coins.", "DYOR: Do Your Own Research.", "Buy the dip!", "WAGMI: We're All Gonna Make It.", "Decentralization is not a destination, it's a journey.", "The blockchain is a solution in search of a problem... and finding many.", "If you don't believe it or don't get it, I don't have the time to try to convince you, sorry. - Satoshi Nakamoto (paraphrased)", "Stay humble, stack sats.", "Bitcoin is digital gold.", "The future of money is decentralized.", "Be your own bank.", "In code we trust.", "Sats are the new cents.", "Scarcity creates value -- only 21 million BTC.", "Crypto never sleeps.", "Volatility is the price of opportunity.", "Bear markets build strong hands.", "Stack sats like your future depends on it -- because it does."
+            ],
+            cryptoTerms: [
+                { term: "Blockchain", definition: "A distributed, immutable ledger that records transactions and tracks assets across a network." },
+                { term: "Cryptocurrency", definition: "A digital or virtual currency secured by cryptography, making it nearly impossible to counterfeit." },
+                { term: "Bitcoin (BTC)", definition: "The first decentralized cryptocurrency, created in 2009 by Satoshi Nakamoto." },
+                { term: "Ethereum (ETH)", definition: "A decentralized, open-source blockchain with smart contract functionality." },
+                { term: "Smart Contract", definition: "Self-executing contracts with the terms of the agreement directly written into code." },
+                { term: "DeFi (Decentralized Finance)", definition: "Financial services built on blockchain technology, without relying on central intermediaries." },
+                { term: "NFT (Non-Fungible Token)", definition: "A unique digital asset representing ownership of items like art, collectibles, or virtual land." },
+                { term: "HODL", definition: "A popular crypto slang term meaning 'Hold On for Dear Life', encouraging long-term holding." },
+                { term: "Mining", definition: "The process of verifying and adding transactions to a blockchain, often rewarded with new cryptocurrency." },
+                { term: "Wallet (Crypto)", definition: "A digital wallet used to store, send, and receive cryptocurrencies, holding private and public keys." },
+                { term: "Altcoin", definition: "Any cryptocurrency other than Bitcoin." },
+                { term: "Market Cap", definition: "The total market value of a cryptocurrency's circulating supply. (Current Price x Circulating Supply)" },
+                { term: "Gas Fees", definition: "Transaction fees on the Ethereum network, paid to miners/validators for processing transactions." },
+                { term: "Whitepaper", definition: "An authoritative report or guide that informs readers concisely about a complex issue, often used to launch new crypto projects." },
+                { term: "Whale", definition: "An individual or entity that holds a large amount of a specific cryptocurrency." }
+            ]
+        };
 
-    const redditSources = {
-        all_crypto: 'https://www.reddit.com/r/CryptoCurrency/.json?limit=20&sort=hot',
-        bitcoin: 'https://www.reddit.com/r/Bitcoin/.json?limit=20&sort=hot',
-        ethereum: 'https://www.reddit.com/r/ethereum/.json?limit=20&sort=hot',
-        altcoins: 'https://www.reddit.com/r/altcoin/.json?limit=20&sort=hot',
-        defi: 'https://www.reddit.com/r/defi/.json?limit=20&sort=hot',
-        nfts: 'https://www.reddit.com/r/NFT/.json?limit=20&sort=hot'
-    };
-    
-    let currentNewsCategory = 'all_crypto';
-    let cachedNews = {};
-    let bitnexysApp; // Will hold the BitNexys instance
+        const redditSources = {
+            all_crypto: 'https://www.reddit.com/r/CryptoCurrency/.json?limit=20&sort=hot',
+            bitcoin: 'https://www.reddit.com/r/Bitcoin/.json?limit=20&sort=hot',
+            ethereum: 'https://www.reddit.com/r/ethereum/.json?limit=20&sort=hot',
+            altcoins: 'https://www.reddit.com/r/altcoin/.json?limit=20&sort=hot',
+            defi: 'https://www.reddit.com/r/defi/.json?limit=20&sort=hot',
+            nfts: 'https://www.reddit.com/r/NFT/.json?limit=20&sort=hot'
+        };
 
-    // --- HELPER & ERROR FUNCTIONS ---
-    function showError(message, contextId = null, isCritical = false) {
-        clearError(contextId); 
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error'; // General error class
-        errorDiv.innerHTML = `<strong>Error:</strong> ${message}`;
+        let currentNewsCategory = 'all_crypto';
+        let cachedNews = {};
+        let bitnexysApp;
 
-        if (contextId) {
-            const widgetContainer = document.getElementById(contextId);
-            if (widgetContainer) {
-                let widgetErrorDisplay = widgetContainer.querySelector('.widget-error-message');
-                if (!widgetErrorDisplay) {
-                    widgetErrorDisplay = document.createElement('p');
-                    widgetErrorDisplay.className = 'widget-error-message';
-                    const dataSourceNotice = widgetContainer.querySelector('.data-source-notice');
-                    if (dataSourceNotice) {
-                        widgetContainer.insertBefore(widgetErrorDisplay, dataSourceNotice);
-                    } else {
-                        const firstContentElement = Array.from(widgetContainer.children).find(child => child.tagName !== 'H2');
-                        if (firstContentElement) {
-                            widgetContainer.insertBefore(widgetErrorDisplay, firstContentElement);
+        // --- HELPER & ERROR FUNCTIONS ---
+        function showError(message, contextId = null, isCritical = false) {
+            clearError(contextId); // Clear previous error in this context first
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error'; // General error class
+            errorDiv.innerHTML = `<strong>Error:</strong> ${message}`;
+
+            if (contextId) {
+                const widgetContainer = document.getElementById(contextId);
+                if (widgetContainer) {
+                    let widgetErrorDisplay = widgetContainer.querySelector('.widget-error-message');
+                    if (!widgetErrorDisplay) {
+                        widgetErrorDisplay = document.createElement('p');
+                        widgetErrorDisplay.className = 'widget-error-message'; // Specific class for widget errors
+                        // Try to insert before data source notice or first content element
+                        const dataSourceNotice = widgetContainer.querySelector('.data-source-notice');
+                        if (dataSourceNotice) {
+                            widgetContainer.insertBefore(widgetErrorDisplay, dataSourceNotice);
                         } else {
-                            widgetContainer.appendChild(widgetErrorDisplay);
+                             // Find first element that is not H2 (title) or another error message
+                            const firstContentElement = Array.from(widgetContainer.children)
+                                .find(child => child.tagName !== 'H2' && !child.classList.contains('widget-error-message'));
+                            if (firstContentElement) {
+                                widgetContainer.insertBefore(widgetErrorDisplay, firstContentElement);
+                            } else {
+                                widgetContainer.appendChild(widgetErrorDisplay); // Fallback
+                            }
                         }
                     }
+                    widgetErrorDisplay.textContent = `Error: ${message.substring(0, 150)}${message.length > 150 ? '...' : ''}`;
+                    widgetErrorDisplay.style.display = 'block';
+                } else if (isCritical) {
+                    // Fallback to general error container if specific widget not found but error is critical
+                    document.getElementById('error-container').appendChild(errorDiv);
                 }
-                widgetErrorDisplay.textContent = `Error: ${message.substring(0,150)}${message.length > 150 ? '...' : ''}`;
-            } else if (isCritical) { 
-                 document.getElementById('error-container').appendChild(errorDiv);
+            } else {
+                // General, non-widget-specific error
+                document.getElementById('error-container').appendChild(errorDiv);
             }
-        } else { 
-            document.getElementById('error-container').appendChild(errorDiv);
-        }
-        console.error(`Error Displayed (Context: ${contextId || 'General'}):`, message);
-    }
-
-    function clearError(contextId = null) {
-        if (contextId) {
-            const widgetContainer = document.getElementById(contextId);
-            if (widgetContainer) {
-                const widgetError = widgetContainer.querySelector('.widget-error-message');
-                if (widgetError) widgetError.remove();
-            }
-        } else { 
-            const generalErrorContainer = document.getElementById('error-container');
-            const generalErrors = generalErrorContainer.querySelectorAll('.error');
-            generalErrors.forEach(err => err.remove());
-        }
-    }
-
-    // --- BitNexys CLASS (Modified and Integrated) ---
-    class BitNexys {
-        constructor(initialCurrency = 'usd') {
-            this.currency = initialCurrency;
-            this.currentTimeframe = '1';
-            this.priceChart = null;
-            this.currentBlockHeight = null; 
-            setTimeout(() => this.init(), 0);
+            console.error(`Error Displayed (Context: ${contextId || 'General'}):`, message);
         }
 
-        async init() {
-            this.setupEventListeners();
-            await this.loadAllData();
-            this.setupPeriodicUpdates();
-        }
-
-        setupEventListeners() {
-            document.getElementById('currencySelect').addEventListener('change', async (e) => {
-                this.currency = e.target.value;
-                localStorage.setItem(appConfig.storageKeys.selectedCurrency, this.currency);
-                clearError('bitcoin-price-widget');
-                clearError('price-chart-widget');
-                clearError('market-data-widget');
-                
-                await this.loadPriceData(); 
-                this.loadPriceChart();
-                fetchMarketOverviewData(this.currency); 
-            });
-
-            document.querySelectorAll('.timeframe-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    this.currentTimeframe = e.target.dataset.days;
-                    clearError('price-chart-widget');
-                    this.loadPriceChart();
-                });
-            });
-        }
-
-        async loadAllData() {
-            await Promise.allSettled([ 
-                this.loadPriceData(),      
-                this.loadFearGreedIndex(),
-                this.loadNetworkStats(),   
-                this.loadMempoolData(),
-                this.loadPriceChart(),
-                this.loadRecentBlocks(),
-            ]);
-        }
-
-        async loadPriceData() {
-            const widgetId = 'bitcoin-price-widget';
-            try {
-                const response = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${this.currency}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`);
-                if (!response.ok) throw new Error(`CoinGecko API error (${response.status}) for price`);
-                const data = await response.json();
-
-                if (!data.bitcoin || !data.bitcoin[this.currency.toLowerCase()]) {
-                    throw new Error(`Bitcoin data not found for currency: ${this.currency.toUpperCase()}`);
+        function clearError(contextId = null) {
+            if (contextId) {
+                const widgetContainer = document.getElementById(contextId);
+                if (widgetContainer) {
+                    const widgetError = widgetContainer.querySelector('.widget-error-message');
+                    if (widgetError) {
+                        widgetError.textContent = '';
+                        widgetError.style.display = 'none'; // Hide instead of remove to keep element
+                    }
                 }
-                const btcInfo = data.bitcoin;
-                const price = btcInfo[this.currency.toLowerCase()];
-                const change = btcInfo[`${this.currency.toLowerCase()}_24h_change`];
-                const marketCap = btcInfo[`${this.currency.toLowerCase()}_market_cap`];
-                const volume = btcInfo[`${this.currency.toLowerCase()}_24h_vol`];
-
-                document.getElementById('btcPrice').textContent = this.formatCurrency(price, this.currency);
-
-                const changeEl = document.getElementById('priceChange');
-                changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-                changeEl.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
-
-                document.getElementById('marketCap').textContent = this.formatLargeNumber(marketCap, this.currency);
-                document.getElementById('volume24h').textContent = this.formatLargeNumber(volume, this.currency);
-                
-                clearError(widgetId);
-                await this.loadMarketData(); 
-            } catch (error) {
-                console.error('Error loading price data:', error);
-                showError(error.message, widgetId);
-                document.getElementById('btcPrice').textContent = 'Error';
+            } else {
+                const generalErrorContainer = document.getElementById('error-container');
+                generalErrorContainer.innerHTML = ''; // Clear all general errors
             }
         }
 
-        async loadMarketData() { 
-            const widgetId = 'market-data-widget'; 
-            try {
-                const [globalResponse, btcResponse] = await Promise.all([
-                    fetch(`${appConfig.coinGeckoApiUrl}/global`),
-                    fetch(`${appConfig.coinGeckoApiUrl}/coins/bitcoin`)
-                ]);
-
-                if (!globalResponse.ok) throw new Error(`CoinGecko API error (${globalResponse.status}) for global data`);
-                const globalData = await globalResponse.json();
-
-                if (!btcResponse.ok) throw new Error(`CoinGecko API error (${btcResponse.status}) for Bitcoin coin data`);
-                const btcData = await btcResponse.json();
-
-                const dominance = globalData.data.market_cap_percentage.btc;
-                document.getElementById('dominance').textContent = `${dominance.toFixed(1)}%`;
-
-                const circulating = btcData.market_data.circulating_supply;
-                document.getElementById('circulating').textContent = `${this.formatNumber(circulating)} BTC`;
-                document.getElementById('totalSupply').textContent = `${this.formatNumber(21000000)} BTC`; 
-
-                const supplyPercentage = (circulating / 21000000) * 100;
-                document.getElementById('supplyProgress').style.width = `${supplyPercentage}%`;
-
-                const high24h = btcData.market_data.high_24h[this.currency.toLowerCase()];
-                const low24h = btcData.market_data.low_24h[this.currency.toLowerCase()];
-                document.getElementById('high24h').textContent = this.formatCurrency(high24h, this.currency);
-                document.getElementById('low24h').textContent = this.formatCurrency(low24h, this.currency);
-                
-                clearError(widgetId);
-                clearError('bitcoin-price-widget'); 
-            } catch (error) {
-                console.error('Error loading market data:', error);
-                showError(error.message, widgetId);
-                showError(error.message, 'bitcoin-price-widget'); 
+        // --- BitNexys CLASS ---
+        class BitNexys {
+            constructor(initialCurrency = 'usd') {
+                this.currency = initialCurrency;
+                this.currentBlockHeight = null;
+                // Defer initialization slightly to ensure DOM is fully ready
+                // and other scripts might have set up their parts.
+                setTimeout(() => this.init(), 50);
             }
-        }
 
-        async loadFearGreedIndex() {
-            const widgetId = 'fear-greed-widget';
-            try {
-                const response = await fetch(appConfig.fearGreedApiUrl);
-                if (!response.ok) throw new Error(`Alternative.me API error (${response.status})`);
-                const data = await response.json();
+            async init() {
+                this.setupEventListeners();
+                await this.loadAllData();
+                this.setupPeriodicUpdates();
+            }
 
-                if (data.data && data.data[0]) {
-                    const fearGreedData = data.data[0];
-                    const value = parseInt(fearGreedData.value);
-                    this.updateFearGreedGauge(value, fearGreedData.value_classification);
+            setupEventListeners() {
+                const currencySelectEl = document.getElementById('currencySelect');
+                if (currencySelectEl) {
+                    currencySelectEl.addEventListener('change', async (e) => {
+                        this.currency = e.target.value;
+                        localStorage.setItem(appConfig.storageKeys.selectedCurrency, this.currency);
+                        
+                        // Clear errors before reloading
+                        clearError('bitcoin-price-widget');
+                        clearError('market-data-widget'); // For dominance if currency dependent
+                        clearError('market-overview-widget');
 
-                    const timestamp = new Date(parseInt(fearGreedData.timestamp) * 1000);
-                    document.getElementById('fearGreedUpdate').textContent = `Updated: ${timestamp.toLocaleDateString()}`;
-                    clearError(widgetId);
+                        // Show loading states
+                        document.getElementById('btcPrice').textContent = 'Loading...';
+                        if(document.getElementById('marketOverviewContent')) document.getElementById('marketOverviewContent').innerHTML = '<p class="loading-text">Loading market data...</p>';
+
+
+                        await this.loadPriceData(); // This also calls loadMarketData
+                        fetchMarketOverviewData(this.currency); // Reload other coins data
+                    });
                 } else {
-                    throw new Error('No data received from Fear & Greed API.');
+                    console.warn("Currency select element not found.");
                 }
-            } catch (error) {
-                console.error('Error loading fear & greed index:', error);
-                showError(error.message, widgetId);
-                this.updateFearGreedGauge(50, "Neutral (Error)"); 
             }
-        }
 
-        updateFearGreedGauge(value, labelText = null) {
-            const canvas = document.getElementById('fearGreedGauge');
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            async loadAllData() {
+                // Show initial loading states for key elements
+                const loadingElements = {
+                    'btcPrice': 'Loading...',
+                    'headerDominance': 'N/A',
+                    'headerFearGreed': 'N/A',
+                    'headerBlocks': 'N/A',
+                    // Add more if needed
+                };
+                for (const id in loadingElements) {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = loadingElements[id];
+                }
 
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height - 10; 
-            const radius = Math.min(centerX, centerY) - 15; 
-            const lineWidth = 15; 
 
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, Math.PI, 0);
-            ctx.strokeStyle = 'rgba(120, 120, 120, 0.3)'; 
-            ctx.lineWidth = lineWidth;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-
-            let color;
-            if (value <= 24) color = '#D32F2F'; 
-            else if (value <= 46) color = '#F57C00'; 
-            else if (value <= 54) color = '#FBC02D'; 
-            else if (value <= 74) color = '#7CB342'; 
-            else color = '#388E3C'; 
-
-            const angle = Math.PI * (value / 100);
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + angle);
-            ctx.strokeStyle = color;
-            ctx.lineWidth = lineWidth;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-
-            document.getElementById('fearGreedValue').textContent = value;
-            document.getElementById('fearGreedValue').style.color = color;
-
-            let finalLabel = labelText;
-            if (!finalLabel) { 
-                if (value <= 24) finalLabel = 'Extreme Fear';
-                else if (value <= 46) finalLabel = 'Fear';
-                else if (value <= 54) finalLabel = 'Neutral';
-                else if (value <= 74) finalLabel = 'Greed';
-                else finalLabel = 'Extreme Greed';
-            }
-            
-            document.getElementById('fearGreedLabel').textContent = finalLabel;
-            document.getElementById('fearGreedLabel').style.color = color;
-        }
-
-        async loadNetworkStats() {
-            const widgetId = 'network-stats-widget';
-            try {
-                const [hashRateResponse, difficultyResponse, blockHeightResponse] = await Promise.all([
-                    fetch(`${appConfig.mempoolSpaceApiUrl}/v1/mining/hashrate/1w`),
-                    fetch(`${appConfig.mempoolSpaceApiUrl}/v1/difficulty-adjustment`),
-                    fetch(`${appConfig.mempoolSpaceApiUrl}/blocks/tip/height`)
+                const results = await Promise.allSettled([
+                    this.loadPriceData(), // loadMarketData is called within this
+                    this.loadFearGreedIndex(),
+                    this.loadNetworkStats(), // updateHalvingCountdown is called within this
+                    this.loadMempoolData(),
+                    this.loadRecentBlocks(),
+                    // Initial load for market overview and news are handled by DOMContentLoaded event
                 ]);
 
-                if (!hashRateResponse.ok) throw new Error(`Mempool API error (${hashRateResponse.status}) for hashrate`);
-                const hashRateData = await hashRateResponse.json();
-                
-                if (!difficultyResponse.ok) throw new Error(`Mempool API error (${difficultyResponse.status}) for difficulty`);
-                const difficultyData = await difficultyResponse.json();
+                results.forEach(result => {
+                    if (result.status === 'rejected') {
+                        console.error("Initial data load failure:", result.reason);
+                        // A general error could be shown here, or rely on individual widget errors
+                    }
+                });
+            }
 
-                if (!blockHeightResponse.ok) throw new Error(`Mempool API error (${blockHeightResponse.status}) for block height`);
-                const blockHeight = await blockHeightResponse.text();
-
-                const currentHashRate = hashRateData.currentHashrate;
-                document.getElementById('hashRate').textContent = `${(currentHashRate / 1e18).toFixed(2)} EH/s`;
-
-                const currentDifficulty = difficultyData.currentDifficulty;
-                document.getElementById('difficulty').textContent = `${(currentDifficulty / 1e12).toFixed(2)} T`;
-
-                const difficultyChange = difficultyData.difficultyChange;
-                const changeDirection = difficultyChange >= 0 ? '+' : ''; 
-                const nextDiffEl = document.getElementById('nextDifficulty');
-                nextDiffEl.textContent = `${changeDirection}${difficultyChange.toFixed(2)}%`;
-                nextDiffEl.className = `metric-value ${difficultyChange >= 0 ? 'positive' : 'negative'}`;
-
-                const blockHeightNum = parseInt(blockHeight);
-                this.currentBlockHeight = blockHeightNum;
-                document.getElementById('blockHeight').textContent = blockHeightNum.toLocaleString();
-                
+            async loadPriceData() {
+                const widgetId = 'bitcoin-price-widget';
                 clearError(widgetId);
-                await this.updateHalvingCountdown(); 
+                document.getElementById('btcPrice').textContent = 'Fetching...';
+                try {
+                    const response = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${this.currency}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`);
+                    if (!response.ok) {
+                         const errorData = await response.json().catch(() => null);
+                         throw new Error(`CoinGecko API error (${response.status}) for price: ${errorData?.error || response.statusText}`);
+                    }
+                    const data = await response.json();
 
-            } catch (error) {
-                console.error('Error loading network stats:', error);
-                showError(error.message, widgetId);
+                    if (!data.bitcoin || data.bitcoin[this.currency.toLowerCase()] === undefined) {
+                        throw new Error(`Bitcoin data not found for currency: ${this.currency.toUpperCase()}`);
+                    }
+                    const btcInfo = data.bitcoin;
+                    const price = btcInfo[this.currency.toLowerCase()];
+                    const change = btcInfo[`${this.currency.toLowerCase()}_24h_change`];
+                    const marketCap = btcInfo[`${this.currency.toLowerCase()}_market_cap`];
+                    const volume = btcInfo[`${this.currency.toLowerCase()}_24h_vol`];
+
+                    document.getElementById('btcPrice').textContent = this.formatCurrency(price, this.currency);
+
+                    const changeEl = document.getElementById('priceChange');
+                    changeEl.textContent = `${change >= 0 ? '+' : ''}${change !== null && change !== undefined ? change.toFixed(2) : 'N/A'}%`;
+                    changeEl.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+
+                    document.getElementById('marketCap').textContent = this.formatLargeNumber(marketCap, this.currency);
+                    document.getElementById('volume24h').textContent = this.formatLargeNumber(volume, this.currency);
+
+                    await this.loadMarketData(); // Load dependent market data after price
+                } catch (error) {
+                    console.error('Error loading price data:', error);
+                    showError(error.message, widgetId);
+                    document.getElementById('btcPrice').textContent = 'Error';
+                    // Propagate error to dependent elements if necessary
+                    document.getElementById('priceChange').textContent = 'N/A';
+                    document.getElementById('marketCap').textContent = 'N/A';
+                    document.getElementById('volume24h').textContent = 'N/A';
+                }
+            }
+
+            async loadMarketData() { // Called by loadPriceData
+                const widgetId = 'market-data-widget'; // Primary widget for these stats
+                const priceWidgetId = 'bitcoin-price-widget'; // For high/low
+                clearError(widgetId);
+                clearError(priceWidgetId);
+
+                try {
+                    const [globalResponse, btcResponse] = await Promise.all([
+                        fetch(`${appConfig.coinGeckoApiUrl}/global`),
+                        fetch(`${appConfig.coinGeckoApiUrl}/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false`)
+                    ]);
+
+                    if (!globalResponse.ok) {
+                        const errorData = await globalResponse.json().catch(() => null);
+                        throw new Error(`CoinGecko API error (${globalResponse.status}) for global data: ${errorData?.error || globalResponse.statusText}`);
+                    }
+                    const globalData = await globalResponse.json();
+
+                    if (!btcResponse.ok) {
+                        const errorData = await btcResponse.json().catch(() => null);
+                        throw new Error(`CoinGecko API error (${btcResponse.status}) for Bitcoin coin data: ${errorData?.error || btcResponse.statusText}`);
+                    }
+                    const btcData = await btcResponse.json();
+
+                    const dominance = globalData?.data?.market_cap_percentage?.btc;
+                    if (dominance !== undefined) {
+                        document.getElementById('dominance').textContent = `${dominance.toFixed(1)}%`;
+                        document.getElementById('headerDominance').textContent = `${dominance.toFixed(1)}%`;
+                    } else {
+                        document.getElementById('dominance').textContent = 'N/A';
+                        document.getElementById('headerDominance').textContent = 'N/A';
+                         showError('BTC dominance data missing.', widgetId);
+                    }
+
+
+                    const circulating = btcData?.market_data?.circulating_supply;
+                    if (circulating !== undefined) {
+                        document.getElementById('circulating').textContent = `${this.formatNumber(circulating)} BTC`;
+                        const supplyPercentage = (circulating / 21000000) * 100;
+                        document.getElementById('supplyProgress').style.width = `${supplyPercentage}%`;
+                        document.getElementById('supplyPercentage').textContent = `${supplyPercentage.toFixed(2)}%`;
+                    } else {
+                        document.getElementById('circulating').textContent = 'N/A';
+                        document.getElementById('supplyProgress').style.width = `0%`;
+                        document.getElementById('supplyPercentage').textContent = `N/A`;
+                        showError('Circulating supply data missing.', widgetId);
+                    }
+
+
+                    const high24h = btcData?.market_data?.high_24h?.[this.currency.toLowerCase()];
+                    const low24h = btcData?.market_data?.low_24h?.[this.currency.toLowerCase()];
+
+                    document.getElementById('high24h').textContent = high24h !== undefined ? this.formatCurrency(high24h, this.currency) : 'N/A';
+                    document.getElementById('low24h').textContent = low24h !== undefined ? this.formatCurrency(low24h, this.currency) : 'N/A';
+                     if (high24h === undefined || low24h === undefined) {
+                        showError('24h high/low data missing.', priceWidgetId);
+                    }
+
+                } catch (error) {
+                    console.error('Error loading market data:', error);
+                    showError(error.message, widgetId);
+                    showError(error.message, priceWidgetId); // Show in both related widgets
+                    // Set N/A for related fields
+                    ['dominance', 'headerDominance', 'circulating', 'high24h', 'low24h', 'supplyPercentage'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.textContent = 'N/A';
+                    });
+                     if(document.getElementById('supplyProgress')) document.getElementById('supplyProgress').style.width = '0%';
+                }
+            }
+
+            async loadFearGreedIndex() {
+                const widgetId = 'fear-greed-widget';
+                clearError(widgetId);
+                try {
+                    const response = await fetch(appConfig.fearGreedApiUrl);
+                     if (!response.ok) {
+                        // Alternative.me often returns HTML error pages not JSON for some errors
+                        const errorText = await response.text();
+                        let detail = response.statusText;
+                        if (errorText.toLowerCase().includes('cloudflare') || errorText.toLowerCase().includes('rate limit')) {
+                            detail = "Rate limited or blocked by Cloudflare. Try again later.";
+                        } else if (response.headers.get("content-type")?.includes("application/json")) {
+                            const errorData = JSON.parse(errorText); // try to parse if it was json
+                            detail = errorData?.message || response.statusText;
+                        }
+                        throw new Error(`Alternative.me API error (${response.status}): ${detail}`);
+                    }
+                    const data = await response.json();
+
+                    if (data.data && data.data[0]) {
+                        const fearGreedData = data.data[0];
+                        const value = parseInt(fearGreedData.value);
+                        this.updateFearGreedGauge(value, fearGreedData.value_classification);
+
+                        const timestamp = new Date(parseInt(fearGreedData.timestamp) * 1000);
+                        document.getElementById('fearGreedUpdate').textContent = `Updated: ${timestamp.toLocaleDateString()} ${timestamp.toLocaleTimeString()}`;
+                        document.getElementById('headerFearGreed').textContent = value;
+                    } else {
+                        throw new Error('No data received from Fear & Greed API or data format unexpected.');
+                    }
+                } catch (error) {
+                    console.error('Error loading fear & greed index:', error);
+                    showError(error.message, widgetId);
+                    this.updateFearGreedGauge(50, "Neutral (Error)"); // Default on error
+                    document.getElementById('headerFearGreed').textContent = 'N/A';
+                    document.getElementById('fearGreedUpdate').textContent = 'Update failed';
+                }
+            }
+
+            updateFearGreedGauge(value, labelText = null) {
+                const canvas = document.getElementById('fearGreedGauge');
+                if (!canvas || !canvas.getContext) {
+                    console.warn("Fear & Greed gauge canvas not found or not supported.");
+                    if(document.getElementById('fearGreedValue')) document.getElementById('fearGreedValue').textContent = value || '--';
+                    if(document.getElementById('fearGreedLabel')) document.getElementById('fearGreedLabel').textContent = labelText || (value ? (value <=24 ? 'Extreme Fear' : 'Error') : 'Error');
+                    return;
+                }
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height - (canvas.height * 0.1); // Adjusted for better centering of arc
+                const radius = Math.min(centerX, centerY) * 0.8; // Adjusted radius
+                const lineWidth = Math.max(10, radius * 0.15); // Responsive line width
+
+                // Background arc
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, Math.PI, 0);
+                ctx.strokeStyle = 'rgba(120, 120, 120, 0.2)';
+                ctx.lineWidth = lineWidth;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                // Value arc
+                let color;
+                if (value <= 24) color = '#ef4444'; // Extreme Fear
+                else if (value <= 46) color = '#f59e0b'; // Fear
+                else if (value <= 54) color = '#eab308'; // Neutral
+                else if (value <= 74) color = '#22c55e'; // Greed
+                else color = '#10b981'; // Extreme Greed
+
+                const angle = Math.PI * (value / 100);
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + angle);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                // Center indicator (Needle base instead of dot on arc)
+                // This part can be complex; for simplicity, keeping text update:
+                document.getElementById('fearGreedValue').textContent = value;
+                document.getElementById('fearGreedValue').style.color = color;
+
+                let finalLabel = labelText;
+                if (!finalLabel) {
+                    if (value <= 24) finalLabel = 'Extreme Fear';
+                    else if (value <= 46) finalLabel = 'Fear';
+                    else if (value <= 54) finalLabel = 'Neutral';
+                    else if (value <= 74) finalLabel = 'Greed';
+                    else finalLabel = 'Extreme Greed';
+                }
+                document.getElementById('fearGreedLabel').textContent = finalLabel;
+                document.getElementById('fearGreedLabel').style.color = color;
+            }
+
+            async loadNetworkStats() {
+                const widgetId = 'network-stats-widget';
+                clearError(widgetId);
+                try {
+                    const [hashRateResponse, difficultyResponse, blockHeightResponse] = await Promise.all([
+                        fetch(`${appConfig.mempoolSpaceApiUrl}/v1/mining/hashrate/1w`),
+                        fetch(`${appConfig.mempoolSpaceApiUrl}/v1/difficulty-adjustment`),
+                        fetch(`${appConfig.mempoolSpaceApiUrl}/blocks/tip/height`)
+                    ]);
+
+                    if (!hashRateResponse.ok) throw new Error(`Mempool API error (${hashRateResponse.status}) for hashrate: ${await hashRateResponse.text()}`);
+                    const hashRateData = await hashRateResponse.json();
+
+                    if (!difficultyResponse.ok) throw new Error(`Mempool API error (${difficultyResponse.status}) for difficulty: ${await difficultyResponse.text()}`);
+                    const difficultyData = await difficultyResponse.json();
+
+                    if (!blockHeightResponse.ok) throw new Error(`Mempool API error (${blockHeightResponse.status}) for block height: ${await blockHeightResponse.text()}`);
+                    const blockHeight = await blockHeightResponse.text();
+
+                    const currentHashRate = hashRateData?.currentHashrate;
+                    document.getElementById('hashRate').textContent = currentHashRate ? `${(currentHashRate / 1e18).toFixed(2)} EH/s` : 'N/A';
+
+                    const currentDifficulty = difficultyData?.currentDifficulty;
+                    document.getElementById('difficulty').textContent = currentDifficulty ? `${(currentDifficulty / 1e12).toFixed(2)} T` : 'N/A';
+
+                    const difficultyChange = difficultyData?.difficultyChange;
+                    const changeDirection = difficultyChange >= 0 ? '+' : '';
+                    const nextDiffEl = document.getElementById('nextDifficulty');
+                    nextDiffEl.textContent = difficultyChange !== undefined ? `${changeDirection}${difficultyChange.toFixed(2)}%` : 'N/A';
+                    nextDiffEl.className = `metric-value ${difficultyChange >= 0 ? 'positive' : 'negative'}`;
+
+                    const blockHeightNum = parseInt(blockHeight);
+                    if (!isNaN(blockHeightNum)) {
+                        this.currentBlockHeight = blockHeightNum;
+                        document.getElementById('blockHeight').textContent = blockHeightNum.toLocaleString();
+                        document.getElementById('headerBlocks').textContent = blockHeightNum.toLocaleString();
+                        await this.updateHalvingCountdown();
+                    } else {
+                        document.getElementById('blockHeight').textContent = 'N/A';
+                        document.getElementById('headerBlocks').textContent = 'N/A';
+                         document.getElementById('halvingCountdown').textContent = `N/A`;
+                         throw new Error("Invalid block height received.");
+                    }
+
+                } catch (error) {
+                    console.error('Error loading network stats:', error);
+                    showError(error.message, widgetId);
+                     ['hashRate', 'difficulty', 'nextDifficulty', 'blockHeight', 'headerBlocks', 'halvingCountdown'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if(el) el.textContent = 'N/A';
+                     });
+                     if(document.getElementById('nextDifficulty')) document.getElementById('nextDifficulty').className = 'metric-value';
+                }
+            }
+
+            async updateHalvingCountdown() { // Called by loadNetworkStats
+                const widgetId = 'network-stats-widget'; // Error context
+                try {
+                    let currentBlock = this.currentBlockHeight;
+                    if (currentBlock === null || currentBlock === undefined || isNaN(currentBlock)) {
+                        // Attempt to re-fetch if not available, but usually set by loadNetworkStats
+                        const blockHeightResponse = await fetch(`${appConfig.mempoolSpaceApiUrl}/blocks/tip/height`);
+                        if (!blockHeightResponse.ok) throw new Error('Could not fetch block height for halving countdown.');
+                        currentBlock = parseInt(await blockHeightResponse.text());
+                        if (isNaN(currentBlock)) throw new Error("Invalid block height data for halving.");
+                        this.currentBlockHeight = currentBlock;
+                    }
+
+                    const halvingBlockInterval = 210000;
+                    const currentEpoch = Math.floor(currentBlock / halvingBlockInterval);
+                    const nextHalvingBlockTarget = (currentEpoch + 1) * halvingBlockInterval;
+
+                    if (currentBlock >= nextHalvingBlockTarget) {
+                        document.getElementById('halvingCountdown').textContent = `Passed (Block ${nextHalvingBlockTarget.toLocaleString()})`;
+                        return;
+                    }
+
+                    const blocksRemaining = nextHalvingBlockTarget - currentBlock;
+                    const avgBlockTimeMinutes = 10; // Average 10 minutes per block
+                    const minutesRemaining = blocksRemaining * avgBlockTimeMinutes;
+                    
+                    const daysRemaining = Math.floor(minutesRemaining / (60 * 24));
+                    const hoursRemaining = Math.floor((minutesRemaining % (60 * 24)) / 60);
+
+                    document.getElementById('halvingCountdown').textContent = `~${daysRemaining}d ${hoursRemaining}h (${blocksRemaining.toLocaleString()} blocks)`;
+                } catch (error) {
+                    console.error('Error updating halving countdown:', error);
+                    showError(`Halving: ${error.message}`, widgetId); // Add to existing errors or show new
+                    document.getElementById('halvingCountdown').textContent = `~ N/A`;
+                }
+            }
+
+            async loadMempoolData() {
+                const widgetId = 'mempool-data-widget';
+                clearError(widgetId);
+                try {
+                    const [feeResponse, mempoolResponse] = await Promise.all([
+                        fetch(`${appConfig.mempoolSpaceApiUrl}/v1/fees/recommended`),
+                        fetch(`${appConfig.mempoolSpaceApiUrl}/mempool`)
+                    ]);
+
+                    if (!feeResponse.ok) throw new Error(`Mempool API error (${feeResponse.status}) for fees: ${await feeResponse.text()}`);
+                    const feeData = await feeResponse.json();
+
+                    if (!mempoolResponse.ok) throw new Error(`Mempool API error (${mempoolResponse.status}) for mempool size: ${await mempoolResponse.text()}`);
+                    const mempoolData = await mempoolResponse.json();
+
+                    document.getElementById('highPriorityFee').textContent = feeData.fastestFee !== undefined ? `${feeData.fastestFee} sat/vB` : 'N/A';
+                    document.getElementById('mediumPriorityFee').textContent = feeData.halfHourFee !== undefined ? `${feeData.halfHourFee} sat/vB` : 'N/A';
+                    document.getElementById('lowPriorityFee').textContent = feeData.hourFee !== undefined ? `${feeData.hourFee} sat/vB` : 'N/A';
+                    document.getElementById('mempoolSize').textContent = mempoolData.vsize !== undefined ? `${(mempoolData.vsize / 1e6).toFixed(2)} vMB` : 'N/A';
+
+                } catch (error) {
+                    console.error('Error loading mempool data:', error);
+                    showError(error.message, widgetId);
+                    ['highPriorityFee', 'mediumPriorityFee', 'lowPriorityFee', 'mempoolSize'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.textContent = 'N/A';
+                    });
+                }
+            }
+
+            async loadRecentBlocks() {
+                const widgetId = 'recent-blocks-widget';
+                clearError(widgetId);
+                const recentBlocksContainer = document.getElementById('recentBlocks');
+                recentBlocksContainer.innerHTML = '<p class="loading-text">Loading recent blocks...</p>';
+                try {
+                    const response = await fetch(`${appConfig.mempoolSpaceApiUrl}/v1/blocks`);
+                    if (!response.ok) throw new Error(`Mempool API error (${response.status}) for recent blocks: ${await response.text()}`);
+                    const blocks = await response.json();
+
+                    if (!blocks || blocks.length === 0) {
+                         recentBlocksContainer.innerHTML = '<p class="loading-text" style="color:var(--text-muted)">No recent blocks data found.</p>';
+                         return;
+                    }
+
+                    const recentBlocksHtml = blocks.slice(0, 5).map(block => `
+                    <div class="metric-row">
+                        <span class="metric-label">Block #${block.height.toLocaleString()}</span>
+                        <span class="metric-value">${block.tx_count} txs • ${(block.size / 1e6).toFixed(2)} MB</span>
+                    </div>`).join('');
+                    recentBlocksContainer.innerHTML = recentBlocksHtml;
+                } catch (error) {
+                    console.error('Error loading recent blocks:', error);
+                    showError(error.message, widgetId);
+                    recentBlocksContainer.innerHTML = `<p class="loading-text" style="color:var(--negative-change)">Failed to load blocks.</p>`;
+                }
+            }
+
+            setupPeriodicUpdates() {
+                // Price & Mempool (more frequent)
+                setInterval(async () => {
+                    await Promise.allSettled([this.loadPriceData(), this.loadMempoolData()]);
+                }, 60000); // 1 minute
+
+                // Network Stats & Recent Blocks (less frequent)
+                setInterval(async () => {
+                   await Promise.allSettled([this.loadNetworkStats(), this.loadRecentBlocks()]);
+                }, 120000); // 2 minutes
+
+                // Fear & Greed (even less frequent)
+                setInterval(async () => {
+                    await this.loadFearGreedIndex();
+                }, 300000); // 5 minutes
+
+                // Market Overview (other coins)
+                setInterval(() => {
+                    fetchMarketOverviewData(this.currency);
+                }, 180000); // 3 minutes
+
+                // News (cached, but can have a refresh interval for checking cache validity or re-fetching)
+                // The news fetch already has a 5-min cache, so an explicit interval for it might be redundant
+                // unless we want to force re-validate more often.
+            }
+
+            formatCurrency(value, currencyCode, options = {}) {
+                if (value === null || value === undefined || isNaN(value)) return 'N/A';
+                
+                const defaultOptions = { style: 'currency', currency: currencyCode.toUpperCase() };
+                const effectiveOptions = { ...defaultOptions, ...options };
+
+                // Auto-adjust fraction digits for very small or very large fiat values
+                if (['usd', 'eur', 'gbp', 'jpy', 'zar'].includes(currencyCode.toLowerCase())) {
+                    if (Math.abs(value) > 0 && Math.abs(value) < 0.01 && !options.minimumFractionDigits) {
+                        effectiveOptions.minimumFractionDigits = 4; // Show more for tiny values
+                        effectiveOptions.maximumFractionDigits = 4;
+                    } else if (Math.abs(value) >= 10000 && !options.minimumFractionDigits) {
+                         effectiveOptions.minimumFractionDigits = 0; // Fewer for large whole numbers
+                         effectiveOptions.maximumFractionDigits = 0;
+                    } else if (value % 1 === 0 && !options.minimumFractionDigits && Math.abs(value) < 10000){
+                         effectiveOptions.minimumFractionDigits = 0;
+                         effectiveOptions.maximumFractionDigits = 0;
+                    } else {
+                        effectiveOptions.minimumFractionDigits = options.minimumFractionDigits || 2;
+                        effectiveOptions.maximumFractionDigits = options.maximumFractionDigits || 2;
+                    }
+                } else { // For crypto like BTC, or other non-standard
+                    effectiveOptions.minimumFractionDigits = options.minimumFractionDigits || (currencyCode.toLowerCase() === 'btc' ? 4 : 2);
+                    effectiveOptions.maximumFractionDigits = options.maximumFractionDigits || (currencyCode.toLowerCase() === 'btc' ? 8 : 2);
+                }
+                
+                try {
+                    return new Intl.NumberFormat('en-US', effectiveOptions).format(value);
+                } catch (e) {
+                    console.warn(`Intl.NumberFormat failed for ${currencyCode}: ${e.message}. Using fallback.`);
+                    const prefix = currencyCode.toUpperCase() + ' ';
+                    return `${prefix}${value.toFixed(effectiveOptions.maximumFractionDigits)}`;
+                }
+            }
+
+            formatLargeNumber(value, currency) {
+                if (value === null || value === undefined || isNaN(value)) return 'N/A';
+                const currencyUpperCase = currency.toUpperCase();
+
+                if (value >= 1e12) { // Trillions
+                    return this.formatCurrency(value / 1e12, currencyUpperCase, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' T';
+                } else if (value >= 1e9) { // Billions
+                    return this.formatCurrency(value / 1e9, currencyUpperCase, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' B';
+                } else if (value >= 1e6) { // Millions
+                    return this.formatCurrency(value / 1e6, currencyUpperCase, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' M';
+                }
+                return this.formatCurrency(value, currencyUpperCase);
+            }
+
+            formatNumber(value) {
+                if (value === null || value === undefined || isNaN(value)) return 'N/A';
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(value);
             }
         }
-        
-        async updateHalvingCountdown() {
-            const widgetId = 'network-stats-widget'; 
+
+        // --- CURRENCY CONVERTER ---
+        const CONVERTER_CURRENCIES = ["USD", "EUR", "ZAR", "JPY", "GBP", "BTC"];
+        const fromEl = document.getElementById('fromCurrency');
+        const toEl = document.getElementById('toCurrency');
+        const amountEl = document.getElementById('amount');
+        const resultEl = document.getElementById('result');
+
+        if (fromEl && toEl) {
+            CONVERTER_CURRENCIES.forEach(c => {
+                fromEl.add(new Option(c, c)); toEl.add(new Option(c, c));
+            });
+            fromEl.value = "USD"; toEl.value = "BTC";
+        }
+
+        async function convert() {
+            if (!amountEl || !fromEl || !toEl || !resultEl) {
+                console.error("Converter elements not found.");
+                if(resultEl) resultEl.textContent = 'Converter UI error.';
+                return;
+            }
+            const amount = parseFloat(amountEl.value);
+            const fromC = fromEl.value;
+            const toC = toEl.value;
+            resultEl.textContent = 'Converting...';
+
+            if (isNaN(amount) || amount <= 0) { resultEl.textContent = 'Please enter a valid positive amount.'; return; }
+            if (fromC === toC) {
+                const precision = (fromC === 'BTC') ? 8 : 2;
+                resultEl.textContent = `${amount.toFixed(precision)} ${fromC}`; return;
+            }
+
             try {
-                let currentBlock = this.currentBlockHeight;
-                if (currentBlock === null || currentBlock === undefined) { 
-                    const blockHeightResponse = await fetch(`${appConfig.mempoolSpaceApiUrl}/blocks/tip/height`);
-                    if (!blockHeightResponse.ok) throw new Error('Could not fetch block height for halving');
-                    currentBlock = parseInt(await blockHeightResponse.text());
-                    this.currentBlockHeight = currentBlock; 
+                let convertedAmount;
+                const proxy = appConfig.redditApiProxy; // Re-using for potential CORS issues with any API
+
+                if (fromC === 'BTC' && toC !== 'BTC') { // BTC to Fiat
+                    const res = await fetch(`${proxy}${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${toC.toLowerCase()}`);
+                    if (!res.ok) throw new Error(`CoinGecko API error (${res.status}) for BTC to ${toC}`);
+                    const data = await res.json();
+                    if (!data.bitcoin || data.bitcoin[toC.toLowerCase()] === undefined) throw new Error(`Rate BTC to ${toC} unavailable from CoinGecko`);
+                    convertedAmount = amount * data.bitcoin[toC.toLowerCase()];
+                } else if (fromC !== 'BTC' && toC === 'BTC') { // Fiat to BTC
+                    const res = await fetch(`${proxy}${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${fromC.toLowerCase()}`);
+                    if (!res.ok) throw new Error(`CoinGecko API error (${res.status}) for ${fromC} to BTC`);
+                    const data = await res.json();
+                    if (!data.bitcoin || data.bitcoin[fromC.toLowerCase()] === undefined) throw new Error(`Rate ${fromC} to BTC unavailable from CoinGecko`);
+                    convertedAmount = amount / data.bitcoin[fromC.toLowerCase()];
+                } else { // Fiat to Fiat
+                    const frankfurterUrl = `https://api.frankfurter.app/latest?amount=${amount}&from=${fromC}&to=${toC}`;
+                    const res = await fetch(`${proxy}${frankfurterUrl}`);
+                    if (!res.ok) throw new Error(`Frankfurter API error (${res.status}) for ${fromC} to ${toC}`);
+                    const data = await res.json();
+                    if (!data.rates || data.rates[toC] === undefined) throw new Error(`Rate ${fromC} to ${toC} unavailable from Frankfurter`);
+                    convertedAmount = data.rates[toC];
                 }
-                if (isNaN(currentBlock)) throw new Error("Invalid block height data for halving.");
+                const outputPrecision = (toC === 'BTC') ? 8 : 2;
+                const inputDisplayAmount = (fromC === 'BTC') ? amount.toFixed(Math.min(8, (amount.toString().split('.')[1] || '').length)) : amount.toFixed(2);
+                resultEl.textContent = `${inputDisplayAmount} ${fromC} = ${convertedAmount.toFixed(outputPrecision)} ${toC}`;
+            } catch (err) {
+                resultEl.textContent = `Error: ${err.message.substring(0,100)}`; console.error("Conversion Error:", err);
+            }
+        }
 
-                const halvingBlockInterval = 210000;
-                const currentEpoch = Math.floor(currentBlock / halvingBlockInterval);
-                const nextHalvingBlockTarget = (currentEpoch + 1) * halvingBlockInterval;
+        // --- ADDITIONAL WIDGETS AND FEATURES ---
+        const newsContainer = document.getElementById('news-container');
+        const newsLoadingElement = document.getElementById('loading');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const copyrightYearEl = document.getElementById('copyright-year');
+        const quoteButton = document.getElementById('quote-button');
+        const marketOverviewContent = document.getElementById('market-overview-content');
+        const termTitleEl = document.getElementById('term-title');
+        const termDefinitionEl = document.getElementById('term-definition');
+        const newTermButton = document.getElementById('new-term-button');
+        const mainCurrencySelect = document.getElementById('currencySelect');
 
-                if (currentBlock >= nextHalvingBlockTarget) {
-                    document.getElementById('halvingCountdown').textContent = `Halving passed/imminent (Block ${nextHalvingBlockTarget.toLocaleString()})`;
+        function loadPreferences() {
+            const savedCurrency = localStorage.getItem(appConfig.storageKeys.selectedCurrency) || appConfig.defaultCurrency;
+            if (mainCurrencySelect) {
+                mainCurrencySelect.value = savedCurrency;
+                 // Dispatch a change event so other parts of the app can react if needed
+                mainCurrencySelect.dispatchEvent(new Event('change'));
+            }
+        }
+
+        function globalFormatCurrency(amount, currencyCode, options = {}) { // Fallback, prefer bitnexysApp.formatCurrency
+            if (amount === null || amount === undefined || isNaN(amount)) return 'N/A';
+            const defaultOptions = { style: 'currency', currency: currencyCode.toUpperCase(), minimumFractionDigits: 2, maximumFractionDigits: 2 };
+            try {
+                return new Intl.NumberFormat('en-US', { ...defaultOptions, ...options }).format(amount);
+            } catch (e) {
+                console.warn(`Global formatting failed for ${currencyCode}, using basic fallback. Error: ${e.message}`);
+                const symbolMap = { 'usd': '$', 'eur': '€', 'gbp': '£', 'jpy': '¥', 'zar': 'R' };
+                const prefix = symbolMap[currencyCode.toLowerCase()] || currencyCode.toUpperCase() + ' ';
+                return `${prefix}${amount.toFixed(options.maximumFractionDigits !== undefined ? options.maximumFractionDigits : 2)}`;
+            }
+        }
+
+        // MARKET OVERVIEW (Other Coins)
+        async function fetchMarketOverviewData(currency) {
+            const widgetId = 'market-overview-widget';
+            clearError(widgetId);
+            if (!marketOverviewContent) { console.warn("Market overview content element not found."); return; }
+            marketOverviewContent.innerHTML = '<p class="loading-text">Loading market data...</p>';
+
+            const coinIds = 'ethereum,solana,binancecoin,cardano,ripple,dogecoin,tron,chainlink,polkadot,litecoin'; // Expanded list
+            const coinDetails = { // Ensure this matches coinIds
+                'ethereum': { name: 'Ethereum', symbol: 'ETH', logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
+                'solana': { name: 'Solana', symbol: 'SOL', logo: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
+                'binancecoin': { name: 'BNB', symbol: 'BNB', logo: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' },
+                'cardano': { name: 'Cardano', symbol: 'ADA', logo: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' },
+                'ripple': { name: 'XRP', symbol: 'XRP', logo: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' },
+                'dogecoin': { name: 'Dogecoin', symbol: 'DOGE', logo: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png'},
+                'tron': { name: 'TRON', symbol: 'TRX', logo: 'https://assets.coingecko.com/coins/images/1094/small/tron-logo.png'},
+                'chainlink': { name: 'Chainlink', symbol: 'LINK', logo: 'https://assets.coingecko.com/coins/images/877/small/chainlink-new-logo.png'},
+                'polkadot': { name: 'Polkadot', symbol: 'DOT', logo: 'https://assets.coingecko.com/coins/images/12171/small/polkadot.png'},
+                'litecoin': { name: 'Litecoin', symbol: 'LTC', logo: 'https://assets.coingecko.com/coins/images/2/small/litecoin.png'}
+            };
+
+            try {
+                const response = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=${coinIds}&vs_currencies=${currency.toLowerCase()}&include_24hr_change=true`);
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(`CoinGecko API Error: ${errorData?.error || response.statusText} (Status ${response.status})`);
+                }
+                const data = await response.json();
+
+                if (Object.keys(data).length === 0) {
+                    marketOverviewContent.innerHTML = '<p class="loading-text" style="color:var(--text-muted)">No data available for other coins.</p>';
                     return;
                 }
 
-                const blocksRemaining = nextHalvingBlockTarget - currentBlock;
-                const avgBlockTime = 10; 
-                const minutesRemaining = blocksRemaining * avgBlockTime;
-                const daysRemaining = Math.floor(minutesRemaining / (60 * 24));
-                const hoursRemaining = Math.floor((minutesRemaining % (60*24)) / 60);
-
-                document.getElementById('halvingCountdown').textContent = `~${daysRemaining}d ${hoursRemaining}h (to block ${nextHalvingBlockTarget.toLocaleString()})`;
-            } catch (error) {
-                 console.error('Error updating halving countdown:', error);
-                 showError(`Halving countdown: ${error.message}`, widgetId);
-                 document.getElementById('halvingCountdown').textContent = `~ N/A`;
-            }
-        }
-
-        async loadMempoolData() {
-            const widgetId = 'mempool-data-widget';
-            try {
-                const [feeResponse, mempoolResponse] = await Promise.all([
-                    fetch(`${appConfig.mempoolSpaceApiUrl}/v1/fees/recommended`),
-                    fetch(`${appConfig.mempoolSpaceApiUrl}/mempool`)
-                ]);
-
-                if (!feeResponse.ok) throw new Error(`Mempool API error (${feeResponse.status}) for fees`);
-                const feeData = await feeResponse.json();
-                
-                if (!mempoolResponse.ok) throw new Error(`Mempool API error (${mempoolResponse.status}) for mempool size`);
-                const mempoolData = await mempoolResponse.json();
-
-                document.getElementById('highPriorityFee').textContent = `${feeData.fastestFee} sat/vB`;
-                document.getElementById('mediumPriorityFee').textContent = `${feeData.halfHourFee} sat/vB`;
-                document.getElementById('lowPriorityFee').textContent = `${feeData.hourFee} sat/vB`;
-                document.getElementById('mempoolSize').textContent = `${(mempoolData.vsize / 1e6).toFixed(2)} vMB`; 
-                clearError(widgetId);
-            } catch (error) {
-                console.error('Error loading mempool data:', error);
-                showError(error.message, widgetId);
-            }
-        }
-
-        async loadRecentBlocks() {
-            const widgetId = 'recent-blocks-widget';
-            try {
-                const response = await fetch(`${appConfig.mempoolSpaceApiUrl}/v1/blocks`);
-                if (!response.ok) throw new Error(`Mempool API error (${response.status}) for recent blocks`);
-                const blocks = await response.json();
-
-                const recentBlocksHtml = blocks.slice(0, 5).map(block => `
-                    <div class="metric-row">
-                        <span class="metric-label">#${block.height.toLocaleString()}</span>
-                        <span class="metric-value">${block.tx_count} txs • ${(block.size / 1e6).toFixed(2)} MB</span>
-                    </div>`).join('');
-                document.getElementById('recentBlocks').innerHTML = recentBlocksHtml;
-                clearError(widgetId);
-            } catch (error) {
-                console.error('Error loading recent blocks:', error);
-                showError(error.message, widgetId);
-                document.getElementById('recentBlocks').innerHTML = `<p class="loading-text" style="color:var(--negative-change)">Failed to load blocks.</p>`;
-            }
-        }
-
-        async loadPriceChart() {
-            const widgetId = 'price-chart-widget';
-            clearError(widgetId);
-            const canvas = document.getElementById('priceChart');
-            const ctx = canvas.getContext('2d');
-
-            if (this.priceChart) {
-                this.priceChart.destroy();
-                this.priceChart = null;
-            }
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillStyle = document.body.classList.contains('dark-mode') ? '#cccccc' : '#666666';
-            ctx.font = '16px Arial, sans-serif'; // Added sans-serif fallback
-            ctx.fillText('Loading chart data...', canvas.width / 2, canvas.height / 2);
-            ctx.restore();
-
-            try {
-                const days = this.currentTimeframe === 'max' ? 'max' : this.currentTimeframe;
-                const interval = (days === '1' || parseInt(days) <= 2) ? 'hourly' : 'daily'; 
-                
-                const response = await fetch(`${appConfig.coinGeckoApiUrl}/coins/bitcoin/market_chart?vs_currency=${this.currency.toLowerCase()}&days=${days}&interval=${interval}`);
-                
-                if (!response.ok) {
-                    let errorMsg = `CoinGecko API error (${response.status})`;
-                    try {
-                        const errorData = await response.json();
-                        errorMsg = `Chart data error: ${errorData.error || response.statusText || 'Unknown API issue'}`;
-                    } catch (e) { /* Failed to parse error JSON */ }
-                    throw new Error(errorMsg);
-                }
-                const data = await response.json();
-
-                if (!data.prices || data.prices.length === 0) {
-                    throw new Error('No price data returned from API.');
-                }
-                
-                this.renderPriceChart(data.prices);
-                clearError(widgetId); 
-            } catch (error) {
-                console.error('Error loading price chart:', error);
-                showError(`Chart: ${error.message}`, widgetId);
-                
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.save();
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = 'red';
-                ctx.font = '14px Arial, sans-serif'; // Added sans-serif fallback
-                const maxErrorWidth = canvas.width * 0.9;
-                let displayError = error.message;
-                if (ctx.measureText(displayError).width > maxErrorWidth) {
-                    while(ctx.measureText(displayError + '...').width > maxErrorWidth && displayError.length > 10) {
-                        displayError = displayError.slice(0, -1);
-                    }
-                    displayError += '...';
-                }
-                ctx.fillText(displayError, canvas.width / 2, canvas.height / 2);
-                ctx.restore();
-            }
-        }
-
-        renderPriceChart(priceData) {
-            const ctx = document.getElementById('priceChart').getContext('2d');
-            
-            if (this.priceChart) { 
-                this.priceChart.destroy();
-            }
-
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
-            const tickColor = isDarkMode ? '#b0b0b0' : '#555555';
-            const legendLabelColor = isDarkMode ? '#e0e0e0' : '#333333';
-            const tooltipBgColor = isDarkMode ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.9)';
-            const tooltipFontColor = isDarkMode ? '#f0f0f0' : '#333333';
-            const chartBorderColor = '#f7931a'; 
-            const chartBackgroundColor = isDarkMode ? 'rgba(247, 147, 26, 0.15)' : 'rgba(247, 147, 26, 0.07)';
-
-            const labels = priceData.map(point => {
-                const date = new Date(point[0]);
-                if (this.currentTimeframe === '1' || parseInt(this.currentTimeframe) <= 2) { 
-                    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                }
-                return date.toLocaleDateString([], {month: 'short', day: 'numeric'}); 
-            });
-            
-            const prices = priceData.map(point => point[1]);
-            
-            this.priceChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: `Bitcoin Price (${this.currency.toUpperCase()})`,
-                        data: prices,
-                        borderColor: chartBorderColor,
-                        backgroundColor: chartBackgroundColor,
-                        borderWidth: 1.5,
-                        fill: true,
-                        tension: 0.2, 
-                        pointRadius: (this.currentTimeframe === '1' || parseInt(this.currentTimeframe) <= 7) ? 1.5 : 0, 
-                        pointHoverRadius: 5,
-                        pointBackgroundColor: chartBorderColor,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false, 
-                    animation: {
-                        duration: 300 
-                    },
-                    plugins: {
-                        legend: {
-                            display: true, 
-                            position: 'top',
-                            labels: {
-                                color: legendLabelColor,
-                                font: {
-                                    size: 12,
-                                    family: 'Arial, sans-serif' // Added fallback
-                                }
-                            }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: tooltipBgColor,
-                            titleColor: tooltipFontColor,
-                            bodyColor: tooltipFontColor,
-                            borderColor: chartBorderColor,
-                            borderWidth: 1,
-                            titleFont: { family: 'Arial, sans-serif', weight: 'bold'}, // Added fallback
-                            bodyFont: { family: 'Arial, sans-serif' }, // Added fallback
-                            padding: 10,
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.y !== null) {
-                                        label += this.formatCurrency(context.parsed.y, this.currency, { 
-                                            minimumFractionDigits: 2, 
-                                            maximumFractionDigits: (this.currency.toLowerCase() === 'btc' ? 8 : 2)
-                                        });
-                                    }
-                                    return label;
-                                }.bind(this) 
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: gridColor,
-                                drawBorder: false,
-                            },
-                            ticks: {
-                                color: tickColor,
-                                maxTicksLimit: (this.currentTimeframe === '1' || parseInt(this.currentTimeframe) <=2) ? 10 : 7, 
-                                font: {
-                                    size: 10,
-                                    family: 'Arial, sans-serif' // Added fallback
-                                }
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: gridColor,
-                                drawBorder: false,
-                            },
-                            ticks: {
-                                color: tickColor,
-                                font: {
-                                    size: 10,
-                                    family: 'Arial, sans-serif' // Added fallback
-                                },
-                                callback: function(value) {
-                                    return this.formatCurrency(value, this.currency);
-                                }.bind(this)
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        setupPeriodicUpdates() {
-            setInterval(() => {
-                this.loadPriceData(); 
-                this.loadMempoolData();
-            }, 60000); 
-
-            setInterval(() => {
-                this.loadNetworkStats(); 
-                this.loadRecentBlocks();
-            }, 120000); 
-
-            setInterval(() => {
-                this.loadFearGreedIndex();
-            }, 300000); 
-        }
-
-        formatCurrency(value, currencyCode, options = {}) {
-            const defaultOptions = { style: 'currency', currency: currencyCode.toUpperCase() };
-             const effectiveOptions = {...defaultOptions, ...options};
-
-            if (currencyCode.toLowerCase() === 'usd' || currencyCode.toLowerCase() === 'eur' || currencyCode.toLowerCase() === 'gbp' ){
-                if (value < 1 && value > -1 && value !==0) { 
-                     effectiveOptions.minimumFractionDigits = 2;
-                     effectiveOptions.maximumFractionDigits = 2;
-                } else {
-                     effectiveOptions.minimumFractionDigits = (value % 1 === 0 && !options.minimumFractionDigits) ? 0 : 2; 
-                     effectiveOptions.maximumFractionDigits = 2;
-                }
-            } else { 
-                effectiveOptions.minimumFractionDigits = (value % 1 === 0 && !options.minimumFractionDigits) ? 0 : 2;
-                effectiveOptions.maximumFractionDigits = (currencyCode.toLowerCase() === 'btc' ? 8 : 2);
-            }
-             if (value === null || value === undefined) return 'N/A';
-
-            return new Intl.NumberFormat('en-US', effectiveOptions).format(value);
-        }
-
-        formatLargeNumber(value, currency) {
-            if (value === null || value === undefined) return 'N/A';
-            if (value >= 1e12) {
-                return this.formatCurrency(value / 1e12, currency, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'T';
-            } else if (value >= 1e9) {
-                return this.formatCurrency(value / 1e9, currency, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'B';
-            } else if (value >= 1e6) {
-                return this.formatCurrency(value / 1e6, currency, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'M';
-            }
-            return this.formatCurrency(value, currency);
-        }
-
-        formatNumber(value) {
-            if (value === null || value === undefined) return 'N/A';
-            return new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        }
-    } // End of BitNexys class
-
-
-    // --- CURRENCY CONVERTER ---
-    const CONVERTER_CURRENCIES = ["USD", "EUR", "ZAR", "JPY", "GBP", "BTC"];
-    const fromEl = document.getElementById('fromCurrency');
-    const toEl = document.getElementById('toCurrency');
-    const amountEl = document.getElementById('amount');
-    const resultEl = document.getElementById('result');
-
-    CONVERTER_CURRENCIES.forEach(c => {
-        fromEl.add(new Option(c, c)); toEl.add(new Option(c, c));
-    });
-    fromEl.value = "USD"; toEl.value = "BTC"; 
-
-    async function convert() {
-        const amount = parseFloat(amountEl.value);
-        const fromC = fromEl.value;
-        const toC = toEl.value;
-        resultEl.textContent = 'Converting...';
-
-        if (isNaN(amount) || amount < 0) { resultEl.textContent = 'Please enter a valid amount.'; return; }
-        if (fromC === toC) {
-            const precision = (fromC === 'BTC') ? 8 : 2;
-            resultEl.textContent = `${amount.toFixed(precision)} ${fromC}`; return;
-        }
-
-        try {
-            let convertedAmount;
-            if (fromC === 'BTC' && toC !== 'BTC') { 
-                const res = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${toC.toLowerCase()}`);
-                if (!res.ok) throw new Error(`CoinGecko API error (${res.status})`);
-                const data = await res.json();
-                if (!data.bitcoin || !data.bitcoin[toC.toLowerCase()]) throw new Error(`Rate BTC to ${toC} unavailable`);
-                convertedAmount = amount * data.bitcoin[toC.toLowerCase()];
-            } else if (fromC !== 'BTC' && toC === 'BTC') { 
-                const res = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=bitcoin&vs_currencies=${fromC.toLowerCase()}`);
-                if (!res.ok) throw new Error(`CoinGecko API error (${res.status})`);
-                const data = await res.json();
-                if (!data.bitcoin || !data.bitcoin[fromC.toLowerCase()]) throw new Error(`Rate ${fromC} to BTC unavailable`);
-                convertedAmount = amount / data.bitcoin[fromC.toLowerCase()];
-            } else { 
-                const res = await fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${fromC}&to=${toC}`);
-                if (!res.ok) throw new Error(`Frankfurter API error (${res.status})`);
-                const data = await res.json();
-                if (!data.rates || data.rates[toC] === undefined) throw new Error(`Rate ${fromC} to ${toC} unavailable`);
-                convertedAmount = data.rates[toC];
-            }
-            const outputPrecision = (toC === 'BTC') ? 8 : 2;
-            const inputDisplayAmount = (fromC === 'BTC') ? amount.toFixed(8) : amount.toFixed(2);
-            resultEl.textContent = `${inputDisplayAmount} ${fromC} = ${convertedAmount.toFixed(outputPrecision)} ${toC}`;
-        } catch (err) {
-            resultEl.textContent = `Error: ${err.message}`; console.error("Conversion Error:", err);
-        }
-    }
-    
-    // --- ADDITIONAL WIDGETS AND FEATURES (News, Wallet, Terms, Quotes) ---
-    const newsContainer = document.getElementById('news-container');
-    const newsLoadingElement = document.getElementById('loading');
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    const categoryButtons = document.querySelectorAll('.category-btn');
-    const copyrightYearEl = document.getElementById('copyright-year');
-    const quoteButton = document.getElementById('quote-button');
-    const marketOverviewContent = document.getElementById('market-overview-content');
-    const termTitleEl = document.getElementById('term-title');
-    const termDefinitionEl = document.getElementById('term-definition');
-    const newTermButton = document.getElementById('new-term-button');
-    const mainCurrencySelect = document.getElementById('currencySelect'); 
-
-    function loadPreferences() {
-        const darkModeSaved = localStorage.getItem(appConfig.storageKeys.darkMode);
-        if (darkModeToggle) { 
-            if (darkModeSaved === 'true') { 
-                document.body.classList.add('dark-mode');
-                darkModeToggle.checked = true;
-            } else {
-                document.body.classList.remove('dark-mode');
-                darkModeToggle.checked = false;
-            }
-        }
-
-        const savedCurrency = localStorage.getItem(appConfig.storageKeys.selectedCurrency) || appConfig.defaultCurrency;
-        if(mainCurrencySelect) {
-             mainCurrencySelect.value = savedCurrency;
-        }
-    }
-
-    // This is the primary toggleDarkMode function that will be used.
-    // It updates chart styles directly without re-fetching data.
-    function toggleDarkMode() {
-        const isDarkMode = document.body.classList.toggle('dark-mode');
-        localStorage.setItem(appConfig.storageKeys.darkMode, isDarkMode);
-        
-        if (bitnexysApp && bitnexysApp.priceChart) {
-            // Update chart options directly for theme change without re-fetching data
-            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
-            const tickColor = isDarkMode ? '#b0b0b0' : '#555555';
-            const legendLabelColor = isDarkMode ? '#e0e0e0' : '#333333';
-            const tooltipBgColor = isDarkMode ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.9)';
-            const tooltipFontColor = isDarkMode ? '#f0f0f0' : '#333333';
-            const chartBackgroundColor = isDarkMode ? 'rgba(247, 147, 26, 0.15)' : 'rgba(247, 147, 26, 0.07)';
-
-            const chart = bitnexysApp.priceChart;
-            chart.options.scales.x.grid.color = gridColor;
-            chart.options.scales.x.ticks.color = tickColor;
-            chart.options.scales.y.grid.color = gridColor;
-            chart.options.scales.y.ticks.color = tickColor;
-            
-            chart.options.plugins.legend.labels.color = legendLabelColor;
-            
-            chart.options.plugins.tooltip.backgroundColor = tooltipBgColor;
-            chart.options.plugins.tooltip.titleColor = tooltipFontColor;
-            chart.options.plugins.tooltip.bodyColor = tooltipFontColor;
-
-            chart.data.datasets.forEach(dataset => {
-                dataset.backgroundColor = chartBackgroundColor;
-            });
-
-            chart.update('none'); // 'none' to prevent re-animation
-        } else if (bitnexysApp) {
-            // If chart doesn't exist yet but app does, trigger a load (it will pick up new theme)
-             bitnexysApp.loadPriceChart();
-        }
-    }
-
-    function globalFormatCurrency(amount, currencyCode, options = {}) {
-        const defaultOptions = { style: 'currency', currency: currencyCode.toUpperCase(), minimumFractionDigits: 2, maximumFractionDigits: 2 };
-        try {
-            return new Intl.NumberFormat(undefined, {...defaultOptions, ...options}).format(amount);
-        } catch (e) {
-            console.warn(`Formatting failed for ${currencyCode}, using fallback. Error: ${e.message}`);
-            const symbolMap = { 'usd': '$', 'eur': '€', 'gbp': '£', 'jpy': '¥', 'zar': 'R' };
-            const prefix = symbolMap[currencyCode.toLowerCase()] || currencyCode.toUpperCase() + ' ';
-            return `${prefix}${amount.toFixed(options.maximumFractionDigits !== undefined ? options.maximumFractionDigits : 2)}`;
-        }
-    }
-    
-    // MARKET OVERVIEW (Other Coins)
-    async function fetchMarketOverviewData(currency) {
-        const widgetId = 'market-overview-widget';
-        clearError(widgetId);
-        marketOverviewContent.innerHTML = '<p class="loading-text">Loading market data...</p>';
-        const coinIds = 'ethereum,solana,binancecoin,cardano,ripple'; 
-        const coinDetails = {
-            'ethereum': { name: 'Ethereum', symbol: 'ETH', logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
-            'solana': { name: 'Solana', symbol: 'SOL', logo: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
-            'binancecoin': { name: 'BNB', symbol: 'BNB', logo: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' },
-            'cardano': { name: 'Cardano', symbol: 'ADA', logo: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' },
-            'ripple': { name: 'XRP', symbol: 'XRP', logo: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' }
-        };
-
-        try {
-            const response = await fetch(`${appConfig.coinGeckoApiUrl}/simple/price?ids=${coinIds}&vs_currencies=${currency.toLowerCase()}&include_24hr_change=true`);
-            if (!response.ok) throw new Error(`CoinGecko API Error: ${response.statusText} (Status ${response.status})`);
-            const data = await response.json();
-
-            let html = '';
-            for (const id in data) {
-                if (data[id] && coinDetails[id]) {
-                    const price = data[id][currency.toLowerCase()];
-                    const change = data[id][`${currency.toLowerCase()}_24h_change`];
-                    html += `
+                let html = '';
+                for (const id in data) {
+                    if (data[id] && coinDetails[id]) {
+                        const price = data[id][currency.toLowerCase()];
+                        const change = data[id][`${currency.toLowerCase()}_24h_change`];
+                        html += `
                         <div class="metric-row">
                             <span class="metric-label">
                                 <img src="${coinDetails[id].logo}" alt="${coinDetails[id].name} logo" class="coin-logo" loading="lazy">
@@ -1363,179 +1404,706 @@
                             </span>
                             <span class="metric-value">
                                 ${bitnexysApp ? bitnexysApp.formatCurrency(price, currency) : globalFormatCurrency(price, currency)}
-                                <small class="${change >= 0 ? 'positive' : 'negative'}">(${change ? change.toFixed(2) : 'N/A'}%)</small>
+                                <small class="${change >= 0 ? 'positive' : 'negative'}">(${(change !== null && change !== undefined) ? change.toFixed(2) : 'N/A'}%)</small>
                             </span>
                         </div>`;
+                    }
+                }
+                marketOverviewContent.innerHTML = html || '<p class="loading-text" style="color:var(--text-muted)">No data available for other coins.</p>';
+            } catch (error) {
+                console.error("Market Overview Error:", error);
+                showError(error.message || 'Failed to load market overview.', widgetId);
+                marketOverviewContent.innerHTML = '<p class="loading-text" style="color: var(--negative-change);">Error loading data. Check console.</p>';
+            }
+        }
+
+        // CRYPTO TERM
+        function displayCryptoTerm() {
+            const randomIndex = Math.floor(Math.random() * appConfig.cryptoTerms.length);
+            const term = appConfig.cryptoTerms[randomIndex];
+            if (termTitleEl && termDefinitionEl) {
+                termTitleEl.textContent = term.term;
+                termDefinitionEl.textContent = term.definition;
+            } else {
+                console.warn("Crypto term display elements not found.");
+            }
+        }
+
+        // NEWS FEED (Reddit)
+        async function fetchNews(category = 'all_crypto') {
+            const widgetId = 'news-feed-widget';
+            clearError(widgetId);
+            if(newsLoadingElement) newsLoadingElement.style.display = 'block';
+            if(newsContainer) newsContainer.innerHTML = '';
+
+            const cacheKey = `${category}_${new Date().getHours()}`; // Cache for an hour to respect Reddit's API more
+            if (cachedNews[cacheKey] && (Date.now() - cachedNews[cacheKey].timestamp < 3600000)) { // 1 hour cache
+                displayNews(cachedNews[cacheKey].data);
+                if(newsLoadingElement) newsLoadingElement.style.display = 'none';
+                return;
+            }
+
+            try {
+                const rawRedditUrl = redditSources[category];
+                if (!rawRedditUrl) throw new Error(`Invalid news category: ${category}`);
+                
+                const redditUrl = appConfig.redditApiProxy ? `${appConfig.redditApiProxy}${encodeURIComponent(rawRedditUrl)}` : rawRedditUrl;
+
+                const response = await fetch(redditUrl, { headers: { 'Accept': 'application/json' }}); // Be explicit for proxies
+                if (!response.ok) {
+                    let errorMsg = `Failed to fetch news (status: ${response.status} ${response.statusText})`;
+                    try {
+                        const errorData = await response.json();
+                        errorMsg = `Reddit API Error: ${errorData.message || response.statusText} (status: ${response.status})`;
+                    } catch (e) { /* ignore if error response is not JSON */
+                        const textError = await response.text();
+                        if (textError.toLowerCase().includes("too many requests")) {
+                            errorMsg = "Reddit API rate limit hit. Please try again later.";
+                        } else if (textError.length < 200) { // Short text might be a simple error message
+                            errorMsg = `Reddit API Error (${response.status}): ${textError.substring(0,100)}`;
+                        }
+                    }
+                    throw new Error(errorMsg);
+                }
+                const data = await response.json();
+                const posts = data?.data?.children
+                    .filter(post => post?.data?.title && post?.data?.permalink && !post?.data?.stickied && !post?.data?.over_18 && (post.data.selftext || post.data.url_overridden_by_dest) && post.data.ups > 10) // Basic quality filter
+                    .slice(0, 8) || []; // Limit to 8 posts
+
+                cachedNews[cacheKey] = { data: posts, timestamp: Date.now() };
+                displayNews(posts);
+            } catch (error) {
+                console.error("News Fetch Error:", error);
+                showError(error.message || 'Failed to load news. Try again later.', widgetId);
+                if(newsContainer) newsContainer.innerHTML = `<p class="loading-text" style="color:var(--negative-change); padding: 30px;">Error loading news. Reddit might be unavailable or rate-limiting. Try another category or check back later.</p>`;
+            } finally {
+                if(newsLoadingElement) newsLoadingElement.style.display = 'none';
+            }
+        }
+
+        function escapeHTML(str) {
+            if (typeof str !== 'string') return '';
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        }
+
+        function displayNews(posts) {
+            if(!newsContainer) { console.warn("News container not found."); return; }
+            newsContainer.innerHTML = '';
+            if (!posts || posts.length === 0) {
+                newsContainer.innerHTML = '<p style="text-align: center; opacity: 0.8; padding: 30px;">No relevant news found in this category, or Reddit is rate-limiting. Try again later!</p>';
+                return;
+            }
+            posts.forEach(post => {
+                const item = post.data;
+                const card = document.createElement('div');
+                card.className = 'news-item';
+                const createdDate = new Date(item.created_utc * 1000);
+                const formattedDate = createdDate.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+
+                const title = escapeHTML(item.title);
+                let selftext = item.selftext ? escapeHTML(item.selftext) : '';
+                if (selftext.length > 150) selftext = selftext.substring(0, 147) + '...';
+
+                let imageUrl = '';
+                 // Prefer preview images if available and valid
+                if (item.preview?.images?.[0]?.source?.url) {
+                    imageUrl = item.preview.images[0].source.url.replace(/&amp;/g, '&'); // Fix escaped ampersands
+                } else if (item.thumbnail && item.thumbnail.startsWith('http') && item.thumbnail !== 'self' && item.thumbnail !== 'default' && item.thumbnail !== 'nsfw' && item.thumbnail !== 'spoiler' && item.thumbnail !== 'image') {
+                    imageUrl = item.thumbnail.replace(/&amp;/g, '&');
+                }
+
+
+                card.innerHTML = `
+                ${imageUrl ? `<img src="${imageUrl}" alt="Preview for ${title.substring(0, 30)}..." loading="lazy" onerror="this.style.display='none'">` : ''}
+                <h3><a href="https://reddit.com${item.permalink}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+                <p class="meta-info">
+                    <span>r/${escapeHTML(item.subreddit)}</span>
+                    <span>•</span>
+                    <span>${formattedDate}</span>
+                    <span>•</span>
+                    <span>👍 ${item.ups?.toLocaleString() || 0}</span>
+                    <span>•</span>
+                    <span>💬 ${item.num_comments?.toLocaleString() || 0}</span>
+                </p>
+                ${selftext ? `<p style="margin-top: 10px;">${selftext}</p>` : ''}
+                <a href="https://reddit.com${item.permalink}" target="_blank" rel="noopener noreferrer" class="read-more">Read on Reddit →</a>
+            `;
+                newsContainer.appendChild(card);
+            });
+        }
+
+        function changeNewsCategory(category) {
+            if (currentNewsCategory === category && cachedNews[`${category}_${new Date().getHours()}`]) return; // Avoid re-fetch if same and cached for current hour
+            currentNewsCategory = category;
+            categoryButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.source === category);
+            });
+            fetchNews(category);
+        }
+
+        // CRYPTO QUOTE
+        function getCryptoQuote() {
+            const quoteElement = document.getElementById('quote-text');
+            const quotes = appConfig.cryptoQuotes;
+
+            if (quoteElement && quoteButton) {
+                const originalButtonText = quoteButton.innerHTML;
+                quoteElement.style.opacity = '0.5';
+                quoteElement.textContent = 'Thinking... 🤔';
+                quoteButton.disabled = true;
+                quoteButton.innerHTML = '💬 Fetching...';
+
+                setTimeout(() => {
+                    const randomIndex = Math.floor(Math.random() * quotes.length);
+                    quoteElement.textContent = `"${quotes[randomIndex]}"`;
+                    quoteElement.style.opacity = '1';
+                    quoteButton.disabled = false;
+                    quoteButton.innerHTML = originalButtonText;
+                }, 300); // Shorter delay
+            } else {
+                console.warn("Crypto quote elements not found.");
+            }
+        }
+
+        function setCopyrightYear() {
+            const currentYear = new Date().getFullYear();
+            if (copyrightYearEl) {
+                copyrightYearEl.innerHTML = `© ${currentYear} BitNexys by <a href="https://vylexnexys.co.za">VylexNexys</a>. All rights reserved.`;
+            }
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPreferences(); // Sets currency from localStorage
+
+            const savedCurrency = (mainCurrencySelect && mainCurrencySelect.value) || appConfig.defaultCurrency;
+            bitnexysApp = new BitNexys(savedCurrency); // This will call init() internally
+
+            // Initial calls for widgets not covered by bitnexysApp.loadAllData directly
+            // or needing immediate display after DOM is ready.
+            // bitnexysApp.init() already calls loadAllData which covers most.
+            // These are more for standalone or initial setup features.
+            fetchMarketOverviewData(savedCurrency); // Load other coins
+            fetchNews(currentNewsCategory); // Load default news
+            displayCryptoTerm();
+            getCryptoQuote();
+            setCopyrightYear();
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    changeNewsCategory(button.dataset.source);
+                });
+            });
+
+            if (newTermButton) {
+                newTermButton.addEventListener('click', displayCryptoTerm);
+            } else { console.warn("New term button not found."); }
+
+            if (quoteButton) {
+                quoteButton.addEventListener('click', getCryptoQuote);
+            } else { console.warn("Quote button not found."); }
+            
+            const convertBtn = document.getElementById('convertButton');
+            if(convertBtn) {
+                 // convert() is already global, button has onclick. This is an alternative if onclick is removed.
+                 // convertBtn.addEventListener('click', convert);
+            } else { console.warn("Convert button not found.");}
+        });
+
+    </script>
+
+    <!-- SCRIPT 2: Charting Logic -->
+    <script>
+        // DOM Elements for Chart Widget (ensure these IDs are unique to the chart widget)
+        const chartCurrentPriceEl = document.getElementById('currentPrice'); // Chart's own price display
+        const chartPriceChange24hEl = document.getElementById('priceChange24h');
+        const chartHigh24hEl = document.getElementById('chartHigh24h'); // Using 'chartHigh24h' to distinguish
+        const chartLow24hEl = document.getElementById('chartLow24h');   // Using 'chartLow24h'
+        const chartVolume24hEl = document.getElementById('chartVolume24h'); // Using 'chartVolume24h'
+        const chartLastUpdateTimeEl = document.getElementById('lastUpdateTime');
+        const chartStatusMessageEl = document.getElementById('statusMessage');
+        const chartLastUpdatedEl = document.getElementById('lastUpdated');
+        const chartCanvasContainer = document.getElementById('chartContainer'); // This is the canvas itself
+        const chartRefreshButton = document.getElementById('refreshButton');
+        const chartAutoRefreshToggle = document.getElementById('autoRefreshToggle');
+        const chartLoadingSpinner = document.getElementById('loadingSpinner');
+        const chartTimeframeButtons = document.querySelectorAll('.timeframe-btn');
+        const chartTypeToggle = document.getElementById('chartTypeToggle');
+
+        // API & Config for Chart
+        const CHART_API_URL = 'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false';
+        const CHART_HISTORICAL_API_URL = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart';
+        const CHART_REFRESH_INTERVAL = 30000; // 30 seconds
+
+        // State for Chart
+        let priceChart = null; // Renamed to avoid conflict if 'chart' is used elsewhere
+        let chartRawHistoricalData = [];
+        let chartAutoRefreshIntervalId = null;
+        let chartCurrentTimeframe = '1H'; // Default
+        let chartCurrentType = 'line'; // 'line' or 'candlestick'
+
+        // --- CHART FORMATTING HELPERS --- (Simplified, can use BitNexys for more complex)
+        function chartFormatCurrency(value, currency = 'USD') {
+            if (value == null || isNaN(value)) return '$--.--';
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currency,
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2 // Keep it simple for chart display
+            }).format(value);
+        }
+
+        function chartFormatLargeNumber(value, currency = 'USD') {
+            if (value == null || isNaN(value)) return '$--';
+            if (value >= 1e12) return '$' + (value / 1e12).toFixed(2) + 'T';
+            if (value >= 1e9) return '$' + (value / 1e9).toFixed(2) + 'B';
+            if (value >= 1e6) return '$' + (value / 1e6).toFixed(2) + 'M';
+            return chartFormatCurrency(value, currency);
+        }
+
+        function chartFormatPercentage(value) {
+            if (value == null || isNaN(value)) return '--.--%';
+            const sign = value >= 0 ? '+' : '';
+            return sign + value.toFixed(2) + '%';
+        }
+
+        function chartFormatTime(timestamp) {
+            if (!timestamp) return 'N/A';
+            return new Date(timestamp).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+                // second: '2-digit' // Optional
+            });
+        }
+
+        // --- CHART UI FEEDBACK ---
+        function chartUpdateStatus(message, isError = false) {
+            if (chartStatusMessageEl) {
+                chartStatusMessageEl.textContent = message;
+                chartStatusMessageEl.className = isError ? 'error' : 'success';
+            }
+        }
+
+        function chartShowLoading(isLoading) {
+            if (chartLoadingSpinner) {
+                chartLoadingSpinner.classList.toggle('visible', isLoading);
+            }
+        }
+
+        // --- CHART DATA PROCESSING & CHARTING ---
+        function getChartTimeframeParams(timeframe) {
+            // CoinGecko API params:
+            // days: Data up to number of days ago (max 90 for daily, 1 for hourly/minutely)
+            // interval: 'daily' (for > 90 days), none for auto (hourly for 1-90 days, 5-min for 1 day)
+            switch (timeframe) {
+                case '1H': case '4H': return { days: 1, intervalGranularity: '5min' }; // Fetches 1 day of 5-min data
+                case '1D': return { days: 1, intervalGranularity: 'hourly' }; // Actually CoinGecko gives 5-min for '1' day.
+                                                                                // For true hourly, we might need to aggregate or fetch more days and filter.
+                                                                                // Let's stick to CoinGecko's default for 1 day (5-min).
+                case '1W': return { days: 7, intervalGranularity: 'hourly' };
+                // case '1M': return { days: 30, intervalGranularity: 'hourly' }; // CoinGecko hourly up to 90 days
+                // case '1Y': return { days: 365, intervalGranularity: 'daily' };
+                default: return { days: 1, intervalGranularity: '5min' };
+            }
+        }
+        
+        // This OHLC aggregation is needed if CoinGecko provides finer granularity than desired for candles
+        function aggregateToOHLC(priceData, candleIntervalMs) {
+            if (!priceData || priceData.length === 0) return [];
+            
+            const ohlcData = [];
+            // Ensure data is sorted by time, which CoinGecko usually provides
+            // priceData.sort((a, b) => a[0] - b[0]); // item is [timestamp, price]
+
+            let currentBucketTimestamp = Math.floor(priceData[0][0] / candleIntervalMs) * candleIntervalMs;
+            let bucketPrices = [];
+
+            for (const item of priceData) {
+                const timestamp = item[0];
+                const price = item[1];
+
+                if (timestamp >= currentBucketTimestamp && timestamp < currentBucketTimestamp + candleIntervalMs) {
+                    bucketPrices.push(price);
+                } else {
+                    if (bucketPrices.length > 0) {
+                        ohlcData.push({
+                            x: currentBucketTimestamp, // Timestamp for the open of the candle
+                            o: bucketPrices[0],
+                            h: Math.max(...bucketPrices),
+                            l: Math.min(...bucketPrices),
+                            c: bucketPrices[bucketPrices.length - 1]
+                        });
+                    }
+                    // Move to the next bucket that contains the current point
+                    currentBucketTimestamp = Math.floor(timestamp / candleIntervalMs) * candleIntervalMs;
+                    bucketPrices = [price]; // Start new bucket with current price
                 }
             }
-            marketOverviewContent.innerHTML = html || '<p>No data available for other coins.</p>';
-            clearError(widgetId);
-        } catch (error) {
-            showError(error.message || 'Failed to load market overview.', widgetId);
-            marketOverviewContent.innerHTML = '<p class="loading-text" style="color: var(--negative-change);">Error loading data.</p>';
-        }
-    }
-
-    // CRYPTO TERM
-    function displayCryptoTerm() {
-        const randomIndex = Math.floor(Math.random() * appConfig.cryptoTerms.length);
-        const term = appConfig.cryptoTerms[randomIndex];
-        if (termTitleEl && termDefinitionEl) {
-            termTitleEl.textContent = term.term;
-            termDefinitionEl.textContent = term.definition;
-        }
-    }
-
-    // NEWS FEED (Reddit)
-    async function fetchNews(category = 'all_crypto') {
-        const widgetId = 'news-feed-widget';
-        clearError(widgetId);
-        newsLoadingElement.style.display = 'block';
-        newsContainer.innerHTML = '';
-
-        if (cachedNews[category] && (Date.now() - cachedNews[category].timestamp < 300000)) { 
-            displayNews(cachedNews[category].data);
-            newsLoadingElement.style.display = 'none';
-            return;
-        }
-
-        try {
-            const redditUrl = redditSources[category];
-            if (!redditUrl) throw new Error(`Invalid news category: ${category}`);
-
-            const response = await fetch(redditUrl);
-            if (!response.ok) {
-                let errorMsg = `Failed to fetch news (status: ${response.status} ${response.statusText})`;
-                try { const errorData = await response.json(); errorMsg = `Reddit API Error: ${errorData.message || response.statusText} (status: ${response.status})`; } catch (e) { /*ignore*/ }
-                throw new Error(errorMsg);
+            // Add the last bucket
+            if (bucketPrices.length > 0) {
+                 ohlcData.push({
+                    x: currentBucketTimestamp,
+                    o: bucketPrices[0],
+                    h: Math.max(...bucketPrices),
+                    l: Math.min(...bucketPrices),
+                    c: bucketPrices[bucketPrices.length - 1]
+                });
             }
-            const data = await response.json();
-            const posts = data?.data?.children
-                .filter(post => !post?.data?.stickied && !post?.data?.over_18 && post?.data?.title && post?.data?.permalink)
-                .slice(0, 10) || []; 
-
-            cachedNews[category] = { data: posts, timestamp: Date.now() };
-            displayNews(posts);
-            clearError(widgetId);
-        } catch (error) {
-            showError(error.message || 'Failed to load news. Try again later.', widgetId, true); 
-            newsContainer.innerHTML = ''; 
-        } finally {
-            newsLoadingElement.style.display = 'none';
+            return ohlcData;
         }
-    }
-    
-    function escapeHTML(str) {
-        if (typeof str !== 'string') return '';
-        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-    }
 
-    function displayNews(posts) {
-        newsContainer.innerHTML = '';
-        if (!posts || posts.length === 0) {
-            newsContainer.innerHTML = '<p style="text-align: center; opacity: 0.8; padding: 20px;">No news found in this category, or Reddit is rate-limiting. Try again later!</p>';
-            return;
-        }
-        posts.forEach(post => {
-            const item = post.data;
-            const card = document.createElement('div');
-            card.className = 'news-item'; 
-            const createdDate = new Date(item.created_utc * 1000);
-            const formattedDate = createdDate.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 
-            const title = escapeHTML(item.title);
-            let selftext = item.selftext ? escapeHTML(item.selftext) : '';
-            if (selftext.length > 150) selftext = selftext.substring(0, 150) + '...';
+        function chartProcessData() {
+            if (!priceChart || !chartRawHistoricalData || chartRawHistoricalData.length === 0) {
+                 if(priceChart) { priceChart.data.datasets[0].data = []; priceChart.update('none'); }
+                return;
+            }
 
-            let imageUrl = '';
-            if (item.preview?.images?.[0]?.source?.url) {
-                imageUrl = item.preview.images[0].source.url.replace(/&/g, '&'); 
-            } else if (item.thumbnail && item.thumbnail.startsWith('http')) {
-                imageUrl = item.thumbnail.replace(/&/g, '&');
+            const now = Date.now();
+            let dataToDisplay = [];
+            
+            // rawHistoricalData is array of [timestamp, price]
+
+            if (chartCurrentType === 'line') {
+                let filteredPoints = chartRawHistoricalData.map(p => ({ x: p[0], y: p[1] }));
+                
+                // Filter for 1H and 4H to show only relevant recent window from the 1-day data fetch
+                if (chartCurrentTimeframe === '1H') {
+                    const oneHourAgo = now - 1 * 60 * 60 * 1000;
+                    filteredPoints = filteredPoints.filter(p => p.x >= oneHourAgo);
+                } else if (chartCurrentTimeframe === '4H') {
+                    const fourHoursAgo = now - 4 * 60 * 60 * 1000;
+                    filteredPoints = filteredPoints.filter(p => p.x >= fourHoursAgo);
+                }
+                dataToDisplay = filteredPoints;
+
+            } else { // candlestick
+                // Define candle intervals based on selected timeframe
+                let candleIntervalMs;
+                switch (chartCurrentTimeframe) {
+                    case '1H': candleIntervalMs = 5 * 60 * 1000; break;  // 5-min candles from 1-day data
+                    case '4H': candleIntervalMs = 15 * 60 * 1000; break; // 15-min candles from 1-day data
+                    case '1D': candleIntervalMs = 1 * 60 * 60 * 1000; break; // 1-hour candles (aggregate from 5-min data if days=1, or use hourly if days=7)
+                                                                        // Since 1D timeframe fetches 1 day of 5-min data, we aggregate.
+                    case '1W': candleIntervalMs = 4 * 60 * 60 * 1000; break; // 4-hour candles from 7-day hourly data
+                    default: candleIntervalMs = 5 * 60 * 1000; // Default to 5-min
+                }
+                dataToDisplay = aggregateToOHLC(chartRawHistoricalData, candleIntervalMs);
             }
             
-            card.innerHTML = `
-                ${imageUrl ? `<img src="${imageUrl}" alt="Preview for ${title.substring(0,30)}..." loading="lazy">` : ''}
-                <h3><a href="https://reddit.com${item.permalink}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
-                <p class="meta-info">r/${escapeHTML(item.subreddit)} • ${formattedDate}</p>
-                <p class="meta-info">👍 ${item.ups?.toLocaleString() || 0} | 💬 ${item.num_comments?.toLocaleString() || 0}</p>
-                ${selftext ? `<p>${selftext}</p>` : ''}
-                <a href="https://reddit.com${item.permalink}" target="_blank" rel="noopener noreferrer" style="font-size: 0.9em; display: inline-block; margin-top: auto; padding-top:10px; color: var(--accent-color);">Read on Reddit →</a>
-            `;
-            newsContainer.appendChild(card);
-        });
-    }
-
-    function changeNewsCategory(category) {
-        if (currentNewsCategory === category) return;
-        currentNewsCategory = category;
-        categoryButtons.forEach(button => {
-            button.classList.toggle('active', button.dataset.source === category);
-        });
-        fetchNews(category);
-    }
-
-    // CRYPTO QUOTE
-    function getCryptoQuote() {
-        const quoteElement = document.getElementById('quote-text');
-        const quotes = appConfig.cryptoQuotes;
-
-        if (quoteElement && quoteButton) {
-            const originalButtonText = quoteButton.innerHTML;
-            quoteElement.style.opacity = '0.5';
-            quoteElement.textContent = 'Thinking... 🤔';
-            quoteButton.disabled = true;
-            quoteButton.innerHTML = '💬 Fetching...';
-
-            setTimeout(() => {
-                const randomIndex = Math.floor(Math.random() * quotes.length);
-                quoteElement.textContent = `"${quotes[randomIndex]}"`;
-                quoteElement.style.opacity = '1';
-                quoteButton.disabled = false;
-                quoteButton.innerHTML = originalButtonText;
-            }, 300);
+            priceChart.data.datasets[0].data = dataToDisplay;
+            priceChart.options.scales.x.time.unit = determineTimeUnit(chartCurrentTimeframe, dataToDisplay.length);
+            priceChart.update('none'); // 'none' for no animation, faster updates
         }
-    }
-
-    function setCopyrightYear() {
-        const currentYear = new Date().getFullYear();
-        if(copyrightYearEl) {
-            copyrightYearEl.innerHTML = `© ${currentYear} <a href="https://vylexnexys.co.za/">VylexNexys</a>. All rights reserved.`;
-        }
-    }
-
-    // --- INITIALIZATION ---
-    document.addEventListener('DOMContentLoaded', () => {
-        loadPreferences(); 
-
-        const savedCurrency = (mainCurrencySelect && mainCurrencySelect.value) || localStorage.getItem(appConfig.storageKeys.selectedCurrency) || appConfig.defaultCurrency;
-        bitnexysApp = new BitNexys(savedCurrency); 
-
-        fetchMarketOverviewData(savedCurrency); 
-        fetchNews(currentNewsCategory);
-        displayCryptoTerm();
-        getCryptoQuote();
-        setCopyrightYear();
         
-        if (darkModeToggle) {
-            darkModeToggle.addEventListener('change', toggleDarkMode);
+        function determineTimeUnit(timeframe, dataLength) {
+            if (dataLength < 20) return 'hour'; // if very few points, broader unit
+
+            switch(timeframe) {
+                case '1H': return 'minute'; // Max 12-15 points (5-min interval)
+                case '4H': return 'minute'; // Max 16 points (15-min interval)
+                case '1D': return 'hour';   // Max 24 points (1-hour interval)
+                case '1W': return 'day';    // Max 7 points (daily) or 'hour' (4-hour candles for a week -> 42 points)
+                                            // If 4-hour candles over 1 week, 'hour' is better.
+                                            // If using CoinGecko's daily interval for 1W, 'day' is fine.
+                                            // Since we might use 4-hour candles for 1W, 'hour' or 'day'
+                                            // Let's be more dynamic based on candle type or line type
+                default: return 'hour';
+            }
         }
 
-        categoryButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                changeNewsCategory(button.dataset.source);
+
+        function initializeOrUpdateChart() {
+            if (priceChart) {
+                priceChart.destroy();
+            }
+            if(!chartCanvasContainer) { console.error("Chart canvas container not found!"); return; }
+
+            const isCandlestick = chartCurrentType === 'candlestick';
+            const chartConfig = {
+                type: isCandlestick ? 'candlestick' : 'line',
+                data: {
+                    datasets: [{
+                        label: 'Bitcoin Price (USD)',
+                        data: [],
+                        // Line chart styles
+                        borderColor: 'var(--accent-color)',
+                        backgroundColor: tinycolor(getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim()).setAlpha(0.1).toRgbString(),
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.1, // Smooths line chart
+                        pointRadius: 0, // No points on line
+                        pointHoverRadius: 5,
+                        // Candlestick styles (using chartjs-chart-financial defaults which are good)
+                         color: {
+                             up: getComputedStyle(document.documentElement).getPropertyValue('--positive-change').trim(),
+                             down: getComputedStyle(document.documentElement).getPropertyValue('--negative-change').trim(),
+                             unchanged: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
+                         }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(10, 10, 20, 0.85)', // Darker tooltip
+                            titleColor: 'var(--text-primary)',
+                            bodyColor: 'var(--text-secondary)',
+                            borderColor: 'var(--accent-color)',
+                            borderWidth: 1,
+                            padding: 10,
+                            callbacks: { // Custom tooltip for candlestick
+                                label: function(context) {
+                                    if (isCandlestick && context.raw) {
+                                        const ohlc = context.raw;
+                                        return [
+                                            `O: ${chartFormatCurrency(ohlc.o)}`,
+                                            `H: ${chartFormatCurrency(ohlc.h)}`,
+                                            `L: ${chartFormatCurrency(ohlc.l)}`,
+                                            `C: ${chartFormatCurrency(ohlc.c)}`
+                                        ];
+                                    }
+                                    return `${context.dataset.label}: ${chartFormatCurrency(context.parsed.y)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: determineTimeUnit(chartCurrentTimeframe, 0), // Initial unit
+                                tooltipFormat: 'MMM dd, yyyy HH:mm', // More detailed tooltip
+                                displayFormats: { // How time is displayed on the axis
+                                    minute: 'HH:mm', hour: 'HH:00', day: 'MMM dd'
+                                }
+                            },
+                            grid: { color: 'var(--border-color)' },
+                            ticks: { color: 'var(--text-muted)', maxTicksLimit: 10, autoSkipPadding: 20 }
+                        },
+                        y: {
+                            grid: { color: 'var(--border-color)' },
+                            ticks: { color: 'var(--text-muted)', callback: (value) => chartFormatCurrency(value) }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            };
+            if (isCandlestick) { // Specific options for candlestick
+                chartConfig.options.scales.x.adapters = { date: { locale: dateFns.enUS } }; // from chartjs-adapter-date-fns
+            }
+
+            const ctx = chartCanvasContainer.getContext('2d');
+            priceChart = new Chart(ctx, chartConfig);
+        }
+
+        // --- CHART API FETCHING ---
+        async function fetchChartHistoricalData() {
+            if (!priceChart) initializeOrUpdateChart(); // Ensure chart is initialized
+            chartShowLoading(true);
+            chartUpdateStatus('Loading chart data...', false);
+            const { days } = getChartTimeframeParams(chartCurrentTimeframe);
+            const vsCurrency = (bitnexysApp && bitnexysApp.currency) ? bitnexysApp.currency.toLowerCase() : 'usd';
+
+            try {
+                // For '1H' and '4H', CoinGecko needs days=1 for minute data. We filter client-side.
+                // For '1D', days=1 (minute data). For '1W', days=7 (hourly data).
+                const actualDaysToFetch = (chartCurrentTimeframe === '1H' || chartCurrentTimeframe === '4H' || chartCurrentTimeframe === '1D') ? 1 : days;
+
+                const response = await fetch(`${CHART_HISTORICAL_API_URL}?vs_currency=${vsCurrency}&days=${actualDaysToFetch}`);
+                if (!response.ok) {
+                     const errorData = await response.json().catch(() => null);
+                     throw new Error(`API Error (${response.status}): ${errorData?.error || response.statusText} for historical data`);
+                }
+                const data = await response.json();
+                if (!data.prices || data.prices.length === 0) {
+                    throw new Error("No historical price data returned from API.");
+                }
+                chartRawHistoricalData = data.prices; // data.prices is [[timestamp, price], ...]
+                chartProcessData(); // Process and display the new data
+                chartUpdateStatus(`Chart data for ${chartCurrentTimeframe} loaded.`, false);
+            } catch (error) {
+                console.error('Historical data fetch error:', error);
+                chartUpdateStatus(`Chart data error: ${error.message.substring(0,100)}`, true);
+                chartRawHistoricalData = [];
+                chartProcessData(); // Clear chart on error
+            } finally {
+                chartShowLoading(false);
+            }
+        }
+
+        async function fetchChartBitcoinData() { // For the summary stats above the chart
+            chartShowLoading(true);
+            chartUpdateStatus('Fetching latest price...', false);
+            const vsCurrency = (bitnexysApp && bitnexysApp.currency) ? bitnexysApp.currency.toLowerCase() : 'usd';
+
+            try {
+                const response = await fetch(`${CHART_API_URL}&vs_currency=${vsCurrency}`);
+                 if (!response.ok) {
+                     const errorData = await response.json().catch(() => null);
+                     throw new Error(`API Error (${response.status}): ${errorData?.error || response.statusText} for current data`);
+                 }
+                const data = await response.json();
+                const marketData = data.market_data;
+
+                if (!marketData || !marketData.current_price || marketData.current_price[vsCurrency] === undefined) {
+                    throw new Error("Market data or current price missing in API response.");
+                }
+
+                const currentPrice = marketData.current_price[vsCurrency];
+                const priceChange24h = marketData.price_change_percentage_24h_in_currency[vsCurrency];
+                const lastUpdatedTime = new Date(marketData.last_updated);
+
+                // Update UI (ensure elements exist)
+                if(chartCurrentPriceEl) chartCurrentPriceEl.textContent = chartFormatCurrency(currentPrice, vsCurrency);
+                if(chartPriceChange24hEl) {
+                    chartPriceChange24hEl.textContent = chartFormatPercentage(priceChange24h);
+                    chartPriceChange24hEl.className = `change ${priceChange24h >= 0 ? 'positive' : 'negative'}`;
+                }
+                if(chartHigh24hEl) chartHigh24hEl.textContent = chartFormatCurrency(marketData.high_24h[vsCurrency], vsCurrency);
+                if(chartLow24hEl) chartLow24hEl.textContent = chartFormatCurrency(marketData.low_24h[vsCurrency], vsCurrency);
+                if(chartVolume24hEl) chartVolume24hEl.textContent = chartFormatLargeNumber(marketData.total_volume[vsCurrency], vsCurrency);
+                if(chartLastUpdateTimeEl) chartLastUpdateTimeEl.textContent = `Live: ${chartFormatTime(lastUpdatedTime.getTime())}`;
+                if(chartLastUpdatedEl) chartLastUpdatedEl.textContent = `Last API Update: ${chartFormatTime(new Date())}`;
+
+                chartUpdateStatus('Data updated successfully!', false);
+
+                // Add latest point to line chart if applicable and chart is initialized
+                if (priceChart && chartCurrentType === 'line' && chartRawHistoricalData.length > 0) {
+                    const latestApiPoint = { x: lastUpdatedTime.getTime(), y: currentPrice };
+                    const chartPoints = priceChart.data.datasets[0].data;
+                    
+                    // Avoid duplicate points if historical data already includes this latest point
+                    const lastChartPointTime = chartPoints.length > 0 ? chartPoints[chartPoints.length - 1].x : 0;
+                    if (latestApiPoint.x > lastChartPointTime) {
+                        chartPoints.push(latestApiPoint);
+
+                        // Optional: Maintain a rolling window for line chart to prevent too many points
+                        const timeWindowMs = (chartCurrentTimeframe === '1H' ? 1 : (chartCurrentTimeframe === '4H' ? 4 : 24)) * 60 * 60 * 1000;
+                        const cutoffTime = Date.now() - timeWindowMs;
+                        
+                        // Keep at least a few points even if outside window, for very short views
+                        const minPointsToKeep = 5;
+                        let pointsToRemove = 0;
+                        for(let i=0; i < chartPoints.length - minPointsToKeep; i++){
+                            if(chartPoints[i].x < cutoffTime) pointsToRemove++; else break;
+                        }
+                        if(pointsToRemove > 0) chartPoints.splice(0, pointsToRemove);
+                        
+                        priceChart.data.datasets[0].data = chartPoints; // Re-assign if modified
+                        priceChart.update('none');
+                    }
+                }
+
+            } catch (error) {
+                console.error('Chart bitcoin data fetch error:', error);
+                chartUpdateStatus(`Summary data error: ${error.message.substring(0,100)}`, true);
+                if(chartCurrentPriceEl) chartCurrentPriceEl.textContent = 'Error';
+            } finally {
+                chartShowLoading(false);
+            }
+        }
+
+        // --- CHART EVENT HANDLERS & INITIALIZATION ---
+        function chartUpdateTimeframeButtons(activeTimeframe) {
+            chartTimeframeButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.timeframe === activeTimeframe);
+            });
+        }
+
+        function chartStartAutoRefresh() {
+            if (chartAutoRefreshIntervalId) clearInterval(chartAutoRefreshIntervalId);
+            if (chartAutoRefreshToggle && chartAutoRefreshToggle.checked) {
+                fetchChartBitcoinData(); // Fetch summary data immediately
+                // Historical data is usually fetched on timeframe change or manual refresh
+                chartAutoRefreshIntervalId = setInterval(fetchChartBitcoinData, CHART_REFRESH_INTERVAL);
+            }
+        }
+
+        async function handleChartDataRefresh() {
+            // Historical data should be fetched first as it forms the basis of the chart
+            await fetchChartHistoricalData(); 
+            // Then fetch the latest summary data, which might also update a point on the chart
+            await fetchChartBitcoinData();     
+        }
+        
+        if (chartRefreshButton) {
+            chartRefreshButton.addEventListener('click', async () => {
+                await handleChartDataRefresh();
+                 if (chartAutoRefreshToggle && chartAutoRefreshToggle.checked) chartStartAutoRefresh(); // Restart interval with new data
+            });
+        }
+
+        if (chartAutoRefreshToggle) {
+            chartAutoRefreshToggle.addEventListener('change', () => {
+                if (chartAutoRefreshToggle.checked) {
+                    chartStartAutoRefresh();
+                } else {
+                    if (chartAutoRefreshIntervalId) clearInterval(chartAutoRefreshIntervalId);
+                    chartAutoRefreshIntervalId = null;
+                    chartUpdateStatus("Auto-refresh paused.", false);
+                }
+            });
+        }
+        
+        if (chartTypeToggle) {
+            chartTypeToggle.addEventListener('change', () => {
+                chartCurrentType = chartTypeToggle.checked ? 'candlestick' : 'line';
+                initializeOrUpdateChart(); // Re-create chart with new type
+                chartProcessData();        // Re-process existing data for the new chart type
+            });
+        }
+
+        chartTimeframeButtons.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                chartCurrentTimeframe = btn.dataset.timeframe;
+                chartUpdateTimeframeButtons(chartCurrentTimeframe);
+                // No need to re-initialize chart if only timeframe changes, unless scale unit needs drastic change.
+                // We handle scale unit in chartProcessData and initial setup.
+                // initializeOrUpdateChart(); // Might be too heavy, let's see.
+                // Re-initializing is safer if x-axis unit or other fundamental options change significantly
+                // between timeframes, but let's try updating first.
+                // It's better to re-initialize if type of data or scale changes significantly.
+                initializeOrUpdateChart(); // For safety, re-init to apply new time units correctly.
+                await handleChartDataRefresh(); // Fetch new data for this timeframe
             });
         });
-        
-        if (newTermButton) {
-            newTermButton.addEventListener('click', displayCryptoTerm);
-        }
 
-        if (quoteButton) {
-            quoteButton.addEventListener('click', getCryptoQuote);
-        }
-    });
+        // Helper for tinycolor (needed for chart background from CSS var)
+        // Simplified version, or include a micro-library if complex color manipulation is needed.
+        const tinycolor = (function() {
+            function _tt(s){ return (s + "").replace(/^\s*#|\s*$/g, "") }
+            function _hs(h,s,l,a) { return {h:h,s:s,l:l,a:a} }
+            function _rgb(r,g,b,a) { return {r:r,g:g,b:b,a:a} }
+            function tc(c){ if(!(this instanceof tc)) return new tc(c); this._originalInput = c;
+                if(typeof c === "string"){ let m; if(m = /^#([0-9a-fA-F]{3})$/.exec(c)) c = "#"+m[1]+m[1]; if(m = /^#([0-9a-fA-F]{6})$/.exec(c)) this._rgb = _rgb(parseInt(m[1].substr(0,2),16),parseInt(m[1].substr(2,2),16),parseInt(m[1].substr(4,2),16),1); }
+            }
+            tc.prototype = { setAlpha: function(v){ if(this._rgb)this._rgb.a=v; return this;}, toRgbString: function(){return this._rgb?"rgba("+this._rgb.r+","+this._rgb.g+","+this._rgb.b+","+this._rgb.a+")":""} };
+            return tc;
+        })();
 
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check if all essential chart DOM elements are present
+            if (!chartCanvasContainer || !chartRefreshButton || !chartAutoRefreshToggle || !chartTimeframeButtons.length) {
+                console.warn("One or more essential chart DOM elements are missing. Chart functionality may be limited.");
+                if(chartStatusMessageEl) chartUpdateStatus("Chart UI elements missing.", true);
+                return; // Don't proceed if critical elements are gone
+            }
+
+            chartUpdateTimeframeButtons(chartCurrentTimeframe);
+            initializeOrUpdateChart(); // Initialize chart structure
+            await handleChartDataRefresh(); // Fetch initial data
+            chartStartAutoRefresh(); // Start auto-refresh if toggled
+        });
     </script>
 </body>
 </html>

@@ -13,13 +13,13 @@
     <meta property="og:description" content="Play our collection of engaging web games including Zombie Shooter, Bitcoin Adventure and more. Challenge yourself and have fun!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://vylexnexys.co.za/games">
-    <meta property="og:image" content="https://vylexnexys.co.za/games/images/gamelab-preview-min.jpg">
+    <meta property="og:image" content="https://vylexnexys.co.za/images/gamelab-preview.jpg">
     
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Vylex Game Lab - Free Online Games">
     <meta name="twitter:description" content="Play our collection of engaging web games including Zombie Shooter, Bitcoin Adventure and more!">
-    <meta name="twitter:image" content="https://vylexnexys.co.za/games/images/gamelab-preview-min.jpg">
+    <meta name="twitter:image" content="https://vylexnexys.co.za/images/gamelab-preview.jpg">
     
     <title>Vylex Game Lab - Play Free Online Games | VylexNexys</title>
     
@@ -76,7 +76,7 @@
             color: var(--light);
             font-size: 1.5rem;
             cursor: pointer;
-            aria-label: "Toggle navigation menu";
+            /* Removed invalid CSS property */
         }
 
         .nav-links {
@@ -243,6 +243,7 @@
         <nav class="navbar">
             <a href="#" class="logo" aria-label="Vylex Game Lab Home">Vylex Game Lab</a>
             <button class="menu-toggle" aria-label="Toggle navigation menu">☰</button>
+            <!-- aria-label is correctly used as an HTML attribute -->
             <div class="nav-links">
                 <a href="#games" aria-label="Browse Games">Games</a>
                 <a href="https://vylexnexys.co.za" aria-label="Visit Vylex Nexys Main Site">Main Site</a>
@@ -271,7 +272,7 @@
                     <div class="game-icon">₿</div>
                     <h3 class="game-title">Avuyile's Bitcoin Adventure</h3>
                     <p class="game-desc">Join Avuyile in this exciting 3D game where you collect bitcoins while dodging challenging obstacles.</p>
-                    <a href="https://vylexnexys.co.za/games/avuyiles_bitcoin_adventure" class="play-btn">Play Now</a>
+                    <a href="https://vylexnexys.co.za/games/bitcoin-collector" class="play-btn">Play Now</a>
                 </div>
             </div>
         </section>
@@ -346,6 +347,10 @@
                 <p class="game-desc">Test your reflexes in this fast-paced arcade game. Dodge obstacles and survive as long as you can!</p>
                 <a href="dodge-survive.html" class="play-btn">Play Now</a>
             </div>
+
+            <a href="3dportfolio.html">3D Portfolio</a>
+            <a href="quote-jokes-and-advice.html">quote-jokes-and-advice</a>
+            <a href="z-shooterv2.html">zombie-shooter v2</a>
         </section>
 
         <section id="about" class="hero">

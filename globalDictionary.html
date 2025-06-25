@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Global Dictionary - A collaborative platform for sharing words and definitions from around the world">
+    <meta name="keywords" content="dictionary, global, words, definitions, language, international">
+    <meta name="author" content="Vylex Nexys">
+    <meta property="og:title" content="Global Dictionary">
+    <meta property="og:description" content="Discover words and definitions from cultures around the world">
+    <meta property="og:type" content="website">
+    <title>Global Dictionary - Share Words Worldwide</title>
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #60a5fa;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .search-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            background: var(--card-bg);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .form-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        #wordList {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .word-entry {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .word-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        .word-entry h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            background: var(--card-bg);
+            box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Global Dictionary</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="search-container">
+            <input type="text" id="searchBox" class="search-box" placeholder="Search words, definitions, or countries...">
+        </div>
+
+        <div class="form-card">
+            <form id="wordForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" required placeholder="Enter your name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" id="country" required placeholder="Enter your country">
+                </div>
+                
+                <div class="form-group">
+                    <label for="word">Word</label>
+                    <input type="text" id="word" required placeholder="Enter a word">
+                </div>
+                
+                <div class="form-group">
+                    <label for="definition">Definition</label>
+                    <textarea id="definition" rows="4" required placeholder="Enter the definition"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Add Word</button>
+            </form>
+        </div>
+
+        <div id="wordList"></div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Global Dictionary. Crafted with ❤️ by Vylex Nexys</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, set, remove, onValue, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCyhOVe36a1W1y4y1HlStvnm6lf7sYqGbE",
+            authDomain: "global-dictionary-e3513.firebaseapp.com",
+            databaseURL: "https://global-dictionary-e3513-default-rtdb.firebaseio.com",
+            projectId: "global-dictionary-e3513",
+            storageBucket: "global-dictionary-e3513.firebasestorage.app",
+            messagingSenderId: "103997454700",
+            appId: "1:103997454700:web:06882f352aaf7ed227db49",
+            measurementId: "G-ND9E5L91GK"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
+        const wordsRef = ref(database, 'words');
+
+        function addWord(event) {
+            event.preventDefault();
+            
+            const entry = {
+                id: Date.now(),
+                name: document.getElementById('name').value,
+                country: document.getElementById('country').value,
+                word: document.getElementById('word').value,
+                definition: document.getElementById('definition').value,
+                timestamp: new Date().toLocaleString()
+            };
+            
+            set(ref(database, 'words/' + entry.id), entry);
+            event.target.reset();
+        }
+
+        window.deleteWord = function(id) {
+            remove(ref(database, 'words/' + id));
+        }
+
+        function displayWords(words) {
+            const wordList = document.getElementById('wordList');
+            wordList.innerHTML = '';
+            
+            Object.values(words || {}).forEach(entry => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-entry';
+                wordElement.innerHTML = `
+                    <button class="delete-btn" onclick="deleteWord(${entry.id})">Delete</button>
+                    <h3>${entry.word}</h3>
+                    <p><strong>Definition:</strong> ${entry.definition}</p>
+                    <p><strong>Added by:</strong> ${entry.name} from ${entry.country}</p>
+                    <p><small>Added on: ${entry.timestamp}</small></p>
+                `;
+                wordList.appendChild(wordElement);
+            });
+        }
+
+        // Real-time listeners
+        onValue(wordsRef, (snapshot) => {
+            const data = snapshot.val();
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            
+            if (searchTerm) {
+                const filteredWords = Object.values(data || {}).filter(entry =>
+                    entry.word.toLowerCase().includes(searchTerm) ||
+                    entry.definition.toLowerCase().includes(searchTerm) ||
+                    entry.country.toLowerCase().includes(searchTerm)
+                );
+                displayWords(filteredWords);
+            } else {
+                displayWords(data);
+            }
+        });
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            get(wordsRef).then((snapshot) => {
+                const data = snapshot.val();
+                const filteredWords = Object.values(data || {}).filter(entry =>
+                    entry.word.toLowerCase().includes(searchTerm) ||
+                    entry.definition.toLowerCase().includes(searchTerm) ||
+                    entry.country.toLowerCase().includes(searchTerm)
+                );
+                displayWords(filteredWords);
+            });
+        });
+
+        // Form submission
+        document.getElementById('wordForm').addEventListener('submit', addWord);
+    </script>
+</body>
+</html>

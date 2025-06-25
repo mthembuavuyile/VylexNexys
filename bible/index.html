@@ -1,0 +1,2150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta property="og:title" content="Bible Verse Explorer" />
+    <meta property="og:url" content="https://vylexnexys.co.za/bible" />
+    <meta property="og:description" content="Explore, search, and study the Bible with advanced features.">
+    <name og:url="https://vylexnexys.co.za/bible" />
+    <title>Bible Verse Explorer| Vylex Nexys</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .verse-text,
+        .verse-text span {
+            /* Target spans inside too for highlighting */
+            font-family: 'Merriweather', serif;
+            line-height: 1.8;
+        }
+
+        .bible-content {
+            max-height: 600px;
+            /* Adjust as needed */
+            overflow-y: auto;
+        }
+
+        .verse-enter {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .verse-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 300ms, transform 300ms;
+        }
+
+        mark {
+            background-color: rgba(250, 204, 21, 0.5);
+            /* Slightly stronger highlight */
+            padding: 0 3px;
+            border-radius: 3px;
+            cursor: pointer;
+            /* Indicate interactability */
+            transition: background-color 0.2s;
+        }
+
+        mark:hover {
+            background-color: rgba(250, 204, 21, 0.7);
+        }
+
+        .word-clickable {
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        .word-clickable:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+            /* Light indigo hover for words */
+            border-radius: 2px;
+        }
+
+
+        /* Custom scrollbar */
+        .bible-content::-webkit-scrollbar,
+        .sidebar-content::-webkit-scrollbar,
+        .notes-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .bible-content::-webkit-scrollbar-track,
+        .sidebar-content::-webkit-scrollbar-track,
+        .notes-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .bible-content::-webkit-scrollbar-thumb,
+        .sidebar-content::-webkit-scrollbar-thumb,
+        .notes-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .bible-content::-webkit-scrollbar-thumb:hover,
+        .sidebar-content::-webkit-scrollbar-thumb:hover,
+        .notes-content::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Dark Theme Scrollbar */
+        .dark .bible-content::-webkit-scrollbar-track,
+        .dark .sidebar-content::-webkit-scrollbar-track,
+        .dark .notes-content::-webkit-scrollbar-track {
+            background: #374151;
+            /* Darker track */
+        }
+
+        .dark .bible-content::-webkit-scrollbar-thumb,
+        .dark .sidebar-content::-webkit-scrollbar-thumb,
+        .dark .notes-content::-webkit-scrollbar-thumb {
+            background: #6b7280;
+            /* Darker thumb */
+        }
+
+        .dark .bible-content::-webkit-scrollbar-thumb:hover,
+        .dark .sidebar-content::-webkit-scrollbar-thumb:hover,
+        .dark .notes-content::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        /* Sepia Theme Scrollbar */
+        .sepia .bible-content::-webkit-scrollbar-track,
+        .sepia .sidebar-content::-webkit-scrollbar-track,
+        .sepia .notes-content::-webkit-scrollbar-track {
+            background: #fbf3e7;
+        }
+
+        .sepia .bible-content::-webkit-scrollbar-thumb,
+        .sepia .sidebar-content::-webkit-scrollbar-thumb,
+        .sepia .notes-content::-webkit-scrollbar-thumb {
+            background: #dbcbbd;
+        }
+
+        .sepia .bible-content::-webkit-scrollbar-thumb:hover,
+        .sepia .sidebar-content::-webkit-scrollbar-thumb:hover,
+        .sepia .notes-content::-webkit-scrollbar-thumb:hover {
+            background: #c7b2a3;
+        }
+
+        /* Tooltip styles */
+        [x-tooltip] {
+            position: relative;
+        }
+
+        [x-tooltip]:hover::after {
+            content: attr(x-tooltip);
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #334155;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+            opacity: 1;
+            transition: opacity 0.2s;
+        }
+
+        /* Hide tooltip initially */
+        [x-tooltip]::after {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 transition-colors duration-300"
+    :class="theme === 'dark' ? 'dark bg-slate-900 text-slate-200' : (theme === 'sepia' ? 'sepia bg-[#fbfaf0] text-[#5b4636]' : '')"
+    x-data="bibleApp()" x-init="init()">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-indigo-700 to-purple-700 text-white py-6 px-4 shadow-md">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold tracking-tight">Bible Verse Explorer</h1>
+                        <p class="mt-1 text-indigo-100">Explore, search, and study the Bible with advanced features</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <select x-model="theme" @change="changeTheme()"
+                            class="mt-2 md:mt-0 bg-white/10 backdrop-blur-md text-white rounded-xl border border-white/20 px-4 py-2 text-sm shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition duration-200 ease-in-out cursor-pointer">
+                            <option class="text-black" value="light">🌞 Light Theme</option>
+                            <option class="text-black" value="dark">🌚 Dark Theme</option>
+                            <option class="text-black" value="sepia">📜 Sepia Theme</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-6 max-w-6xl">
+            <!-- Navigation Section -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-6" :class="themeClasses.nav">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1"
+                            :class="themeClasses.label">Translation</label>
+                        <div class="relative">
+                            <select x-model="translation" @change="fetchVerses(false)"
+                                class="w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 cursor-pointer"
+                                :class="themeClasses.select">
+                                <template x-for="trans in availableTranslations" :key="trans.id">
+                                    <option :value="trans.id" x-text="trans.name"></option>
+                                </template>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700"
+                                :class="themeClasses.selectIcon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1"
+                            :class="themeClasses.label">Book</label>
+                        <div class="relative">
+                            <select x-model="selectedBook" @change="updateChapters(); fetchVerses(false)"
+                                class="w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 cursor-pointer"
+                                :class="themeClasses.select">
+                                <optgroup label="Old Testament">
+                                    <template x-for="book in oldTestamentBooks" :key="book.id">
+                                        <option :value="book.id" x-text="book.name"></option>
+                                    </template>
+                                </optgroup>
+                                <optgroup label="New Testament">
+                                    <template x-for="book in newTestamentBooks" :key="book.id">
+                                        <option :value="book.id" x-text="book.name"></option>
+                                    </template>
+                                </optgroup>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700"
+                                :class="themeClasses.selectIcon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1"
+                                :class="themeClasses.label">Chapter</label>
+                            <div class="relative">
+                                <select x-model="selectedChapter" @change="fetchVerses(false)"
+                                    class="w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 cursor-pointer"
+                                    :class="themeClasses.select">
+                                    <template x-for="chapter in chapters" :key="chapter">
+                                        <option :value="chapter" x-text="chapter"></option>
+                                    </template>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700"
+                                    :class="themeClasses.selectIcon">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1"
+                                :class="themeClasses.label">Verse(s)</label>
+                            <input type="text" x-model="selectedVerse" placeholder="e.g. 1 or 1-5"
+                                @keyup.enter="fetchVerses()"
+                                class="w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                :class="themeClasses.input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4 mt-4">
+                    <div class="flex-grow">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input type="text" x-model="searchText" @keyup.enter="fetchVerses()"
+                                @input.debounce.500ms="fetchVerses()"
+                                placeholder="Search text in current chapter/verses..."
+                                class="w-full pl-10 rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                :class="themeClasses.input">
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button @click="fetchVerses()" x-tooltip="'View selected passage'"
+                            class="flex-grow md:flex-grow-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200 disabled:opacity-50"
+                            :disabled="loading">
+                            <svg x-show="!loading" class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
+                            <svg x-show="loading" class="animate-spin h-5 w-5 mr-2 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            View
+                        </button>
+                        <!-- Removed dedicated search button, search input triggers fetch directly -->
+                        <button @click="fetchRandomVerse()" x-tooltip="'Load a random verse'"
+                            class="flex-grow md:flex-grow-0 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                </path>
+                            </svg>
+                            Random
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Buttons -->
+            <div class="flex flex-wrap gap-2 mb-6">
+                <button @click="toggleSidebarTab('favorites')"
+                    class="text-sm bg-white hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200 shadow-sm"
+                    :class="[themeClasses.featureBtn, showSidebar && activeSidebarTab === 'favorites' ? themeClasses.featureBtnActive : '']">
+                    <svg class="w-4 h-4 mr-2"
+                        :class="showSidebar && activeSidebarTab === 'favorites' ? 'text-yellow-500' : ''"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                        </path>
+                    </svg>
+                    Favorites (<span x-text="favorites.length"></span>)
+                </button>
+                <button @click="toggleSidebarTab('history')"
+                    class="text-sm bg-white hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200 shadow-sm"
+                    :class="[themeClasses.featureBtn, showSidebar && activeSidebarTab === 'history' ? themeClasses.featureBtnActive : '']">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    History (<span x-text="history.length"></span>)
+                </button>
+                <button @click="toggleSidebarTab('notes')"
+                    class="text-sm bg-white hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200 shadow-sm"
+                    :class="[themeClasses.featureBtn, showSidebar && activeSidebarTab === 'notes' ? themeClasses.featureBtnActive : '']">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                        </path>
+                    </svg>
+                    Notes (<span x-text="Object.keys(notes).length"></span>)
+                </button>
+                <button @click="toggleParallelView()"
+                    class="text-sm bg-white hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200 shadow-sm"
+                    :class="[themeClasses.featureBtn, showParallel ? themeClasses.featureBtnActive : '']">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                    </svg>
+                    <span x-text="showParallel ? 'Hide Parallel' : 'Parallel View'"></span>
+                </button>
+                <button @click="toggleWordAnalysis()"
+                    class="text-sm bg-white hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200 shadow-sm"
+                    :class="[themeClasses.featureBtn, showWordAnalysis ? themeClasses.featureBtnActive : '']">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+                        </path>
+                    </svg>
+                    <span x-text="showWordAnalysis ? 'Hide Word Analysis' : 'Word Analysis'"></span>
+                </button>
+                <button @click="toggleCrossReferences()"
+                    class="text-sm bg-white hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200 shadow-sm"
+                    :class="[themeClasses.featureBtn, showCrossReferences ? themeClasses.featureBtnActive : '']">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
+                        </path>
+                    </svg>
+                    <span x-text="showCrossReferences ? 'Hide Cross Refs' : 'Cross References'"></span>
+                </button>
+            </div>
+
+            <!-- Bible Content with Sidebar -->
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Main Content Area -->
+                <div class="md:flex-1">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden" :class="themeClasses.content">
+                        <!-- Info Bar -->
+                        <div class="flex justify-between items-center bg-slate-100 px-4 py-2 border-b border-slate-200"
+                            :class="themeClasses.infoBar">
+                            <div class="flex items-center flex-wrap">
+                                <h2 class="text-lg font-semibold mr-3" x-text="currentReference"></h2>
+                                <div class="flex space-x-1">
+                                    <button @click="toggleFavorite(currentReference)"
+                                        x-tooltip="isCurrentInFavorites() ? 'Remove from Favorites' : 'Add to Favorites'"
+                                        class="text-slate-400 hover:text-yellow-500 focus:outline-none transition-colors duration-200 p-1"
+                                        :class="isCurrentInFavorites() ? 'text-yellow-500' : ''">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                    <button @click="shareVerse()" x-tooltip="'Share this passage'"
+                                        class="text-slate-400 hover:text-blue-500 focus:outline-none transition-colors duration-200 p-1">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                    <button @click="copyToClipboard()" x-tooltip="'Copy passage to clipboard'"
+                                        class="text-slate-400 hover:text-green-500 focus:outline-none transition-colors duration-200 p-1">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-sm text-slate-500 mt-1 md:mt-0" :class="themeClasses.label"
+                                x-text="translationName"></div>
+                        </div>
+
+                        <!-- Actual Bible Content -->
+                        <div class="bible-content p-5 relative" :class="themeClasses.bibleText" x-ref="bibleContent">
+                            <!-- Loading State -->
+                            <div x-show="loading" class="flex justify-center items-center py-12">
+                                <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                <span class="ml-3" :class="themeClasses.label">Loading...</span>
+                            </div>
+
+                            <!-- Error State -->
+                            <div x-show="error && !loading"
+                                class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                                role="alert">
+                                <strong class="font-bold">Error!</strong>
+                                <span class="block sm:inline ml-2" x-text="errorMessage"></span>
+                            </div>
+
+                            <!-- No Results State -->
+                            <div x-show="!loading && !error && currentVerses.length === 0 && !isInitialLoad"
+                                class="text-center py-12 text-slate-500" :class="themeClasses.label">
+                                <svg class="w-12 h-12 mx-auto text-slate-400 mb-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                    </path>
+                                </svg>
+                                <p>No verses found for this selection or search.</p>
+                            </div>
+
+                            <!-- Content State -->
+                            <div x-show="!loading && !error && currentVerses.length > 0" class="verse-text">
+                                <template x-for="(verse, index) in currentVerses"
+                                    :key="verse.book_id + '-' + verse.chapter + '-' + verse.verse">
+                                    <div class="verse mb-4 pb-2 border-b border-slate-100 dark:border-slate-700 sepia:border-amber-100 relative group"
+                                        :id="'verse-' + verse.verse">
+                                        <div class="flex items-start">
+                                            <span class="verse-number mr-2 font-bold text-indigo-600 select-none pt-1"
+                                                x-text="verse.verse + '.'"></span>
+                                            <div class="flex-1">
+                                                <span class="verse-text" x-html="renderVerseText(verse.text)"
+                                                    @mouseup="handleTextSelection($event, verse.book_name + ' ' + verse.chapter + ':' + verse.verse)"></span>
+
+                                                <!-- Verse Tools (visible on hover) -->
+                                                <div class="hidden group-hover:flex flex-wrap gap-1 mt-2 text-xs">
+                                                    <button
+                                                        @click="toggleNoteEditor(verse.book_name + ' ' + verse.chapter + ':' + verse.verse)"
+                                                        x-tooltip="'Add/Edit Note'"
+                                                        class="px-2 py-1 bg-slate-100 rounded hover:bg-slate-200 text-slate-700 transition-colors duration-150"
+                                                        :class="themeClasses.verseBtn">
+                                                        <i class="fas fa-pencil-alt"></i> Note
+                                                    </button>
+                                                    <!-- Highlight button removed - selection handles it -->
+                                                    <button
+                                                        @click="getCrossReferences(verse.book_name + ' ' + verse.chapter + ':' + verse.verse)"
+                                                        x-tooltip="'Find Cross References'"
+                                                        class="px-2 py-1 bg-slate-100 rounded hover:bg-slate-200 text-slate-700 transition-colors duration-150"
+                                                        :class="themeClasses.verseBtn">
+                                                        <i class="fas fa-link"></i> Refs
+                                                    </button>
+                                                    <button @click="copyVerse(verse)" x-tooltip="'Copy Verse Text'"
+                                                        class="px-2 py-1 bg-slate-100 rounded hover:bg-slate-200 text-slate-700 transition-colors duration-150"
+                                                        :class="themeClasses.verseBtn">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                    <button
+                                                        @click="toggleFavorite(verse.book_name + ' ' + verse.chapter + ':' + verse.verse)"
+                                                        x-tooltip="isVerseFavorited(verse) ? 'Unfavorite' : 'Favorite'"
+                                                        :class="[themeClasses.verseBtn, isVerseFavorited(verse) ? 'text-yellow-500' : '']"
+                                                        class="px-2 py-1 bg-slate-100 rounded hover:bg-slate-200 transition-colors duration-150">
+                                                        <i class="fas fa-star"></i> Fav
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Navigation controls -->
+                                <div
+                                    class="flex justify-between mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 sepia:border-amber-100">
+                                    <button @click="navigateToPrevious()" :disabled="isFirstChapter()"
+                                        class="px-3 py-2 bg-slate-100 rounded hover:bg-slate-200 text-slate-700 transition-colors duration-150 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                                        :class="themeClasses.navBtn">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                        Previous <span class="hidden sm:inline ml-1">Chapter</span>
+                                    </button>
+                                    <button @click="navigateToNext()" :disabled="isLastChapter()"
+                                        class="px-3 py-2 bg-slate-100 rounded hover:bg-slate-200 text-slate-700 transition-colors duration-150 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                                        :class="themeClasses.navBtn">
+                                        Next <span class="hidden sm:inline ml-1">Chapter</span>
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parallel View Section -->
+                    <div x-show="showParallel && parallelTranslations.length > 0"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 transform -translate-y-4"
+                        x-transition:enter-end="opacity-100 transform translate-y-0" class="mt-6">
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden" :class="themeClasses.content">
+                            <div class="bg-slate-100 px-4 py-2 border-b border-slate-200 flex justify-between items-center"
+                                :class="themeClasses.infoBar">
+                                <h3 class="font-semibold">Parallel Translations</h3>
+                                <button @click="toggleParallelView()" class="text-slate-500 hover:text-slate-700">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div x-show="parallelLoading" class="p-4 text-center" :class="themeClasses.label">Loading
+                                parallel translations...</div>
+                            <div x-show="!parallelLoading" class="p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <template x-for="(item, index) in parallelTranslations" :key="index">
+                                    <div class="border rounded-md p-4 shadow-sm" :class="themeClasses.parallelItem">
+                                        <h4 class="font-semibold mb-2"
+                                            x-text="item.translationName + ' (' + item.translationId.toUpperCase() + ')'">
+                                        </h4>
+                                        <div class="text-sm verse-text" x-html="highlightText(item.text)"></div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word Analysis -->
+                    <div x-show="showWordAnalysis && selectedWordInfo.word"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 transform -translate-y-4"
+                        x-transition:enter-end="opacity-100 transform translate-y-0" class="mt-6">
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden" :class="themeClasses.content">
+                            <div class="bg-slate-100 px-4 py-2 border-b border-slate-200 flex justify-between items-center"
+                                :class="themeClasses.infoBar">
+                                <h3 class="font-semibold">Word Analysis: <span x-text="selectedWordInfo.word"
+                                        class="font-bold text-indigo-700"></span></h3>
+                                <button @click="closeWordAnalysis()" class="text-slate-500 hover:text-slate-700">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <!-- Word analysis content here - Placeholder -->
+                                <p :class="themeClasses.label">Word analysis feature is under development. Clicked word:
+                                    <strong x-text="selectedWordInfo.word"></strong> from reference: <strong
+                                        x-text="selectedWordInfo.reference"></strong></p>
+                                <!-- Example Structure (to be filled with real data)
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <h4 class="font-medium mb-2 text-slate-800">Definition</h4>
+                                        <p class="text-sm" x-text="wordAnalysis.definition || 'Loading...'"></p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-2 text-slate-800">Original Language</h4>
+                                        <p class="text-sm" x-text="wordAnalysis.original || 'Loading...'"></p>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 class="font-medium mb-2 text-slate-800">Usage in Scripture</h4>
+                                    <div class="text-sm bg-slate-50 p-3 rounded-md max-h-40 overflow-y-auto notes-content" :class="themeClasses.usageBox">
+                                        <ul class="list-disc pl-5">
+                                            <template x-for="(usage, index) in wordAnalysis.usages" :key="index">
+                                                <li class="mb-1">
+                                                    <span x-text="usage.reference"></span>:
+                                                    <span x-html="highlightText(usage.text)"></span>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </div>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cross References -->
+                    <div x-show="showCrossReferences && currentCrossReferences.length > 0"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 transform -translate-y-4"
+                        x-transition:enter-end="opacity-100 transform translate-y-0" class="mt-6">
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden" :class="themeClasses.content">
+                            <div class="bg-slate-100 px-4 py-2 border-b border-slate-200 flex justify-between items-center"
+                                :class="themeClasses.infoBar">
+                                <h3 class="font-semibold">Cross References for <span x-text="crossRefVerse"></span></h3>
+                                <button @click="toggleCrossReferences()" class="text-slate-500 hover:text-slate-700">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div x-show="crossRefLoading" class="p-4 text-center" :class="themeClasses.label">Loading
+                                cross references...</div>
+                            <div x-show="!crossRefLoading && currentCrossReferences.length === 0"
+                                class="p-4 text-center" :class="themeClasses.label">No cross references found.</div>
+                            <div x-show="!crossRefLoading && currentCrossReferences.length > 0"
+                                class="p-4 max-h-96 overflow-y-auto notes-content">
+                                <ul class="divide-y" :class="themeClasses.divide">
+                                    <template x-for="(ref, index) in currentCrossReferences" :key="index">
+                                        <li class="py-3">
+                                            <div class="flex items-start">
+                                                <span class="font-medium text-indigo-600 mr-2 w-24 flex-shrink-0"
+                                                    x-text="ref.reference"></span>
+                                                <span class="text-sm" x-html="highlightText(ref.text)"></span>
+                                            </div>
+                                            <div class="mt-1 flex space-x-3">
+                                                <button @click="goToReference(ref.reference)"
+                                                    class="text-xs text-indigo-600 hover:text-indigo-800 hover:underline">
+                                                    Go to verse
+                                                </button>
+                                                <button @click="copyReferenceText(ref)"
+                                                    class="text-xs text-slate-500 hover:text-slate-700">
+                                                    Copy
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Area -->
+                <div x-show="showSidebar" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform translate-x-4"
+                    x-transition:enter-end="opacity-100 transform translate-x-0"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 transform translate-x-0"
+                    x-transition:leave-end="opacity-0 transform translate-x-4"
+                    class="md:w-80 flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden h-fit max-h-[75vh]"
+                    :class="themeClasses.sidebar">
+
+                    <!-- Tabs for Sidebar -->
+                    <div class="flex border-b border-slate-200" :class="themeClasses.tabs">
+                        <button @click="activeSidebarTab = 'favorites'"
+                            class="flex-1 py-3 px-4 text-center transition-colors duration-200 text-sm"
+                            :class="activeSidebarTab === 'favorites' ? 'border-b-2 border-indigo-600 text-indigo-600 font-medium ' + themeClasses.tabActive : 'text-slate-600 hover:text-slate-900 ' + themeClasses.tabInactive">
+                            <div class="flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                    </path>
+                                </svg>
+                                Favs (<span x-text="favorites.length"></span>)
+                            </div>
+                        </button>
+                        <button @click="activeSidebarTab = 'history'"
+                            class="flex-1 py-3 px-4 text-center transition-colors duration-200 text-sm"
+                            :class="activeSidebarTab === 'history' ? 'border-b-2 border-indigo-600 text-indigo-600 font-medium ' + themeClasses.tabActive : 'text-slate-600 hover:text-slate-900 ' + themeClasses.tabInactive">
+                            <div class="flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                History (<span x-text="history.length"></span>)
+                            </div>
+                        </button>
+                        <button @click="activeSidebarTab = 'notes'"
+                            class="flex-1 py-3 px-4 text-center transition-colors duration-200 text-sm"
+                            :class="activeSidebarTab === 'notes' ? 'border-b-2 border-indigo-600 text-indigo-600 font-medium ' + themeClasses.tabActive : 'text-slate-600 hover:text-slate-900 ' + themeClasses.tabInactive">
+                            <div class="flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                                Notes (<span x-text="Object.keys(notes).length"></span>)
+                            </div>
+                        </button>
+                        <button @click="showSidebar = false" class="px-3 py-3 text-slate-400 hover:text-slate-600"
+                            :class="themeClasses.tabInactive">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Sidebar Content Area -->
+                    <div class="sidebar-content overflow-y-auto max-h-[calc(75vh-49px)]">
+                        <!-- Adjust max-height considering tab height -->
+                        <!-- Favorites Tab -->
+                        <div x-show="activeSidebarTab === 'favorites'" class="p-4">
+                            <div x-show="favorites.length === 0" class="text-center py-8 text-slate-500"
+                                :class="themeClasses.label">
+                                <svg class="w-12 h-12 mx-auto text-slate-300 mb-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                                    </path>
+                                </svg>
+                                <p>No favorites yet</p>
+                                <p class="text-sm mt-2">Click the star <i class="fas fa-star text-yellow-500"></i> icon
+                                    on any verse.</p>
+                            </div>
+                            <ul x-show="favorites.length > 0" class="divide-y" :class="themeClasses.divide">
+                                <template x-for="(favorite, index) in favorites"
+                                    :key="favorite.reference + '-' + index"> <!-- Add index for potential duplicates -->
+                                    <li class="py-3 group">
+                                        <div class="flex justify-between items-start">
+                                            <button @click="loadFavorite(favorite)" class="text-left flex-grow mr-2">
+                                                <div class="font-medium text-indigo-600" :class="themeClasses.link"
+                                                    x-text="favorite.reference"></div>
+                                                <div class="text-sm mt-1 text-slate-700 line-clamp-2"
+                                                    :class="themeClasses.text" x-text="favorite.text"></div>
+                                            </button>
+                                            <button @click="removeFavorite(index)" x-tooltip="'Remove Favorite'"
+                                                class="text-slate-400 hover:text-red-500 p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                            <div x-show="favorites.length > 0" class="mt-4 text-center">
+                                <button @click="clearFavorites()" class="text-xs text-red-600 hover:text-red-800">
+                                    Clear All Favorites
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- History Tab -->
+                        <div x-show="activeSidebarTab === 'history'" class="p-4">
+                            <div x-show="history.length === 0" class="text-center py-8 text-slate-500"
+                                :class="themeClasses.label">
+                                <svg class="w-12 h-12 mx-auto text-slate-300 mb-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <p>No history yet</p>
+                                <p class="text-sm mt-2">Your recently viewed passages will appear here.</p>
+                            </div>
+                            <ul x-show="history.length > 0" class="divide-y" :class="themeClasses.divide">
+                                <template x-for="(item, index) in recentHistory" :key="item.timestamp + '-' + index">
+                                    <!-- Use timestamp + index for key -->
+                                    <li class="py-3">
+                                        <button @click="loadFromHistory(item)" class="text-left w-full group">
+                                            <div class="flex justify-between items-center">
+                                                <span class="font-medium text-indigo-600 group-hover:underline"
+                                                    :class="themeClasses.link" x-text="item.reference"></span>
+                                                <span class="text-xs text-slate-400" :class="themeClasses.label"
+                                                    x-text="formatDate(item.timestamp)"></span>
+                                            </div>
+                                            <div class="text-sm mt-1 text-slate-700 line-clamp-1"
+                                                :class="themeClasses.text"
+                                                x-text="item.textSnippet || 'Viewed passage'"></div>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                            <div x-show="history.length > 0" class="mt-4 text-center">
+                                <button @click="clearHistory()" class="text-xs text-red-600 hover:text-red-800">
+                                    Clear History
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Notes Tab -->
+                        <div x-show="activeSidebarTab === 'notes'" class="p-4">
+                            <!-- Note Editor (appears at top when active) -->
+                            <div x-show="editingNote" x-transition
+                                class="bg-slate-50 p-3 rounded-md mb-4 border border-indigo-300"
+                                :class="themeClasses.noteEditor">
+                                <div class="mb-2 font-medium text-indigo-600 flex justify-between items-center"
+                                    :class="themeClasses.link">
+                                    <span x-text="currentNoteReference || 'New Note'"></span>
+                                    <button @click="cancelNote()"
+                                        class="text-slate-400 hover:text-slate-600 text-xs">Cancel</button>
+                                </div>
+                                <textarea x-model="currentNoteText"
+                                    class="w-full border border-slate-300 rounded-md p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                    :class="themeClasses.input" rows="4" placeholder="Write your notes here..."
+                                    x-ref="noteTextarea"></textarea>
+                                <div class="flex justify-end mt-2 space-x-2">
+                                    <button @click="saveNote()"
+                                        class="px-3 py-1 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-md">
+                                        Save Note
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div x-show="!editingNote && Object.keys(notes).length === 0"
+                                class="text-center py-8 text-slate-500" :class="themeClasses.label">
+                                <svg class="w-12 h-12 mx-auto text-slate-300 mb-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                                <p>No notes yet</p>
+                                <p class="text-sm mt-2">Click the <i class="fas fa-pencil-alt"></i> Note button on a
+                                    verse or here to add a general note.</p>
+                                <button @click="toggleNoteEditor(null)"
+                                    class="mt-3 text-sm bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium py-1 px-3 rounded-md">
+                                    Add General Note
+                                </button>
+                            </div>
+
+                            <!-- Notes List -->
+                            <ul x-show="Object.keys(notes).length > 0" class="divide-y" :class="themeClasses.divide">
+                                <template x-for="(note, reference) in notes" :key="reference">
+                                    <li class="py-3 group">
+                                        <div class="font-medium text-indigo-600 mb-1 flex justify-between items-center"
+                                            :class="themeClasses.link">
+                                            <button
+                                                @click="reference !== 'General Note' ? goToReference(reference) : null"
+                                                :class="reference !== 'General Note' ? 'hover:underline cursor-pointer' : 'cursor-default'"
+                                                x-text="reference"></button>
+                                            <div
+                                                class="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                                <button @click="editNote(reference)" x-tooltip="'Edit Note'"
+                                                    class="text-slate-400 hover:text-indigo-600 p-1">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                                <button @click="deleteNote(reference)" x-tooltip="'Delete Note'"
+                                                    class="text-slate-400 hover:text-red-600 p-1">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-slate-700 whitespace-pre-wrap" :class="themeClasses.text"
+                                            x-text="note"></p>
+                                    </li>
+                                </template>
+                            </ul>
+                            <div x-show="!editingNote && Object.keys(notes).length > 0" class="mt-4 text-center">
+                                <button @click="toggleNoteEditor(null)"
+                                    class="text-xs bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium py-1 px-3 rounded-md">
+                                    Add General Note
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-slate-800 text-white py-4 px-4 mt-8">
+            <div class="max-w-6xl mx-auto text-center text-sm">
+                <p>Enhanced Bible Verse Explorer &copy; <span x-text="new Date().getFullYear()"></span> | Powered by <a
+                        href="https://bible-api.com/" target="_blank" rel="noopener noreferrer"
+                        class="text-indigo-300 hover:text-indigo-200">bible-api.com</a></p>
+                <p class="text-xs text-slate-400 mt-1">This tool is for personal study and educational purposes.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-2" @click="showToast = false" x-cloak
+        class="fixed bottom-4 right-4 z-50 bg-slate-800 text-white px-4 py-3 rounded-lg shadow-lg flex items-center cursor-pointer max-w-xs">
+        <svg class="w-5 h-5 mr-3 flex-shrink-0" :class="toastType === 'success' ? 'text-green-400' : 'text-red-400'"
+            fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                :d="toastType === 'success' ? 'M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' : 'M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z'"
+                clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-sm" x-text="toastMessage"></span>
+    </div>
+
+    <!-- Share Dialog -->
+    <div x-show="showShareDialog" x-transition.opacity.duration.300 x-cloak
+        class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-60 p-4"
+        @click.self="showShareDialog = false">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden" x-show="showShareDialog"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+            :class="themeClasses.dialog">
+            <div class="px-4 py-3 border-b" :class="themeClasses.dialogHeader">
+                <h3 class="font-semibold flex justify-between items-center">
+                    Share Passage
+                    <button @click="showShareDialog = false" class="text-slate-400 hover:text-slate-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </h3>
+            </div>
+            <div class="p-4">
+                <p class="text-slate-600 mb-4 text-sm" :class="themeClasses.label">Share this passage:</p>
+                <div class="bg-slate-50 p-3 rounded-md mb-4 verse-text border" :class="themeClasses.shareBox">
+                    <div class="font-medium text-indigo-600 mb-1" :class="themeClasses.link" x-text="currentReference">
+                    </div>
+                    <p class="text-slate-800 text-sm max-h-32 overflow-y-auto" :class="themeClasses.text"
+                        x-text="getCurrentVerseText()"></p>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <button @click="shareOnSocial('twitter')"
+                        class="flex items-center px-3 py-2 rounded-md bg-[#1DA1F2] hover:bg-[#1a91da] text-white text-sm font-medium">
+                        <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                        </svg>
+                        Twitter
+                    </button>
+                    <button @click="shareOnSocial('facebook')"
+                        class="flex items-center px-3 py-2 rounded-md bg-[#4267B2] hover:bg-[#3b5a9d] text-white text-sm font-medium">
+                        <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                        </svg>
+                        Facebook
+                    </button>
+                    <button @click="shareViaEmail()"
+                        class="flex items-center px-3 py-2 rounded-md bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        Email
+                    </button>
+                </div>
+
+                <div class="mt-4">
+                    <label class="block text-xs font-medium text-slate-500 mb-1" :class="themeClasses.label">Shareable
+                        Link:</label>
+                    <div class="flex items-center">
+                        <input type="text" readonly :value="getShareableLink()"
+                            class="w-full border border-slate-300 rounded-l-md p-2 text-sm bg-slate-50 focus:outline-none"
+                            :class="themeClasses.input">
+                        <button @click="copyShareLink()"
+                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-2 rounded-r-md text-sm"
+                            :class="themeClasses.copyBtn">
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alpine.js Component Script -->
+    <script>
+        function bibleApp() {
+            const BIBLE_API_BASE = 'https://bible-api.com/';
+            // Reduced list for faster parallel fetching demo
+            const PARALLEL_TRANSLATIONS_TO_FETCH = ['kjv', 'web', 'bbe'];
+            const MAX_HISTORY = 50; // Limit history size
+
+            return {
+                // --- State ---
+                bibleBooks: [
+                    { id: 'GEN', name: 'Genesis', chapters: 50, testament: 'OT' },
+                    { id: 'EXO', name: 'Exodus', chapters: 40, testament: 'OT' },
+                    { id: 'LEV', name: 'Leviticus', chapters: 27, testament: 'OT' },
+                    { id: 'NUM', name: 'Numbers', chapters: 36, testament: 'OT' },
+                    { id: 'DEU', name: 'Deuteronomy', chapters: 34, testament: 'OT' },
+                    { id: 'JOS', name: 'Joshua', chapters: 24, testament: 'OT' },
+                    { id: 'JDG', name: 'Judges', chapters: 21, testament: 'OT' },
+                    { id: 'RUT', name: 'Ruth', chapters: 4, testament: 'OT' },
+                    { id: '1SA', name: '1 Samuel', chapters: 31, testament: 'OT' },
+                    { id: '2SA', name: '2 Samuel', chapters: 24, testament: 'OT' },
+                    { id: '1KI', name: '1 Kings', chapters: 22, testament: 'OT' },
+                    { id: '2KI', name: '2 Kings', chapters: 25, testament: 'OT' },
+                    { id: '1CH', name: '1 Chronicles', chapters: 29, testament: 'OT' },
+                    { id: '2CH', name: '2 Chronicles', chapters: 36, testament: 'OT' },
+                    { id: 'EZR', name: 'Ezra', chapters: 10, testament: 'OT' },
+                    { id: 'NEH', name: 'Nehemiah', chapters: 13, testament: 'OT' },
+                    { id: 'EST', name: 'Esther', chapters: 10, testament: 'OT' },
+                    { id: 'JOB', name: 'Job', chapters: 42, testament: 'OT' },
+                    { id: 'PSA', name: 'Psalms', chapters: 150, testament: 'OT' },
+                    { id: 'PRO', name: 'Proverbs', chapters: 31, testament: 'OT' },
+                    { id: 'ECC', name: 'Ecclesiastes', chapters: 12, testament: 'OT' },
+                    { id: 'SNG', name: 'Song of Solomon', chapters: 8, testament: 'OT' },
+                    { id: 'ISA', name: 'Isaiah', chapters: 66, testament: 'OT' },
+                    { id: 'JER', name: 'Jeremiah', chapters: 52, testament: 'OT' },
+                    { id: 'LAM', name: 'Lamentations', chapters: 5, testament: 'OT' },
+                    { id: 'EZK', name: 'Ezekiel', chapters: 48, testament: 'OT' },
+                    { id: 'DAN', name: 'Daniel', chapters: 12, testament: 'OT' },
+                    { id: 'HOS', name: 'Hosea', chapters: 14, testament: 'OT' },
+                    { id: 'JOL', name: 'Joel', chapters: 3, testament: 'OT' },
+                    { id: 'AMO', name: 'Amos', chapters: 9, testament: 'OT' },
+                    { id: 'OBA', name: 'Obadiah', chapters: 1, testament: 'OT' },
+                    { id: 'JON', name: 'Jonah', chapters: 4, testament: 'OT' },
+                    { id: 'MIC', name: 'Micah', chapters: 7, testament: 'OT' },
+                    { id: 'NAM', name: 'Nahum', chapters: 3, testament: 'OT' },
+                    { id: 'HAB', name: 'Habakkuk', chapters: 3, testament: 'OT' },
+                    { id: 'ZEP', name: 'Zephaniah', chapters: 3, testament: 'OT' },
+                    { id: 'HAG', name: 'Haggai', chapters: 2, testament: 'OT' },
+                    { id: 'ZEC', name: 'Zechariah', chapters: 14, testament: 'OT' },
+                    { id: 'MAL', name: 'Malachi', chapters: 4, testament: 'OT' },
+                    { id: 'MAT', name: 'Matthew', chapters: 28, testament: 'NT' },
+                    { id: 'MRK', name: 'Mark', chapters: 16, testament: 'NT' },
+                    { id: 'LUK', name: 'Luke', chapters: 24, testament: 'NT' },
+                    { id: 'JHN', name: 'John', chapters: 21, testament: 'NT' },
+                    { id: 'ACT', name: 'Acts', chapters: 28, testament: 'NT' },
+                    { id: 'ROM', name: 'Romans', chapters: 16, testament: 'NT' },
+                    { id: '1CO', name: '1 Corinthians', chapters: 16, testament: 'NT' },
+                    { id: '2CO', name: '2 Corinthians', chapters: 13, testament: 'NT' },
+                    { id: 'GAL', name: 'Galatians', chapters: 6, testament: 'NT' },
+                    { id: 'EPH', name: 'Ephesians', chapters: 6, testament: 'NT' },
+                    { id: 'PHP', name: 'Philippians', chapters: 4, testament: 'NT' },
+                    { id: 'COL', name: 'Colossians', chapters: 4, testament: 'NT' },
+                    { id: '1TH', name: '1 Thessalonians', chapters: 5, testament: 'NT' },
+                    { id: '2TH', name: '2 Thessalonians', chapters: 3, testament: 'NT' },
+                    { id: '1TI', name: '1 Timothy', chapters: 6, testament: 'NT' },
+                    { id: '2TI', name: '2 Timothy', chapters: 4, testament: 'NT' },
+                    { id: 'TIT', name: 'Titus', chapters: 3, testament: 'NT' },
+                    { id: 'PHM', name: 'Philemon', chapters: 1, testament: 'NT' },
+                    { id: 'HEB', name: 'Hebrews', chapters: 13, testament: 'NT' },
+                    { id: 'JAS', name: 'James', chapters: 5, testament: 'NT' },
+                    { id: '1PE', name: '1 Peter', chapters: 5, testament: 'NT' },
+                    { id: '2PE', name: '2 Peter', chapters: 3, testament: 'NT' },
+                    { id: '1JN', name: '1 John', chapters: 5, testament: 'NT' },
+                    { id: '2JN', name: '2 John', chapters: 1, testament: 'NT' },
+                    { id: '3JN', name: '3 John', chapters: 1, testament: 'NT' },
+                    { id: 'JUD', name: 'Jude', chapters: 1, testament: 'NT' },
+                    { id: 'REV', name: 'Revelation', chapters: 22, testament: 'NT' }
+                ],
+                availableTranslations: [
+                    { id: 'web', name: 'World English Bible (WEB)' },
+                    { id: 'kjv', name: 'King James Version (KJV)' },
+                    { id: 'bbe', name: 'Bible in Basic English (BBE)' },
+                    // {id: 'oeb-us', name: 'Open English Bible (OEB-US)'}, // Can add more, but check bible-api.com support
+                    // {id: 'webbe', name: 'World English Bible, British Edition (WEBBE)'},
+                ],
+                translation: 'web',
+                selectedBook: 'JHN',
+                selectedChapter: 3,
+                selectedVerse: '16', // Default to a known verse
+                searchText: '',
+                chapters: [],
+                loading: false,
+                error: false,
+                errorMessage: '',
+                currentVerses: [],
+                currentReference: 'John 3:16',
+                translationNameInternal: 'World English Bible (WEB)', // Store full name separately
+                favorites: [], // Array of { reference: string, text: string }
+                history: [], // Array of { reference: string, textSnippet: string, timestamp: number }
+                notes: {}, // Object { reference: string : noteText: string }
+                showSidebar: false,
+                activeSidebarTab: 'favorites', // 'favorites', 'history', 'notes'
+                showParallel: false,
+                parallelTranslations: [],
+                parallelLoading: false,
+                showWordAnalysis: false,
+                selectedWordInfo: { word: null, reference: null }, // Store info about the selected word
+                // wordAnalysis: { definition: '', original: '', usages: [] }, // Structure for actual analysis
+                showCrossReferences: false,
+                currentCrossReferences: [],
+                crossRefVerse: '',
+                crossRefLoading: false,
+                theme: 'light', // 'light', 'dark', 'sepia'
+                showToast: false,
+                toastMessage: '',
+                toastType: 'success', // 'success' or 'error'
+                toastTimeout: null,
+                showShareDialog: false,
+                editingNote: false,
+                currentNoteReference: null,
+                currentNoteText: '',
+                isInitialLoad: true, // Flag to prevent "no results" message on first load
+
+                // --- Computed Properties / Getters ---
+                get oldTestamentBooks() {
+                    return this.bibleBooks.filter(b => b.testament === 'OT');
+                },
+                get newTestamentBooks() {
+                    return this.bibleBooks.filter(b => b.testament === 'NT');
+                },
+                get translationName() {
+                    const trans = this.availableTranslations.find(t => t.id === this.translation);
+                    return trans ? trans.name : 'Unknown Translation';
+                },
+                get recentHistory() {
+                    // Show history in reverse chronological order
+                    return [...this.history].reverse();
+                },
+                get themeClasses() {
+                    if (this.theme === 'dark') {
+                        return {
+                            nav: 'bg-slate-800 border border-slate-700',
+                            label: 'text-slate-400',
+                            select: 'bg-slate-700 text-slate-200 border-slate-600 focus:ring-indigo-500 focus:border-indigo-500',
+                            selectIcon: 'text-slate-400',
+                            input: 'bg-slate-700 text-slate-200 border-slate-600 placeholder-slate-500 focus:ring-indigo-500 focus:border-indigo-500',
+                            content: 'bg-slate-800 border border-slate-700',
+                            infoBar: 'bg-slate-700 border-b border-slate-600',
+                            bibleText: 'text-slate-300',
+                            verseBtn: 'bg-slate-700 hover:bg-slate-600 text-slate-300',
+                            navBtn: 'bg-slate-700 hover:bg-slate-600 text-slate-300 disabled:bg-slate-800 disabled:text-slate-500',
+                            featureBtn: 'bg-slate-700 hover:bg-slate-600 text-slate-300 border border-slate-600',
+                            featureBtnActive: 'bg-indigo-900 text-indigo-100 border-indigo-700',
+                            sidebar: 'bg-slate-800 border border-slate-700',
+                            tabs: 'border-b border-slate-600',
+                            tabActive: 'border-indigo-500 text-indigo-400 bg-slate-700',
+                            tabInactive: 'text-slate-400 hover:text-slate-200 hover:bg-slate-700',
+                            divide: 'divide-slate-700',
+                            link: 'text-indigo-400 hover:text-indigo-300',
+                            text: 'text-slate-300',
+                            noteEditor: 'bg-slate-700 border-indigo-700',
+                            dialog: 'bg-slate-800 text-slate-200',
+                            dialogHeader: 'border-b border-slate-600',
+                            shareBox: 'bg-slate-700 border-slate-600',
+                            copyBtn: 'bg-slate-600 hover:bg-slate-500 text-slate-200',
+                            parallelItem: 'border-slate-700 bg-slate-800/50',
+                            usageBox: 'bg-slate-700',
+                        }
+                    } else if (this.theme === 'sepia') {
+                        return {
+                            nav: 'bg-[#fdf6e9] border border-[#eaddc7]',
+                            label: 'text-[#7a5c44]',
+                            select: 'bg-white text-[#5b4636] border-[#eaddc7] focus:ring-[#a77b5b] focus:border-[#a77b5b]',
+                            selectIcon: 'text-[#7a5c44]',
+                            input: 'bg-white text-[#5b4636] border-[#eaddc7] placeholder-[#a8907d] focus:ring-[#a77b5b] focus:border-[#a77b5b]',
+                            content: 'bg-[#fdf6e9] border border-[#eaddc7]',
+                            infoBar: 'bg-[#fbf3e7] border-b border-[#eaddc7]',
+                            bibleText: 'text-[#5b4636]',
+                            verseBtn: 'bg-[#fbf3e7] hover:bg-[#f4eade] text-[#7a5c44]',
+                            navBtn: 'bg-[#fbf3e7] hover:bg-[#f4eade] text-[#7a5c44] disabled:bg-[#fdf6e9] disabled:text-[#a8907d]',
+                            featureBtn: 'bg-[#fdf6e9] hover:bg-[#f4eade] text-[#7a5c44] border border-[#eaddc7]',
+                            featureBtnActive: 'bg-[#eaddc7] text-[#5b4636] border-[#c7b2a3]',
+                            sidebar: 'bg-[#fdf6e9] border border-[#eaddc7]',
+                            tabs: 'border-b border-[#eaddc7]',
+                            tabActive: 'border-orange-700 text-orange-800 bg-[#fbf3e7]',
+                            tabInactive: 'text-[#7a5c44] hover:text-[#5b4636] hover:bg-[#fbf3e7]',
+                            divide: 'divide-[#eaddc7]',
+                            link: 'text-orange-800 hover:text-orange-900',
+                            text: 'text-[#5b4636]',
+                            noteEditor: 'bg-[#fbf3e7] border-orange-700',
+                            dialog: 'bg-[#fdf6e9] text-[#5b4636]',
+                            dialogHeader: 'border-b border-[#eaddc7]',
+                            shareBox: 'bg-[#fbf3e7] border-[#eaddc7]',
+                            copyBtn: 'bg-[#eaddc7] hover:bg-[#d6c6b6] text-[#7a5c44]',
+                            parallelItem: 'border-[#eaddc7] bg-[#fdf6e9]/50',
+                            usageBox: 'bg-[#fbf3e7]',
+                        }
+                    } else { // Light theme (default)
+                        return {
+                            nav: 'bg-white',
+                            label: 'text-slate-700',
+                            select: 'bg-white text-slate-900 border-slate-300 focus:ring-indigo-500 focus:border-indigo-500',
+                            selectIcon: 'text-slate-700',
+                            input: 'bg-white text-slate-900 border-slate-300 placeholder-slate-400 focus:ring-indigo-500 focus:border-indigo-500',
+                            content: 'bg-white',
+                            infoBar: 'bg-slate-100 border-b border-slate-200',
+                            bibleText: 'text-slate-800',
+                            verseBtn: 'bg-slate-100 hover:bg-slate-200 text-slate-700',
+                            navBtn: 'bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:bg-slate-50 disabled:text-slate-400',
+                            featureBtn: 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-sm',
+                            featureBtnActive: 'bg-indigo-100 text-indigo-800 border-indigo-300',
+                            sidebar: 'bg-white',
+                            tabs: 'border-b border-slate-200',
+                            tabActive: 'border-indigo-600 text-indigo-600 bg-white',
+                            tabInactive: 'text-slate-600 hover:text-slate-900 hover:bg-slate-50',
+                            divide: 'divide-slate-200',
+                            link: 'text-indigo-600 hover:text-indigo-800',
+                            text: 'text-slate-700',
+                            noteEditor: 'bg-slate-50 border-indigo-300',
+                            dialog: 'bg-white text-slate-900',
+                            dialogHeader: 'border-b border-slate-200',
+                            shareBox: 'bg-slate-50 border-slate-200',
+                            copyBtn: 'bg-slate-200 hover:bg-slate-300 text-slate-700',
+                            parallelItem: 'border-slate-200 bg-white/50',
+                            usageBox: 'bg-slate-50',
+                        }
+                    }
+                },
+
+                // --- Methods ---
+                init() {
+                    console.log('Bible App Initializing...');
+                    this.loadFromLocalStorage(); // Load theme, favs, history, notes
+                    this.updateChapters();
+                    // Determine initial load parameters (from URL or defaults)
+                    this.parseUrlParams(); // Check URL first
+                    // Fetch initial content
+                    this.fetchVerses(true); // Pass true for initial load
+                    this.$watch('selectedBook', () => this.updateUrlParams());
+                    this.$watch('selectedChapter', () => this.updateUrlParams());
+                    this.$watch('selectedVerse', () => this.updateUrlParams());
+                    this.$watch('translation', () => this.updateUrlParams());
+                },
+
+                updateChapters() {
+                    const book = this.bibleBooks.find(b => b.id === this.selectedBook);
+                    if (book) {
+                        this.chapters = Array.from({ length: book.chapters }, (_, i) => i + 1);
+                        // If the current chapter is invalid for the new book, reset to 1
+                        if (!this.chapters.includes(parseInt(this.selectedChapter))) {
+                            this.selectedChapter = 1;
+                        }
+                    } else {
+                        this.chapters = []; // Should not happen if selectedBook is always valid
+                    }
+                },
+
+                async fetchVerses(isLoad = false) {
+                    if (!this.selectedBook || !this.selectedChapter) return;
+                    if (this.loading) return; // Prevent concurrent requests
+
+                    this.loading = true;
+                    this.error = false;
+                    this.errorMessage = '';
+                    if (!isLoad) {
+                        this.isInitialLoad = false; // No longer initial load after first manual fetch/nav
+                    }
+
+                    const book = this.bibleBooks.find(b => b.id === this.selectedBook);
+                    if (!book) {
+                        this.handleError("Invalid book selected.");
+                        return;
+                    }
+                    const bookName = book.name;
+                    const chapter = this.selectedChapter;
+                    const verseRange = this.selectedVerse.trim().replace(/\s+/g, ''); // Clean verse input
+
+                    let apiUrl = `${BIBLE_API_BASE}${encodeURIComponent(bookName)}+${chapter}`;
+                    if (verseRange) {
+                        // Basic validation for verse input (e.g., numbers, hyphens, commas)
+                        if (/^[0-9,\-]+$/.test(verseRange)) {
+                            apiUrl += `:${verseRange}`;
+                        } else {
+                            this.handleError("Invalid verse format. Use numbers, commas, hyphens (e.g., 1, 3-5).");
+                            // Optionally clear the invalid input: this.selectedVerse = '';
+                            return;
+                        }
+                    }
+                    apiUrl += `?translation=${this.translation}`;
+                    if (this.searchText.trim()) {
+                        // Note: bible-api.com doesn't support server-side search via query param.
+                        // We fetch the whole chapter/range and filter client-side.
+                        console.log("Client-side search for:", this.searchText);
+                    }
+
+                    try {
+                        const response = await fetch(apiUrl);
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                        }
+
+                        // Check for API-specific errors even if response is ok (e.g., verse not found but chapter is)
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
+
+                        this.currentReference = data.reference || `${bookName} ${chapter}${verseRange ? ':' + verseRange : ''}`;
+                        this.translationNameInternal = data.translation_name || this.translationName; // Use API's name if available
+
+                        let verses = [];
+                        if (data.verses) {
+                            verses = data.verses;
+                        } else if (data.text && data.verse) {
+                            // Handle single verse response structure
+                            verses = [{
+                                book_id: book.id,
+                                book_name: bookName,
+                                chapter: chapter,
+                                verse: data.verse,
+                                text: data.text
+                            }];
+                        } else {
+                            // No verses found, but no explicit error (e.g., empty chapter?)
+                            verses = [];
+                        }
+
+
+                        // Client-side search filtering
+                        const searchTerm = this.searchText.trim().toLowerCase();
+                        if (searchTerm) {
+                            this.currentVerses = verses.filter(v => v.text.toLowerCase().includes(searchTerm));
+                        } else {
+                            this.currentVerses = verses;
+                        }
+
+
+                        if (!isLoad && this.currentVerses.length > 0) { // Don't add initial load or empty results to history immediately
+                            this.addToHistory(this.currentReference, this.currentVerses[0]?.text);
+                        } else if (isLoad && this.currentVerses.length > 0) {
+                            // Add initial load to history *only if* it wasn't the last item already
+                            if (!this.history.length || this.history[this.history.length - 1].reference !== this.currentReference) {
+                                this.addToHistory(this.currentReference, this.currentVerses[0]?.text);
+                            }
+                        }
+
+                        this.$nextTick(() => {
+                            this.$refs.bibleContent.scrollTop = 0; // Scroll to top on new content load
+                        });
+
+                        // Fetch parallel translations if the panel is open
+                        if (this.showParallel) {
+                            this.runParallelSearch(this.currentReference);
+                        }
+                        // Clear cross-references when main content changes
+                        if (this.showCrossReferences) {
+                            this.currentCrossReferences = [];
+                            this.crossRefVerse = '';
+                            // Optionally close the panel: this.showCrossReferences = false;
+                        }
+                        // Clear word analysis when content changes
+                        if (this.showWordAnalysis) {
+                            this.closeWordAnalysis();
+                        }
+
+
+                    } catch (error) {
+                        console.error("Fetch error:", error);
+                        this.handleError(`Failed to load verses: ${error.message}. Please check the reference and translation.`);
+                        this.currentVerses = []; // Clear verses on error
+                    } finally {
+                        this.loading = false;
+                        if (isLoad) { // Mark initial load as complete regardless of success/failure
+                            this.isInitialLoad = false;
+                        }
+                    }
+                },
+
+                handleError(message) {
+                    this.error = true;
+                    this.errorMessage = message;
+                    this.loading = false;
+                    // Optionally show a toast notification as well
+                    // this.showNotification(message, 'error');
+                },
+
+                renderVerseText(text) {
+                    let renderedText = this.highlightText(text); // Apply search highlighting first
+
+                    // If word analysis is enabled, wrap words in spans for clickability
+                    if (this.showWordAnalysis) {
+                        // Wrap words in spans, keeping existing <mark> tags intact
+                        // This regex is complex: it finds sequences of non-space, non-< characters (words)
+                        // OR existing <mark> tags.
+                        renderedText = renderedText.replace(/(<mark>.*?<\/mark>)|([^\s<>]+)/g, (match, markTag, word) => {
+                            if (markTag) {
+                                return markTag; // Keep mark tags as they are
+                            }
+                            if (word && word.length > 1) { // Only make actual words clickable (length > 1)
+                                // Add word-clickable class and data attribute for the word itself
+                                // Escape quotes within the word if necessary
+                                const cleanWord = word.replace(/['"]/g, ''); // Basic cleaning
+                                return `<span class="word-clickable" @click="$dispatch('word-selected', '${cleanWord}')">${word}</span>`;
+                            }
+                            return match; // Return punctuation etc. as is
+                        });
+                    }
+                    return renderedText;
+                },
+
+                handleTextSelection(event, reference) {
+                    const selection = window.getSelection();
+                    const selectedText = selection.toString().trim();
+
+                    if (selectedText && this.showWordAnalysis && selection.rangeCount > 0) {
+                        // Check if the click target (deepest element) was a .word-clickable span
+                        let target = event.target;
+                        let clickedWordSpan = null;
+                        while (target && target !== event.currentTarget) {
+                            if (target.classList && target.classList.contains('word-clickable')) {
+                                clickedWordSpan = target;
+                                break;
+                            }
+                            target = target.parentElement;
+                        }
+
+                        // If clicked within a word span, prioritize that word
+                        if (clickedWordSpan) {
+                            const word = clickedWordSpan.textContent.trim();
+                            console.log("Word clicked:", word, "Ref:", reference);
+                            this.selectedWordInfo = { word: word, reference: reference };
+                            // In a real implementation, fetch word analysis data here:
+                            // this.getWordAnalysis(word, reference);
+                        } else if (selectedText.split(/\s+/).length === 1 && selectedText.length > 1) {
+                            // If not clicking a span, but selecting a single word, use that
+                            console.log("Word selected:", selectedText, "Ref:", reference);
+                            this.selectedWordInfo = { word: selectedText, reference: reference };
+                            // this.getWordAnalysis(selectedText, reference);
+                        } else {
+                            // Multiple words selected or empty selection, clear analysis
+                            // this.closeWordAnalysis(); // Or just don't update
+                        }
+                    } else {
+                        // Word analysis not active, or no text selected
+                        // this.closeWordAnalysis();
+                    }
+                },
+
+                async fetchRandomVerse() {
+                    if (this.loading) return;
+                    this.loading = true; // Use main loading indicator
+
+                    try {
+                        // Get a random book
+                        const randomBook = this.bibleBooks[Math.floor(Math.random() * this.bibleBooks.length)];
+                        // Get a random chapter for that book
+                        const randomChapter = Math.floor(Math.random() * randomBook.chapters) + 1;
+
+                        // Fetch the entire random chapter first
+                        const apiUrl = `${BIBLE_API_BASE}${encodeURIComponent(randomBook.name)}+${randomChapter}?translation=${this.translation}`;
+                        const response = await fetch(apiUrl);
+                        const data = await response.json();
+
+                        if (!response.ok || data.error) {
+                            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                        }
+
+                        if (data.verses && data.verses.length > 0) {
+                            // Pick a random verse from the fetched chapter
+                            const randomVerseIndex = Math.floor(Math.random() * data.verses.length);
+                            const verseData = data.verses[randomVerseIndex];
+
+                            // Update the main selection to this random verse
+                            this.selectedBook = randomBook.id;
+                            this.selectedChapter = randomChapter;
+                            this.selectedVerse = verseData.verse.toString(); // API returns number, model needs string
+
+                            // Now call fetchVerses to display it and handle history, etc.
+                            this.fetchVerses();
+
+                        } else {
+                            throw new Error("Chapter fetched successfully, but contained no verses.");
+                        }
+
+                    } catch (error) {
+                        console.error("Fetch random verse error:", error);
+                        this.showNotification(`Error fetching random verse: ${error.message}`, 'error');
+                        this.loading = false; // Ensure loading is reset on error
+                    }
+                    // Note: fetchVerses() will set loading = false when it completes or errors
+                },
+
+                highlightText(text) {
+                    if (!this.searchText || !text) {
+                        return text;
+                    }
+                    const searchTerm = this.searchText.trim();
+                    if (searchTerm === '') return text;
+
+                    try {
+                        // Case-insensitive, global replacement
+                        const regex = new RegExp(`(${searchTerm.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+                        return text.replace(regex, '<mark>$1</mark>');
+                    } catch (e) {
+                        console.warn("Regex error during highlighting:", e);
+                        return text; // Return original text if regex fails
+                    }
+                },
+
+                // --- Navigation ---
+                navigateToPrevious() {
+                    let currentBookIndex = this.bibleBooks.findIndex(b => b.id === this.selectedBook);
+                    if (currentBookIndex === -1) return;
+
+                    if (this.selectedChapter > 1) {
+                        this.selectedChapter--;
+                    } else {
+                        // Move to the last chapter of the previous book
+                        if (currentBookIndex > 0) {
+                            currentBookIndex--;
+                            this.selectedBook = this.bibleBooks[currentBookIndex].id;
+                            this.updateChapters(); // Update chapter list for the new book
+                            this.selectedChapter = this.bibleBooks[currentBookIndex].chapters; // Go to last chapter
+                        } else {
+                            // Already at the first chapter of the first book
+                            return;
+                        }
+                    }
+                    this.selectedVerse = ''; // Clear specific verse selection when changing chapter/book
+                    this.searchText = ''; // Clear search text too
+                    this.fetchVerses();
+                },
+
+                navigateToNext() {
+                    let currentBookIndex = this.bibleBooks.findIndex(b => b.id === this.selectedBook);
+                    if (currentBookIndex === -1) return;
+
+                    const currentBook = this.bibleBooks[currentBookIndex];
+                    if (this.selectedChapter < currentBook.chapters) {
+                        this.selectedChapter++;
+                    } else {
+                        // Move to the first chapter of the next book
+                        if (currentBookIndex < this.bibleBooks.length - 1) {
+                            currentBookIndex++;
+                            this.selectedBook = this.bibleBooks[currentBookIndex].id;
+                            this.updateChapters(); // Update chapter list
+                            this.selectedChapter = 1; // Go to first chapter
+                        } else {
+                            // Already at the last chapter of the last book
+                            return;
+                        }
+                    }
+                    this.selectedVerse = ''; // Clear specific verse selection
+                    this.searchText = ''; // Clear search text
+                    this.fetchVerses();
+                },
+
+                isFirstChapter() {
+                    const currentBookIndex = this.bibleBooks.findIndex(b => b.id === this.selectedBook);
+                    return currentBookIndex === 0 && parseInt(this.selectedChapter) === 1;
+                },
+
+                isLastChapter() {
+                    const currentBookIndex = this.bibleBooks.findIndex(b => b.id === this.selectedBook);
+                    if (currentBookIndex === -1) return true; // Should not happen
+                    const currentBook = this.bibleBooks[currentBookIndex];
+                    return currentBookIndex === this.bibleBooks.length - 1 && parseInt(this.selectedChapter) === currentBook.chapters;
+                },
+
+                goToReference(reference) {
+                    const parsedRef = this.parseReference(reference);
+                    if (parsedRef) {
+                        this.selectedBook = parsedRef.bookId;
+                        this.updateChapters(); // Ensure chapters are updated *before* setting chapter
+                        this.selectedChapter = parsedRef.chapter;
+                        this.selectedVerse = parsedRef.verse || ''; // Set verse or empty string
+                        this.searchText = ''; // Clear search when jumping
+                        this.fetchVerses();
+                        // Optionally close sidebar if open
+                        this.showSidebar = false;
+                    } else {
+                        this.showNotification(`Could not parse reference: ${reference}`, 'error');
+                    }
+                },
+
+                parseReference(refString) {
+                    if (!refString || typeof refString !== 'string') return null;
+
+                    // Match patterns like "John 3:16", "1 Corinthians 13:4-7", "Psalm 119:105", "Genesis 1"
+                    // This is a simplified parser, assumes standard book names from bibleBooks array.
+                    // Regex breakdown:
+                    // (\d?\s?[A-Za-z]+(?:\s+[A-Za-z]+)*)  - Book name (optional leading digit, optional space, multiple words)
+                    // \s+                                  - Space after book
+                    // (\d+)                                - Chapter number
+                    // (?:[:\.](\d+(?:[-,\d]*)))?           - Optional verse part (starting with : or .) followed by numbers, commas, hyphens
+                    const match = refString.trim().match(/^(\d?\s?[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(\d+)(?:[:\.](\d+(?:[-,\d]*\d)?))?$/);
+
+                    if (match) {
+                        const bookName = match[1].trim();
+                        const chapter = parseInt(match[2], 10);
+                        const verse = match[3] ? match[3].trim() : null;
+
+                        // Find the book ID from our list
+                        const book = this.bibleBooks.find(b => b.name.toLowerCase() === bookName.toLowerCase());
+
+                        if (book && chapter) {
+                            return {
+                                bookId: book.id,
+                                bookName: book.name,
+                                chapter: chapter,
+                                verse: verse
+                            };
+                        }
+                    }
+                    console.warn("Could not parse reference:", refString);
+                    return null; // Parsing failed
+                },
+
+                // --- Feature Toggles ---
+                toggleSidebarTab(tabName) {
+                    if (this.showSidebar && this.activeSidebarTab === tabName) {
+                        this.showSidebar = false; // Hide if clicking the active tab again
+                    } else {
+                        this.activeSidebarTab = tabName;
+                        this.showSidebar = true;
+                    }
+                },
+                toggleParallelView() {
+                    this.showParallel = !this.showParallel;
+                    if (this.showParallel && this.currentReference && this.parallelTranslations.length === 0) {
+                        // If opening and no data yet, fetch it
+                        this.runParallelSearch(this.currentReference);
+                    }
+                },
+                toggleWordAnalysis() {
+                    this.showWordAnalysis = !this.showWordAnalysis;
+                    if (!this.showWordAnalysis) {
+                        this.selectedWordInfo = { word: null, reference: null }; // Clear selection when hiding
+                    }
+                    // Re-render verse text to add/remove clickable spans
+                    // This is a bit inefficient, ideally we'd update existing spans, but this works for now
+                    this.currentVerses = [...this.currentVerses];
+                },
+                closeWordAnalysis() {
+                    if (this.showWordAnalysis) {
+                        this.toggleWordAnalysis(); // Reuse toggle logic to ensure cleanup
+                    }
+                },
+                toggleCrossReferences() {
+                    this.showCrossReferences = !this.showCrossReferences;
+                    if (!this.showCrossReferences) {
+                        this.currentCrossReferences = []; // Clear data when hiding
+                        this.crossRefVerse = '';
+                    } else if (this.currentReference && this.currentCrossReferences.length === 0) {
+                        // If opening and no data, try fetching for the current *passage* (first verse for simplicity)
+                        const firstVerseRef = this.currentVerses[0] ? `${this.currentVerses[0].book_name} ${this.currentVerses[0].chapter}:${this.currentVerses[0].verse}` : this.currentReference;
+                        this.getCrossReferences(firstVerseRef);
+                    }
+                },
+
+                // --- Persistence (LocalStorage) ---
+                loadFromLocalStorage() {
+                    this.favorites = JSON.parse(localStorage.getItem('bibleFavorites') || '[]');
+                    this.history = JSON.parse(localStorage.getItem('bibleHistory') || '[]');
+                    this.notes = JSON.parse(localStorage.getItem('bibleNotes') || '{}');
+                    this.theme = localStorage.getItem('bibleTheme') || 'light';
+                    // Apply theme immediately
+                    // this.changeTheme(); // No need to call explicitly, body class handles it
+                    this.translation = localStorage.getItem('bibleLastTranslation') || 'web';
+                    this.selectedBook = localStorage.getItem('bibleLastBook') || 'JHN';
+                    this.selectedChapter = parseInt(localStorage.getItem('bibleLastChapter') || '3', 10);
+                    this.selectedVerse = localStorage.getItem('bibleLastVerse') || '16';
+                },
+                saveToLocalStorage(key, value) {
+                    localStorage.setItem(key, JSON.stringify(value));
+                },
+                saveTheme() {
+                    localStorage.setItem('bibleTheme', this.theme);
+                },
+                saveLastReference() {
+                    localStorage.setItem('bibleLastTranslation', this.translation);
+                    localStorage.setItem('bibleLastBook', this.selectedBook);
+                    localStorage.setItem('bibleLastChapter', this.selectedChapter.toString());
+                    localStorage.setItem('bibleLastVerse', this.selectedVerse);
+                },
+
+                // --- Theme ---
+                changeTheme() {
+                    this.saveTheme();
+                    // Tailwind classes on body + themeClasses object handle the rest
+                },
+
+                // --- Favorites ---
+                toggleFavorite(ref) {
+                    const index = this.favorites.findIndex(fav => fav.reference === ref);
+                    if (index > -1) {
+                        this.removeFavorite(index);
+                    } else {
+                        this.addToFavorites();
+                    }
+                },
+                addToFavorites() {
+                    // Add the currently displayed passage (or first verse if multiple)
+                    const ref = this.currentReference;
+                    // Find text - prefer full passage text if available, else first verse
+                    let textToSave = this.getCurrentVerseText(150); // Get combined text, limit length
+
+                    if (ref && textToSave && !this.favorites.some(fav => fav.reference === ref)) {
+                        this.favorites.push({ reference: ref, text: textToSave });
+                        this.saveToLocalStorage('bibleFavorites', this.favorites);
+                        this.showNotification('Added to favorites!', 'success');
+                    } else if (!ref || !textToSave) {
+                        this.showNotification('Could not add favorite. No content loaded.', 'error');
+                    } else {
+                        this.showNotification('Already in favorites.', 'success'); // Or just do nothing silently
+                    }
+                },
+                removeFavorite(index) {
+                    const removed = this.favorites.splice(index, 1);
+                    if (removed.length > 0) {
+                        this.saveToLocalStorage('bibleFavorites', this.favorites);
+                        this.showNotification('Removed from favorites.', 'success');
+                    }
+                },
+                clearFavorites() {
+                    if (confirm('Are you sure you want to clear all favorites?')) {
+                        this.favorites = [];
+                        this.saveToLocalStorage('bibleFavorites', this.favorites);
+                        this.showNotification('Favorites cleared.', 'success');
+                    }
+                },
+                loadFavorite(favorite) {
+                    this.goToReference(favorite.reference);
+                },
+                isCurrentInFavorites() {
+                    return this.favorites.some(fav => fav.reference === this.currentReference);
+                },
+                isVerseFavorited(verse) {
+                    const ref = `${verse.book_name} ${verse.chapter}:${verse.verse}`;
+                    // Check if the specific verse ref OR the broader currentRef (if it matches) is favorited
+                    return this.favorites.some(fav => fav.reference === ref || fav.reference === this.currentReference);
+                },
+
+                // --- History ---
+                addToHistory(reference, text) {
+                    const snippet = text ? (text.length > 100 ? text.substring(0, 100) + '...' : text) : 'Viewed passage';
+                    // Remove existing entry for the same reference to avoid duplicates and move to top
+                    this.history = this.history.filter(item => item.reference !== reference);
+                    // Add new entry to the beginning (will be reversed for display)
+                    this.history.push({ reference: reference, textSnippet: snippet, timestamp: Date.now() });
+                    // Limit history size
+                    if (this.history.length > MAX_HISTORY) {
+                        this.history.shift(); // Remove the oldest item
+                    }
+                    this.saveToLocalStorage('bibleHistory', this.history);
+                    this.saveLastReference(); // Save reference on successful load/history add
+                },
+                loadFromHistory(item) {
+                    this.goToReference(item.reference);
+                },
+                clearHistory() {
+                    if (confirm('Are you sure you want to clear your viewing history?')) {
+                        this.history = [];
+                        this.saveToLocalStorage('bibleHistory', this.history);
+                        this.showNotification('History cleared.', 'success');
+                    }
+                },
+                formatDate(timestamp) {
+                    if (!timestamp) return '';
+                    const date = new Date(timestamp);
+                    const now = new Date();
+                    const diffSeconds = Math.round((now - date) / 1000);
+                    const diffMinutes = Math.round(diffSeconds / 60);
+                    const diffHours = Math.round(diffMinutes / 60);
+                    const diffDays = Math.round(diffHours / 24);
+
+                    if (diffSeconds < 60) return 'Just now';
+                    if (diffMinutes < 60) return `${diffMinutes} min ago`;
+                    if (diffHours < 24) return `${diffHours} hr ago`;
+                    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+                    return date.toLocaleDateString(); // Older than a week, show date
+                },
+
+                // --- Notes ---
+                toggleNoteEditor(reference) {
+                    if (this.editingNote && this.currentNoteReference === reference) {
+                        // Toggling off the current note editor
+                        this.cancelNote();
+                    } else {
+                        // Open editor for a specific reference or a new general note
+                        this.currentNoteReference = reference || 'General Note';
+                        this.currentNoteText = this.notes[this.currentNoteReference] || '';
+                        this.editingNote = true;
+                        // Ensure the notes tab is active in the sidebar
+                        if (!this.showSidebar || this.activeSidebarTab !== 'notes') {
+                            this.activeSidebarTab = 'notes';
+                            this.showSidebar = true;
+                        }
+                        // Focus the textarea after it becomes visible
+                        this.$nextTick(() => {
+                            this.$refs.noteTextarea?.focus();
+                        });
+                    }
+                },
+                editNote(reference) {
+                    this.toggleNoteEditor(reference);
+                },
+                saveNote() {
+                    if (!this.currentNoteReference) return;
+                    const noteText = this.currentNoteText.trim();
+                    if (noteText) {
+                        // Use Vue.set or object spread for reactivity if needed, but direct assignment often works in Alpine 3
+                        this.notes = { ...this.notes, [this.currentNoteReference]: noteText };
+                        this.showNotification('Note saved.', 'success');
+                    } else {
+                        // If text is empty, delete the note
+                        this.deleteNote(this.currentNoteReference, true); // Pass silent=true if deleting empty note
+                        this.showNotification('Empty note discarded.', 'success');
+                    }
+                    this.saveToLocalStorage('bibleNotes', this.notes);
+                    this.editingNote = false;
+                    this.currentNoteReference = null;
+                    this.currentNoteText = '';
+                },
+                deleteNote(reference, silent = false) {
+                    if (!this.notes[reference]) return;
+
+                    if (silent || confirm(`Are you sure you want to delete the note for "${reference}"?`)) {
+                        // Use object spread to create a new object without the key
+                        const { [reference]: deleted, ...remainingNotes } = this.notes;
+                        this.notes = remainingNotes;
+
+                        this.saveToLocalStorage('bibleNotes', this.notes);
+                        if (!silent) {
+                            this.showNotification('Note deleted.', 'success');
+                        }
+                        // If deleting the note currently being edited, close editor
+                        if (this.editingNote && this.currentNoteReference === reference) {
+                            this.cancelNote();
+                        }
+                    }
+                },
+                cancelNote() {
+                    this.editingNote = false;
+                    this.currentNoteReference = null;
+                    this.currentNoteText = '';
+                },
+
+                // --- Parallel View ---
+                async runParallelSearch(reference) {
+                    if (!reference || !this.showParallel) return;
+                    this.parallelLoading = true;
+                    this.parallelTranslations = [];
+
+                    const parsedRef = this.parseReference(reference);
+                    if (!parsedRef) {
+                        this.parallelLoading = false;
+                        return;
+                    }
+
+                    const baseRefString = `${parsedRef.bookName} ${parsedRef.chapter}${parsedRef.verse ? ':' + parsedRef.verse : ''}`;
+
+                    const fetchPromises = PARALLEL_TRANSLATIONS_TO_FETCH
+                        .filter(transId => transId !== this.translation) // Don't fetch the current translation again
+                        .map(async transId => {
+                            const apiUrl = `${BIBLE_API_BASE}${encodeURIComponent(baseRefString)}?translation=${transId}`;
+                            try {
+                                const response = await fetch(apiUrl);
+                                const data = await response.json();
+                                if (!response.ok || data.error) {
+                                    console.warn(`Failed to fetch parallel translation ${transId}:`, data.error || response.status);
+                                    return null; // Return null on error
+                                }
+                                // Combine verses if multiple returned
+                                let combinedText = '';
+                                if (data.verses) {
+                                    combinedText = data.verses.map(v => v.text).join(' ');
+                                } else if (data.text) {
+                                    combinedText = data.text;
+                                }
+                                const translationInfo = this.availableTranslations.find(t => t.id === transId) || { name: transId.toUpperCase() };
+                                return {
+                                    translationId: transId,
+                                    translationName: translationInfo.name,
+                                    text: combinedText
+                                };
+                            } catch (error) {
+                                console.error(`Error fetching parallel ${transId}:`, error);
+                                return null;
+                            }
+                        });
+
+                    const results = await Promise.all(fetchPromises);
+                    this.parallelTranslations = results.filter(result => result !== null && result.text); // Filter out nulls and empty results
+                    this.parallelLoading = false;
+                },
+
+                // --- Cross References (Placeholder/Simulation) ---
+                async getCrossReferences(reference) {
+                    if (!reference) return;
+                    this.showCrossReferences = true; // Ensure panel is visible
+                    this.crossRefLoading = true;
+                    this.crossRefVerse = reference;
+                    this.currentCrossReferences = [];
+
+                    // ** SIMULATION **
+                    // In a real app, you'd call an API here.
+                    // Example: `await fetch('/api/crossrefs?ref=' + encodeURIComponent(reference))`
+                    console.log("Simulating cross-reference search for:", reference);
+                    await new Promise(resolve => setTimeout(resolve, 800)); // Simulate network delay
+
+                    // Find some plausible (but potentially unrelated) references for demo
+                    const baseRef = this.parseReference(reference);
+                    const demoRefs = [];
+                    if (baseRef) {
+                        const currentBookIndex = this.bibleBooks.findIndex(b => b.id === baseRef.bookId);
+                        // Add a verse from the same book, next chapter (if exists)
+                        if (baseRef.chapter < this.bibleBooks[currentBookIndex].chapters) {
+                            demoRefs.push(`${baseRef.bookName} ${baseRef.chapter + 1}:1`);
+                        }
+                        // Add a verse from a different book (e.g., next book, same chapter number if valid)
+                        if (currentBookIndex < this.bibleBooks.length - 1) {
+                            const nextBook = this.bibleBooks[currentBookIndex + 1];
+                            if (baseRef.chapter <= nextBook.chapters) {
+                                demoRefs.push(`${nextBook.name} ${baseRef.chapter}:1`);
+                            }
+                        }
+                        // Add a common reference like John 3:16 if not already the source
+                        if (reference !== 'John 3:16') {
+                            demoRefs.push('John 3:16');
+                        }
+                        // Add a psalm
+                        demoRefs.push(`Psalms ${Math.floor(Math.random() * 150) + 1}:${Math.floor(Math.random() * 10) + 1}`);
+                    }
+
+                    // Fetch text for the simulated references
+                    const fetchPromises = demoRefs.map(async refStr => {
+                        const apiUrl = `${BIBLE_API_BASE}${encodeURIComponent(refStr)}?translation=${this.translation}`;
+                        try {
+                            const response = await fetch(apiUrl);
+                            const data = await response.json();
+                            if (response.ok && !data.error && (data.text || data.verses)) {
+                                const text = data.verses ? data.verses.map(v => v.text).join(' ') : data.text;
+                                return { reference: data.reference || refStr, text: text };
+                            }
+                        } catch (e) { /* ignore fetch errors for demo refs */ }
+                        return null;
+                    });
+
+                    const results = await Promise.all(fetchPromises);
+                    this.currentCrossReferences = results.filter(r => r !== null);
+
+                    if (this.currentCrossReferences.length === 0) {
+                        console.log("No simulated cross-references found.");
+                    }
+
+                    this.crossRefLoading = false;
+                },
+                copyReferenceText(ref) {
+                    const textToCopy = `${ref.reference}\n${ref.text}`;
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => this.showNotification('Reference copied!', 'success'))
+                        .catch(err => this.showNotification('Failed to copy reference.', 'error'));
+                },
+
+
+                // --- Clipboard ---
+                copyToClipboard() {
+                    const textToCopy = this.getCurrentVerseText();
+                    if (textToCopy) {
+                        navigator.clipboard.writeText(textToCopy)
+                            .then(() => this.showNotification('Passage copied to clipboard!', 'success'))
+                            .catch(err => this.showNotification('Failed to copy text.', 'error'));
+                    } else {
+                        this.showNotification('Nothing to copy.', 'error');
+                    }
+                },
+                copyVerse(verse) {
+                    const textToCopy = `${verse.book_name} ${verse.chapter}:${verse.verse} (${this.translation.toUpperCase()})\n${verse.text}`;
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => this.showNotification('Verse copied!', 'success'))
+                        .catch(err => this.showNotification('Failed to copy verse.', 'error'));
+                },
+                copyShareLink() {
+                    const link = this.getShareableLink();
+                    navigator.clipboard.writeText(link)
+                        .then(() => this.showNotification('Share link copied!', 'success'))
+                        .catch(err => this.showNotification('Failed to copy link.', 'error'));
+                },
+
+                // --- Sharing ---
+                getCurrentVerseText(maxLength = 0) {
+                    if (!this.currentVerses || this.currentVerses.length === 0) {
+                        return '';
+                    }
+                    let fullText = this.currentVerses.map(v => `${v.verse}. ${v.text}`).join('\n');
+                    if (maxLength > 0 && fullText.length > maxLength) {
+                        fullText = fullText.substring(0, maxLength) + '...';
+                    }
+                    return `${this.currentReference} (${this.translation.toUpperCase()})\n${fullText}`;
+                },
+                shareVerse() {
+                    if (this.currentVerses && this.currentVerses.length > 0) {
+                        this.showShareDialog = true;
+                    } else {
+                        this.showNotification('Load a verse before sharing.', 'error');
+                    }
+                },
+                getShareableLink() {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('ref', this.currentReference.replace(/\s/g, '')); // Use compact ref
+                    url.searchParams.set('trans', this.translation);
+                    return url.toString();
+                },
+                shareOnSocial(platform) {
+                    const textToShare = `${this.currentReference} (${this.translation.toUpperCase()}): ${this.currentVerses[0]?.text.substring(0, 100)}...`; // Short snippet
+                    const urlToShare = this.getShareableLink();
+                    let shareUrl = '';
+
+                    if (platform === 'twitter') {
+                        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}&url=${encodeURIComponent(urlToShare)}`;
+                    } else if (platform === 'facebook') {
+                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlToShare)}&quote=${encodeURIComponent(textToShare)}`;
+                    }
+
+                    if (shareUrl) {
+                        window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
+                    }
+                },
+                shareViaEmail() {
+                    const subject = `Bible Verse: ${this.currentReference}`;
+                    const body = `${this.getCurrentVerseText()}\n\nView online: ${this.getShareableLink()}`;
+                    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                },
+
+                // --- URL Params ---
+                parseUrlParams() {
+                    const params = new URLSearchParams(window.location.search);
+                    const refParam = params.get('ref');
+                    const transParam = params.get('trans');
+
+                    if (transParam && this.availableTranslations.some(t => t.id === transParam)) {
+                        this.translation = transParam;
+                    }
+
+                    if (refParam) {
+                        const parsedRef = this.parseReference(refParam); // Try parsing compact ref first
+                        const parsedRefSpaced = this.parseReference(refParam.replace(/([a-zA-Z])(\d)/, '$1 $2')); // Try with space if compact failed
+
+                        const finalParsedRef = parsedRef || parsedRefSpaced;
+
+                        if (finalParsedRef) {
+                            this.selectedBook = finalParsedRef.bookId;
+                            this.updateChapters();
+                            this.selectedChapter = finalParsedRef.chapter;
+                            this.selectedVerse = finalParsedRef.verse || '';
+                            console.log("Loaded reference from URL:", finalParsedRef);
+                            // Let init() call fetchVerses
+                            return; // Stop further default loading
+                        } else {
+                            console.warn("Could not parse 'ref' URL parameter:", refParam);
+                        }
+                    }
+
+                    // If no valid params, use values from localStorage (already loaded in init)
+                    console.log("Using default/localStorage reference.");
+                },
+
+                updateUrlParams() {
+                    if (this.isInitialLoad) return; // Don't update URL during initial load/param parsing
+
+                    const url = new URL(window.location.href);
+                    // Create a compact reference like John3:16 or Gen1
+                    const book = this.bibleBooks.find(b => b.id === this.selectedBook);
+                    if (!book) return;
+                    let compactRef = book.name.replace(/\s/g, '') + this.selectedChapter;
+                    if (this.selectedVerse.trim()) {
+                        compactRef += ':' + this.selectedVerse.trim().replace(/\s/g, '');
+                    }
+
+                    url.searchParams.set('ref', compactRef);
+                    url.searchParams.set('trans', this.translation);
+                    // Use replaceState to avoid polluting browser history for every selection change
+                    window.history.replaceState({}, '', url);
+                },
+
+                // --- Notifications ---
+                showNotification(message, type = 'success', duration = 3000) {
+                    this.toastMessage = message;
+                    this.toastType = type;
+                    this.showToast = true;
+
+                    // Clear existing timeout if any
+                    if (this.toastTimeout) {
+                        clearTimeout(this.toastTimeout);
+                    }
+
+                    // Set new timeout to hide the toast
+                    this.toastTimeout = setTimeout(() => {
+                        this.showToast = false;
+                    }, duration);
+                }
+            };
+        }
+    </script>
+
+</body>
+
+</html>

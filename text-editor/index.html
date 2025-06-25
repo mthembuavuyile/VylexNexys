@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Minimal Text Editor - Simple & Fast Online Writing</title>
+    <meta name="description" content="A lightweight, distraction-free text editor with word and character count, autosave, and dark mode. Perfect for writers, bloggers, and students.">
+    <meta name="keywords" content="text editor, online writing, word counter, minimal editor, markdown editor, distraction-free writing">
+    <meta name="author" content="Your Name">
+    
+    <!-- Open Graph Meta Tags (for social media) -->
+    <meta property="og:title" content="Minimal Text Editor - Simple & Fast Online Writing">
+    <meta property="og:description" content="A lightweight, distraction-free text editor with word and character count, autosave, and dark mode.">
+    <meta property="og:image" content="https://yourwebsite.com/editor-thumbnail.png">
+    <meta property="og:url" content="https://yourwebsite.com/minimal-text-editor">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Minimal Text Editor - Simple & Fast Online Writing">
+    <meta name="twitter:description" content="A lightweight, distraction-free text editor with word and character count, autosave, and dark mode.">
+    <meta name="twitter:image" content="https://yourwebsite.com/editor-thumbnail.png">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjMjEyMTIxIiBkPSJNMTMuNSAyaC0xMUMyIDIgMS41IDIuNSAxLjUgM3YxMGMwIC41LjUgMSAxIDFoMTFjLjUgMCAxLS41IDEtMVYzYzAtLjUtLjUtMS0xLTF6bS0xIDEwSDMuNVY0aDl2OHptLTcuNS0yaDZ2MWgtNnYtMXptMC0yaDZ2MWgtNnYtMXptMC0yaDZ2MWgtNnYtMXoiLz48L3N2Zz4=">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yourwebsite.com/minimal-text-editor">
+    
+    <!-- Robots Meta Tag -->
+    <meta name="robots" content="index, follow">
+        
+    <!-- Structured Data (JSON-LD for better SEO) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Minimal Text Editor",
+        "url": "https://yourwebsite.com/minimal-text-editor",
+        "description": "A lightweight, distraction-free text editor with autosave, word count, and dark mode.",
+        "applicationCategory": "Productivity",
+        "author": {
+            "@type": "Person",
+            "name": "Your Name"
+        }
+    }
+    </script>
+    <style>
+        /* CSS Variables for theming */
+        :root[data-theme="light"] {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --textarea-bg: #ffffff;
+            --textarea-border: #e0e0e0;
+            --stats-bg: #f5f5f5;
+            --button-bg: #f0f0f0;
+            --button-hover: #e0e0e0;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --textarea-bg: #2d2d2d;
+            --textarea-border: #404040;
+            --stats-bg: #333333;
+            --button-bg: #404040;
+            --button-hover: #505050;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 16px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            height: calc(100vh - 32px);
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background-color: var(--stats-bg);
+            border-radius: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .stats {
+            font-size: 0.9rem;
+            display: flex;
+            gap: 16px;
+        }
+
+        .theme-toggle {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--button-hover);
+        }
+
+        textarea {
+            flex-grow: 1;
+            width: 100%;
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            border: 1px solid var(--textarea-border);
+            border-radius: 8px;
+            box-sizing: border-box;
+            resize: none;
+            background-color: var(--textarea-bg);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #66afe9;
+            box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+            }
+
+            .container {
+                height: calc(100vh - 16px);
+            }
+
+            .toolbar {
+                padding: 8px 4px;
+            }
+
+            textarea {
+                padding: 12px;
+                font-size: 16px;
+            }
+
+            .stats {
+                font-size: 0.8rem;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="toolbar">
+            <div class="stats">
+                <span id="wordCount">Words: 0</span>
+                <span id="charCount">Characters: 0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">Toggle Theme ☀️</button>
+        </div>
+        <textarea id="editor" placeholder="Start writing..." autofocus></textarea>
+    </div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const wordCountElement = document.getElementById('wordCount');
+        const charCountElement = document.getElementById('charCount');
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const storageKey = 'myBlankPageText';
+        const themeKey = 'editorTheme';
+
+        // Load theme preference
+        const savedTheme = localStorage.getItem(themeKey) || 'light';
+        html.setAttribute('data-theme', savedTheme);
+
+        // Update word and character count
+        function updateStats() {
+            const text = editor.value;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const chars = text.length;
+            
+            wordCountElement.textContent = `Words: ${words}`;
+            charCountElement.textContent = `Characters: ${chars}`;
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem(themeKey, newTheme);
+        }
+
+        // Load saved content
+        window.onload = () => {
+            const savedText = localStorage.getItem(storageKey);
+            if (savedText) {
+                editor.value = savedText;
+                updateStats();
+            }
+        };
+
+        // Event listeners
+        editor.addEventListener('input', () => {
+            localStorage.setItem(storageKey, editor.value);
+            updateStats();
+        });
+
+        themeToggle.addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>
