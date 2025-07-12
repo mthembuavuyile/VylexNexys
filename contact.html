@@ -1,211 +1,642 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - VylexNexys</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Site Verification (Keep if same site) -->
+    <meta name="google-site-verification" content="8QCAaqQsO5s-JhKbqsiCfXk0BbJnUXRSoIe7be2Y2cs" />
+
+    <!-- SEO Meta Tags for Contact Page -->
+    <title>Contact VylexNexys | Get in Touch for Tech Solutions</title>
+    <meta name="description"
+        content="Contact VylexNexys for custom web development, Android apps, and innovative digital solutions. Reach out via email, WhatsApp, or our contact form." />
+    <meta name="keywords"
+        content="contact VylexNexys, get in touch, VylexNexys email, VylexNexys WhatsApp, tech support, project inquiry, software development contact" />
+    <meta name="author" content="VylexNexys Tech" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical URL for Contact Page -->
+    <link rel="canonical" href="https://vylexnexys.co.za/contact.html" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vylexnexys.co.za/contact.html" />
+    <meta property="og:title" content="Contact VylexNexys | Let's Build Together" />
+    <meta property="og:description"
+        content="Have a project in mind or need tech expertise? Contact VylexNexys today. We're ready to help you innovate." />
+    <meta property="og:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
+    <!-- Replace with a specific og-banner-contact.jpg or reuse main one -->
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://vylexnexys.co.za/contact.html" />
+    <meta name="twitter:title" content="Contact VylexNexys | Your Tech Partner" />
+    <meta name="twitter:description"
+        content="Reach out to VylexNexys for cutting-edge digital solutions. We're here to answer your questions and discuss your project." />
+    <meta name="twitter:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
+    <!-- Replace with a specific og-banner-contact.jpg or reuse main one -->
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+    <!-- Fonts & Icons (Same as other pages) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Main Styles (Copied from your services.html/about.html, ensure consistency) -->
     <style>
-    .contact-container {
-    flex: 1;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 1rem;
-}
+        :root {
+            --primary: #8B5CF6; /* Purple */
+            --secondary: #EC4899; /* Pink */
+            --accent: #06B6D4; /* Cyan */
+            --dark: #1F2937; /* Dark Gray-Blue */
+            --darker: #111827; /* Very Dark Gray-Blue */
+            --light: #F3F4F6; /* Light Gray */
+            --text-color: #9CA3AF; /* Medium Gray */
+            --text-light: #D1D5DB; /* Lighter text for dark backgrounds */
+            --transition: all 0.3s ease-in-out;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --border-radius-sm: 8px;
+            --border-radius-md: 15px;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --primary-rgb: 139, 92, 246; /* RGB version of --primary */
+        }
 
-.contact-heading {
-    text-align: center;
-    margin-bottom: 3rem;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            background-color: var(--darker);
+            color: var(--text-light);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body.nav-open { overflow: hidden; }
+        .container { width: min(1200px, 90%); margin-inline: auto; }
 
-.contact-heading h1 {
-    font-size: 2.5rem;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 1rem;
-}
+        .section-title { /* Kept for potential use, but contact page might not need it */
+            font-size: clamp(2.25rem, 5vw, 3.25rem);
+            font-weight: 700;
+            text-align: center;
+            margin-block: 4rem 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
-.contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    width: 100%;
-}
+        /* Header & Navigation (Same as other pages) */
+        #main-header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background-color: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(10px);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+            padding: 1rem 0;
+        }
+        #main-header.scrolled {
+            background-color: rgba(17, 24, 39, 0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 0;
+        }
+        .logo a { text-decoration: none; }
+        .logo h4 {
+            font-size: clamp(1.5rem, 4vw, 1.75rem); font-weight: bold;
+            background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
+            transition: var(--transition);
+        }
+        .logo h4:hover { transform: scale(1.05); filter: brightness(1.1); }
+        nav { display: flex; justify-content: space-between; align-items: center; position: relative; }
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a {
+            color: var(--light); text-decoration: none; font-weight: 500;
+            position: relative; padding-block: 0.5rem; transition: var(--transition); font-size: 1rem;
+        }
+        .nav-links a.active-link { color: var(--primary); font-weight: 700; }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gradient); transition: width 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a:focus, .nav-links a.active-link::after { color: var(--primary); outline: none; }
+        .nav-links a:hover::after, .nav-links a:focus::after, .nav-links a.active-link::after { width: 100%; }
+        .hamburger-menu {
+            display: none; background: transparent; border: none; cursor: pointer; padding: 0.5rem; z-index: 1001;
+        }
+        .hamburger-icon { width: 28px; height: 20px; position: relative; cursor: pointer; }
+        .bar {
+            display: block; position: absolute; width: 100%; height: 3px;
+            background-color: var(--light); border-radius: 3px; opacity: 1; left: 0;
+            transform: rotate(0deg); transition: 0.25s ease-in-out;
+        }
+        .bar:nth-child(1) { top: 0; } .bar:nth-child(2) { top: 8px; } .bar:nth-child(3) { top: 16px; }
+        .hamburger-icon.active .bar:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .hamburger-icon.active .bar:nth-child(2) { opacity: 0; }
+        .hamburger-icon.active .bar:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
 
-.contact-card {
-    background: var(--dark);
-    padding: 2rem;
-    border-radius: 1rem;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+        /* Page Hero for Contact page */
+        .page-hero {
+            padding: 10rem 1rem 4rem;
+            text-align: center;
+            background: var(--darker) radial-gradient(ellipse at top center, rgba(139, 92, 246, 0.1), transparent 70%);
+        }
+        .page-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; margin-bottom: 1rem;
+            background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .page-hero p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem); color: var(--text-color);
+            max-width: 800px; margin-inline: auto;
+        }
 
-.contact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
+        /* Contact Section Styles */
+        .contact-section-wrapper {
+            padding: 4rem 0;
+        }
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            background-color: var(--dark);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-md);
+        }
+        @media (min-width: 992px) {
+            .contact-content {
+                grid-template-columns: 1fr 1fr; /* Two columns on larger screens */
+                gap: 4rem;
+                padding: 3rem;
+            }
+        }
 
-.contact-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 1rem;
-    fill: var(--primary);
-}
+        /* Contact Form Styles */
+        .contact-form-container h3 {
+            font-size: clamp(1.8rem, 4vw, 2.2rem); color: var(--light);
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background-color: var(--darker);
+            border: 1px solid rgba(var(--primary-rgb), 0.3);
+            border-radius: var(--border-radius-sm);
+            color: var(--text-light);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+        }
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .submit-btn {
+            padding: 0.9rem 2rem;
+            border-radius: var(--border-radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            background: var(--gradient);
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+        }
+        .submit-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
 
-.contact-card h3 {
-    margin-bottom: 1rem;
-    color: var(--light);
-}
+        /* Contact Details Styles */
+        .contact-details-container h3 {
+            font-size: clamp(1.8rem, 4vw, 2.2rem); color: var(--light);
+            margin-bottom: 2rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: flex-start; /* Align icon with first line of text */
+            margin-bottom: 1.75rem;
+            gap: 1rem;
+        }
+        .contact-item i {
+            font-size: 1.5rem; /* Icon size */
+            color: var(--primary);
+            margin-top: 0.25rem; /* Align icon nicely with text */
+            flex-shrink: 0;
+            width: 25px; /* Ensure consistent icon spacing */
+            text-align: center;
+        }
+        .contact-item-content h4 {
+            font-size: 1.1rem;
+            color: var(--light);
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+        .contact-item-content p,
+        .contact-item-content a {
+            font-size: 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .contact-item-content a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
 
-.contact-link {
-    display: inline-block;
-    text-decoration: none;
-    color: var(--light);
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    transition: opacity 0.3s ease;
-    word-break: break-word;
-    max-width: 100%;
-}
 
-.contact-link:hover {
-    opacity: 0.9;
-}
-footer {
-    background: var(--dark);
-    color: var(--light);
-    text-align: center;
-    padding: 1rem;
-    margin-top: 2rem;
-}
+        /* Footer (Same as other pages) */
+        .footer {
+            background-color: var(--darker); padding: 4rem 1rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .footer-content {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem; margin-bottom: 3rem; color: var(--text-color);
+        }
+        .footer-section h4 {
+            color: var(--light); margin-bottom: 1.25rem;
+            font-size: 1.25rem; font-weight: 600;
+        }
+        .footer-section p, .footer-section li {
+            margin-bottom: 0.75rem; line-height: 1.6; font-size: 0.95rem;
+        }
+        .footer-section ul { list-style: none; padding: 0; }
+        .footer-section a {
+            color: var(--text-color); text-decoration: none; transition: var(--transition);
+        }
+        .footer-section a:hover, .footer-section a:focus {
+            color: var(--primary); text-decoration: underline; outline: none;
+        }
+        .footer-section address { font-style: normal; }
+        .social-links {
+            display: flex; justify-content: center; align-items: center;
+            gap: 1.25rem; margin-bottom: 2.5rem;
+        }
+        .social-links a {
+            display: flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%; color: var(--text-light); font-size: 1.1rem;
+            text-decoration: none; transition: var(--transition), transform 0.2s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .social-links a:hover, .social-links a:focus {
+            background: var(--primary); color: white;
+            transform: translateY(-3px) scale(1.05);
+            border-color: var(--primary); outline: none;
+        }
+        .copyright-text {
+            text-align: center; color: var(--text-color);
+            font-size: 0.9rem; margin-top: 2rem;
+        }
 
-@media (max-width: 640px) {
-    .contact-container {
-        padding: 0.5rem;
-    }
-    
-    .contact-grid {
-        gap: 1rem;
-    }
-    
-    .contact-card {
-        padding: 1.5rem;
-    }
-    
-    .contact-link {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-    }
-}
+        /* Responsive Design (Same as other pages, with contact-specific adjustments) */
+        @media (max-width: 768px) {
+            .container { width: 90%; }
+            .hamburger-menu { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                background: var(--darker);
+                transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+                opacity: 0; visibility: hidden; transform: translateY(-100%);
+                padding-top: 5rem;
+            }
+            .nav-links.active { opacity: 1; visibility: visible; transform: translateY(0); }
+            .nav-links a { font-size: 1.5rem; margin-bottom: 1rem; }
+
+            .page-hero { padding: 8rem 1rem 3rem; }
+            .contact-section-wrapper { padding: 3rem 0; }
+            .contact-content { padding: 2rem 1.5rem; } /* Adjust padding for smaller screens */
+
+            .footer-content { gap: 2rem; text-align: center; }
+            .footer-section h4 { margin-bottom: 0.75rem; }
+            .social-links { gap: 1rem; }
+            .social-links a { width: 40px; height: 40px; font-size: 1rem; }
+        }
+        @media (max-width: 480px) {
+            .page-hero h1 { font-size: 2.2rem; }
+            .page-hero p { font-size: 1rem; }
+            .contact-form-container h3, .contact-details-container h3 { font-size: 1.6rem; }
+            .submit-btn { width: 100%; }
+        }
     </style>
-    
 </head>
+
 <body>
-    <header>
+    <header id="main-header">
         <div class="container">
             <nav>
                 <div class="logo">
-                    <h4>VylexNexys IT</h4>
+                    <a href="index.html" aria-label="VylexNexys Homepage">
+                        <h4>Vylex Nexys</h4>
+                    </a>
                 </div>
-                <div class="nav-links">
-                    <a href="about.html">Services</a>
-                    <a href="#about">About</a>
-                     <a href="portfolio.html">Portfolio</a>
-                    <a href="#contact">Contact</a>
+                <div class="nav-links" id="main-nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="services.html">Services</a>
+                    <a href="about.html">About Us</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="contact.html" class="active-link">Contact</a> <!-- Active link for this page -->
                 </div>
-                <button class="hamburger-menu">
-                  <div class="hamburger-icon">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                  </div>
+                <button class="hamburger-menu" aria-label="Toggle navigation menu" aria-expanded="false"
+                    aria-controls="main-nav-links">
+                    <div class="hamburger-icon">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
                 </button>
             </nav>
         </div>
-    </header> 
+    </header>
 
-    <div class="contact-container">
-        
-
-        <section id="contact" class="contact">
+    <main>
+        <section class="page-hero">
             <div class="container">
-                <h2 class="section-title">Contact Us</h2>
-                 <div class="contact-wrapper">
-                 <div class="contact-details">
-                    <p>Ready to take the next step? Contact us today and let's build something amazing together.</p>
-                    <div class="contact-info">
-                       <p><i class="fas fa-envelope"></i> vylexnexys@oulook.com</p>
-                       <p><i class="fas fa-phone"></i> 064-878-4287</p>
-                    </div>
-                </div>
-                <form class="contact-form">
-                    <div class="form-group">
-                      <label for="name">Name</label>
-                      <input type="text" id="name" required placeholder="Your Name">
-                    </div>
-                    <div class="form-group">
-                      <label for="email">Email</label>
-                      <input type="email" id="email" required placeholder="Your Email">
-                    </div>
-                    <div class="form-group">
-                      <label for="message">Message</label>
-                      <textarea id="message" rows="5" required placeholder="Your Message"></textarea>
-                    </div>
-                     <button type="submit" class="submit-btn">Send Message</button>
-                </form>
-                </div>
+                <h1>Contact Us</h1>
+                <p>Ready to take the next step? Reach out today, and let's build something amazing together. We're excited to hear about your project!</p>
             </div>
         </section>
 
-        <div class="contact-grid">
-            <div class="contact-card">
-                <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20 4H4C2.895 4 2 4.895 2 6V18C2 19.105 2.895 20 4 20H20C21.105 20 22 19.105 22 18V6C22 4.895 21.105 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/>
-                </svg>
-                <h3>Email</h3>
-                <a href="mailto:vylex.nexys@outlook.com" class="contact-link">vylex.nexys@outlook.com</a>
-            </div>
+        <section class="contact-section-wrapper">
+            <div class="container">
+                <div class="contact-content">
+                    <div class="contact-form-container">
+                        <h3>Send Us a Message</h3>
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Send Message</button>
+                        </form>
+                    </div>
 
-            <div class="contact-card">
-                <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                </svg>
-                <h3>WhatsApp</h3>
-                <a href="https://wa.me/0648784287" class="contact-link">064 878 4287</a>
+                    <div class="contact-details-container">
+                        <h3>Direct Contact Info</h3>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div class="contact-item-content">
+                                <h4>Email Us</h4>
+                                <p><a href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-whatsapp"></i>
+                            <div class="contact-item-content">
+                                <h4>WhatsApp</h4>
+                                <p><a href="https://wa.me/27648784287" target="_blank" rel="noopener noreferrer">064 878 4287</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-instagram"></i>
+                            <div class="contact-item-content">
+                                <h4>Instagram</h4>
+                                <p><a href="https://www.instagram.com/vylexnexys/" target="_blank" rel="noopener noreferrer">@vylexnexys</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-tiktok"></i>
+                            <div class="contact-item-content">
+                                <h4>TikTok</h4>
+                                <p><a href="https://www.tiktok.com/@vylex.nexys" target="_blank" rel="noopener noreferrer">@vylex.nexys</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div class="contact-item-content">
+                                <h4>Location</h4>
+                                <p>South Africa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="contact-card">
-                <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-                <h3>Instagram</h3>
-                <a href="https://instagram.com/vylex.nexys" class="contact-link">@vylex.nexys</a>
-            </div>
-
-            <div class="contact-card">
-                <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0011.14-4.02v-6.3a8.16 8.16 0 004.65 1.45v-3.91a4.83 4.83 0 01-1.2-.63z"/>
-                </svg>
-                <h3>TikTok</h3>
-                <a href="https://tiktok.com/@vylex.nexys" class="contact-link">@vylex.nexys</a>
-            </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <footer class="footer">
-        © 2025 VylexNexys. All rights reserved.
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>VylexNexys</h4>
+                    <p>Crafting innovative digital solutions to empower businesses and individuals. Let's build the future, together.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <address>
+                        <p><i class="fas fa-envelope" style="margin-right: 8px;"></i> <a href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
+                        <p><i class="fab fa-whatsapp" style="margin-right: 8px;"></i> <a href="https://wa.me/27648784287" target="_blank">064 878 4287</a></p>
+                        <!-- <p><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> Your Address, City, Country</p> -->
+                    </address>
+                </div>
+            </div>
+            <div class="social-links">
+                <a href="https://instagram.com/vylex.nexys" target="_blank" aria-label="VylexNexys Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@vylex.nexys" target="_blank" aria-label="VylexNexys TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://wa.me/27648784287" target="_blank" aria-label="VylexNexys WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="mailto:info@vylexnexys.co.za" aria-label="Email VylexNexys"><i class="fas fa-envelope"></i></a>
+                <!-- Add other social links as needed: LinkedIn, Facebook, X (Twitter) -->
+            </div>
+            <div class="copyright-text">
+                © <span id="current-year">2025</span> VylexNexys. All rights reserved.
+            </div>
+        </div>
     </footer>
 
-    <script src="scripts/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainHeader = document.getElementById('main-header');
+            const hamburgerButton = document.querySelector('.hamburger-menu');
+            const navLinks = document.querySelector('.nav-links'); // or document.getElementById('main-nav-links');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+
+            // Header scroll effect
+            if (mainHeader) {
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 50) {
+                        mainHeader.classList.add('scrolled');
+                    } else {
+                        mainHeader.classList.remove('scrolled');
+                    }
+                });
+            }
+
+            // Toggle mobile menu
+            if (hamburgerButton && navLinks && hamburgerIcon) {
+                hamburgerButton.addEventListener('click', function () {
+                    toggleNav();
+                });
+            }
+
+            // Close menu when clicking outside (if menu is open)
+            document.addEventListener('click', function (event) {
+                if (navLinks && navLinks.classList.contains('active')) {
+                    const isClickInsideNav = navLinks.contains(event.target);
+                    const isClickOnHamburger = hamburgerButton.contains(event.target);
+                    if (!isClickInsideNav && !isClickOnHamburger) {
+                        closeNav();
+                    }
+                }
+            });
+            
+            // Handle navigation links (closing nav for non-hash links)
+            const allNavLinks = document.querySelectorAll('.nav-links a');
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    const targetId = this.getAttribute('href');
+                    // Only prevent default for on-page hash links (if any on this page)
+                    if (targetId.startsWith('#') && targetId.length > 1) { 
+                        event.preventDefault();
+                        const targetElement = document.querySelector(targetId);
+
+                        if (targetElement) {
+                            closeNav(); // Close nav before scrolling
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    } else {
+                        // For external links or different pages, just close nav if open
+                        if (navLinks.classList.contains('active')) {
+                             closeNav();
+                        }
+                    }
+                });
+            });
+
+
+            // Handle form submission with WhatsApp integration
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    const name = document.getElementById('name').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const message = document.getElementById('message').value.trim();
+
+                    if (!name || !email || !message) {
+                        alert('Please fill in all fields.');
+                        return;
+                    }
+
+                    const whatsappMessage = `Hi! I'm ${name} and I'm interested in working with VylexNexys.
+
+*Contact Details:*
+Email: ${email}
+
+*Project Details/Message:*
+${message}
+
+I'd like to discuss this further.`;
+
+                    const encodedMessage = encodeURIComponent(whatsappMessage);
+                    // IMPORTANT: Replace with your actual WhatsApp number including country code (e.g., 27 for South Africa)
+                    const whatsappURL = `https://wa.me/27648784287?text=${encodedMessage}`;
+
+                    const submitButton = contactForm.querySelector('button[type="submit"]');
+                    const originalButtonText = submitButton.textContent;
+                    submitButton.textContent = 'Redirecting...';
+                    submitButton.disabled = true;
+
+                    setTimeout(() => {
+                        window.open(whatsappURL, '_blank');
+                        // Optional: Reset form and button after a delay
+                        setTimeout(() => {
+                            contactForm.reset();
+                            submitButton.textContent = originalButtonText;
+                            submitButton.disabled = false;
+                        }, 3000); // Reset after 3 seconds
+                    }, 1000); // Delay before opening WhatsApp
+                });
+            }
+
+            // Utility functions for Nav
+            function toggleNav() {
+                if (!navLinks || !hamburgerIcon || !hamburgerButton) return;
+                navLinks.classList.toggle('active');
+                hamburgerIcon.classList.toggle('active');
+                document.body.classList.toggle('nav-open');
+                const isExpanded = navLinks.classList.contains('active');
+                hamburgerButton.setAttribute('aria-expanded', isExpanded.toString());
+            }
+
+            function closeNav() {
+                if (!navLinks || !hamburgerIcon || !hamburgerButton) return;
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburgerIcon.classList.remove('active');
+                    document.body.classList.remove('nav-open');
+                    hamburgerButton.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            // Handle escape key to close nav
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    closeNav();
+                }
+            });
+
+            // Set current year in footer
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+
 </body>
 </html>
