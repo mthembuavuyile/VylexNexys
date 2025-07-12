@@ -1,363 +1,591 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vylexnexys - Enterprise Technology Solutions</title>
-    <meta name="description" content="Vylexnexys delivers enterprise-grade technology solutions including web development, mobile applications, and digital transformation services for businesses of all sizes.">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Site Verification (Keep if same site) -->
+    <meta name="google-site-verification" content="8QCAaqQsO5s-JhKbqsiCfXk0BbJnUXRSoIe7be2Y2cs" />
+
+    <!-- SEO Meta Tags for About Page -->
+    <title>About VylexNexys | Our Story, Mission & Founder</title>
+    <meta name="description"
+        content="Learn about VylexNexys, an emerging tech company led by Avuyile Mthembu, specializing in custom web apps, Android development, and innovative digital solutions." />
+    <meta name="keywords"
+        content="About VylexNexys, Avuyile Mthembu, tech company South Africa, software development, cybersecurity, business systems, web solutions, mobile app company" />
+    <meta name="author" content="VylexNexys Tech" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical URL for About Page -->
+    <link rel="canonical" href="https://vylexnexys.co.za/about.html" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vylexnexys.co.za/about.html" />
+    <meta property="og:title" content="About VylexNexys | Our Story & Vision" />
+    <meta property="og:description"
+        content="Discover the mission, vision, and the driving force behind VylexNexys, a company dedicated to building practical and innovative digital solutions." />
+    <meta property="og:image" content="https://vylexnexys.co.za/assets/og-banner-about.jpg" />
+    <!-- Create a specific og-banner-about.jpg or reuse main one -->
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://vylexnexys.co.za/about.html" />
+    <meta name="twitter:title" content="Meet VylexNexys | Innovation in Digital Solutions" />
+    <meta name="twitter:description"
+        content="Learn about VylexNexys, our founder Avuyile Mthembu, and our commitment to practical tech solutions for businesses and individuals." />
+    <meta name="twitter:image" content="https://vylexnexys.co.za/assets/og-banner-about.jpg" />
+    <!-- Create a specific og-banner-about.jpg or reuse main one -->
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+    <!-- Fonts & Icons (Same as services.html) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Main Styles (Copied from your services.html, ensure consistency) -->
     <style>
         :root {
-            --primary: #8B5CF6;
-            --secondary: #EC4899;
-            --accent: #06B6D4;
-            --dark: #1F2937;
-            --darker: #111827;
-            --light: #F3F4F6;
-            --text: #9CA3AF;
-            --transition: all 0.3s ease;
+            --primary: #8B5CF6; /* Purple */
+            --secondary: #EC4899; /* Pink */
+            --accent: #06B6D4; /* Cyan */
+            --dark: #1F2937; /* Dark Gray-Blue */
+            --darker: #111827; /* Very Dark Gray-Blue */
+            --light: #F3F4F6; /* Light Gray */
+            --text-color: #9CA3AF; /* Medium Gray */
+            --text-light: #D1D5DB; /* Lighter text for dark backgrounds */
+            --transition: all 0.3s ease-in-out;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --border-radius-sm: 8px;
+            --border-radius-md: 15px;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --primary-rgb: 139, 92, 246; /* RGB version of --primary */
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
         body {
             background-color: var(--darker);
-            color: var(--light);
-            line-height: 1.6;
+            color: var(--text-light);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+        body.nav-open { overflow: hidden; }
+        .container { width: min(1200px, 90%); margin-inline: auto; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            width: 100%;
-            background: rgba(17, 24, 39, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.25rem 0;
-        }
-
-        .logo {
-            font-size: 1.75rem;
+        .section-title {
+            font-size: clamp(2.25rem, 5vw, 3.25rem);
             font-weight: 700;
+            text-align: center;
+            margin-block: 4rem 3rem;
             background: var(--gradient);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
+        /* Header & Navigation (Same as services.html) */
+        #main-header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background-color: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(10px);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+            padding: 1rem 0;
         }
-
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 500;
+        #main-header.scrolled {
+            background-color: rgba(17, 24, 39, 0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 0;
+        }
+        .logo a { text-decoration: none; }
+        .logo h4 {
+            font-size: clamp(1.5rem, 4vw, 1.75rem); font-weight: bold;
+            background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
             transition: var(--transition);
         }
-
-        /* Hamburger Menu */
+        .logo h4:hover { transform: scale(1.05); filter: brightness(1.1); }
+        nav { display: flex; justify-content: space-between; align-items: center; position: relative; }
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a {
+            color: var(--light); text-decoration: none; font-weight: 500;
+            position: relative; padding-block: 0.5rem; transition: var(--transition); font-size: 1rem;
+        }
+        .nav-links a.active-link { color: var(--primary); font-weight: 700; }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gradient); transition: width 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a:focus, .nav-links a.active-link::after { color: var(--primary); outline: none; }
+        .nav-links a:hover::after, .nav-links a:focus::after, .nav-links a.active-link::after { width: 100%; }
         .hamburger-menu {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            z-index: 100;
+            display: none; background: transparent; border: none; cursor: pointer; padding: 0.5rem; z-index: 1001;
+        }
+        .hamburger-icon { width: 28px; height: 20px; position: relative; cursor: pointer; }
+        .bar {
+            display: block; position: absolute; width: 100%; height: 3px;
+            background-color: var(--light); border-radius: 3px; opacity: 1; left: 0;
+            transform: rotate(0deg); transition: 0.25s ease-in-out;
+        }
+        .bar:nth-child(1) { top: 0; } .bar:nth-child(2) { top: 8px; } .bar:nth-child(3) { top: 16px; }
+        .hamburger-icon.active .bar:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .hamburger-icon.active .bar:nth-child(2) { opacity: 0; }
+        .hamburger-icon.active .bar:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
+
+        /* Page Hero for About page (Similar to services.html hero) */
+        .page-hero {
+            padding: 10rem 1rem 4rem;
+            text-align: center;
+            background: var(--darker) radial-gradient(ellipse at top center, rgba(139, 92, 246, 0.1), transparent 70%);
+        }
+        .page-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; margin-bottom: 1rem;
+            background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .page-hero p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem); color: var(--text-color);
+            max-width: 800px; margin-inline: auto;
         }
 
-        .hamburger-icon {
+        /* About Content Sections */
+        .about-section {
+            padding: 3rem 0; /* Reduced padding from service-detail for a tighter feel */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .about-section:last-of-type { border-bottom: none; }
+
+        .about-content-block {
+            background-color: var(--dark);
+            padding: 2.5rem 2rem;
+            border-radius: var(--border-radius-md);
+            margin-top: 1.5rem; /* Reduced margin */
+        }
+        .about-content-block h3 {
+            font-size: clamp(1.8rem, 4vw, 2.2rem); color: var(--light);
+            margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
+        }
+        .about-content-block h3 i {
+            font-size: 1.2em; /* Slightly smaller icon */
+            background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .about-content-block p {
+            font-size: 1.05rem; color: var(--text-color);
+            line-height: 1.8; margin-bottom: 1rem;
+        }
+        .about-content-block ul { list-style: none; padding-left: 0; }
+        .about-content-block ul li {
+            padding-left: 1.5em; position: relative; margin-bottom: 0.75rem;
+            color: var(--text-color); font-size: 1.05rem;
+        }
+        .about-content-block ul li::before {
+            content: "\f005"; /* FontAwesome star icon */
+            font-family: "Font Awesome 6 Free"; font-weight: 900; /* Solid icon */
+            color: var(--primary); position: absolute; left: 0; top: 5px; font-size: 0.9em;
+        }
+        .about-content-block .founder-intro {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            width: 24px;
-            height: 20px;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .about-content-block .founder-intro {
+                flex-direction: row;
+                align-items: flex-start; /* Or center */
+            }
+            .founder-intro .founder-image-placeholder { /* Optional if you add an image */
+                flex-shrink: 0;
+                width: 200px; /* Adjust as needed */
+                height: 200px; /* Adjust as needed */
+                background-color: var(--darker);
+                border-radius: 50%; /* Or var(--border-radius-md) */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid var(--primary);
+                /* Add background image here if you have one */
+            }
+            .founder-intro .founder-text {
+                flex-grow: 1;
+            }
         }
 
-        .bar {
-            display: block;
-            width: 100%;
-            height: 2px;
-            background: var(--light);
-            transition: var(--transition);
-            border-radius: 2px;
-        }
 
-        /* Hero Section */
-        .hero {
-            padding: 8rem 0 4rem;
-            background: linear-gradient(rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.95));
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto 4rem;
+        /* Call to Action Section (Can reuse .contact styles or create a simplified one) */
+        .cta-section {
+            padding: 4rem 1rem;
+            background-color: var(--dark);
             text-align: center;
         }
-
-        .hero-content h1 {
-            font-size: 3rem;
+        .cta-section h2 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: var(--light);
             margin-bottom: 1.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
         }
-
-        .hero-content p {
-            font-size: 1.25rem;
-            color: var(--text);
+        .cta-section p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            max-width: 600px;
+            margin-inline: auto;
             margin-bottom: 2rem;
         }
-
-        /* About Section */
-        .about {
-            padding: 4rem 0;
-            background: var(--dark);
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
-
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .about-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .about-content p {
-            color: var(--text);
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 4rem 0;
-        }
-
-        .card {
-            background: var(--dark);
-            border-radius: 1rem;
-            padding: 2rem;
+        .cta-btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: var(--border-radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
             transition: var(--transition);
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            border: 2px solid transparent;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1);
-        }
-
-        .card-icon {
-            width: 3rem;
-            height: 3rem;
+        .cta-btn-primary {
             background: var(--gradient);
-            border-radius: 0.75rem;
-            margin-bottom: 1.5rem;
+            color: white;
         }
-
-        .card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
+        .cta-btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .cta-btn-secondary {
+            background: transparent;
             color: var(--light);
+            border-color: var(--primary);
+        }
+        .cta-btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
         }
 
-        .card p {
-            color: var(--text);
-            margin-bottom: 1.5rem;
+        /* Footer (Same as services.html) */
+        .footer {
+            background-color: var(--darker); padding: 4rem 1rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .footer-content {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem; margin-bottom: 3rem; color: var(--text-color);
+        }
+        .footer-section h4 {
+            color: var(--light); margin-bottom: 1.25rem;
+            font-size: 1.25rem; font-weight: 600;
+        }
+        .footer-section p, .footer-section li {
+            margin-bottom: 0.75rem; line-height: 1.6; font-size: 0.95rem;
+        }
+        .footer-section ul { list-style: none; padding: 0; }
+        .footer-section a {
+            color: var(--text-color); text-decoration: none; transition: var(--transition);
+        }
+        .footer-section a:hover, .footer-section a:focus {
+            color: var(--primary); text-decoration: underline; outline: none;
+        }
+        .footer-section address { font-style: normal; }
+        .social-links {
+            display: flex; justify-content: center; align-items: center;
+            gap: 1.25rem; margin-bottom: 2.5rem;
+        }
+        .social-links a {
+            display: flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%; color: var(--text-light); font-size: 1.1rem;
+            text-decoration: none; transition: var(--transition), transform 0.2s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .social-links a:hover, .social-links a:focus {
+            background: var(--primary); color: white;
+            transform: translateY(-3px) scale(1.05);
+            border-color: var(--primary); outline: none;
+        }
+        .copyright-text {
+            text-align: center; color: var(--text-color);
+            font-size: 0.9rem; margin-top: 2rem;
         }
 
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            padding: 4rem 0;
-            text-align: center;
-        }
-
-        .stat-item h4 {
-            font-size: 2.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .stat-item p {
-            color: var(--text);
-            margin-top: 0.5rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            padding: 4rem 0;
-            margin-top: 4rem;
-        }
-
+        /* Responsive Design (Same as services.html, ensure hamburger and nav adapt) */
         @media (max-width: 768px) {
+            .container { width: 90%; }
+            .hamburger-menu { display: block; }
             .nav-links {
-                display: none;
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                background: var(--darker);
+                transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+                opacity: 0; visibility: hidden; transform: translateY(-100%);
+                padding-top: 5rem;
             }
-
-            .hamburger-menu {
-                display: block;
-            }
-            
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-
-            .hero-content p {
-                font-size: 1.1rem;
-            }
-
-            .about-content h2 {
-                font-size: 1.8rem;
-            }
-
-            /* Mobile Menu Animation */
-            .hamburger-menu.active .bar:nth-child(1) {
-                transform: translateY(9px) rotate(45deg);
-            }
-
-            .hamburger-menu.active .bar:nth-child(2) {
-                opacity: 0;
-            }
-
-            .hamburger-menu.active .bar:nth-child(3) {
-                transform: translateY(-9px) rotate(-45deg);
-            }
+            .nav-links.active { opacity: 1; visibility: visible; transform: translateY(0); }
+            .nav-links a { font-size: 1.5rem; margin-bottom: 1rem; }
+            .page-hero { padding: 8rem 1rem 3rem; }
+            .section-title { margin-block: 3rem 2rem; }
+            .about-section { padding: 2.5rem 0; }
+            .about-content-block { padding: 2rem 1.5rem; }
+            .cta-section { padding: 3rem 1rem; }
+            .footer-content { gap: 2rem; text-align: center; }
+            .footer-section h4 { margin-bottom: 0.75rem; }
+            .social-links { gap: 1rem; }
+            .social-links a { width: 40px; height: 40px; font-size: 1rem; }
+        }
+        @media (max-width: 480px) {
+            .page-hero h1 { font-size: 2.2rem; }
+            .page-hero p { font-size: 1rem; }
+            .about-content-block h3 { font-size: 1.6rem; }
         }
     </style>
 </head>
+
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">Vylexnexys</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <button class="hamburger-menu">
-                <div class="hamburger-icon">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
+    <header id="main-header">
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="index.html" aria-label="VylexNexys Homepage">
+                        <h4>Vylex Nexys</h4>
+                    </a>
                 </div>
-            </button>
-        </nav>
+                <div class="nav-links" id="main-nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="services.html">Services</a>
+                    <a href="about.html" class="active-link">About Us</a> <!-- Active link for this page -->
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="index.html#contact">Contact</a>
+                </div>
+                <button class="hamburger-menu" aria-label="Toggle navigation menu" aria-expanded="false"
+                    aria-controls="main-nav-links">
+                    <div class="hamburger-icon">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </button>
+            </nav>
+        </div>
     </header>
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Transforming Businesses Through Technology</h1>
-                <p>Empowering enterprises with innovative digital solutions for a connected future</p>
+    <main>
+        <section class="page-hero" id="about-introduction">
+            <div class="container">
+                <h1>About VylexNexys</h1>
+                <p>Fusing innovation with practicality to build your digital future. We are an emerging technology company dedicated to crafting custom digital solutions that solve real-world problems and drive growth for businesses and individuals.</p>
             </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <h4>100+</h4>
-                    <p>Projects Delivered</p>
-                </div>
-                <div class="stat-item">
-                    <h4>24/7</h4>
-                    <p>Support Available</p>
-                </div>
-                <div class="stat-item">
-                    <h4>98%</h4>
-                    <p>Client Satisfaction</p>
+        </section>
+
+        <section id="our-story" class="about-section">
+            <div class="container">
+                <h2 class="section-title">Our Story & Mission</h2>
+                <div class="about-content-block">
+                    <h3><i class="fas fa-rocket"></i> The Genesis of VylexNexys</h3>
+                    <p>VylexNexys was born from a passion for technology and a desire to make sophisticated digital tools accessible. We observed a need for high-quality, custom software solutions that are not only innovative but also deeply practical and aligned with user needs. Our mission is to bridge the gap between complex technology and everyday utility, building digital solutions that truly work.</p>
+                    <p>We specialize in custom web applications, Android mobile app development, and the creation of smart digital tools. From educational platforms that engage and enlighten, to utility apps that streamline tasks, VylexNexys is committed to turning ideas into clean, functional, and impactful digital experiences.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="about" id="about"> 
+        <section id="meet-the-founder" class="about-section">
+            <div class="container">
+                 <h2 class="section-title">The Driving Force</h2>
+                <div class="about-content-block">
+                    <h3><i class="fas fa-user-astronaut"></i> Meet Avuyile Mthembu MRA⚡</h3>
+                    <div class="founder-intro">
+                        <!-- Optional: Image placeholder -->
+                        <!-- <div class="founder-image-placeholder">
+                            <i class="fas fa-user" style="font-size: 3rem; color: var(--text-color);"></i>
+                        </div> -->
+                        <div class="founder-text">
+                            <p>Avuyile Mthembu, the CEO and Founder of VylexNexys, is a multi-disciplinary IT professional with a potent blend of software engineering, cybersecurity, and business analysis expertise. As a tech-powered problem solver with keen business foresight, Avuyile's vision for VylexNexys is to be at the forefront of practical innovation.</p>
+                            <p>Currently completing his Higher Diploma in Systems Development, Avuyile brings three years of immersive experience in full-stack development, ethical hacking, and IT systems design. His approach integrates technical execution with business intelligence, ensuring that every solution developed by VylexNexys is not just a piece of code, but a strategic asset designed to achieve measurable outcomes.</p>
+                            <p>With certifications including CompTIA A+, CompTIA Security+, and Certified Ethical Hacker (CEH), Avuyile's leadership ensures VylexNexys delivers robust, secure, and cutting-edge solutions. His passion is to empower clients by transforming their digital aspirations into reality.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="our-philosophy" class="about-section">
+            <div class="container">
+                <h2 class="section-title">Our Guiding Principles</h2>
+                <div class="about-content-block">
+                    <h3><i class="fas fa-compass"></i> What We Believe In</h3>
+                    <p>At VylexNexys, our work is guided by a set of core principles that define who we are and how we operate:</p>
+                    <ul>
+                        <li><strong>Client-Centricity:</strong> Your goals are our priority. We listen, understand, and tailor solutions to your specific needs.</li>
+                        <li><strong>Innovation with Purpose:</strong> We embrace modern technologies and creative thinking to build solutions that are not just novel but also effective and practical.</li>
+                        <li><strong>Quality & Craftsmanship:</strong> We take pride in developing high-quality, robust, and reliable digital products with attention to detail.</li>
+                        <li><strong>Transparency & Collaboration:</strong> We believe in open communication and working closely with our clients throughout the development process.</li>
+                        <li><strong>Continuous Learning:</strong> The tech world is ever-evolving, and so are we. We are committed to staying updated with the latest trends and best practices.</li>
+                        <li><strong>Empowerment Through Technology:</strong> Our ultimate aim is to provide you with digital tools that empower you to achieve more.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta-about" class="cta-section">
+            <div class="container">
+                <h2>Ready to Start Your Digital Journey?</h2>
+                <p>Whether you have a specific project in mind, an idea you'd like to explore, or simply want to learn more about how VylexNexys can help your business or personal project thrive, we're here to talk.</p>
+                <div class="cta-buttons">
+                    <a href="services.html" class="cta-btn cta-btn-primary">Explore Our Services</a>
+                    <a href="portfolio.html" class="cta-btn cta-btn-secondary">View Our Portfolio</a>
+                    <a href="index.html#contact" class="cta-btn cta-btn-secondary">Get In Touch</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
         <div class="container">
-            <div class="about-content">
-                <h2>About Vylex Nexys</h2>
-                <p>Founded by Mr. Avuyile Mthembu in 2024, Vylex Nexys is a South African technology company dedicated to innovation and digital empowerment. Our mission is to create impactful solutions—from business technology to free educational platforms—that foster growth, accessibility, and opportunity.</p>
-                <p>With a strong belief in technology as a force for good, we develop websites, apps, and programs that empower individuals and businesses. Whether through digital transformation for companies or philanthropic initiatives that provide free learning resources, we are committed to making a lasting difference.</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>VylexNexys</h4>
+                    <p>Building practical, innovative digital products and offering tailored software solutions to help you succeed in the digital world.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="portfolio.html">Product Portfolio</a></li>
+                        <li><a href="index.html#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <address>
+                        <p>Email: <a href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
+                        <p>Phone: <a href="tel:0648784287">064-878-4287</a></p>
+                        <p>Based in South Africa, serving globally.</p>
+                    </address>
+                </div>
             </div>
-        </div>
-    </section>    
 
-    <section class="container">
-        <div class="cards-grid">
-            <div class="card">
-                <div class="card-icon"></div>
-                <h3>Web Development</h3>
-                <p>Custom web solutions built with modern technologies, focused on performance and user experience.</p>
+            <div class="social-links">
+                 <a href="https://linkedin.com/company/vylexnexys" target="_blank" rel="noopener noreferrer"
+                    aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://twitter.com/vylexnexys" target="_blank" rel="noopener noreferrer"
+                    aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/vylexnexys" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i
+                        class="fab fa-github"></i></a>
+                <a href="https://instagram.com/vylexnexys" target="_blank" rel="noopener noreferrer"
+                    aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://tiktok.com/@vylexnexys" target="_blank" rel="noopener noreferrer"
+                    aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
             </div>
-            <div class="card">
-                <div class="card-icon"></div>
-                <h3>Mobile Applications</h3>
-                <p>Native Android applications designed to engage users and drive business growth.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon"></div>
-                <h3>Technical Support</h3>
-                <p>Comprehensive IT support and maintenance services to keep your systems running smoothly.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon"></div>
-                <h3>Database Solutions</h3>
-                <p>Robust database design and management for secure and efficient data handling.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon"></div>
-                <h3>Software Development</h3>
-                <p>Custom software solutions tailored to your specific business needs and requirements.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon"></div>
-                <h3>Digital Strategy</h3>
-                <p>Strategic technology consulting to help your business thrive in the digital age.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p style="color: var(--text); text-align: center;">© 2024 Vylexnexys. All rights reserved.</p>
+            <p class="copyright-text">© <span id="current-year">2024</span> VylexNexys. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="scripts/about.js"></script>
+    <script>
+        // JS same as services.html (for header scroll, mobile nav, year, etc.)
+        // Ensure active link logic correctly highlights "About Us"
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainHeader = document.getElementById('main-header');
+            const hamburgerButton = document.querySelector('.hamburger-menu');
+            const navLinksContainer = document.querySelector('.nav-links');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+
+            if (mainHeader) {
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 50) {
+                        mainHeader.classList.add('scrolled');
+                    } else {
+                        mainHeader.classList.remove('scrolled');
+                    }
+                });
+            }
+
+            if (hamburgerButton && navLinksContainer && hamburgerIcon) {
+                hamburgerButton.addEventListener('click', function () {
+                    toggleNav();
+                });
+            }
+            
+            document.addEventListener('click', function (event) {
+                if (navLinksContainer && navLinksContainer.classList.contains('active')) {
+                    if (!navLinksContainer.contains(event.target) && !hamburgerButton.contains(event.target)) {
+                        closeNav();
+                    }
+                }
+            });
+            
+            const allNavLinks = document.querySelectorAll('.nav-links a');
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#') || (targetId.includes('.html#'))) {
+                        if (window.location.pathname === new URL(targetId, window.location.href).pathname && targetId.includes('#')) {
+                            event.preventDefault();
+                            const actualId = targetId.substring(targetId.indexOf('#'));
+                            const targetElement = document.querySelector(actualId);
+                            if (targetElement) {
+                                closeNav();
+                                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        } else {
+                            closeNav();
+                        }
+                    } else {
+                        closeNav();
+                    }
+                });
+            });
+
+            function toggleNav() {
+                if (!navLinksContainer || !hamburgerIcon || !hamburgerButton) return;
+                navLinksContainer.classList.toggle('active');
+                hamburgerIcon.classList.toggle('active');
+                document.body.classList.toggle('nav-open');
+                const isExpanded = navLinksContainer.classList.contains('active');
+                hamburgerButton.setAttribute('aria-expanded', isExpanded.toString());
+            }
+
+            function closeNav() {
+                if (!navLinksContainer || !hamburgerIcon || !hamburgerButton) return;
+                if (navLinksContainer.classList.contains('active')) {
+                    navLinksContainer.classList.remove('active');
+                    hamburgerIcon.classList.remove('active');
+                    document.body.classList.remove('nav-open');
+                    hamburgerButton.setAttribute('aria-expanded', 'false');
+                }
+            }
+            
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    closeNav();
+                }
+            });
+
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+
+            // Highlight active nav link (basic implementation for this page)
+            const currentPath = window.location.pathname.split("/").pop();
+            if (currentPath === 'about.html') { // Make sure this matches the filename
+                const aboutLink = document.querySelector('.nav-links a[href="about.html"]');
+                if(aboutLink) aboutLink.classList.add('active-link');
+            }
+        });
+    </script>
+
 </body>
 </html>
