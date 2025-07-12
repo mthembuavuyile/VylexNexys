@@ -2,62 +2,927 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google Site Verification -->
-  <meta name="google-site-verification" content="8QCAaqQsO5s-JhKbqsiCfXk0BbJnUXRSoIe7be2Y2cs" />
+    <!-- Google Site Verification -->
+    <meta name="google-site-verification" content="8QCAaqQsO5s-JhKbqsiCfXk0BbJnUXRSoIe7be2Y2cs" />
 
-  <!-- SEO Meta Tags -->
-  <title>VylexNexys | Future-Ready Tech Solutions for Africa & Beyond</title>
-  <meta name="description" content="VylexNexys is an African-born tech company crafting innovative web, mobile, and AI-powered solutions. We empower businesses, non-profits, and youth with modern digital tools and smart systems." />
-  <meta name="keywords" content="VylexNexys, software development, web apps, mobile apps, tech company, digital tools, AI, IT services, South Africa tech, African startups" />
-  <meta name="author" content="VylexNexys Tech" />
-  <meta name="robots" content="index, follow" />
+    <!-- SEO Meta Tags -->
+    <title>VylexNexys | Future-Ready Tech Solutions for Africa & Beyond</title>
+    <meta name="description"
+        content="VylexNexys is an African-born tech company crafting innovative web, mobile, and AI-powered solutions. We empower businesses, non-profits, and youth with modern digital tools and smart systems." />
+    <meta name="keywords"
+        content="VylexNexys, software development, web apps, mobile apps, tech company, digital tools, AI, IT services, South Africa tech, African startups" />
+    <meta name="author" content="VylexNexys Tech" />
+    <meta name="robots" content="index, follow" />
 
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://vylexnexys.co.za/" />
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://vylexnexys.co.za/" />
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://vylexnexys.co.za/" />
-  <meta property="og:title" content="VylexNexys | Digital Solutions for Web, Mobile, and AI" />
-  <meta property="og:description" content="Custom-built tech, tailored for African innovation. Explore our web tools, apps, and enterprise systems." />
-  <meta property="og:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vylexnexys.co.za/" />
+    <meta property="og:title" content="VylexNexys | Digital Solutions for Web, Mobile, and AI" />
+    <meta property="og:description"
+        content="Custom-built tech, tailored for African innovation. Explore our web tools, apps, and enterprise systems." />
+    <meta property="og:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
+    <!-- Ensure this image exists and is compelling -->
 
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://vylexnexys.co.za/" />
-  <meta name="twitter:title" content="VylexNexys | Future-Focused Tech Solutions" />
-  <meta name="twitter:description" content="Explore smart web and mobile tools from Africa's rising tech powerhouse." />
-  <meta name="twitter:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://vylexnexys.co.za/" />
+    <meta name="twitter:title" content="VylexNexys | Future-Focused Tech Solutions" />
+    <meta name="twitter:description"
+        content="Explore smart web and mobile tools from Africa's rising tech powerhouse." />
+    <meta name="twitter:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
+    <!-- Ensure this image exists -->
 
-  <!-- Favicon -->
-  <link rel="icon" href="/assets/favicon.png" type="image/png" />
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/favicon.png" type="image/png" /> <!-- Ensure this path is correct -->
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"> <!-- Optional: For Apple devices -->
 
-  <!-- Fonts & Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
 
-  <!-- Main Styles -->
-  <link rel="stylesheet" href="/styles/main.css" />
+    <!-- Main Styles -->
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            /* Purple */
+            --secondary: #EC4899;
+            /* Pink */
+            --accent: #06B6D4;
+            /* Cyan */
+            --dark: #1F2937;
+            /* Dark Gray-Blue */
+            --darker: #111827;
+            /* Very Dark Gray-Blue */
+            --light: #F3F4F6;
+            /* Light Gray */
+            --text-color: #9CA3AF;
+            /* Medium Gray */
+            --text-light: #D1D5DB;
+            /* Lighter text for dark backgrounds */
+            --transition: all 0.3s ease-in-out;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --border-radius-sm: 8px;
+            --border-radius-md: 15px;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            /* Base font size */
+        }
+
+        body {
+            background-color: var(--darker);
+            color: var(--text-light);
+            /* Changed to a lighter text for better contrast on dark BG */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.7;
+            /* Increased for better readability */
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body.nav-open {
+            overflow: hidden;
+            /* Prevent body scroll when mobile menu is open */
+        }
+
+        .container {
+            width: min(1200px, 90%);
+            /* Use percentage for better responsiveness on smaller viewports */
+            margin-inline: auto;
+            /* padding: 0 1rem; -- Removed padding here, add to sections if needed */
+        }
+
+        .section-title {
+            font-size: clamp(2.25rem, 5vw, 3.25rem);
+            /* Slightly adjusted clamp values */
+            font-weight: 700;
+            text-align: center;
+            margin-block: 4rem 3rem;
+            /* Adjusted margins */
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Header & Navigation */
+        #main-header {
+            /* Using ID for the main header */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(17, 24, 39, 0.85);
+            /* Slightly less opaque */
+            backdrop-filter: blur(10px);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+            /* Added padding to transition */
+            padding: 1rem 0;
+            /* Initial padding */
+        }
+
+        #main-header.scrolled {
+            background-color: rgba(17, 24, 39, 0.98);
+            /* More opaque on scroll */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 0;
+            /* Slightly reduced padding on scroll */
+        }
+
+
+        .logo a {
+            text-decoration: none;
+        }
+
+        .logo h4 {
+            font-size: clamp(1.5rem, 4vw, 1.75rem);
+            /* Responsive font size */
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: var(--transition);
+        }
+
+        .logo h4:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* padding: 1.5rem 2rem; -- Padding moved to header, container handles side padding */
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            /* Use Inter's medium weight */
+            position: relative;
+            padding-block: 0.5rem;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            /* Adjusted for better placement */
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus {
+            /* Added focus state */
+            color: var(--primary);
+            outline: none;
+            /* Remove default outline if custom styling is provided */
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a:focus::after {
+            width: 100%;
+        }
+
+        .hamburger-menu {
+            display: none;
+            background: transparent;
+            /* Changed from none to transparent */
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+            /* Ensure it's above other nav elements */
+        }
+
+        .hamburger-icon {
+            width: 28px;
+            /* Slightly adjusted size */
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .bar {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            /* Slightly thicker bars */
+            background-color: var(--light);
+            border-radius: 3px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: 0.25s ease-in-out;
+        }
+
+        .bar:nth-child(1) {
+            top: 0;
+        }
+
+        .bar:nth-child(2) {
+            top: 8px;
+        }
+
+        /* Adjusted spacing */
+        .bar:nth-child(3) {
+            top: 16px;
+        }
+
+        /* Adjusted spacing */
+
+        .hamburger-icon.active .bar:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        .hamburger-icon.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-icon.active .bar:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -7px);
+        }
+
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: var(--darker) radial-gradient(ellipse at center, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 1rem 2rem;
+            /* Add padding for content within container */
+        }
+
+        .hero::before {
+            /* Shimmer effect - subtle */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            /* Start off-screen */
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.05), transparent);
+            animation: shimmer 10s infinite linear;
+            /* Slower, linear animation */
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(300%);
+            }
+
+            /* Ensure it crosses the entire screen */
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            /* padding: 2rem; -- Handled by hero padding */
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            /* Larger and more responsive */
+            font-weight: 800;
+            /* Use Inter's extra-bold */
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-content p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            color: var(--text-color);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            /* Constrain paragraph width */
+            margin-inline: auto;
+            /* Center paragraph */
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 0.9rem 2.25rem;
+            /* Slightly adjusted padding */
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            /* Inter semi-bold */
+            font-size: 1.1rem;
+            transition: var(--transition), transform 0.2s ease-out;
+            /* Added transform to transition */
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.25);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .cta-button:hover,
+        .cta-button:focus {
+            transform: translateY(-4px) scale(1.02);
+            /* More noticeable hover */
+            box-shadow: 0 12px 25px rgba(139, 92, 246, 0.35);
+            filter: brightness(1.1);
+            outline: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections General Padding */
+        section {
+            padding: 5rem 1rem;
+            /* Consistent padding for sections */
+        }
+
+
+        /* About Section */
+        .about {
+            background-color: var(--dark);
+            /* Keep as is or var(--darker) for less contrast */
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 1.15rem;
+            /* Slightly larger */
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            /* Slightly reduced */
+            line-height: 1.8;
+        }
+
+        /* Services Section */
+        .services {
+            background-color: var(--darker);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            /* Better minmax for responsiveness */
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--dark);
+            /* Use dark as base, lighten on hover */
+            padding: 2.5rem 2rem;
+            /* Adjusted padding */
+            border-radius: var(--border-radius-md);
+            text-align: center;
+            transition: var(--transition), transform 0.2s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            /* Softer border */
+            /* backdrop-filter: blur(5px); -- Optional, can impact performance */
+            display: flex;
+            /* For aligning content if needed */
+            flex-direction: column;
+            /* Stack content vertically */
+            justify-content: space-between;
+            /* Pushes button to bottom if card heights vary */
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            background: rgba(49, 60, 78, 0.7);
+            /* Lighter version of --dark */
+            box-shadow: var(--shadow-md);
+            border-color: rgba(var(--primary), 0.5);
+            /* Accent border on hover */
+        }
+
+        .service-icon {
+            font-size: 2.75rem;
+            /* Slightly smaller */
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            /* Slightly larger */
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .service-card p {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            /* Space before button */
+            flex-grow: 1;
+            /* Allows paragraph to take available space */
+        }
+
+        .learn-more-btn {
+            display: inline-block;
+            margin-top: auto;
+            /* Pushes button to bottom of card */
+            padding: 0.7rem 1.5rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition), transform 0.2s ease-out;
+            font-weight: 500;
+        }
+
+        .learn-more-btn:hover,
+        .learn-more-btn:focus {
+            filter: brightness(1.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.2);
+            outline: none;
+        }
+
+        .learn-more-btn i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .learn-more-btn:hover i {
+            transform: translateX(3px);
+        }
+
+
+        /* Contact Section */
+        .contact {
+            background-color: var(--dark);
+        }
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            /* Default to single column */
+            gap: 3rem;
+            /* Adjusted gap */
+            margin-top: 3rem;
+            align-items: start;
+        }
+
+        @media (min-width: 768px) {
+
+            /* Apply two columns on larger screens */
+            .contact-wrapper {
+                grid-template-columns: 1fr 1.2fr;
+                /* Give form slightly more space */
+            }
+        }
+
+
+        .contact-details p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .contact-info p a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info p a:hover {
+            color: var(--primary);
+        }
+
+        .contact-info i {
+            color: var(--primary);
+            width: 20px;
+            font-size: 1.2rem;
+            /* Slightly larger icon */
+        }
+
+        .contact-form {
+            background: var(--darker);
+            /* Darker background for form */
+            padding: 2.5rem;
+            border-radius: var(--border-radius-md);
+            /* backdrop-filter: blur(10px); -- Removed for better contrast unless desired */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+            /* Increased margin */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            /* Increased margin */
+            color: var(--light);
+            font-weight: 500;
+            font-size: 0.95rem;
+            /* Slightly smaller label */
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            /* Adjusted padding */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            /* More visible border */
+            border-radius: var(--border-radius-sm);
+            background: rgba(255, 255, 255, 0.03);
+            /* Very subtle background */
+            color: var(--light);
+            font-size: 1rem;
+            font-family: inherit;
+            /* Ensure form elements inherit body font */
+            transition: var(--transition);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-color);
+            opacity: 0.7;
+            /* Make placeholder slightly less prominent */
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 2px rgba(var(--primary), 0.3);
+            /* Focus ring */
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition), transform 0.2s ease-out;
+        }
+
+        .submit-btn:hover:not(:disabled),
+        /* Added :not(:disabled) */
+        .submit-btn:focus:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+            filter: brightness(1.1);
+            outline: none;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--darker);
+            padding: 4rem 1rem 2rem;
+            /* Consistent padding */
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            /* Softer border */
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            /* Adjusted gap */
+            margin-bottom: 3rem;
+            color: var(--text-color);
+        }
+
+        .footer-section h4 {
+            color: var(--light);
+            margin-bottom: 1.25rem;
+            /* Increased margin */
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .footer-section p,
+        .footer-section li {
+            margin-bottom: 0.75rem;
+            /* Increased margin */
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover,
+        .footer-section a:focus {
+            color: var(--primary);
+            text-decoration: underline;
+            /* Add underline on hover for links */
+            outline: none;
+        }
+
+        .footer-section address {
+            /* For semantic contact info */
+            font-style: normal;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.25rem;
+            /* Adjusted gap */
+            margin-bottom: 2.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            /* Slightly smaller */
+            height: 44px;
+            background: rgba(255, 255, 255, 0.05);
+            /* Softer background */
+            border-radius: 50%;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            /* Icon size */
+            text-decoration: none;
+            transition: var(--transition), transform 0.2s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-links a:hover,
+        .social-links a:focus {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px) scale(1.05);
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .copyright-text {
+            /* Class for copyright */
+            text-align: center;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        .success-message {
+            /* If you implement non-WhatsApp submission */
+            background: #10B981;
+            /* Green for success */
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+            margin-top: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                /* Maintain consistent container width */
+            }
+
+            .hamburger-menu {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                /* Align with top of header */
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                /* Full viewport height */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background: var(--darker);
+                /* Solid background for menu */
+                transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+                /* Smoother transition */
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-100%);
+                /* Slide from top */
+                padding-top: 5rem;
+                /* Space for header */
+            }
+
+            .nav-links.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+                /* Larger font for mobile menu */
+                margin-bottom: 1rem;
+                /* Spacing between links */
+            }
+
+            .hero {
+                padding: 8rem 1rem 3rem;
+                /* Adjust hero padding for mobile */
+            }
+
+            .section-title {
+                margin-block: 3rem 2rem;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                /* Single column for services on mobile */
+                gap: 1.5rem;
+            }
+
+            .service-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .contact-wrapper {
+                /* Already 1fr by default, grid-template-columns: 1fr; */
+                gap: 2rem;
+            }
+
+            .contact-form {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-content {
+                /* Already 1fr by default grid-template-columns: 1fr; */
+                gap: 2rem;
+                text-align: center;
+                /* Center footer content on mobile */
+            }
+
+            .footer-section h4 {
+                margin-bottom: 0.75rem;
+            }
+
+            .social-links {
+                gap: 1rem;
+            }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2.2rem;
+                /* Further adjust for very small screens */
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                padding: 0.8rem 1.8rem;
+                font-size: 1rem;
+            }
+
+            .contact-form {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <header>
+    <header id="main-header">
         <div class="container">
             <nav>
                 <div class="logo">
-                    <h4>VylexNexys</h4>
+                    <a href="#home" aria-label="VylexNexys Homepage">
+                        <h4>Vylex Nexys</h4>
+                    </a>
                 </div>
-                <div class="nav-links">
+                <div class="nav-links" id="main-nav-links">
                     <a href="services.html">Services</a>
                     <a href="#about">About</a>
                     <a href="portfolio.html">Portfolio</a>
                     <a href="#contact">Contact</a>
                 </div>
-                <button class="hamburger-menu">
+                <button class="hamburger-menu" aria-label="Toggle navigation menu" aria-expanded="false"
+                    aria-controls="main-nav-links">
                     <div class="hamburger-icon">
                         <span class="bar"></span>
                         <span class="bar"></span>
@@ -68,110 +933,128 @@
         </div>
     </header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Building Digital Solutions That Work</h1>
-            <p>Custom web applications, mobile apps, and digital tools designed to help your business grow and succeed
-                online</p>
-            <a href="#contact" class="cta-button">Get Started</a>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">About VylexNexys</h2>
-            <div class="about-content">
-                <p>VylexNexys is an independent technology company focused on building practical, innovative digital
-                    products and offering tailored software solutions. We specialize in custom web apps, Android
-                    development, and smart tools designed to solve everyday problems.</p>
-
-                <p>Our products range from learning platforms and utility tools to interactive apps, all built with a
-                    deep understanding of user needs and modern tech trends. Alongside our product line, we also offer
-                    development services for individuals, startups, and small businesses — from websites and branding to
-                    secure, cloud-connected apps.</p>
-
-                <p>Whether you're looking for ready-to-use tools or custom solutions, VylexNexys is here to turn ideas
-                    into clean, functional digital experiences.</p>
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Building Digital Solutions That Work</h1>
+                <p>Custom web applications, mobile apps, and digital tools designed to help your business grow and
+                    succeed online.</p>
+                <a href="#contact" class="cta-button">Get Started</a>
             </div>
-        </div>
-    </section>
+        </section>
 
+        <section id="services" class="services">
+            <div class="container">
+                <h2 class="section-title">What We Do</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <i class="fas fa-code service-icon"></i>
+                        <h3>Web Development</h3>
+                        <p>Custom websites and web applications built with modern technologies, including SEO
+                            optimization and secure hosting solutions.</p>
+                        <a href="services.html#web-development" class="learn-more-btn">Learn More <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-mobile-alt service-icon"></i>
+                        <h3>Mobile Apps</h3>
+                        <p>Android applications and cross-platform mobile solutions designed to engage your customers
+                            and streamline your business.</p>
+                        <a href="services.html#mobile-apps" class="learn-more-btn">Learn More <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-tools service-icon"></i>
+                        <h3>Digital Solutions</h3>
+                        <p>We develop functional web-based tools and micro-applications tailored to streamline tasks,
+                            enhance productivity, and support unique business or educational goals.</p>
+                        <a href="services.html#digital-tools" class="learn-more-btn">Learn More <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
 
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">What We Do</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <i class="fas fa-code service-icon"></i>
-                    <h3>Web Development</h3>
-                    <p>Custom websites and web applications built with modern technologies, including SEO optimization
-                        and secure hosting solutions.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-mobile-alt service-icon"></i>
-                    <h3>Mobile Apps</h3>
-                    <p>Android applications and cross-platform mobile solutions designed to engage your customers and
-                        streamline your business.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-tools service-icon"></i>
-                    <h3>Digital Tools</h3>
-                    <p>Custom calculators, generators, converters, and specialized web tools that solve specific
-                        business or educational needs.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-database service-icon"></i>
-                    <h3>Database Solutions</h3>
-                    <p>Secure data storage and management systems using MySQL, Firebase, and other reliable database
-                        technologies.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-gamepad service-icon"></i>
-                    <h3>Interactive Applications</h3>
-                    <p>Educational platforms, web games, and interactive tools that engage users and provide valuable
-                        experiences.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-palette service-icon"></i>
-                    <h3>Design & Branding</h3>
-                    <p>Logo design, visual identity, and user interface design that makes your brand stand out and your
-                        applications easy to use.</p>
+                    <div class="service-card">
+                        <i class="fas fa-database service-icon"></i>
+                        <h3>Database Solutions</h3>
+                        <p>Secure data storage and management systems using MySQL, Firebase, and other reliable database
+                            technologies.</p>
+                        <a href="services.html#database-solutions" class="learn-more-btn">Learn More <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-gamepad service-icon"></i>
+                        <h3>Interactive Applications</h3>
+                        <p>Educational platforms, web games, and interactive tools that engage users and provide
+                            valuable experiences.</p>
+                        <a href="services.html#interactive-apps" class="learn-more-btn">Learn More <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-palette service-icon"></i>
+                        <h3>Design & Branding</h3>
+                        <p>Logo design, visual identity, and user interface design that makes your brand stand out and
+                            your applications easy to use.</p>
+                        <a href="services.html#design-branding" class="learn-more-btn">Learn More <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Let's Work Together</h2>
-            <div class="contact-wrapper">
-                <div class="contact-details">
-                    <p>Ready to bring your digital ideas to life? Whether you need a website, mobile app, or custom
-                        digital tool, we're here to help make it happen.</p>
-                    <div class="contact-info">
-                        <p><i class="fas fa-envelope"></i> info@vylexnexys.co.za</p>
-                        <p><i class="fas fa-phone"></i> 064-878-4287</p>
-                    </div>
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title">About VylexNexys</h2>
+                <div class="about-content">
+                    <p>VylexNexys is an independent technology company focused on building practical, innovative digital
+                        products and offering tailored software solutions. We specialize in custom web apps, Android
+                        development, and smart tools designed to solve everyday problems.</p>
+                    <p>Our products range from learning platforms and utility tools to interactive apps, all built with
+                        a
+                        deep understanding of user needs and modern tech trends. Alongside our product line, we also
+                        offer
+                        development services for individuals, startups, and small businesses — from websites and
+                        branding to
+                        secure, cloud-connected apps.</p>
+                    <p>Whether you're looking for ready-to-use tools or custom solutions, VylexNexys is here to turn
+                        ideas
+                        into clean, functional digital experiences.</p>
                 </div>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required placeholder="Your Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required placeholder="Your Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Project Details</label>
-                        <textarea id="message" name="message" rows="5" required
-                            placeholder="Tell us about your project or what you need help with"></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">Let's Work Together</h2>
+                <div class="contact-wrapper">
+                    <div class="contact-details">
+                        <p>Ready to bring your digital ideas to life? Whether you need a website, mobile app, or custom
+                            digital tool, we're here to help make it happen.</p>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope"></i> <a
+                                    href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
+                            <p><i class="fas fa-phone"></i> <a href="tel:0648784287">064-878-4287</a></p>
+                        </div>
+                    </div>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required placeholder="e.g., Jane Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required
+                                placeholder="e.g., jane.doe@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Project Details / Inquiry</label>
+                            <textarea id="message" name="message" rows="5" required
+                                placeholder="Tell us about your project or what you need help with..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer class="footer">
         <div class="container">
@@ -183,70 +1066,101 @@
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
-                    <p><a href="services.html">Our Services</a></p>
-                    <p><a href="portfolio.html">Product Portfolio</a></p>
-                    <p><a href="#contact">Contact Us</a></p>
+                    <ul>
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="portfolio.html">Product Portfolio</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Contact Info</h4>
-                    <p>Email: info@vylexnexys.co.za</p>
-                    <p>Phone: 064-878-4287</p>
-                    <p>Building digital solutions one project at a time</p>
+                    <address>
+                        <p>Email: <a href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
+                        <p>Phone: <a href="tel:0648784287">064-878-4287</a></p>
+                        <p>Location: South Africa</p>
+                        <p>Building digital solutions one project at a time.</p>
+                    </address>
                 </div>
             </div>
 
             <div class="social-links">
-                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://linkedin.com/company/vylexnexys" target="_blank" rel="noopener noreferrer"
+                    aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://twitter.com/vylexnexys" target="_blank" rel="noopener noreferrer"
+                    aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/vylexnexys" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i
+                        class="fab fa-github"></i></a>
+                <a href="https://instagram.com/vylexnexys" target="_blank" rel="noopener noreferrer"
+                    aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://tiktok.com/@vylexnexys" target="_blank" rel="noopener noreferrer"
+                    aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
             </div>
 
-            <p style="margin-top: 2rem; text-align: center;">© 2025 VylexNexys. All rights reserved.</p>
+            <p class="copyright-text">© <span id="current-year">2024</span> VylexNexys. All rights reserved.</p>
 
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const mainHeader = document.getElementById('main-header');
             const hamburgerButton = document.querySelector('.hamburger-menu');
-            const navLinks = document.querySelector('.nav-links');
+            const navLinks = document.querySelector('.nav-links'); // or document.getElementById('main-nav-links');
             const hamburgerIcon = document.querySelector('.hamburger-icon');
 
-            // Toggle mobile menu
-            hamburgerButton.addEventListener('click', function () {
-                toggleNav();
-            });
+            // Header scroll effect
+            if (mainHeader) {
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 50) {
+                        mainHeader.classList.add('scrolled');
+                    } else {
+                        mainHeader.classList.remove('scrolled');
+                    }
+                });
+            }
 
-            // Close menu when clicking outside
+            // Toggle mobile menu
+            if (hamburgerButton && navLinks && hamburgerIcon) {
+                hamburgerButton.addEventListener('click', function () {
+                    toggleNav();
+                });
+            }
+
+            // Close menu when clicking outside (if menu is open)
             document.addEventListener('click', function (event) {
-                if (!navLinks.contains(event.target) && !hamburgerButton.contains(event.target)) {
-                    closeNav();
+                if (navLinks && navLinks.classList.contains('active')) {
+                    if (!navLinks.contains(event.target) && !hamburgerButton.contains(event.target)) {
+                        closeNav();
+                    }
                 }
             });
 
-            // Handle navigation links
+            // Handle navigation links for smooth scrolling
             const allNavLinks = document.querySelectorAll('.nav-links a[href^="#"]');
             allNavLinks.forEach(link => {
                 link.addEventListener('click', function (event) {
-                    event.preventDefault();
-
                     const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
+                    // Only prevent default for on-page links
+                    if (targetId.startsWith('#')) {
+                        event.preventDefault();
+                        const targetElement = document.querySelector(targetId);
 
-                    if (targetElement) {
-                        // Close navigation before scrolling
+                        if (targetElement) {
+                            closeNav(); // Close nav before scrolling
+
+                            // Smooth scroll to target
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+
+                            // Update URL without page reload (optional, can be removed if not desired)
+                            // history.pushState(null, '', targetId);
+                        }
+                    } else {
+                        // For external links (e.g., services.html), close nav if open and let default behavior proceed
                         closeNav();
-
-                        // Smooth scroll to target
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-
-                        // Update URL without page reload
-                        history.pushState(null, '', targetId);
                     }
                 });
             });
@@ -257,58 +1171,72 @@
                 contactForm.addEventListener('submit', function (event) {
                     event.preventDefault();
 
-                    // Get form data
                     const name = document.getElementById('name').value.trim();
                     const email = document.getElementById('email').value.trim();
                     const message = document.getElementById('message').value.trim();
 
-                    // Basic validation
                     if (!name || !email || !message) {
                         alert('Please fill in all fields.');
                         return;
                     }
 
-                    // Create WhatsApp message
                     const whatsappMessage = `Hi! I'm ${name} and I'm interested in working with VylexNexys.
 
-*Contact Details:*
-Email: ${email}
+                 *Contact Details:*
+                 Email: ${email}
+                 *Project Details:*
+                 ${message}
+                 I'd like to discuss this project further. When would be a good time to talk?`;
 
-*Project Details:*
-${message}
-
-I'd like to discuss this project further. When would be a good time to talk?`;
-
-                    // Encode message for URL
                     const encodedMessage = encodeURIComponent(whatsappMessage);
+                    // IMPORTANT: Replace with your actual WhatsApp number including country code (e.g., 27 for South Africa)
                     const whatsappURL = `https://wa.me/27648784287?text=${encodedMessage}`;
 
-                    // Show success message
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'success-message';
-                    successMessage.textContent = 'Redirecting to WhatsApp...';
-                    contactForm.appendChild(successMessage);
+                    // Show success message (or a loading indicator)
+                    const submitButton = contactForm.querySelector('button[type="submit"]');
+                    const originalButtonText = submitButton.textContent;
+                    submitButton.textContent = 'Redirecting...';
+                    submitButton.disabled = true;
 
-                    // Open WhatsApp after a short delay
+
                     setTimeout(() => {
                         window.open(whatsappURL, '_blank');
-                        successMessage.remove();
-                        contactForm.reset();
+                        // Optional: Reset form and button after a delay
+                        // contactForm.reset();
+                        // submitButton.textContent = originalButtonText;
+                        // submitButton.disabled = false;
+
+                        // For a more robust solution, you might want to confirm if WhatsApp was opened
+                        // or provide an alternative way if the redirect fails.
+                        // For now, we'll assume it works and reset after a longer delay or on window focus.
+                        setTimeout(() => {
+                            contactForm.reset();
+                            submitButton.textContent = originalButtonText;
+                            submitButton.disabled = false;
+                        }, 3000);
+
                     }, 1000);
                 });
             }
 
-            // Utility functions
+            // Utility functions for Nav
             function toggleNav() {
+                if (!navLinks || !hamburgerIcon || !hamburgerButton) return;
                 navLinks.classList.toggle('active');
                 hamburgerIcon.classList.toggle('active');
                 document.body.classList.toggle('nav-open');
+                const isExpanded = navLinks.classList.contains('active');
+                hamburgerButton.setAttribute('aria-expanded', isExpanded.toString());
             }
 
             function closeNav() {
-                navLinks.classList.remove('active');
-                hamburgerIcon.classList.remove('active');
-                document.body.classList.remove('nav-open');
+                if (!navLinks || !hamburgerIcon || !hamburgerButton) return;
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburgerIcon.classList.remove('active');
+                    document.body.classList.remove('nav-open');
+                    hamburgerButton.setAttribute('aria-expanded', 'false');
+                }
             }
 
             // Handle escape key to close nav
@@ -317,9 +1245,14 @@ I'd like to discuss this project further. When would be a good time to talk?`;
                     closeNav();
                 }
             });
+
+            // Set current year in footer
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
         });
     </script>
 
 </body>
-
 </html>
