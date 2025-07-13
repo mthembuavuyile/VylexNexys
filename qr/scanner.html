@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Scanner | Vylex Nexys</title>
+    <!-- Changed Product Name and Description -->
+    <title>Lens Pro: QR & Text Scanner | Vylex Nexys</title>
     <meta name="description"
-        content="Free online QR code scanner by Vylex Nexys. Scan QR codes instantly using your camera or upload images.">
-    <meta name="keywords" content="QR code scanner, mobile QR scanner, online QR reader, Vylex Nexys">
-    <meta property="og:title" content="QR Code Scanner | Vylex Nexys">
+        content="A powerful web tool to scan QR codes and recognize text from your camera or images. Fast, private, and free.">
+    <meta name="keywords" content="QR code scanner, text scanner, OCR, optical character recognition, Vylex Nexys">
+    <meta property="og:title" content="Lens Pro: QR & Text Scanner | Vylex Nexys">
     <meta property="og:description"
-        content="Free online QR code scanner by Vylex Nexys. Scan QR codes instantly using your camera or upload images.">
+        content="Scan QR codes and recognize text instantly with your camera or by uploading an image.">
     <meta property="og:url" content="https://vylexnexys.co.za/qr/scanner">
     <meta property="og:type" content="website">
     <meta name="robots" content="index, follow">
@@ -18,6 +19,11 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Tesseract.js is the NEW library for Optical Character Recognition (OCR) -->
+    <script src="https://unpkg.com/tesseract.js@5.0.0/dist/tesseract.min.js"></script>
+    <!-- jsQR is the library for QR Code scanning -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
     <style>
         :root {
@@ -36,17 +42,13 @@
             --border-radius-md: 12px;
             --border-radius-lg: 16px;
             --border-radius-xl: 20px;
-            --spacing-xs: 0.25rem;
             --spacing-sm: 0.5rem;
             --spacing-md: 1rem;
             --spacing-lg: 1.5rem;
             --spacing-xl: 2rem;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --transition-fast: 0.15s ease;
             --transition-medium: 0.25s ease;
-            --transition-slow: 0.35s ease;
         }
 
         * {
@@ -75,7 +77,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            max-width: 480px;
+            max-width: 500px;
             margin: 0 auto;
             width: 100%;
         }
@@ -84,25 +86,6 @@
             text-align: center;
             margin-bottom: var(--spacing-xl);
         }
-
-        .app-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: var(--spacing-sm);
-            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        .app-subtitle {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-lg);
-            font-weight: 400;
-        }
-
         .generator-link {
             display: inline-flex;
             align-items: center;
@@ -128,6 +111,22 @@
             box-shadow: var(--shadow-sm);
         }
 
+        .app-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .app-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        
         .scanner-card {
             background: var(--surface-primary);
             backdrop-filter: blur(20px);
@@ -137,23 +136,23 @@
             padding: var(--spacing-lg);
             box-shadow: var(--shadow-lg);
             width: 100%;
-            margin-bottom: var(--spacing-lg);
         }
 
-        .input-methods {
+        /* NEW: Mode Switcher styling */
+        .mode-switcher {
             display: flex;
             gap: var(--spacing-sm);
             margin-bottom: var(--spacing-lg);
         }
 
-        .input-tab {
+        .mode-tab {
             flex: 1;
             padding: var(--spacing-sm) var(--spacing-md);
             background: var(--surface-secondary);
             border: 1px solid var(--surface-border);
             border-radius: var(--border-radius-md);
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             font-weight: 500;
             text-align: center;
             cursor: pointer;
@@ -161,33 +160,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: var(--spacing-xs);
+            gap: 0.4rem;
         }
 
-        .input-tab.active {
+        .mode-tab.active {
             background: var(--accent-gradient);
             color: var(--text-primary);
             border-color: transparent;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
         }
-
-        .input-tab:hover:not(.active) {
-            background: var(--surface-primary);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .input-content {
-            display: none;
-        }
-
-        .input-content.active {
-            display: block;
-        }
-
-        .camera-container {
+        
+        /* Main Interactive Area */
+        .interactive-area {
             position: relative;
             width: 100%;
-            aspect-ratio: 1;
+            aspect-ratio: 4/3;
             border-radius: var(--border-radius-md);
             overflow: hidden;
             background: #000;
@@ -195,203 +182,97 @@
             box-shadow: var(--shadow-md);
         }
 
-        #video {
+        #video, #capturedImage {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: var(--border-radius-md);
         }
 
-        .scan-overlay {
+        /* QR Scan Overlay */
+        .qr-scan-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse at center, transparent 25%, rgba(0, 0, 0, 0.4) 70%);
+            top: 0; left: 0; right: 0; bottom: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2;
         }
-
-        .scan-frame {
-            width: 200px;
-            height: 200px;
-            border: 2px solid var(--text-primary);
+        .qr-scan-frame {
+            width: 60%;
+            height: 60%;
+            max-width: 250px;
+            max-height: 250px;
+            border: 2px solid rgba(255, 255, 255, 0.7);
             border-radius: var(--border-radius-md);
             position: relative;
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4000px rgba(0,0,0,0.4);
         }
-
-        .scan-frame::before {
+        .qr-scan-frame::before {
             content: '';
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
             top: 0;
-            width: 60%;
+            width: 100%;
             height: 2px;
             background: var(--accent-gradient);
             border-radius: 2px;
-            animation: scanLine 2s ease-in-out infinite;
+            animation: scanLine 2.5s ease-in-out infinite;
         }
-
-        .scan-corners {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .scan-corner {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--text-primary);
-        }
-
-        .scan-corner.top-left {
-            top: -2px;
-            left: -2px;
-            border-right: none;
-            border-bottom: none;
-            border-top-left-radius: var(--border-radius-md);
-        }
-
-        .scan-corner.top-right {
-            top: -2px;
-            right: -2px;
-            border-left: none;
-            border-bottom: none;
-            border-top-right-radius: var(--border-radius-md);
-        }
-
-        .scan-corner.bottom-left {
-            bottom: -2px;
-            left: -2px;
-            border-right: none;
-            border-top: none;
-            border-bottom-left-radius: var(--border-radius-md);
-        }
-
-        .scan-corner.bottom-right {
-            bottom: -2px;
-            right: -2px;
-            border-left: none;
-            border-top: none;
-            border-bottom-right-radius: var(--border-radius-md);
-        }
-
         @keyframes scanLine {
-            0%, 100% {
-                top: 10%;
-                opacity: 1;
-            }
-            50% {
-                top: 85%;
-                opacity: 0.8;
-            }
+            0% { top: 5%; } 100% { top: 95%; }
         }
 
-        .upload-container {
+        /* Controls Section */
+        .controls {
             display: flex;
-            flex-direction: column;
-            gap: var(--spacing-md);
-        }
-
-        .file-upload-area {
-            position: relative;
-            border: 2px dashed var(--surface-border);
-            border-radius: var(--border-radius-md);
-            padding: var(--spacing-xl);
-            text-align: center;
-            background: var(--surface-secondary);
-            transition: all var(--transition-medium);
-            cursor: pointer;
-        }
-
-        .file-upload-area:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            background: var(--surface-primary);
-        }
-
-        .file-upload-area.dragover {
-            border-color: var(--success-color);
-            background: rgba(16, 185, 129, 0.1);
-        }
-
-        .upload-icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto var(--spacing-md);
-            color: var(--text-secondary);
-        }
-
-        .upload-text {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .upload-subtext {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-        }
-
-        #fileInput {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .image-preview {
-            position: relative;
-            width: 100%;
-            max-width: 300px;
-            margin: 0 auto;
-            border-radius: var(--border-radius-md);
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            display: none;
-        }
-
-        .image-preview img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .remove-image {
-            position: absolute;
-            top: var(--spacing-sm);
-            right: var(--spacing-sm);
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            border-radius: 50%;
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
             align-items: center;
             justify-content: center;
-            transition: all var(--transition-fast);
+            margin-bottom: var(--spacing-lg);
         }
-
-        .remove-image:hover {
-            background: var(--error-color);
-            transform: scale(1.1);
+        .app-button {
+            padding: 0.6rem 1rem;
+            background: var(--surface-primary);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--border-radius-md);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-
+        .app-button:hover:not(:disabled) {
+            background: var(--surface-secondary);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        .app-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #uploadBtn {
+            position: relative;
+            overflow: hidden;
+        }
+        #imageInput {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        /* Result Section */
         .result-section {
             background: var(--surface-secondary);
-            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--border-radius-md);
             padding: var(--spacing-md);
-            transition: all var(--transition-medium);
         }
 
         .result-header {
@@ -401,129 +282,62 @@
             margin-bottom: var(--spacing-md);
         }
 
-        .result-icon {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--accent-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
         .result-title {
             font-size: 1rem;
             font-weight: 600;
             color: var(--text-primary);
         }
-
         .result-actions {
             margin-left: auto;
-            display: flex;
-            gap: var(--spacing-xs);
         }
-
-        .action-btn {
-            padding: var(--spacing-xs) var(--spacing-sm);
+        .copy-btn {
+            padding: 0.25rem 0.5rem;
             background: var(--surface-primary);
             border: 1px solid var(--surface-border);
             border-radius: var(--border-radius-sm);
             color: var(--text-secondary);
             font-size: 0.75rem;
             cursor: pointer;
-            transition: all var(--transition-fast);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-xs);
         }
-
-        .action-btn:hover {
-            background: var(--surface-secondary);
-            color: var(--text-primary);
-        }
-
         .result-content {
             background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: var(--border-radius-sm);
             padding: var(--spacing-md);
             font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
             font-size: 0.875rem;
             line-height: 1.6;
             word-break: break-all;
-            max-height: 120px;
+            min-height: 80px;
+            max-height: 200px;
             overflow-y: auto;
             color: var(--text-secondary);
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-        }
-
-        .result-content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .result-content::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .result-content::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
         }
 
         .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
             font-size: 0.875rem;
             color: var(--text-tertiary);
-            margin-top: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+            text-align: center;
         }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success-color);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
+        
         .toast {
             position: fixed;
             bottom: var(--spacing-xl);
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             color: var(--text-primary);
             padding: var(--spacing-md) var(--spacing-lg);
             border-radius: 50px;
             box-shadow: var(--shadow-lg);
             z-index: 1000;
             opacity: 0;
-            transform: translateX(-50%) translateY(20px);
             transition: all var(--transition-medium);
-            font-weight: 500;
-            font-size: 0.875rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .toast.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-
         .footer {
             text-align: center;
             margin-top: auto;
@@ -531,85 +345,16 @@
             color: var(--text-tertiary);
             font-size: 0.875rem;
         }
-
-        .footer a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color var(--transition-fast);
-        }
-
-        .footer a:hover {
-            color: var(--text-primary);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Mobile optimizations */
-        @media (max-width: 480px) {
-            body {
-                padding: var(--spacing-md);
-            }
-
-            .app-title {
-                font-size: 2rem;
-            }
-
-            .app-subtitle {
-                font-size: 1rem;
-            }
-
-            .scanner-card {
-                padding: var(--spacing-md);
-            }
-
-            .scan-frame {
-                width: 160px;
-                height: 160px;
-            }
-
-            .camera-container {
-                margin-bottom: var(--spacing-md);
-            }
-
-            .upload-icon {
-                width: 40px;
-                height: 40px;
-            }
-
-            .upload-text {
-                font-size: 0.875rem;
-            }
-
-            .upload-subtext {
-                font-size: 0.75rem;
-            }
-        }
-
-        /* Accessibility improvements */
-        @media (prefers-reduced-motion: reduce) {
-            .scan-frame::before,
-            .status-dot {
-                animation: none;
-            }
-        }
-
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            :root {
-                --surface-border: rgba(255, 255, 255, 0.3);
-                --text-secondary: rgba(255, 255, 255, 0.9);
-            }
-        }
+        .footer a { color: var(--text-secondary); }
+        .hidden { display: none !important; }
     </style>
 </head>
 
 <body>
     <div class="main-container">
         <header class="app-header">
-            <h1 class="app-title">QR Scanner</h1>
-            <p class="app-subtitle">Scan QR codes with camera or upload images</p>
+            <h1 class="app-title">Lens Pro</h1>
+            <p class="app-subtitle">Scan QR Codes & Recognize Text</p>
             <a href="generator.html" target="_blank" class="generator-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 3h6v6H3z"></path>
@@ -622,511 +367,393 @@
         </header>
 
         <div class="scanner-card">
-            <div class="input-methods">
-                <div class="input-tab active" data-tab="camera">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                        <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                    Camera
+            <!-- NEW: Mode Switcher -->
+            <div class="mode-switcher">
+                <div class="mode-tab active" data-mode="qr">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h6v6h-6z"></path></svg>
+                    Scan QR
                 </div>
-                <div class="input-tab" data-tab="upload">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="17,8 12,3 7,8"></polyline>
-                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                    </svg>
-                    Upload
+                <div class="mode-tab" data-mode="text">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                    Read Text
                 </div>
             </div>
 
-            <div class="input-content active" id="camera-content">
-                <div class="camera-container">
-                    <video id="video" playsinline autoplay muted></video>
-                    <div class="scan-overlay">
-                        <div class="scan-frame">
-                            <div class="scan-corners">
-                                <div class="scan-corner top-left"></div>
-                                <div class="scan-corner top-right"></div>
-                                <div class="scan-corner bottom-left"></div>
-                                <div class="scan-corner bottom-right"></div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Unified Interactive Area -->
+            <div class="interactive-area">
+                <video id="video" playsinline autoplay muted class="hidden"></video>
+                <img id="capturedImage" class="hidden" alt="Captured or uploaded image">
+                <div id="qrScanOverlay" class="qr-scan-overlay">
+                    <div class="qr-scan-frame"></div>
+                </div>
+                <!-- Placeholder for when camera is off -->
+                <div id="cameraOffPlaceholder" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-tertiary);"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    <p style="color:var(--text-tertiary);">Start camera or upload an image</p>
                 </div>
             </div>
 
-            <div class="input-content" id="upload-content">
-                <div class="upload-container">
-                    <div class="file-upload-area" id="fileUploadArea">
-                        <input type="file" id="fileInput" accept="image/*" multiple>
-                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="17,8 12,3 7,8"></polyline>
-                            <line x1="12" y1="3" x2="12" y2="15"></line>
-                        </svg>
-                        <div class="upload-text">Drop QR code images here</div>
-                        <div class="upload-subtext">or click to browse files (PNG, JPG, GIF)</div>
-                    </div>
-                    <div class="image-preview" id="imagePreview">
-                        <img id="previewImg" src="" alt="Uploaded QR code">
-                        <button class="remove-image" id="removeImage">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+             <!-- Unified Controls -->
+            <div class="controls">
+                <button id="startCamBtn" class="app-button">Start Camera</button>
+                <button id="stopCamBtn" class="app-button hidden">Stop Camera</button>
+                <button id="captureBtn" class="app-button hidden">Capture Image</button>
+                <button id="uploadBtn" class="app-button">
+                    Upload Image
+                    <input type="file" id="imageInput" accept="image/*">
+                </button>
+                <button id="recognizeBtn" class="app-button hidden" disabled>Recognize</button>
             </div>
 
-            <div class="result-section" id="result-container">
+            <div class="result-section">
                 <div class="result-header">
-                    <div class="result-icon">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 3h6v6H3z"></path>
-                            <path d="M15 3h6v6h-6z"></path>
-                            <path d="M3 15h6v6H3z"></path>
-                            <path d="M15 15h6v6h-6z"></path>
-                        </svg>
-                    </div>
-                    <div class="result-title">Scan Result</div>
+                    <div class="result-title" id="resultTitle">Scan Result</div>
                     <div class="result-actions">
-                        <button class="action-btn" id="copyBtn" style="display: none;">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            Copy
-                        </button>
-                        <button class="action-btn" id="shareBtn" style="display: none;">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="18" cy="5" r="3"></circle>
-                                <circle cx="6" cy="12" r="3"></circle>
-                                <circle cx="18" cy="19" r="3"></circle>
-                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                            </svg>
-                            Share
-                        </button>
+                        <button class="copy-btn" id="copyBtn" style="display: none;">Copy</button>
                     </div>
                 </div>
-                <div class="result-content" id="result">
-                    Ready to scan QR codes...
+                <div class="result-content" id="resultContent">
+                    Ready to scan...
                 </div>
-                <div class="status-indicator">
-                    <div class="status-dot"></div>
-                    <span id="statusText">Ready to scan</span>
-                </div>
+            </div>
+            <div class="status-indicator">
+                <span id="status">Ready</span>
             </div>
         </div>
     </div>
 
     <footer class="footer">
-        <p>© 2025 
-           <a href="https://vylexnexys.co.za" target="_blank" rel="noopener noreferrer">
-             VylexNexys
-           </a> QR Scanner
-        </p>
+        <p>© 2025 <a href="https://vylexnexys.co.za" target="_blank">VylexNexys</a> Lens Pro</p>
     </footer>
 
     <div class="toast" id="toast"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script>
-        class QRScanner {
-            constructor() {
-                this.video = document.getElementById('video');
-                this.resultContainer = document.getElementById('result-container');
-                this.result = document.getElementById('result');
-                this.toast = document.getElementById('toast');
-                this.fileInput = document.getElementById('fileInput');
-                this.fileUploadArea = document.getElementById('fileUploadArea');
-                this.imagePreview = document.getElementById('imagePreview');
-                this.previewImg = document.getElementById('previewImg');
-                this.removeImageBtn = document.getElementById('removeImage');
-                this.copyBtn = document.getElementById('copyBtn');
-                this.shareBtn = document.getElementById('shareBtn');
-                this.statusText = document.getElementById('statusText');
-                
-                this.stream = null;
-                this.scanning = false;
-                this.canvasElement = document.createElement('canvas');
-                this.canvas = this.canvasElement.getContext('2d');
-                this.lastResult = null;
-                this.lastScanTime = 0;
-                this.currentTab = 'camera';
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM ELEMENTS ---
+            const video = document.getElementById('video');
+            const capturedImage = document.getElementById('capturedImage');
+            const status = document.getElementById('status');
+            const resultContent = document.getElementById('resultContent');
+            const resultTitle = document.getElementById('resultTitle');
+            const imageInput = document.getElementById('imageInput');
+            const cameraOffPlaceholder = document.getElementById('cameraOffPlaceholder');
 
-                this.initEventListeners();
-                this.switchTab('camera');
+            // Overlays
+            const qrScanOverlay = document.getElementById('qrScanOverlay');
+
+            // Buttons & Controls
+            const modeTabs = document.querySelectorAll('.mode-tab');
+            const startCamBtn = document.getElementById('startCamBtn');
+            const stopCamBtn = document.getElementById('stopCamBtn');
+            const captureBtn = document.getElementById('captureBtn');
+            const recognizeBtn = document.getElementById('recognizeBtn');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const toast = document.getElementById('toast');
+
+            // --- STATE MANAGEMENT ---
+            let state = {
+                currentMode: 'qr', // 'qr' or 'text'
+                stream: null,
+                capturedImageData: null, // Can be a Blob from capture or a File from upload
+                tesseractWorker: null,
+                isTesseractReady: false,
+                isScanningQR: false,
+                lastResult: null
+            };
+
+            // --- INITIALIZATION ---
+            async function initialize() {
+                updateUI();
+                setupEventListeners();
+                await initializeTesseract();
             }
 
-            initEventListeners() {
-                // Tab switching
-                document.querySelectorAll('.input-tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        this.switchTab(tab.dataset.tab);
-                    });
+            async function initializeTesseract() {
+                status.textContent = "Loading AI text model...";
+                state.tesseractWorker = await Tesseract.createWorker('eng', 1, {
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            status.textContent = `Recognizing... ${Math.round(m.progress * 100)}%`;
+                        }
+                    }
                 });
-
-                // File upload events
-                this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
-                this.fileUploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
-                this.fileUploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
-                this.fileUploadArea.addEventListener('drop', (e) => this.handleDrop(e));
-                this.removeImageBtn.addEventListener('click', () => this.removeImage());
-
-                // Action buttons
-                this.copyBtn.addEventListener('click', () => this.copyResult());
-                this.shareBtn.addEventListener('click', () => this.shareResult());
+                state.isTesseractReady = true;
+                status.textContent = 'AI model loaded. Ready.';
+                updateUI();
             }
 
-            switchTab(tabName) {
-                this.currentTab = tabName;
+            function setupEventListeners() {
+                modeTabs.forEach(tab => tab.addEventListener('click', () => switchMode(tab.dataset.mode)));
+                startCamBtn.addEventListener('click', startCamera);
+                stopCamBtn.addEventListener('click', stopCamera);
+                captureBtn.addEventListener('click', captureImage);
+                imageInput.addEventListener('change', handleImageUpload);
+                recognizeBtn.addEventListener('click', handleRecognizeClick);
+                copyBtn.addEventListener('click', copyResult);
+            }
+
+            // --- CORE LOGIC ---
+            function switchMode(newMode) {
+                if (state.currentMode === newMode) return;
+                state.currentMode = newMode;
+                state.lastResult = null; // Reset result when switching modes
                 
-                // Update tab active states
-                document.querySelectorAll('.input-tab').forEach(tab => {
-                    tab.classList.toggle('active', tab.dataset.tab === tabName);
-                });
-
-                // Update content visibility
-                document.querySelectorAll('.input-content').forEach(content => {
-                    content.classList.toggle('active', content.id === `${tabName}-content`);
-                });
-
-                if (tabName === 'camera') {
-                    this.startCamera();
-                } else {
-                    this.stopCamera();
-                    this.updateStatus('Ready to upload image', true);
+                // If an image was captured/uploaded, clear it when switching modes
+                if (state.capturedImageData) {
+                    state.capturedImageData = null;
+                    capturedImage.src = '';
                 }
+
+                if (state.stream && newMode === 'qr') {
+                    startQRScanLoop();
+                } else {
+                    stopQRScanLoop();
+                }
+                updateUI();
             }
 
-            async startCamera() {
+            async function startCamera() {
+                status.textContent = 'Starting camera...';
                 try {
                     const constraints = {
                         video: {
-                            facingMode: "environment",
-                            width: { ideal: 1280 },
-                            height: { ideal: 720 }
+                            facingMode: 'environment',
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 },
                         }
                     };
-
-                    this.stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    this.video.srcObject = this.stream;
-
-                    this.video.onloadedmetadata = () => {
-                        this.video.play();
-                        this.startScanning();
-                        this.updateStatus('Camera active', true);
+                    state.stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    video.srcObject = state.stream;
+                    video.onloadedmetadata = () => {
+                        video.play();
+                        if (state.currentMode === 'qr') {
+                            startQRScanLoop();
+                        }
+                        updateUI();
                     };
                 } catch (error) {
-                    console.error('Error starting camera:', error);
-                    this.result.textContent = "Camera access denied or no camera available";
-                    this.updateStatus('Camera unavailable', false);
+                    console.error("Camera Error:", error);
+                    status.textContent = `Error: Please grant camera permission.`;
+                    state.stream = null;
+                    updateUI();
                 }
             }
 
-            stopCamera() {
-                this.scanning = false;
-                if (this.stream) {
-                    this.stream.getTracks().forEach(track => track.stop());
-                    this.stream = null;
+            function stopCamera() {
+                stopQRScanLoop();
+                if (state.stream) {
+                    state.stream.getTracks().forEach(track => track.stop());
                 }
+                state.stream = null;
+                state.capturedImageData = null;
+                updateUI();
             }
 
-            updateStatus(message, active) {
-                this.statusText.textContent = message;
-                const statusDot = document.querySelector('.status-dot');
+            function handleImageUpload(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                stopCamera(); // Stop camera if running to focus on upload
+                state.capturedImageData = file;
+                const imageUrl = URL.createObjectURL(file);
+                capturedImage.src = imageUrl;
                 
-                if (statusDot) {
-                    statusDot.style.background = active ? 'var(--success-color)' : 'var(--warning-color)';
+                if (state.currentMode === 'qr') {
+                    recognizeFromImage(file);
+                } else {
+                     status.textContent = 'Image loaded. Click Recognize.';
+                }
+                updateUI();
+            }
+
+            function captureImage() {
+                if (!state.stream) return;
+                stopQRScanLoop(); // Stop scanning while we process a capture
+
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                canvas.toBlob(blob => {
+                    state.capturedImageData = blob;
+                    const imageUrl = URL.createObjectURL(blob);
+                    capturedImage.src = imageUrl;
+                    status.textContent = 'Image captured. Click Recognize.';
+                    updateUI();
+                }, 'image/jpeg', 0.95);
+            }
+
+            function handleRecognizeClick() {
+                if (state.capturedImageData) {
+                    recognizeFromImage(state.capturedImageData);
                 }
             }
+            
+            async function recognizeFromImage(imageSource) {
+                 if (!imageSource) return;
 
-            startScanning() {
-                this.scanning = true;
-                this.scanFrame();
-            }
+                if (state.currentMode === 'qr') {
+                    status.textContent = "Scanning QR code from image...";
+                    resultContent.textContent = "Analyzing...";
 
-            scanFrame() {
-                if (!this.scanning || this.currentTab !== 'camera') return;
-
-                if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
-                    this.canvasElement.height = this.video.videoHeight;
-                    this.canvasElement.width = this.video.videoWidth;
-                    this.canvas.drawImage(this.video, 0, 0, this.canvasElement.width, this.canvasElement.height);
-                    const imageData = this.canvas.getImageData(0, 0, this.canvasElement.width, this.canvasElement.height);
-
-                    // Try BarcodeDetector first, then fallback to jsQR
-                    if (typeof BarcodeDetector !== 'undefined') {
-                        this.decodeWithBarcodeDetector(imageData)
-                            .then(barcodeResult => {
-                                if (barcodeResult) {
-                                    this.handleScanResult(barcodeResult);
-                                } else {
-                                    this.decodeWithJsQR(imageData);
-                                }
-                            })
-                            .catch(() => {
-                                this.decodeWithJsQR(imageData);
-                            });
-                    } else {
-                        this.decodeWithJsQR(imageData);
-                    }
-                }
-
-                requestAnimationFrame(() => this.scanFrame());
-            }
-
-            async decodeWithBarcodeDetector(imageData) {
-                try {
-                    const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-                    const barcodes = await barcodeDetector.detect(imageData);
-
-                    if (barcodes.length > 0) {
-                        return barcodes[0].rawValue;
-                    }
-                } catch (error) {
-                    console.error('BarcodeDetector error:', error);
-                }
-
-                return null;
-            }
-
-            decodeWithJsQR(imageData) {
-                if (typeof jsQR !== 'undefined') {
-                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                        inversionAttempts: "dontInvert",
-                    });
-
-                    if (code) {
-                        this.handleScanResult(code.data);
-                    }
-                }
-            }
-
-            handleFileSelect(event) {
-                const files = event.target.files;
-                if (files.length > 0) {
-                    this.processImageFile(files[0]);
-                }
-            }
-
-            handleDragOver(event) {
-                event.preventDefault();
-                this.fileUploadArea.classList.add('dragover');
-            }
-
-            handleDragLeave(event) {
-                event.preventDefault();
-                this.fileUploadArea.classList.remove('dragover');
-            }
-
-            handleDrop(event) {
-                event.preventDefault();
-                this.fileUploadArea.classList.remove('dragover');
-                
-                const files = event.dataTransfer.files;
-                if (files.length > 0 && files[0].type.startsWith('image/')) {
-                    this.processImageFile(files[0]);
-                }
-            }
-
-            processImageFile(file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.previewImg.src = e.target.result;
-                    this.imagePreview.style.display = 'block';
-                    this.updateStatus('Processing image...', true);
-                    
-                    // Create image element for QR scanning
                     const img = new Image();
                     img.onload = () => {
-                        this.scanImageForQR(img);
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const code = jsQR(imageData.data, imageData.width, imageData.height);
+                        if (code) {
+                            handleQRResult(code.data);
+                        } else {
+                            status.textContent = 'No QR code found in image.';
+                            resultContent.textContent = 'Could not find a QR code.';
+                        }
                     };
-                    img.src = e.target.result;
+                    img.src = URL.createObjectURL(imageSource);
+
+                } else if (state.currentMode === 'text') {
+                    if (!state.isTesseractReady) {
+                        status.textContent = "AI model not ready. Please wait.";
+                        return;
+                    }
+                    status.textContent = "Processing image...";
+                    resultContent.textContent = "Analyzing...";
+                    try {
+                        const { data: { text } } = await state.tesseractWorker.recognize(imageSource);
+                        handleTextResult(text);
+                    } catch (error) {
+                        console.error("Tesseract Error:", error);
+                        status.textContent = "Error during text recognition.";
+                        resultContent.textContent = "An error occurred. See console for details.";
+                    }
+                }
+            }
+
+
+            // --- QR MODE SPECIFIC ---
+            function startQRScanLoop() {
+                if (!state.stream || state.isScanningQR) return;
+                state.isScanningQR = true;
+                status.textContent = "Searching for QR code...";
+                
+                const scan = () => {
+                    if (!state.isScanningQR) return;
+                    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                        const canvas = document.createElement('canvas');
+                        canvas.height = video.videoHeight;
+                        canvas.width = video.videoWidth;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                            inversionAttempts: "dontInvert",
+                        });
+                        if (code && code.data !== state.lastResult) {
+                            handleQRResult(code.data);
+                        }
+                    }
+                    requestAnimationFrame(scan);
                 };
-                reader.readAsDataURL(file);
+                requestAnimationFrame(scan);
             }
 
-            scanImageForQR(img) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
+            function stopQRScanLoop() {
+                state.isScanningQR = false;
+            }
+
+            function handleQRResult(result) {
+                state.lastResult = result;
+                stopQRScanLoop(); // Stop scanning once a result is found
+                showToast('✅ QR Code Detected!');
+                resultContent.textContent = result;
+                copyBtn.style.display = 'block';
+                status.textContent = 'QR Code found!';
                 
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-                
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                
-                // Try BarcodeDetector first
-                if (typeof BarcodeDetector !== 'undefined') {
-                    const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-                    barcodeDetector.detect(img)
-                        .then(barcodes => {
-                            if (barcodes.length > 0) {
-                                this.handleScanResult(barcodes[0].rawValue);
-                            } else {
-                                this.decodeImageWithJsQR(imageData);
-                            }
-                        })
-                        .catch(() => {
-                            this.decodeImageWithJsQR(imageData);
-                        });
-                } else {
-                    this.decodeImageWithJsQR(imageData);
-                }
-            }
-
-            decodeImageWithJsQR(imageData) {
-                if (typeof jsQR !== 'undefined') {
-                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                        inversionAttempts: "attemptBoth",
-                    });
-
-                    if (code) {
-                        this.handleScanResult(code.data);
-                    } else {
-                        this.updateStatus('No QR code found in image', false);
-                        this.showToast('❌ No QR code detected in the image');
-                    }
-                } else {
-                    this.updateStatus('QR scanning library not available', false);
-                    this.showToast('❌ QR scanning not available');
-                }
-            }
-
-            removeImage() {
-                this.imagePreview.style.display = 'none';
-                this.fileInput.value = '';
-                this.updateStatus('Ready to upload image', true);
-                this.clearResult();
-            }
-
-            handleScanResult(result) {
-                const now = Date.now();
-                if (result === this.lastResult && now - this.lastScanTime < 2000) {
-                    return;
-                }
-                
-                this.lastResult = result;
-                this.lastScanTime = now;
-                
-                this.showResult(result);
-                this.showToast('✓ QR Code detected!');
-                this.updateStatus('QR Code found', true);
-                
-                this.launchAppFromQRContent(result);
-            }
-
-            showResult(result) {
-                this.result.textContent = result;
-                this.resultContainer.style.background = 'rgba(16, 185, 129, 0.1)';
-                this.resultContainer.style.borderColor = 'rgba(16, 185, 129, 0.3)';
-                
-                // Show action buttons
-                this.copyBtn.style.display = 'flex';
-                if (navigator.share) {
-                    this.shareBtn.style.display = 'flex';
-                }
-                
-                setTimeout(() => {
-                    this.resultContainer.style.background = 'var(--surface-secondary)';
-                    this.resultContainer.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                    if (this.currentTab === 'camera') {
-                        this.updateStatus('Camera active', true);
-                    }
-                }, 3000);
-            }
-
-            clearResult() {
-                this.result.textContent = this.currentTab === 'camera' ? 'Ready to scan QR codes...' : 'Ready to upload image...';
-                this.copyBtn.style.display = 'none';
-                this.shareBtn.style.display = 'none';
-                this.lastResult = null;
-            }
-
-            async copyResult() {
-                if (this.lastResult) {
-                    try {
-                        await navigator.clipboard.writeText(this.lastResult);
-                        this.showToast('📋 Copied to clipboard');
-                    } catch (error) {
-                        this.showToast('❌ Failed to copy');
-                    }
-                }
-            }
-
-            async shareResult() {
-                if (this.lastResult && navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: 'QR Code Result',
-                            text: this.lastResult
-                        });
-                    } catch (error) {
-                        console.error('Share failed:', error);
-                    }
-                }
-            }
-
-            launchAppFromQRContent(content) {
+                // Automatically attempt to open the content
                 try {
-                    if (content.startsWith('http://') || content.startsWith('https://')) {
-                        window.open(content, '_blank');
-                    } 
-                    else if (content.startsWith('tel:')) {
-                        window.location.href = content;
-                    } 
-                    else if (content.startsWith('sms:') || content.startsWith('smsto:')) {
-                        window.location.href = content;
-                    } 
-                    else if (content.startsWith('mailto:')) {
-                        window.location.href = content;
+                    if (result.startsWith('http://') || result.startsWith('https://')) {
+                         window.open(result, '_blank');
                     }
-                    else if (content.startsWith('BEGIN:VCARD')) {
-                        const blob = new Blob([content], {type: 'text/vcard'});
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'contact.vcf';
-                        a.click();
-                        URL.revokeObjectURL(url);
+                } catch(e) { console.error("Could not auto-launch content:", e)}
+
+                // Resume scanning after a delay
+                setTimeout(() => {
+                    if (state.stream && state.currentMode === 'qr') {
+                        state.lastResult = null; // Allow re-scanning the same code
+                        startQRScanLoop();
                     }
-                    else if (content.startsWith('BEGIN:VCALENDAR')) {
-                        const blob = new Blob([content], {type: 'text/calendar'});
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'event.ics';
-                        a.click();
-                        URL.revokeObjectURL(url);
-                    }
-                    else if (content.startsWith('WIFI:')) {
-                        this.showToast('📶 Wi-Fi configuration detected');
-                    }
-                    else if (content.startsWith('geo:')) {
-                        const coords = content.slice(4).split('?')[0].trim();
-                        window.open(`https://maps.google.com/?q=${encodeURIComponent(coords)}`, '_blank');
-                    }
-                } catch (error) {
-                    console.error('Error processing QR content:', error);
+                }, 3000);
+            }
+
+            // --- TEXT MODE SPECIFIC ---
+             function handleTextResult(text) {
+                state.lastResult = text;
+                showToast('✅ Text Recognized!');
+                resultContent.textContent = text || "No text found in the image.";
+                copyBtn.style.display = 'block';
+                status.textContent = 'Text recognition complete.';
+            }
+
+
+            // --- UI & UTILITIES ---
+            function updateUI() {
+                const isCameraOn = !!state.stream;
+                const isImageLoaded = !!state.capturedImageData;
+                const isQRMode = state.currentMode === 'qr';
+                const isTextMode = state.currentMode === 'text';
+
+                // Mode Tabs
+                modeTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.mode === state.currentMode));
+
+                // Camera/Image Display
+                video.classList.toggle('hidden', !isCameraOn || isImageLoaded);
+                capturedImage.classList.toggle('hidden', !isImageLoaded);
+                cameraOffPlaceholder.style.display = (isCameraOn || isImageLoaded) ? 'none' : 'flex';
+                qrScanOverlay.classList.toggle('hidden', !isQRMode || !isCameraOn || isImageLoaded);
+                
+                // Buttons
+                startCamBtn.classList.toggle('hidden', isCameraOn);
+                stopCamBtn.classList.toggle('hidden', !isCameraOn);
+                uploadBtn.classList.toggle('hidden', isCameraOn && !isImageLoaded);
+                
+                captureBtn.classList.toggle('hidden', !isCameraOn || !isTextMode || isImageLoaded);
+                recognizeBtn.classList.toggle('hidden', !isTextMode);
+                recognizeBtn.disabled = !isImageLoaded || !state.isTesseractReady;
+
+                // Result Area
+                resultTitle.textContent = isQRMode ? 'Scan Result' : 'Recognized Text';
+                if (!state.lastResult) {
+                    resultContent.textContent = isQRMode ? 'Point camera at a QR code or upload an image.' : 'Capture or upload an image to read text.';
+                    copyBtn.style.display = 'none';
+                }
+
+                if(!isCameraOn && !isImageLoaded) {
+                     status.textContent = state.isTesseractReady ? 'Ready' : 'Loading AI model...';
                 }
             }
 
-            showToast(message) {
-                this.toast.textContent = message;
-                this.toast.classList.add('show');
-
-                setTimeout(() => {
-                    this.toast.classList.remove('show');
-                }, 3000);
+            function copyResult() {
+                if (state.lastResult) {
+                    navigator.clipboard.writeText(state.lastResult)
+                        .then(() => showToast('📋 Copied to clipboard'))
+                        .catch(() => showToast('❌ Failed to copy'));
+                }
             }
-        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            new QRScanner();
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+            
+            initialize();
         });
     </script>
 </body>
