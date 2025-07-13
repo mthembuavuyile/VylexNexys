@@ -9,22 +9,25 @@
     <!-- Tesseract.js for OCR fallback (latest version) -->
     <script src="https://unpkg.com/tesseract.js@v5.1.0/dist/tesseract.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        video { width: 100%; max-width: 400px; border: 2px solid #ccc; }
-        #overlay { position: absolute; pointer-events: none; }
-        #result { margin-top: 20px; padding: 10px; border: 1px solid #ddd; }
-        button { padding: 10px 20px; margin: 10px; }
+        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 10px; }
+        #scanner-container { position: relative; width: 100%; max-width: 400px; margin: 0 auto; }
+        video { width: 100%; height: auto; border: 2px solid #ccc; }
+        #overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        #result { margin-top: 20px; padding: 10px; border: 1px solid #ddd; min-height: 50px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
     <h1>Product Scanner</h1>
+    <p>Point your camera at a product barcode.</p>
     
     <button id="startButton">Start Scanning</button>
     <button id="stopButton" style="display: none;">Stop Scanning</button>
+    <button id="ocrButton" style="display: none;">Try Text Recognition (OCR)</button>
 
-    <div style="position: relative;">
-        <video id="video" autoplay playsinline></video>
-        <canvas id="overlay" style="position: absolute; top: 0; left: 0;"></canvas>
+    <div id="scanner-container">
+        <video id="video" playsinline></video>
+        <canvas id="overlay"></canvas>
     </div>
     
     <div id="result">No product detected yet. Start scanning!</div>
@@ -35,136 +38,163 @@
         const overlayCtx = overlay.getContext('2d');
         const startButton = document.getElementById('startButton');
         const stopButton = document.getElementById('stopButton');
+        const ocrButton = document.getElementById('ocrButton');
         const resultDisplay = document.getElementById('result');
 
-        let stream;
-        let scanningInterval;
-        let ocrTimeout;
-        const scanIntervalMs = 500; // Scan every 500ms
+        // 1. Create the code reader instance ONCE.
+        const codeReader = new ZXing.BrowserMultiFormatReader();
+        let barcodeFound = false;
 
         // Start camera and scanning
         startButton.addEventListener('click', async () => {
+            resultDisplay.innerHTML = 'Starting camera...';
+            barcodeFound = false;
             try {
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'environment' } // Rear camera
+                // Get a stream and start the video
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
                 });
                 video.srcObject = stream;
+                
+                // Show/hide buttons
                 startButton.style.display = 'none';
                 stopButton.style.display = 'inline';
-
-                // Set overlay size to match video
-                video.addEventListener('loadedmetadata', () => {
+                ocrButton.style.display = 'inline';
+                
+                // Wait for the video to start playing to get dimensions
+                video.addEventListener('playing', () => {
                     overlay.width = video.videoWidth;
                     overlay.height = video.videoHeight;
-                });
+                    startBarcodeScan();
+                }, { once: true });
 
-                // Start continuous barcode scanning
-                scanningInterval = setInterval(scanForBarcode, scanIntervalMs);
+                await video.play();
 
-                // Fallback to OCR if no barcode in 10 seconds
-                ocrTimeout = setTimeout(() => {
-                    if (!resultDisplay.innerHTML.includes('Product found')) {
-                        performOCR();
-                    }
-                }, 10000);
             } catch (err) {
                 console.error('Error accessing camera:', err);
-                resultDisplay.innerHTML = 'Error accessing camera. Please grant permissions and ensure HTTPS.';
+                resultDisplay.innerHTML = 'Error accessing camera. Please grant permissions and ensure you are on HTTPS or localhost.';
             }
         });
 
-        // Stop scanning and camera
-        stopButton.addEventListener('click', stopScanning);
+        // 2. This function starts the continuous scan correctly
+        function startBarcodeScan() {
+            resultDisplay.innerHTML = 'Scanning for barcode...';
+            // It's crucial to call this only ONCE per scanning session.
+            codeReader.decodeFromVideoDevice(undefined, 'video', (result, err) => {
+                // This callback is fired for each frame, but we only act on a successful result.
+                if (result && !barcodeFound) {
+                    // Set a flag to prevent multiple triggers from a single scan
+                    barcodeFound = true; 
+                    
+                    // A barcode was found!
+                    console.log('Barcode found:', result);
+                    drawBarcodeOverlay(result.resultPoints);
+                    processBarcode(result.text);
 
-        function stopScanning() {
-            clearInterval(scanningInterval);
-            clearTimeout(ocrTimeout);
-            if (stream) stream.getTracks().forEach(track => track.stop());
+                    // Stop the continuous scan
+                    stopScanning(false); // Pass false to not clear the result
+                }
+                
+                // We can ignore errors here, as they happen on frames without a barcode.
+                // If you want to log them for debugging:
+                // if (err && !(err instanceof ZXing.NotFoundException)) {
+                //     console.error('Barcode scan error:', err);
+                // }
+            });
+        }
+
+        // Stop scanning and camera
+        function stopScanning(clearResult = true) {
+            codeReader.reset(); // This is the correct way to stop the scan
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+            overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
             startButton.style.display = 'inline';
             stopButton.style.display = 'none';
-            resultDisplay.innerHTML += '<br>Scanning stopped.';
-        }
-
-        // Real-time barcode scanning using ZXing
-        async function scanForBarcode() {
-            const codeReader = new ZXing.BrowserMultiFormatReader();
-            try {
-                const result = await codeReader.decodeFromVideoDevice(undefined, 'video', (result, err) => {
-                    if (result) {
-                        drawBarcodeOverlay(result); // Draw red box around barcode
-                        processBarcode(result.text);
-                        codeReader.reset(); // Stop after detection
-                        stopScanning();
-                    }
-                });
-            } catch (err) {
-                console.error('Barcode scan error:', err);
+            ocrButton.style.display = 'none';
+            if (clearResult) {
+                resultDisplay.innerHTML = 'Scanning stopped.';
             }
         }
+        stopButton.addEventListener('click', () => stopScanning(true));
 
-        // Draw overlay for detected barcode
-        function drawBarcodeOverlay(result) {
+
+        // 3. Draw a more accurate overlay using the result points
+        function drawBarcodeOverlay(points) {
             overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
             overlayCtx.strokeStyle = 'red';
-            overlayCtx.lineWidth = 3;
-            // Approximate box (ZXing provides points, but for simplicity, draw a full-frame box)
-            overlayCtx.strokeRect(50, 50, overlay.width - 100, overlay.height - 100);
+            overlayCtx.lineWidth = 5;
+            
+            overlayCtx.beginPath();
+            overlayCtx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                overlayCtx.lineTo(points[i].x, points[i].y);
+            }
+            overlayCtx.closePath();
+            overlayCtx.stroke();
         }
 
         // Process detected barcode and fetch product info
         async function processBarcode(barcode) {
-            resultDisplay.innerHTML = `Barcode detected: ${barcode}<br>Fetching product info...`;
+            resultDisplay.innerHTML = `Barcode detected: <strong>${barcode}</strong><br>Fetching product info...`;
             try {
                 const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+                if (!response.ok) throw new Error('API response not OK');
                 const data = await response.json();
-                if (data.status === 1) {
+
+                if (data.status === 1 && data.product) {
                     const product = data.product;
                     resultDisplay.innerHTML = `
                         <strong>Product Found:</strong><br>
                         Name: ${product.product_name || 'N/A'}<br>
                         Brand: ${product.brands || 'N/A'}<br>
-                        Quantity: ${product.quantity || 'N/A'}<br>
-                        Ingredients: ${product.ingredients_text || 'N/A'}<br>
-                        <img src="${product.image_url}" alt="Product Image" style="max-width: 200px;"><br>
-                        <a href="${product.url}" target="_blank">More Details</a>
+                        <img src="${product.image_url || ''}" alt="Product Image" style="max-width: 200px; margin-top: 10px;"><br>
+                        <a href="https://world.openfoodfacts.org/product/${barcode}" target="_blank">More Details on Open Food Facts</a>
                     `;
                 } else {
-                    resultDisplay.innerHTML += '<br>No exact match found. Try these searches:<br>';
+                    resultDisplay.innerHTML = `Product with barcode <strong>${barcode}</strong> not found in the database.`;
                     addSearchLinks(barcode);
                 }
             } catch (err) {
                 console.error('API error:', err);
-                resultDisplay.innerHTML += '<br>Error fetching product. Try searches:<br>';
+                resultDisplay.innerHTML = `Error fetching product for barcode <strong>${barcode}</strong>. The database might be down or the product isn't listed.`;
                 addSearchLinks(barcode);
             }
         }
 
-        // Fallback OCR using Tesseract
+        // 4. OCR fallback is now a separate, user-triggered action
+        ocrButton.addEventListener('click', performOCR);
         async function performOCR() {
-            resultDisplay.innerHTML = 'No barcode found. Trying text recognition...';
-            const worker = await Tesseract.createWorker('eng');
+            resultDisplay.innerHTML = 'Scanning stopped. Trying text recognition... This may take a moment.';
+            stopScanning(false); // Stop the barcode scan first
             try {
+                const worker = await Tesseract.createWorker('eng', 1, {
+                    logger: m => console.log(m) // Log progress
+                });
                 const { data: { text } } = await worker.recognize(video);
                 await worker.terminate();
-                if (text.trim()) {
-                    resultDisplay.innerHTML = `Detected text: ${text}<br>Searching for product...`;
-                    addSearchLinks(text);
+
+                if (text && text.trim()) {
+                    resultDisplay.innerHTML = `Detected text: <blockquote>${text.trim()}</blockquote>Searching based on this text...`;
+                    addSearchLinks(text.trim());
                 } else {
-                    resultDisplay.innerHTML = 'No text detected.';
+                    resultDisplay.innerHTML = 'No clear text was recognized.';
                 }
             } catch (err) {
                 console.error('OCR error:', err);
-                resultDisplay.innerHTML = 'Error with text recognition.';
+                resultDisplay.innerHTML = 'An error occurred during text recognition.';
+            } finally {
+                // Ensure the video stream is fully stopped after OCR
+                stopScanning(false);
             }
         }
 
         // Add search links as fallback
         function addSearchLinks(query) {
-            const searchUrls = [
-                `https://www.shoprite.co.za/search/all?q=${encodeURIComponent(query)}`,
-                `https://www.pnp.co.za/search/?text=${encodeURIComponent(query)}`
-            ];
-            resultDisplay.innerHTML += searchUrls.map(url => `<a href="${url}" target="_blank">Search on Site</a>`).join('<br>');
+            const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            resultDisplay.innerHTML += `<br><br><strong>Try searching for it:</strong><br><a href="${googleUrl}" target="_blank">Search on Google</a>`;
         }
     </script>
 </body>
