@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Scanner</title>
+    <!-- Include Tesseract.js for text recognition -->
+    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+</head>
+<body>
+    <h1>Product Scanner</h1>
+    
+    <div>
+        <button id="startCamera">Start Camera</button>
+        <button id="captureImage">Capture Image</button>
+    </div>
+
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    
+    <div>
+        <h2>Detected Information:</h2>
+        <p id="result">No product detected yet</p>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const startButton = document.getElementById('startCamera');
+        const captureButton = document.getElementById('captureImage');
+        const resultDisplay = document.getElementById('result');
+
+        // Start camera when button is clicked
+        startButton.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                video.srcObject = stream;
+                
+                // Set canvas size to match video feed
+                video.addEventListener('loadedmetadata', () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                });
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                resultDisplay.textContent = 'Error accessing camera. Please make sure you have given camera permissions.';
+            }
+        });
+
+        // Capture and process image when capture button is clicked
+        captureButton.addEventListener('click', async () => {
+            // Draw current video frame to canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            try {
+                // Try to detect barcodes first
+                if ('BarcodeDetector' in window) {
+                    const barcodeDetector = new BarcodeDetector();
+                    const barcodes = await barcodeDetector.detect(canvas);
+                    
+                    if (barcodes.length > 0) {
+                        const barcodeValue = barcodes[0].rawValue;
+                        resultDisplay.textContent = `Barcode detected: ${barcodeValue}`;
+                        searchProduct(barcodeValue);
+                        return;
+                    }
+                }
+
+                // If no barcode found, try OCR
+                resultDisplay.textContent = 'Processing text...';
+                const result = await Tesseract.recognize(
+                    canvas,
+                    'eng',
+                    { logger: m => console.log(m) }
+                );
+                
+                if (result.data.text) {
+                    resultDisplay.textContent = `Detected text: ${result.data.text}`;
+                    searchProduct(result.data.text);
+                } else {
+                    resultDisplay.textContent = 'No text detected';
+                }
+            } catch (err) {
+                console.error('Error processing image:', err);
+                resultDisplay.textContent = 'Error processing image';
+            }
+        });
+
+        // Function to search for product information
+        async function searchProduct(query) {
+            try {
+                // Example search URLs - you would need to implement proper product search
+                const searchUrls = [
+                    `https://www.shoprite.co.za/search/all?q=${encodeURIComponent(query)}`,
+                    `https://www.pnp.co.za/search/?text=${encodeURIComponent(query)}`
+                ];
+                
+                resultDisplay.innerHTML += '<br>Search links:<br>' + 
+                    searchUrls.map(url => `<a href="${url}" target="_blank">Search product</a>`).join('<br>');
+            } catch (err) {
+                console.error('Error searching product:', err);
+            }
+        }
+    </script>
+</body>
+</html>
