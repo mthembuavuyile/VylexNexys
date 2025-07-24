@@ -109,6 +109,62 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
+
+        /* Add this CSS inside your existing <style> tag */
+
+@media (max-width: 767px) { /* This targets mobile screens, below Tailwind's 'md' breakpoint */
+
+    /*
+     * Mobile Search Bar Enhancement
+     *
+     * By default, this collapses the search bar into an icon.
+     * When the user taps the icon, the search bar expands for input.
+     * This prevents the header title from wrapping on small screens.
+    */
+    
+    /* Target the search input by its ID */
+    #search-input {
+        /* Collapse the input to the width of its left padding (pl-10 = 2.5rem).
+           This makes the text input area disappear, leaving only space for the icon. */
+        width: 2.5rem;
+        
+        /* Make the input itself and any text/cursor invisible when collapsed */
+        color: transparent;
+        background-color: transparent;
+        border-color: transparent;
+        
+        /* Change cursor to a pointer to indicate it's clickable */
+        cursor: pointer;
+        
+        /* Add a smooth transition for the expansion animation */
+        transition: width 0.3s ease-in-out;
+    }
+
+    /* Hide the placeholder text when the input is collapsed */
+    #search-input::placeholder {
+        color: transparent;
+    }
+
+    /* When the input is focused (tapped on mobile) */
+    #search-input:focus {
+        /* Expand the input to a fixed, usable width */
+        width: 12rem; /* 192px */
+        
+        /* Restore the original visual styles for typing */
+        color: #1f2937; /* var(--text-color) */
+        background-color: #fff;
+        border: 1px solid #d1d5db; /* Tailwind's gray-300 */
+        cursor: text;
+        
+        /* Note: The original focus ring style from the Tailwind class 
+           (focus:ring-2) will still apply correctly. */
+    }
+
+    /* Restore the placeholder text when the input is expanded and ready for typing */
+    #search-input:focus::placeholder {
+        color: #9ca3af; /* Tailwind's gray-400 */
+    }
+}
     </style>
 </head>
 <body class="bg-gray-100">
