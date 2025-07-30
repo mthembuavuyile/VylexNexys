@@ -83,13 +83,24 @@
         }
     
         // --- INITIALIZATION ---
-        init() {
-            this.setHeaderHeight();
-            this.handleUrlParameters();
-            this.initUser();
-            this.bindEvents();
-            this.initFirebaseListeners();
+    init() {
+        this.setHeaderHeight();
+        this.handleUrlParameters();
+        this.initUser();
+        this.bindEvents();
+        this.initFirebaseListeners();
+
+        // Check for postId in URL after initialization
+        if (this.state.urlParams.postId) {
+            setTimeout(() => {
+                const targetPost = this.D.postsContainer.querySelector(`[data-post-id="${this.state.urlParams.postId}"]`);
+                if (!targetPost && this.state.isFeedInitialized) {
+                    this.handlePostNotFound();
+                }
+            }, 3000);
         }
+    }
+
 
         setHeaderHeight() {
             this.state.headerHeight = this.D.mainHeader.offsetHeight;
@@ -372,27 +383,87 @@
                 this.D.activeUsers.textContent = count;
             });
         }
-        initFirebaseListeners() {
-            onChildAdded(this.postsRef, (snapshot) => {
-                if (!this.state.isFeedInitialized) { this.D.postsContainer.innerHTML = ''; this.state.isFeedInitialized = true; }
-                const postEl = this.createPostElement(snapshot.key, snapshot.val()); postEl.classList.add('animate-slide-up'); this.D.postsContainer.prepend(postEl);
-                if (snapshot.key === this.state.urlParams.postId) { this.highlightPost(postEl); }
-                if (this.D.desktopSearchInput.value) { this.filterPosts(this.D.desktopSearchInput.value); }
-            });
-            onChildChanged(this.postsRef, (snapshot) => {
-                const postEl = this.D.postsContainer.querySelector(`[data-post-id="${snapshot.key}"]`); if (postEl) this.updatePostElement(postEl, snapshot.val());
-            });
-            onChildRemoved(this.postsRef, (snapshot) => {
-                const postEl = this.D.postsContainer.querySelector(`[data-post-id="${snapshot.key}"]`);
-                if (postEl) { postEl.classList.add('animate-fade-out'); postEl.addEventListener('animationend', () => postEl.remove()); }
-            });
-            onValue(this.postsRef, (snapshot) => {
-                this.updatePlatformStats(snapshot);
-                if (this.state.urlParams.searchQuery && this.state.isFeedInitialized) {
-                    this.filterPosts(this.state.urlParams.searchQuery); this.state.urlParams.searchQuery = null;
-                }
-            });
+
+        //  Fixed to handle url parameters correctly
+
+initFirebaseListeners() {
+    let pendingHighlight = this.state.urlParams.postId; // Track if we need to highlight a post
+    
+    onChildAdded(this.postsRef, (snapshot) => {
+        if (!this.state.isFeedInitialized) { 
+            this.D.postsContainer.innerHTML = ''; 
+            this.state.isFeedInitialized = true; 
         }
+        
+        const postEl = this.createPostElement(snapshot.key, snapshot.val()); 
+        postEl.classList.add('animate-slide-up'); 
+        this.D.postsContainer.prepend(postEl);
+        
+        // Check if this is the post we need to highlight
+        if (snapshot.key === pendingHighlight) {
+            // Use setTimeout to ensure the element is fully rendered
+            setTimeout(() => {
+                this.highlightPost(postEl);
+                pendingHighlight = null; // Clear the pending highlight
+            }, 100);
+        }
+        
+        // Apply search filter if active
+        if (this.D.desktopSearchInput.value) { 
+            this.filterPosts(this.D.desktopSearchInput.value); 
+        }
+    });
+    
+    onChildChanged(this.postsRef, (snapshot) => {
+        const postEl = this.D.postsContainer.querySelector(`[data-post-id="${snapshot.key}"]`); 
+        if (postEl) this.updatePostElement(postEl, snapshot.val());
+    });
+    
+    onChildRemoved(this.postsRef, (snapshot) => {
+        const postEl = this.D.postsContainer.querySelector(`[data-post-id="${snapshot.key}"]`);
+        if (postEl) { 
+            postEl.classList.add('animate-fade-out'); 
+            postEl.addEventListener('animationend', () => postEl.remove()); 
+        }
+    });
+    
+    onValue(this.postsRef, (snapshot) => {
+        this.updatePlatformStats(snapshot);
+        
+        // Handle search query from URL after initial load
+        if (this.state.urlParams.searchQuery && this.state.isFeedInitialized) {
+            this.filterPosts(this.state.urlParams.searchQuery); 
+            this.state.urlParams.searchQuery = null;
+        }
+        
+        // If we still have a pending highlight and posts are loaded, try to find and highlight it
+        if (pendingHighlight && this.state.isFeedInitialized) {
+            const targetPost = this.D.postsContainer.querySelector(`[data-post-id="${pendingHighlight}"]`);
+            if (targetPost) {
+                setTimeout(() => {
+                    this.highlightPost(targetPost);
+                    pendingHighlight = null;
+                }, 200);
+            }
+        }
+    });
+}
+
+handlePostNotFound() {
+    if (this.state.urlParams.postId) {
+        // Show a toast message that the post wasn't found
+        this.showToast("Post not found or may have been deleted.", 'error');
+        
+        // Clear the post parameter from URL
+        const url = new URL(window.location);
+        url.searchParams.delete('post');
+        window.history.replaceState({}, '', url);
+        
+        // Clear the postId from state
+        this.state.urlParams.postId = null;
+    }
+}
+
         updatePlatformStats(snapshot) {
             if (!snapshot.exists()) { this.D.trendingTopics.innerHTML = `<div class="text-sm text-gray-400">No trends yet.</div>`; return; }
             const posts = snapshot.val(); const postCount = Object.keys(posts).length; let totalReactions = 0; const tagCounts = {};
