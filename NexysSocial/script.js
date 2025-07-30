@@ -208,15 +208,23 @@
             }
         }
     
+
+
         updateUrlWithSearch(query) {
-            const url = new URL(window.location);
-            if (query) {
-                url.searchParams.set('q', query);
-            } else {
-                url.searchParams.delete('q');
-            }
-            window.history.replaceState({}, '', url);
-        }
+    const url = new URL(window.location);
+    
+    // Clear any existing search-related parameters
+    url.searchParams.delete('q');
+    url.searchParams.delete('search');
+    
+    // Only add the query parameter if there's actually a search query
+    if (query && query.trim()) {
+        url.searchParams.set('q', query.trim());
+    }
+    
+    // Update the URL without reloading the page
+    window.history.replaceState({}, '', url);
+}
         
         filterPosts(query) {
             const lowerCaseQuery = query.toLowerCase();
