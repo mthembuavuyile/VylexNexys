@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vylex | Digital Solutions That Work</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for a premium, modern aesthetic */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Animation for elements fading in on scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Sticky hero text that fades out on scroll */
+        .hero-sticky-text {
+            position: sticky;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: opacity 0.5s ease-out;
+        }
+        
+        /* Parallax effect for background images */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop');
+        }
+        
+        .ecosystem-bg {
+             background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop');
+        }
+
+        .development-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?q=80&w=2070&auto=format&fit=crop');
+        }
+
+        /* Glassmorphism effect for the tech specs section */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Burger menu animation */
+        .burger-line {
+            transition: all 0.3s ease;
+        }
+
+        .burger-open .burger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .burger-open .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-open .burger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+    </style>
+</head>
+<body class="bg-black">
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-md">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-white font-bold text-xl">
+                Vylex
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8 text-xs font-light text-gray-300">
+                <a href="#services" class="hover:text-white transition-colors">Services</a>
+                <a href="#solutions" class="hover:text-white transition-colors">Solutions</a>
+                <a href="#technology" class="hover:text-white transition-colors">Technology</a>
+                <a href="#about" class="hover:text-white transition-colors">About</a>
+            </div>
+            
+            <!-- CTA Button (Desktop) -->
+            <a href="#contact" class="hidden md:block bg-blue-600 text-white text-xs font-semibold px-4 py-1.5 rounded-full hover:bg-blue-500 transition-colors">
+                Get Started
+            </a>
+
+            <!-- Burger Menu Button (Mobile) -->
+            <button id="burger-btn" class="md:hidden flex flex-col justify-center items-center w-6 h-6">
+                <span class="burger-line block h-0.5 w-6 bg-white mb-1"></span>
+                <span class="burger-line block h-0.5 w-6 bg-white mb-1"></span>
+                <span class="burger-line block h-0.5 w-6 bg-white"></span>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-full h-screen bg-black/95 backdrop-blur-md md:hidden">
+            <div class="flex flex-col items-center justify-center h-full space-y-8 text-white">
+                <a href="#services" class="text-2xl font-light hover:text-blue-400 transition-colors mobile-menu-link">Services</a>
+                <a href="#solutions" class="text-2xl font-light hover:text-blue-400 transition-colors mobile-menu-link">Solutions</a>
+                <a href="#technology" class="text-2xl font-light hover:text-blue-400 transition-colors mobile-menu-link">Technology</a>
+                <a href="#about" class="text-2xl font-light hover:text-blue-400 transition-colors mobile-menu-link">About</a>
+                <a href="#contact" class="bg-blue-600 text-white text-lg font-semibold px-8 py-3 rounded-full hover:bg-blue-500 transition-colors mobile-menu-link">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section 1: Hero -->
+        <section id="home" class="h-[200vh] relative hero-bg parallax-bg">
+            <div class="hero-sticky-text text-center">
+                <div class="fade-in-section">
+                    <h1 class="text-5xl md:text-8xl font-bold tracking-tighter text-white">Digital Strategy</h1>
+                    <p class="mt-4 text-xl md:text-2xl text-gray-400 font-light">That actually work for your business.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Image Reveal -->
+        <section class="h-screen flex items-center justify-center bg-black -mt-[100vh]">
+    <div class="w-full max-w-lg mx-auto fade-in-section text-center px-6">
+        <div class="bg-[rgba(10,15,35,0.65)] backdrop-blur-md p-8 rounded-2xl shadow-lg shadow-blue-900/30 border border-blue-500/20">
+            <svg class="w-16 h-16 text-white mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+            <h3 class="text-2xl font-bold text-white mb-2">Custom Development</h3>
+            <p class="text-blue-100">Web apps, mobile solutions, and digital tools built to your exact needs.</p>
+        </div>
+    </div>
+</section>
+
+
+        <!-- Section 2: Services -->
+        <section id="services" class="h-screen flex items-center justify-center ecosystem-bg parallax-bg">
+            <div class="text-center max-w-3xl mx-auto px-6 fade-in-section">
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight">Your business, digitally transformed.</h2>
+                <p class="mt-6 text-lg md:text-xl text-gray-300 font-light">
+                    From web development to mobile apps, database solutions to interactive tools - we build everything your business needs to thrive in the digital world. Each solution is custom-crafted to work seamlessly together.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3: Solutions -->
+        <section id="solutions" class="h-screen flex items-center justify-center development-bg parallax-bg">
+            <div class="text-center max-w-3xl mx-auto px-6 fade-in-section">
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight">Innovative development approach.</h2>
+                <p class="mt-6 text-lg md:text-xl text-gray-300 font-light">
+                   Using cutting-edge technologies and modern frameworks, we create fast, secure, and scalable applications. From React and Android development to cloud-connected databases - your solution is built to last.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Section 4: Technology -->
+        <section id="technology" class="py-20 md:py-32 bg-black">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in-section">
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl">
+                        <svg class="w-full h-64 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHl3bGd5eTBiMnZvZzZ3b21jbnRpa2NtdHAzcXB5MmN3NHFwbGJjZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/970Sr8vpwEbXG/giphy.gif"/>
+                <div class="fade-in-section">
+                    <h3 class="text-3xl md:text-4xl font-bold tracking-tight">Built for Performance.</h3>
+                    <p class="mt-4 text-lg text-gray-300 font-light">
+                        Every solution we create is optimized for speed, security, and scalability. Using modern technologies like React, Android SDK, MySQL, and Firebase, we ensure your digital tools perform flawlessly across all devices and platforms.
+                    </p>
+                    <div class="mt-8 grid grid-cols-2 gap-8">
+                        <div class="glass-card p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-white">Web Development</h4>
+                            <p class="text-sm text-gray-400 mt-1">Custom websites and progressive web apps.</p>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-white">Mobile Solutions</h4>
+                            <p class="text-sm text-gray-400 mt-1">Android apps and cross-platform development.</p>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-white">Database Systems</h4>
+                            <p class="text-sm text-gray-400 mt-1">Secure data storage and management solutions.</p>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-white">Cloud Integration</h4>
+                            <p class="text-sm text-gray-400 mt-1">Scalable cloud-connected applications.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: About & CTA -->
+        <section id="about" class="py-20 md:py-32 bg-gray-900">
+            <div class="container mx-auto px-6 text-center">
+                <div class="fade-in-section max-w-4xl mx-auto">
+                    <h2 class="text-4xl md:text-6xl font-bold tracking-tight">About Vylex</h2>
+                    <p class="mt-6 text-lg md:text-xl text-gray-300 font-light">
+                        Vylex is an independent technology company focused on building practical, innovative digital products and offering tailored software solutions. We specialize in custom web apps, Android development, and smart tools designed to solve everyday problems.
+                    </p>
+                    <p class="mt-4 text-lg text-gray-400 font-light">
+                        Whether you're looking for ready-to-use tools or custom solutions, Vylex is here to turn ideas into clean, functional digital experiences.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Contact CTA -->
+        <section id="contact" class="h-[80vh] flex flex-col items-center justify-center text-center bg-black">
+            <div class="fade-in-section">
+                <div class="text-4xl mb-4">💻</div>
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight mt-4">Ready to build something amazing?</h2>
+                <p class="mt-4 text-lg text-gray-400">Let's discuss your project and bring your digital ideas to life.</p>
+                <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="mailto:info@vylexnexys.co.za" class="inline-block bg-blue-600 text-white text-md font-semibold px-8 py-3 rounded-full hover:bg-blue-500 transition-colors">
+                        Start Your Project
+                    </a>
+                    <a href="tel:064-878-4287" class="inline-block border border-gray-600 text-white text-md font-semibold px-8 py-3 rounded-full hover:border-gray-400 transition-colors">
+                        Call Us
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-500 text-xs py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Vylex</h3>
+                    <p class="text-gray-400">
+                        Building digital solutions one project at a time. Custom web applications, mobile apps, and digital tools that help your business grow.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Web Development</li>
+                        <li>Mobile Apps</li>
+                        <li>Database Solutions</li>
+                        <li>Digital Tools</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Contact</h4>
+                    <p class="text-gray-400">info@vylexnexys.co.za</p>
+                    <p class="text-gray-400">064-878-4287</p>
+                    <p class="text-gray-400">South Africa</p>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p>Copyright © 2025 Vylex. All rights reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Use</a>
+                    <a href="#" class="hover:text-white">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript to handle fade-in animations on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.fade-in-section');
+            const heroText = document.querySelector('.hero-sticky-text');
+            const burgerBtn = document.getElementById('burger-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+            // Burger menu functionality
+            burgerBtn.addEventListener('click', () => {
+                burgerBtn.classList.toggle('burger-open');
+                mobileMenu.classList.toggle('open');
+                document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+            });
+
+            // Close mobile menu when clicking on links
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    burgerBtn.classList.remove('burger-open');
+                    mobileMenu.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) {
+                    burgerBtn.classList.remove('burger-open');
+                    mobileMenu.classList.remove('open');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Fade in animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Handle hero text fade out
+            window.addEventListener('scroll', () => {
+                const fadeStart = window.innerHeight * 0.2;
+                const fadeEnd = window.innerHeight * 0.8;
+                let opacity = 1;
+
+                if (window.scrollY > fadeStart) {
+                    opacity = 1 - (window.scrollY - fadeStart) / (fadeEnd - fadeStart);
+                }
+                
+                if (heroText) {
+                   heroText.style.opacity = Math.max(0, Math.min(1, opacity));
+                }
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
