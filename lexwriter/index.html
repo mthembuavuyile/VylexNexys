@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexWriter - The Instant Text Companion</title>
+    <meta name="description"
+        content="LexWriter helps you analyze, improve, and polish your writing instantly. Get live text stats, vocabulary insights, and read-aloud functionality. Perfect for students, writers, and professionals.">
+    <meta name="keywords"
+        content="writing assistant, text editor, vocabulary, readability, text analysis, online writing tool">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>LexWriter</h1>
+            <p>Analyze, improve, and polish your writing instantly. <strong>Select any word</strong> you write for a
+                full definition.</p>
+        </header>
+
+        <main class="editor-container">
+            <div class="editor-panel">
+                <textarea id="text-input" spellcheck="true"
+                    placeholder="Start typing or paste your text here..."></textarea>
+                <div class="editor-controls">
+                    <div class="case-converter">
+                        <button id="btn-uppercase" title="Convert to UPPERCASE">UPPERCASE</button>
+                        <button id="btn-lowercase" title="Convert to lowercase">lowercase</button>
+                        <button id="btn-sentencecase" title="Convert to Sentence case">Sentence case</button>
+                        <button id="btn-titlecase" title="Convert to Title Case">Title Case</button>
+                    </div>
+
+                    <div class="speech-controls">
+                        <div class="voice-selector">
+                            <span id="current-voice">Loading...</span>
+                            <button id="btn-voice-settings" title="Change Voice">Change Voice</button>
+                        </div>
+                        <button id="btn-read-aloud" title="Read Text Aloud">
+                            <svg xmlns="http://www.w.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14 M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                            <span id="read-aloud-text">Read Aloud</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-panel">
+                <h2>Live Analysis</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Counts</h3>
+                        <p>Words: <span id="word-count">0</span></p>
+                        <p>Characters: <span id="char-count">0</span></p>
+                        <p>Sentences: <span id="sentence-count">0</span></p>
+                        <p>Paragraphs: <span id="paragraph-count">0</span></p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Readability</h3>
+                        <p>Reading Time: <span id="reading-time">~0s</span></p>
+                        <p>Readability: <span id="readability-score">N/A</span></p>
+                        <p>Longest Word: <span id="longest-word">-</span></p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Vocabulary</h3>
+                        <p>Unique Words: <span id="unique-word-count">0</span></p>
+                        <p>Variety: <span id="vocab-variety-score">0%</span></p>
+                        <p>Avg Word Len: <span id="avg-word-length">0</span></p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Structure</h3>
+                        <p>Avg Sentence Len: <span id="avg-sentence-length">0 words</span></p>
+                    </div>
+                </div>
+                <div class="actionable-insights">
+                    <h3>Suggestions</h3>
+                    <p id="insight-text">Start writing to get feedback!</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Definition Modal -->
+    <div id="definition-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="modal-close-btn" class="modal-close-btn" title="Close">&times;</button>
+            <h2 id="modal-word">Word</h2>
+            <div id="modal-body">
+                <div class="loader"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Selection Modal -->
+    <div id="voice-modal-overlay" class="modal-overlay hidden">
+        <div id="voice-modal-content" class="voice-modal">
+            <div class="voice-modal-header">
+                <h2>Select a Voice</h2>
+                <button id="voice-modal-close" class="modal-close-btn" title="Close">&times;</button>
+            </div>
+            <div id="voice-list" class="voice-list">
+                <div class="loader"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/speech.js"></script>
+    <script src="js/dictionary.js"></script>
+    <!-- Main application logic that calls the other modules -->
+    <script src="js/app.js"></script>
+</body>
+
+</html>
