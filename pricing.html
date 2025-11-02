@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="VylexNexys - Professional Web Development, IT Support, and Digital Solutions for your business. We offer transparent, one-off payments for complete, quality results.">
-    <meta name="keywords" content="VylexNexys, professional web development, business IT support, cybersecurity, logo design, tech support, A+ certified, Security+ certified">
+    <!-- IMPROVED: Added new keywords for pricing -->
+    <meta name="keywords" content="VylexNexys, professional web development, business IT support, cybersecurity, logo design, tech support, A+ certified, Security+ certified, custom web pages R350">
     <meta name="author" content="VylexNexys">
     <title>VylexNexys - Professional Digital Solutions</title>
     <!-- Font Awesome for Icons -->
@@ -266,6 +267,18 @@
             color: var(--accent);
             font-size: 1.2rem;
         }
+
+        /* NEW: Style for the additional page note */
+        .plan-note {
+            text-align: left;
+            font-size: 0.9rem;
+            margin: 1rem 0 1.5rem 0;
+            color: var(--text-color);
+            background-color: var(--darker);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
         
         .plan-button {
             display: inline-block;
@@ -276,7 +289,7 @@
             border-radius: 6px;
             font-weight: 500;
             transition: var(--transition);
-            margin-top: 1rem; /* Ensures spacing from features */
+            margin-top: auto; /* Aligns button to the bottom */
         }
 
         .plan-button:hover {
@@ -538,13 +551,19 @@
                                 <li><i class="fas fa-check-circle"></i> Contact Form Integration</li>
                                 <li><i class="fas fa-check-circle"></i> Free Hosting Setup Assistance</li>
                             </ul>
-                            <a href="#contact" class="plan-button">Start Project</a>
+                            <!-- IMPROVED: Added enhanced, persuasive pricing notes -->
+                            <div class="plan-note">
+                                <p>We offer transparent, one-off pricing for additional pages so you know exactly what you’re paying for. Custom pages start from <strong>R350 each</strong>.</p>
+                                <p style="margin-top: 0.5rem;"><strong>Contact us for a tailored quote</strong> if your project has unique requirements.</p>
+                            </div>
+                            <!-- IMPROVED: Updated Call-to-Action Text -->
+                            <a href="#contact" class="plan-button">Start Your Project Today</a>
                         </div>
 
                         <div class="pricing-plan premium">
                             <span class="popular-badge">Most Popular</span>
                             <h3 class="plan-name">Business Website</h3>
-                            <div class="plan-price"><span class="currency">R</span><span class="amount">3,500</span><span class="period">one-time</span></div>
+                            <div class="plan-price"><span class="currency">R</span><span class="amount">4,499</span><span class="period">one-time</span></div>
                             <ul class="plan-features">
                                 <li><i class="fas fa-check-circle"></i> Custom Design with JavaScript</li>
                                 <li><i class="fas fa-check-circle"></i> Up to 7 Pages</li>
@@ -558,7 +577,7 @@
 
                         <div class="pricing-plan">
                             <h3 class="plan-name">E-Commerce Solution</h3>
-                            <div class="plan-price"><span class="currency">R</span><span class="amount">6,500</span><span class="period">one-time</span></div>
+                            <div class="plan-price"><span class="currency">R</span><span class="amount">15,500</span><span class="period">one-time</span></div>
                             <ul class="plan-features">
                                 <li><i class="fas fa-check-circle"></i> All Business Plan Features</li>
                                 <li><i class="fas fa-check-circle"></i> E-commerce Store Setup</li>
@@ -714,9 +733,12 @@
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
+                    <!-- IMPROVED: Added new links for better navigation -->
                     <a href="home.html">Home</a>
                     <a href="#services">Services</a>
+                    <a href="#services">Pricing</a>
                     <a href="portfolio.html">Our Work</a>
+                    <a href="#">FAQ</a>
                     <a href="#contact">Contact Us</a>
                 </div>
                 <div class="footer-section">
