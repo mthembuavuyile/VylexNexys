@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vylex Nexys Web Division | Engineering the Web Layer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#051b38', // Deep Corporate Navy
+                            blue: '#0a2e5c', // Secondary Blue
+                            orange: '#fba919', // Accent Amber/Orange
+                            gray: '#f8fafc', // Light background
+                            slate: '#e2e8f0', // Borders
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+</head>
+<body class="font-sans text-slate-600 antialiased bg-white">
+
+    <nav class="fixed w-full z-50 bg-white border-b border-gray-200 transition-transform duration-300 transform translate-y-0" id="navbar">
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/index.html" class="flex items-center">
+                        <img src="vxnx-logo.png" alt="Vylex Nexys" class="h-10 w-auto object-contain">
+                        
+                        <span class="logo-separator"></span>
+                        
+                        <div class="flex flex-col justify-center">
+                            <span class="text-brand-navy font-bold text-lg leading-none uppercase tracking-tight">
+                                WEB DIVISION
+                            </span>
+                            <span class="text-[10px] font-semibold text-gray-400 tracking-widest uppercase leading-none mt-1">
+                                Engineering Unit
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">Overview</a>
+                    <a href="#services" class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">What We Do</a>
+                    <a href="#why-us" class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">The Ecosystem</a>
+                    <a href="#contact" class="px-6 py-2.5 rounded bg-brand-navy text-white font-semibold hover:bg-brand-orange hover:text-brand-navy transition-all duration-200 shadow-sm text-sm">
+                        Start Web Project
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-navy hover:text-brand-orange focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="#home" class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">Overview</a>
+                <a href="#services" class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">What We Do</a>
+                <a href="#why-us" class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">Why Vylex Nexys</a>
+                <a href="#contact" class="block px-3 py-3 mt-4 text-center rounded text-base font-bold bg-brand-orange text-brand-navy">Start Web Project</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 hero-bg text-white overflow-hidden">
+        <div class="absolute inset-0 hero-overlay"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl">
+                <div class="inline-block mb-6 px-3 py-1 bg-white/10 border border-white/20 rounded text-xs font-bold uppercase tracking-widest text-brand-orange">
+                    Vylex Nexys Technology Group
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6 text-white">
+                    Engineering the Web Layer of the <br>
+                    <span class="text-brand-orange">Vylex Nexys ecosystem.</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl">
+                    The Web Division is the dedicated browser-based engineering unit of Vylex Nexys. We design, build, and deploy professional websites and cloud-connected applications for clients across Africa and beyond.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#contact" class="px-8 py-4 rounded bg-brand-orange text-brand-navy font-bold hover:bg-white transition-colors duration-200 text-center shadow-lg">
+                        Start a Web Project &rarr;
+                    </a>
+                    <a href="/index.html" class="px-8 py-4 rounded border border-gray-500 text-gray-300 font-semibold hover:bg-white hover:text-brand-navy hover:border-white transition-colors duration-200 text-center">
+                        Go to Corporate Site
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-left mb-16 border-l-4 border-brand-orange pl-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-navy">What We Do</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">
+                    We deliver solutions that are both enterprise-grade and accessible to growing businesses.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="service-card bg-brand-gray rounded-lg p-8 border border-brand-slate h-full">
+                    <div class="w-12 h-12 bg-brand-navy text-white flex items-center justify-center rounded mb-6 text-lg">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-navy mb-3">Business Websites & Presence</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        From local companies to corporate brands — we build websites that establish a polished, credible online presence.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-500 border-t border-gray-200 pt-4">
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> Design, Dev & Hosting</li>
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> SEO & Copywriting</li>
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> Performance Analytics</li>
+                    </ul>
+                </div>
+
+                <div class="service-card bg-brand-gray rounded-lg p-8 border border-brand-slate h-full">
+                    <div class="w-12 h-12 bg-brand-navy text-white flex items-center justify-center rounded mb-6 text-lg">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-navy mb-3">Web Applications & Tools</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        We build custom platforms using React, Node.js, PHP, and cloud technologies.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-500 border-t border-gray-200 pt-4">
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> Booking Systems & Portals</li>
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> CRM-like Web Tools</li>
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> Internal Business Apps</li>
+                    </ul>
+                </div>
+
+                <div class="service-card bg-brand-gray rounded-lg p-8 border border-brand-slate h-full">
+                    <div class="w-12 h-12 bg-brand-navy text-white flex items-center justify-center rounded mb-6 text-lg">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-navy mb-3">E-Commerce</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Scalable online stores engineered to grow with your business and handle traffic.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-500 border-t border-gray-200 pt-4">
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> Inventory Management</li>
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> Secure Payment Gateways</li>
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> Product Automation</li>
+                    </ul>
+                </div>
+
+                <div class="service-card bg-brand-gray rounded-lg p-8 border border-brand-slate h-full">
+                    <div class="w-12 h-12 bg-brand-navy text-white flex items-center justify-center rounded mb-6 text-lg">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-navy mb-3">Integrations & Automation</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        We connect your website or web app to the tools your business already uses.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-500 border-t border-gray-200 pt-4">
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> API Development</li>
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> Database Engineering</li>
+                        <li class="flex items-start"><i class="fas fa-check text-brand-orange mt-1 mr-2"></i> ERP/CRM Connections</li>
+                    </ul>
+                </div>
+
+                <div class="service-card bg-brand-gray rounded-lg p-8 border border-brand-slate h-full md:col-span-2 lg:col-span-2">
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="w-12 h-12 bg-brand-navy text-white flex-shrink-0 flex items-center justify-center rounded text-lg">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-brand-navy mb-3">Consultations & Strategy</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                We guide businesses through digital transformation. We don't just code; we advise on platform planning, technology selection, infrastructure strategy, and digital growth roadmaps.
+                            </p>
+                            <a href="#contact" class="text-brand-navy font-bold text-sm border-b-2 border-brand-orange hover:text-brand-orange transition-colors pb-0.5">
+                                Schedule a Strategy Session &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="why-us" class="py-20 bg-brand-navy text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                
+                <div class="lg:w-1/2">
+                    <h2 class="text-sm font-bold tracking-widest uppercase text-brand-orange mb-2">The Corporate Advantage</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold mb-6">Why Choose the Web Division?</h3>
+                    <p class="text-gray-300 text-lg leading-relaxed mb-8">
+                        As part of the Vylex Nexys Technology Group, our clients benefit from more than just web development. You get the stability and resources of a larger ecosystem.
+                    </p>
+                    <a href="#contact" class="hidden lg:inline-block px-6 py-3 border border-white/30 rounded hover:bg-white hover:text-brand-navy transition-colors duration-200 font-semibold">
+                        Speak to an Developer
+                    </a>
+                </div>
+
+                <div class="lg:w-1/2 w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-white/5 p-6 rounded border border-white/10">
+                        <i class="fas fa-shield-alt text-brand-orange text-2xl mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">Enterprise Security</h4>
+                        <p class="text-sm text-gray-400">Access to the same security standards used by our corporate infrastructure division.</p>
+                    </div>
+                    <div class="bg-white/5 p-6 rounded border border-white/10">
+                        <i class="fas fa-mobile-alt text-brand-orange text-2xl mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">Mobile Integration</h4>
+                        <p class="text-sm text-gray-400">Seamless hand-offs to our mobile app and data divisions if you scale.</p>
+                    </div>
+                    <div class="bg-white/5 p-6 rounded border border-white/10">
+                        <i class="fas fa-microchip text-brand-orange text-2xl mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">IoT & Hardware</h4>
+                        <p class="text-sm text-gray-400">Native support for hardware and IoT projects requiring web dashboards.</p>
+                    </div>
+                    <div class="bg-white/5 p-6 rounded border border-white/10">
+                        <i class="fas fa-chart-line text-brand-orange text-2xl mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">Long-Term Scale</h4>
+                        <p class="text-sm text-gray-400">A unified digital ecosystem designed to grow with your company for years.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-brand-gray border-t border-gray-200">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-brand-navy">Start Your Web Project</h2>
+                <p class="text-gray-600 mt-3">
+                    Connect directly with the Web Division team. <br>For other inquiries, please refer to the main Vylex Nexys contact center.
+                </p>
+            </div>
+            
+            <form class="bg-white p-8 md:p-10 rounded-lg shadow-sm border border-gray-200 text-left space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-brand-navy uppercase tracking-wide mb-2">Name</label>
+                        <input type="text" class="w-full rounded border-gray-300 border px-4 py-3 text-gray-700 focus:ring-1 focus:ring-brand-navy focus:border-brand-navy outline-none transition bg-gray-50" placeholder="Full Name">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-brand-navy uppercase tracking-wide mb-2">Company</label>
+                        <input type="text" class="w-full rounded border-gray-300 border px-4 py-3 text-gray-700 focus:ring-1 focus:ring-brand-navy focus:border-brand-navy outline-none transition bg-gray-50" placeholder="Business Name">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-brand-navy uppercase tracking-wide mb-2">Email Address</label>
+                        <input type="email" class="w-full rounded border-gray-300 border px-4 py-3 text-gray-700 focus:ring-1 focus:ring-brand-navy focus:border-brand-navy outline-none transition bg-gray-50" placeholder="name@company.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-brand-navy uppercase tracking-wide mb-2">Service Interest</label>
+                        <select class="w-full rounded border-gray-300 border px-4 py-3 text-gray-700 focus:ring-1 focus:ring-brand-navy focus:border-brand-navy outline-none transition bg-gray-50">
+                            <option>Business Website</option>
+                            <option>Web Application / Platform</option>
+                            <option>E-Commerce Store</option>
+                            <option>System Integration / API</option>
+                            <option>Consultation / Strategy</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-brand-navy uppercase tracking-wide mb-2">Project Details</label>
+                    <textarea rows="4" class="w-full rounded border-gray-300 border px-4 py-3 text-gray-700 focus:ring-1 focus:ring-brand-navy focus:border-brand-navy outline-none transition bg-gray-50" placeholder="Briefly describe your project requirements..."></textarea>
+                </div>
+
+                <button type="button" onclick="alert('Thank you. Your inquiry has been routed to the Web Division.')" class="w-full py-4 px-6 bg-brand-navy text-white font-bold rounded hover:bg-brand-orange hover:text-brand-navy transition-all duration-200 uppercase tracking-wide shadow-md">
+                    Submit Inquiry
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-brand-navy text-slate-400 py-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+<img src="vxnx-logo.png" alt="Vylex Nexys" class="h-6 w-auto opacity-60 saturate-0">
+                        <span class="text-white font-bold text-xl tracking-tighter">
+                             Web Division
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-500 leading-relaxed">
+                        Engineering the web layer of the Vylex Nexys ecosystem. Serving businesses across South Africa and the globe.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold uppercase text-xs tracking-wider mb-4">Services</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Web Development</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">App Engineering</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Integrations</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Enterprise Hosting</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold uppercase text-xs tracking-wider mb-4">Corporate</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/index.html" class="hover:text-white transition-colors">Vylex Nexys Group Main</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center text-xs text-gray-600 border-t border-gray-800 pt-8">
+                &copy; 2025 Vylex Nexys Technology Group. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
