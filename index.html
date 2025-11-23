@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="8QCAaqQsO5s-JhKbqsiCfXk0BbJnUXRSoIe7be2Y2cs" />
@@ -27,7 +27,6 @@
     <meta property="og:description"
         content="Custom-built tech, tailored for African innovation. Explore our web tools, apps, and enterprise systems." />
     <meta property="og:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
-    <!-- Ensure this image exists and is compelling -->
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -36,806 +35,550 @@
     <meta name="twitter:description"
         content="Explore smart web and mobile tools from Africa's rising tech powerhouse." />
     <meta name="twitter:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
-    <!-- Ensure this image exists -->
 
     <!-- Favicon -->
-    <link rel="icon" href="/assets/favicon.png" type="image/png" /> <!-- Ensure this path is correct -->
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"> <!-- Optional: For Apple devices -->
+    <link rel="icon" href="/assets/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 
     <!-- Fonts & Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="contact.css">
+    <link rel="stylesheet" href="services.css">
+    <link rel="stylesheet" href="portfolio.css">
+    <link rel="stylesheet" href="about.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#051b38',
+                            lightNavy: '#0a2e5c',
+                            orange: '#fba919',
+                            gray: '#f3f4f6',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- Main Styles -->
     <style>
-    :root{
-      /* Brand taken from your logo */
-      --brand-primary: #F7A823; /* Golden orange */
-      --brand-dark: #1B2635;    /* Deep navy slate similar to logotype */
-      --brand-mid: #3E4A5C;     /* Nexys grey */
-      --brand-mid-2:#4A5568;
-      --bg:#ffffff;
-      --bg-subtle:#F7F8FA;
-      --text:#374151;
-      --text-soft:#6B7280;
-      --heading:#1f2937;
-      --border:#E5E7EB;
-      --white:#fff;
-      --shadow-sm: 0 4px 10px rgba(0,0,0,.06);
-      --shadow-md: 0 14px 30px rgba(0,0,0,.12);
-      --radius:12px;
-      --radius-sm:10px;
-      --speed: 280ms;
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0E141C;
-        --bg-subtle:#0B1017;
-        --text:#E5E7EB;
-        --text-soft:#A3AAB6;
-        --heading:#F9FAFB;
-        --border:#243244;
-        --shadow-sm: 0 6px 16px rgba(0,0,0,.35);
-        --shadow-md: 0 20px 45px rgba(0,0,0,.5);
-      }
-      .brand-logo {
-        /* This clever filter makes dark text white, while preserving the orange hue */
-        filter: invert(1) hue-rotate(180deg);
-      }
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
-      color:var(--text);
-      background:var(--bg);
-      line-height:1.65;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-    }
-    body.nav-open{overflow:hidden}
-
-    .container{width:min(1200px,92%); margin-inline:auto}
-    section{padding:6rem 0}
-
-    /* ===== Header - Premium Glass, Shrinks on Scroll ===== */
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  backdrop-filter: saturate(1.4) blur(10px);
-  background: color-mix(in srgb, var(--bg) 80%, transparent);
-  border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
-  transition:
-    background var(--speed) ease,
-    transform var(--speed) ease,
-    box-shadow var(--speed) ease;
-}
-
-/* On Scroll */
-.header.scrolled {
-  background: color-mix(in srgb, var(--bg) 96%, transparent);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Navigation Wrapper */
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 0;
-}
-
-/* Brand Logo Link */
-.brand {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  user-select: none;
-}
-
-/* Logo Image */
-.brand-logo {
-  max-height: 48px;
-  width: auto;
-  object-fit: contain;
-}
-
-/* Responsive: Smaller on scroll */
-.header.scrolled .brand-logo {
-  max-height: 40px;
-  transition: max-height var(--speed) ease;
-}
-
-    /* Primary nav (desktop) */
-    .nav-links{
-      display:flex; align-items:center; gap:2rem;
-    }
-    .nav-links a{
-      color:var(--text); text-decoration:none; font-weight:600;
-      position:relative; padding:0.4rem 0; transition:color var(--speed) ease;
-    }
-    .nav-links a::after{
-      content:""; position:absolute; left:0; bottom:-2px; height:2px; width:0;
-      background:var(--brand-primary); border-radius:2px; transition:width var(--speed) ease;
-    }
-    .nav-links a:hover, .nav-links a:focus{color:var(--brand-primary) tex}
-    .nav-links a:hover::after, .nav-links a:focus::after{width:100%}
-
-    .nav-cta{
-      display:inline-flex; align-items:center; gap:10px; text-decoration:none;
-      background:var(--brand-primary); color:#111827; /* more readable on orange */
-      padding:0.7rem 1.1rem; border-radius:100px; font-weight:800;
-      box-shadow:0 10px 18px rgba(247,168,35,.25); border:2px solid transparent;
-      transition:transform var(--speed) ease, box-shadow var(--speed) ease, background var(--speed) ease;
-    }
-    .nav-cta i{font-size:0.95rem}
-    .nav-cta:hover, .nav-cta:focus{
-      transform:translateY(-2px);
-      box-shadow:0 16px 30px rgba(247,168,35,.35);
-      background:#f8b032;
-    }
-
-    /* Premium Hamburger */
-    .hamburger{
-      -webkit-tap-highlight-color:transparent;
-      appearance:none; border:none; background:transparent;
-      width:42px; height:42px; display:none; place-items:center; border-radius:50%;
-      position:relative; cursor:pointer;
-    }
-    .hamburger:focus-visible{outline:2px solid var(--brand-primary); outline-offset:3px}
-    .ham-lines{
-      width:22px; height:16px; position:relative;
-    }
-    .ham-lines span{
-      position:absolute; left:0; width:100%; height:2px; background:var(--heading);
-      border-radius:2px; transform-origin:center; transition:transform var(--speed) ease, opacity var(--speed) ease;
-    }
-    .ham-lines span:nth-child(1){top:0}
-    .ham-lines span:nth-child(2){top:7px}
-    .ham-lines span:nth-child(3){bottom:0}
-    .hamburger.active .ham-lines span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-    .hamburger.active .ham-lines span:nth-child(2){opacity:0}
-    .hamburger.active .ham-lines span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-
-    /* Drawer + Overlay */
-    .overlay{
-      position:fixed; inset:0; background:rgba(15,23,42,.5);
-      -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
-      opacity:0; pointer-events:none; transition:opacity var(--speed) ease; z-index:999;
-    }
-    .overlay.active{opacity:1; pointer-events:auto}
-
-    .drawer{
-      position:fixed; top:0; right:-100%;
-      width:min(420px, 92%); height:100dvh; z-index:1000;
-      background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 96%, transparent), color-mix(in srgb, var(--bg) 92%, transparent));
-      border-left:1px solid var(--border);
-      box-shadow: -24px 0 60px rgba(0,0,0,.25);
-      transition:right var(--speed) cubic-bezier(.4,.0,.2,1);
-      display:flex; flex-direction:column;
-      padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-    }
-    .drawer.active{right:0}
-    .drawer-header{
-      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;
-    }
-    .drawer-brand{display:flex; align-items:center; gap:12px}
-    .drawer-close{
-      appearance:none; border:none; background:transparent; width:40px; height:40px; border-radius:10px; cursor:pointer;
-      display:grid; place-items:center; transition:background var(--speed) ease;
-    }
-    .drawer-close:hover{background:color-mix(in srgb, var(--border) 25%, transparent)}
-    .drawer nav ul{
-      list-style:none; padding:0; margin:10px 0 0; display:flex; flex-direction:column; gap:10px;
-    }
-    .drawer nav a{
-      display:flex; align-items:center; gap:12px; text-decoration:none; padding:14px 12px; border-radius:12px;
-      color:var(--text); font-weight:700; letter-spacing:.2px; transition:background var(--speed) ease, color var(--speed) ease;
-    }
-    .drawer nav a i{color:var(--brand-primary); width:20px; text-align:center}
-    .drawer nav a:hover{background:color-mix(in srgb, var(--border) 25%, transparent); color:var(--brand-primary)}
-    .drawer-cta{
-      margin-top:auto; display:grid; gap:10px;
-    }
-    .drawer-cta .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:14px 16px;
-      border-radius:12px; border:1px solid var(--border); background:var(--bg-subtle); color:var(--heading);
-      font-weight:800; text-decoration:none; transition:transform var(--speed) ease, background var(--speed) ease;
-    }
-    .drawer-cta .btn.primary{
-      background:var(--brand-primary); color:#111827; border-color:transparent; box-shadow:0 12px 24px rgba(247,168,35,.28);
-    }
-    .drawer-cta .btn:hover{transform:translateY(-2px)}
-    .drawer-social{
-      display:flex; gap:10px; margin-top:10px;
-    }
-    .drawer-social a{
-      width:44px; height:44px; display:grid; place-items:center; border-radius:10px; text-decoration:none;
-      border:1px solid var(--border); color:var(--heading); background:color-mix(in srgb, var(--bg) 96%, transparent);
-      transition:transform var(--speed) ease, background var(--speed) ease, color var(--speed) ease;
-    }
-    .drawer-social a:hover{
-      background:var(--brand-primary); color:#111827; transform:translateY(-2px)
-    }
-
-    /* Section titles */
-    .section-title{
-      font-family:Poppins, Inter, sans-serif;
-      font-size:clamp(2rem, 4.5vw, 3rem);
-      color:var(--heading);
-      text-align:center; margin:0 0 2.2rem; line-height:1.1;
-      letter-spacing:.2px;
-      position:relative; padding-bottom:.75rem;
-    }
-    .section-title::after{
-      content:""; position:absolute; width:80px; height:4px; left:50%; bottom:0;
-      transform:translateX(-50%); border-radius:3px; background:var(--brand-primary);
-    }
-
-    /* Hero */
-    .hero{
-      min-height:100dvh; display:grid; place-items:center; text-align:center; padding-top:7.5rem; padding-bottom:3rem; position:relative; overflow:hidden;
-      background:
-        radial-gradient(1000px 600px at 85% -20%, rgba(247,168,35,.18), transparent 60%),
-        radial-gradient(800px 500px at -10% 110%, rgba(247,168,35,.12), transparent 60%),
-        linear-gradient(160deg, var(--bg-subtle) 0%, var(--bg) 70%);
-    }
-    .hero::before{
-      content:""; position:absolute; inset:-20% -10% auto -10%; height:60%;
-      background-image:
-        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(255,255,255,.06) 1px, transparent 1px);
-      background-size: 24px 24px;
-      opacity:.35; pointer-events:none;
-    }
-    .hero .content{max-width:900px; margin-inline:auto}
-    .hero h1{
-      font-family:Poppins, Inter, sans-serif;
-      font-weight:800; color:var(--heading);
-      font-size:clamp(2.2rem, 6vw, 4.2rem); line-height:1.08; margin:0 0 1rem;
-    }
-    .hero h1 .highlight{color:var(--brand-primary)}
-    .hero p{
-      font-size:clamp(1.05rem, 2.4vw, 1.25rem);
-      color:var(--text);
-      max-width:720px; margin:0 auto 2rem;
-    }
-    .hero-cta{
-      display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-    }
-    .btn{
-      display:inline-flex; align-items:center; gap:10px; padding:0.95rem 1.4rem; border-radius:999px;
-      text-decoration:none; font-weight:800; border:1px solid var(--border); color:var(--heading);
-      background:var(--bg); transition:transform var(--speed) ease, box-shadow var(--speed) ease, background var(--speed) ease;
-    }
-    .btn:hover{transform:translateY(-3px)}
-    .btn.primary{background:var(--brand-primary); color:#111827; border-color:transparent; box-shadow:0 16px 32px rgba(247,168,35,.3)}
-    .btn.secondary{background:var(--bg-subtle)}
-
-    .scroll-cue{
-      position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
-      color:var(--text-soft); font-size:.9rem; display:flex; align-items:center; gap:8px;
-      opacity:.85;
-    }
-    .scroll-cue i{animation:bob 1.4s ease-in-out infinite}
-    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
-
-    /* Services */
-    .services{background:var(--bg-subtle)}
-    .services-grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.5rem;
-    }
-    .card{
-      background:var(--bg); border:1px solid var(--border); border-radius:16px;
-      padding:1.6rem; box-shadow:var(--shadow-sm); transition:transform var(--speed) ease, box-shadow var(--speed) ease, border-color var(--speed) ease;
-      display:flex; flex-direction:column; gap:10px;
-    }
-    .card:hover{transform:translateY(-6px); box-shadow:var(--shadow-md); border-color:color-mix(in srgb, var(--brand-primary) 40%, var(--border))}
-    .card .icon{
-      width:50px; height:50px; border-radius:12px; display:grid; place-items:center;
-      background:color-mix(in srgb, var(--brand-primary) 18%, transparent);
-      color:var(--brand-primary); font-size:1.4rem;
-    }
-    .card h3{margin:.2rem 0 .2rem; color:var(--heading); font-size:1.25rem}
-    .card p{margin:0 0 .5rem; color:var(--text)}
-    .learn-more{
-      margin-top:auto; display:inline-flex; align-items:center; gap:8px; color:var(--brand-primary); text-decoration:none; font-weight:800;
-    }
-    .learn-more i{transition:transform var(--speed) ease}
-    .learn-more:hover i{transform:translateX(4px)}
-
-    /* About */
-    .about .grid{
-      display:grid; grid-template-columns:1fr; gap:2rem; max-width:1000px; margin-inline:auto;
-    }
-    @media (min-width: 900px){
-      .about .grid{grid-template-columns:1.05fr .95fr}
-    }
-    .about .panel{
-      background:var(--bg); border:1px solid var(--border); border-radius:16px; padding:1.6rem; box-shadow:var(--shadow-sm);
-    }
-
-    /* Contact */
-    .contact{background:var(--bg-subtle)}
-    .contact-wrap{
-      background:var(--bg); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow-md);
-      display:grid; grid-template-columns:1fr; gap:2rem; padding:2rem; max-width:1100px; margin-inline:auto;
-    }
-    .contact-wrap a{
-        color: orange;
-    }
-    @media (min-width: 980px){
-      .contact-wrap{grid-template-columns:1fr 1.1fr; padding:3rem}
-    }
-    .contact .info p{margin:.4rem 0; font-size:1.05rem}
-    .contact .info i{color:var(--brand-primary); margin-right:.6rem}
-
-    .form-group{margin-bottom:1.1rem}
-    .form-group label{display:block; margin-bottom:.45rem; color:var(--heading); font-weight:600}
-    .form-control{
-      width:100%; padding:.9rem 1rem; border-radius:12px; border:1px solid var(--border); background:var(--bg-subtle); color:var(--heading);
-      font:inherit; transition:border-color var(--speed) ease, background var(--speed) ease, box-shadow var(--speed) ease;
-    }
-    .form-control::placeholder{color:var(--text-soft)}
-    .form-control:focus{
-      outline:none; border-color:color-mix(in srgb, var(--brand-primary) 70%, var(--border));
-      background:var(--bg); box-shadow:0 0 0 3px color-mix(in srgb, var(--brand-primary) 25%, transparent);
-    }
-    .submit{
-      width:100%; padding:1rem; border:none; border-radius:12px; cursor:pointer; font-weight:800;
-      background:var(--brand-primary); color:#111827; box-shadow:0 14px 28px rgba(247,168,35,.3);
-      transition:transform var(--speed) ease, box-shadow var(--speed) ease, background var(--speed) ease;
-    }
-    .submit:hover:not(:disabled){transform:translateY(-2px); background:#f8b032}
-    .submit:disabled{opacity:.65; cursor:not-allowed}
-
-    /* Footer */
-    .footer{
-      background:var(--brand-dark); color:#cbd5e1; padding:4rem 0 2rem; margin-top:2rem;
-    }
-    .footer-grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:2rem; margin-bottom:1.8rem;
-    }
-    .footer h4{color:#fff; margin:0 0 .8rem; font-size:1.1rem}
-    .footer a{color:#cbd5e1; text-decoration:none}
-    .footer a:hover{color:var(--brand-primary); text-decoration:underline}
-    .footer .social{
-      display:flex; gap:10px; margin:1rem 0;
-    }
-    .footer .social a{
-      width:40px; height:40px; border-radius:50%; display:grid; place-items:center; background:rgba(255,255,255,.08);
-      color:#fff; transition:transform var(--speed) ease, background var(--speed) ease;
-    }
-    .footer .social a:hover{transform:translateY(-2px); background:var(--brand-primary); color:#111827}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,.15); margin-top:1.6rem; padding-top:1.4rem; text-align:center; color:#9fb0c9; font-size:.95rem}
-
-    /* Utilities */
-    .visually-hidden{
-      position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px, 1px, 1px, 1px);
-      white-space:nowrap; clip-path:inset(50%); border:0; padding:0; margin:-1px;
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 980px){
-      .hamburger{display:grid}
-      .nav-links{display:none}
-    }
-    @media (prefers-reduced-motion: reduce){
-      *{animation:none !important; transition:none !important}
-    }
-  </style>
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Organization",
-    "name":"VylexNexys",
-    "url":"https://vylexnexys.co.za/",
-    "logo":"https://vylexnexys.co.za/assets/images/vylex-nexys-logo.jpg",
-    "sameAs":[
-      "https://linkedin.com/company/vylexnexys",
-      "https://twitter.com/vylexnexys",
-      "https://github.com/vylexnexys",
-      "https://instagram.com/vylexnexys",
-      "https://tiktok.com/@vylexnexys"
-    ],
-    "contactPoint": [{
-      "@type":"ContactPoint",
-      "email":"info@vylexnexys.co.za",
-      "telephone":"+27-648-784-287",
-      "contactType":"customer support",
-      "areaServed":"ZA"
-    }]
-  }
-  </script>
-</head>
-<body>
-  <!-- Overlay + Drawer for premium burger -->
-  <div class="overlay" id="overlay" aria-hidden="true" tabindex="-1"></div>
-  <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Site menu">
-    <div class="drawer-header">
-      <a href="#home" class="drawer-brand brand" aria-label="VylexNexys home">
-        <img src="https://vylexnexys.co.za/assets/images/vylex-nexys-logo.jpg" alt="VylexNexys Logo" class="brand-logo" />
-      </a>
-      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
-        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-      </button>
-    </div>
-    <nav aria-label="Mobile">
-      <ul>
-        <li><a href="services.html"><i class="fa-solid fa-grid-2"></i> Services</a></li>
-        <li><a href="#about"><i class="fa-solid fa-circle-info"></i> About</a></li>
-        <li><a href="portfolio.html"><i class="fa-solid fa-briefcase"></i> Portfolio</a></li>
-        <li><a href="#contact"><i class="fa-solid fa-paper-plane"></i> Contact</a></li>
-        <li><a href="pricing.html"><i class="fa-solid fa-money-bill-wave"></i> Pricing</a></li>
-      </ul>
-    </nav>
-    <div class="drawer-cta">
-      <a class="btn primary" href="#contact"><i class="fa-solid fa-bolt"></i> Start a Project</a>
-      <a class="btn" href="mailto:info@vylexnexys.co.za"><i class="fa-solid fa-envelope"></i> info@vylexnexys.co.za</a>
-      <div class="drawer-social" aria-label="Social links">
-        <a href="https://linkedin.com/company/vylexnexys" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-        <a href="https://twitter.com/vylexnexys" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="https://github.com/vylexnexys" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://instagram.com/vylexnexys" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://tiktok.com/@vylexnexys" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Header -->
-  <header class="header" id="header">
-    <div class="container">
-      <div class="nav" role="navigation" aria-label="Main">
-        <a class="brand" href="#home" aria-label="VylexNexys home">
-          <span style="color: orange;">VylexNexys</span>
-        </a>
-        <div class="nav-links" id="navLinks">
-          <a href="services.html">Services</a>
-          <a href="#about">About</a>
-          <a href="portfolio.html">Portfolio</a>
-          <a href="#contact">Contact</a>
-          <a href="pricing.html">Contact</a>
-
-          <a class="nav-cta" href="#contact"><i class="fa-solid fa-rocket"></i> Get a Quote</a>
-        </div>
-        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
-          <span class="ham-lines" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main id="main">
-    <!-- Hero -->
-    <section id="home" class="hero" aria-labelledby="home-title">
-      <div class="content container">
-        <h1 id="home-title">
-          Building Digital Pathways to  <span class="highlight">Progress</span>
-        </h1>
-        <p>
-          Proudly African-born, we innovate for the web, mobile, and smart technologies. We design, build, and launch reliable digital products that empower businesses, non-profits, and young innovators to thrive in the digital age.
-        </p>
-        <div class="hero-cta">
-          <a class="btn primary" href="#contact"><i class="fa-solid fa-handshake-simple"></i> Get Started</a>
-          <a class="btn secondary" href="portfolio.html"><i class="fa-solid fa-briefcase"></i> View Work</a>
-        </div>
-      </div>
-      <div class="scroll-cue" aria-hidden="true">
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
-    </section>
-
-    <!-- Services -->
-    <section id="services" class="services" aria-labelledby="services-title">
-      <div class="container">
-        <h2 class="section-title" id="services-title">What We Do</h2>
-        <div class="services-grid">
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-code"></i></div>
-            <h3>Web Development</h3>
-            <p>Modern, SEO-friendly websites and robust web apps with secure hosting and best-practice performance.</p>
-            <a class="learn-more" href="services.html#web-development">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
-            <h3>Mobile Apps</h3>
-            <p>Android and cross-platform apps built to engage users and streamline operations.</p>
-            <a class="learn-more" href="services.html#mobile-apps">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-wrench"></i></div>
-            <h3>Digital Solutions</h3>
-            <p>Targeted tools and micro‑apps that automate tasks, boost productivity, and support learning.</p>
-            <a class="learn-more" href="services.html#digital-tools">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-database"></i></div>
-            <h3>Database Solutions</h3>
-            <p>Secure data systems with MySQL, Firebase, and cloud services—designed for reliability and scale.</p>
-            <a class="learn-more" href="services.html#database-solutions">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-gamepad"></i></div>
-            <h3>Interactive Applications</h3>
-            <p>Education platforms, serious games, and interactive web experiences that deliver real value.</p>
-            <a class="learn-more" href="services.html#interactive-apps">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-palette"></i></div>
-            <h3>Design & Branding</h3>
-            <p>Logos, identity systems, and interfaces that reflect your brand and feel effortless to use.</p>
-            <a class="learn-more" href="services.html#design-branding">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section id="about" class="about" aria-labelledby="about-title">
-      <div class="container">
-        <h2 class="section-title" id="about-title">About VylexNexys</h2>
-        <div class="grid">
-          <div class="panel">
-            <p>VylexNexys is an independent technology company focused on practical, innovative digital products and tailored software solutions. We specialize in custom web apps, Android development, and smart tools designed to solve everyday problems.</p>
-            <p>Our products range from learning platforms and utility tools to interactive apps, built with a deep understanding of user needs and modern tech. We support individuals, startups, and small businesses with websites, branding, and cloud-connected applications.</p>
-            <p>Whether you need ready-to-use tools or bespoke solutions, we turn ideas into clean, functional digital experiences.</p>
-          </div>
-          <div class="panel" aria-label="Brand identity">
-            <h3 style="margin-top:0; color:var(--heading)">Our Identity</h3>
-            <p>Our brand pairs a confident deep navy with a warm golden orange. The stepped wedge symbol represents forward motion, growth, and a path to the next (“Nexys”) milestone.</p>
-            <ul style="margin:0; padding-left:1.1rem; color:var(--text)">
-              <li>Reliable engineering with human-centered design.</li>
-              <li>Lean execution and measurable outcomes.</li>
-              <li>Africa-first perspective with global standards.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="contact" aria-labelledby="contact-title">
-      <div class="container">
-        <h2 class="section-title" id="contact-title">Let's Work Together</h2>
-        <div class="contact-wrap">
-          <div class="info">
-            <p>Ready to bring your digital ideas to life? Whether you need a website, mobile app, or custom tool, we’re here to help.</p>
-            <p><i class="fa-solid fa-envelope"></i><a href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
-            <p><i class="fa-solid fa-phone"></i><a href="tel:0648784287">064-878-4287</a></p>
-          </div>
-          <form id="contactForm" class="form" novalidate>
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input class="form-control" type="text" id="name" name="name" required placeholder="e.g., Jane Doe" autocomplete="name" />
-            </div>
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input class="form-control" type="email" id="email" name="email" required placeholder="e.g., jane.doe@example.com" autocomplete="email" />
-            </div>
-            <div class="form-group">
-              <label for="message">Project Details / Inquiry</label>
-              <textarea class="form-control" id="message" name="message" rows="5" required placeholder="Tell us about your project or what you need help with..."></textarea>
-            </div>
-            <button type="submit" class="submit" id="submitBtn">Send Message</button>
-            <p id="formStatus" class="visually-hidden" role="status" aria-live="polite"></p>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <h4>VylexNexys</h4>
-          <p>An emerging technology company specializing in practical digital solutions for businesses. We create custom web applications, mobile apps, and digital tools that help your business grow.</p>
-          <div class="social" aria-label="Social links">
-            <a href="https://linkedin.com/company/vylexnexys" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://twitter.com/vylexnexys" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab-brands fab fa-twitter"></i></a>  
-            <a href="https://github.com/vylexnexys" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://instagram.com/vylexnexys" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://tiktok.com/@vylexnexys" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-          </div>
-        </div>
-        <div>
-          <h4>Quick Links</h4>
-          <ul style="list-style:none; padding:0; margin:0">
-            <li><a href="services.html">Our Services</a></li>
-            <li><a href="portfolio.html">Product Portfolio</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Contact Info</h4>
-          <address style="font-style:normal">
-            <p>Email: <a href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
-            <p>Phone: <a href="tel:0648784287">064-878-4287</a></p>
-            <p>Location: South Africa</p>
-            <p>Building digital solutions one project at a time.</p>
-          </address>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© <span id="year"></span> VylexNexys. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    (function(){
-      const header = document.getElementById('header');
-      const hamburger = document.getElementById('hamburger');
-      const drawer = document.getElementById('drawer');
-      const overlay = document.getElementById('overlay');
-      const drawerClose = document.getElementById('drawerClose');
-      const main = document.getElementById('main');
-      const yearEl = document.getElementById('year');
-
-      // Header scroll behavior
-      const onScroll = () => {
-        if(window.scrollY > 8){ header.classList.add('scrolled'); }
-        else { header.classList.remove('scrolled'); }
-      };
-      onScroll();
-      window.addEventListener('scroll', onScroll, {passive:true});
-
-      // Focus trap for drawer
-      let focusTrapCleanup = null;
-      function trapFocus(container, restoreEl){
-        const selectors = [
-          'a[href]', 'area[href]', 'button:not([disabled])', 'input:not([disabled])',
-          'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])'
-        ];
-        const focusables = () => Array.from(container.querySelectorAll(selectors.join(','))).filter(el=>el.offsetParent!==null || container === el);
-
-        function handleKey(e){
-          if(e.key !== 'Tab') return;
-          const items = focusables();
-          if(items.length === 0) return;
-          const first = items[0], last = items[items.length - 1];
-          if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-          else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+        /* Custom Overrides */
+        body { font-family: 'Inter', sans-serif; }
+        
+        .nav-sticky {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
-        document.addEventListener('keydown', handleKey);
-        return () => {
-          document.removeEventListener('keydown', handleKey);
-          if(restoreEl){ restoreEl.focus({preventScroll:true}); }
-        };
-      }
 
-      function openDrawer(){
-        drawer.classList.add('active');
-        overlay.classList.add('active');
-        drawer.setAttribute('aria-hidden', 'false');
-        overlay.setAttribute('aria-hidden', 'false');
-        hamburger.classList.add('active');
-        hamburger.setAttribute('aria-expanded','true');
-        document.body.classList.add('nav-open');
-        // Accessibility
-        main.setAttribute('aria-hidden','true');
-        focusTrapCleanup = trapFocus(drawer, hamburger);
-        // Focus first link
-        const firstLink = drawer.querySelector('a[href]');
-        setTimeout(()=> firstLink?.focus(), 10);
-      }
-      function closeDrawer(){
-        drawer.classList.remove('active');
-        overlay.classList.remove('active');
-        drawer.setAttribute('aria-hidden', 'true');
-        overlay.setAttribute('aria-hidden', 'true');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded','false');
-        document.body.classList.remove('nav-open');
-        main.removeAttribute('aria-hidden');
-        if(typeof focusTrapCleanup === 'function'){ focusTrapCleanup(); focusTrapCleanup = null; }
-      }
+        .hero-section {
+            background: linear-gradient(135deg, #051b38 0%, #0a2e5c 100%);
+            position: relative;
+        }
 
-      hamburger.addEventListener('click', ()=>{
-        const isOpen = drawer.classList.contains('active');
-        isOpen ? closeDrawer() : openDrawer();
-      });
-      drawerClose.addEventListener('click', closeDrawer);
-      overlay.addEventListener('click', closeDrawer);
-      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && drawer.classList.contains('active')) closeDrawer(); });
+        .hero-pattern {
+            background-image: radial-gradient(#fba919 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.05;
+        }
 
-      // Smooth scroll for on-page anchors inside drawer and header links
-      function smoothLink(link){
-        link.addEventListener('click', (e)=>{
-          const href = link.getAttribute('href') || '';
-          if(href.startsWith('#') && href.length > 1){
-            const target = document.querySelector(href);
-            if(target){
-              e.preventDefault();
-              closeDrawer();
-              target.scrollIntoView({behavior:'smooth', block:'start'});
-              history.pushState(null, '', href);
+        .service-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
+            border-bottom: 3px solid #fba919;
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 antialiased bg-white">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 bg-white transition-all duration-300 border-b border-gray-100 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <img src="/assets/images/vxnx-logo.png" onerror="this.src='https://placehold.co/50x50/051b38/fff?text=VN'" alt="Vylex Nexys" class="h-10 w-auto">
+                    <div class="hidden md:block">
+                        <span class="block text-brand-navy font-bold text-lg leading-none tracking-tight">VYLEX NEXYS</span>
+                        <span class="block text-[10px] text-gray-500 font-semibold tracking-widest uppercase">Technology Group</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#services" class="text-sm font-medium text-brand-navy hover:text-brand-orange transition-colors uppercase tracking-wide">Services</a>
+                    <a href="#products" class="text-sm font-medium text-brand-navy hover:text-brand-orange transition-colors uppercase tracking-wide">Products</a>
+                    <a href="#portfolio" class="text-sm font-medium text-brand-navy hover:text-brand-orange transition-colors uppercase tracking-wide">Portfolio</a>
+                    <a href="#about" class="text-sm font-medium text-brand-navy hover:text-brand-orange transition-colors uppercase tracking-wide">Company</a>
+                    <a href="#contact" class="px-5 py-2 rounded bg-brand-navy text-white text-sm font-bold hover:bg-brand-orange hover:text-brand-navy transition-all">
+                        Start Project
+                    </a>
+                </div>
+
+                <!-- Mobile Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-brand-navy p-2 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#services" class="block font-medium text-brand-navy">Services</a>
+                <a href="#products" class="block font-medium text-brand-navy">In-House Products</a>
+                <a href="#portfolio" class="block font-medium text-brand-navy">Client Portfolio</a>
+                <a href="#about" class="block font-medium text-brand-navy">About & Leadership</a>
+                <a href="#contact" class="block font-bold text-brand-orange">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section pt-32 pb-24 lg:pt-48 lg:pb-32 text-white overflow-hidden">
+        <div class="absolute inset-0 hero-pattern"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-bold tracking-wider uppercase text-brand-orange mb-6">
+                    <span class="w-2 h-2 rounded-full bg-brand-orange animate-pulse"></span>
+                    Digital Solutions & Consultancy
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6">
+                    Bridging Complex Technology with <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-yellow-200">Practical Utility.</span>
+                </h1>
+                <p class="text-xl text-gray-300 mb-10 leading-relaxed font-light">
+                    We are an emerging South African technology company providing custom digital solutions for businesses while developing our own suite of public utility tools.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#services" class="px-8 py-4 bg-brand-orange text-brand-navy font-bold rounded hover:bg-white transition-colors text-center shadow-lg shadow-orange-500/20">
+                        Explore Our Services
+                    </a>
+                    <a href="#products" class="px-8 py-4 border border-white/30 bg-white/5 text-white font-semibold rounded hover:bg-white hover:text-brand-navy transition-colors text-center backdrop-blur-sm">
+                        View Our Products
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Core Business Offerings (Grid) -->
+    <section id="services" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-brand-orange font-bold tracking-widest uppercase text-sm mb-2">What We Do</h2>
+                <h3 class="text-3xl md:text-4xl font-bold text-brand-navy">Comprehensive Digital Solutions</h3>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">From custom software development to branding, we offer end-to-end services tailored for the African market and global standards.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="service-card p-8 bg-white border border-gray-100 rounded-xl shadow-sm">
+                    <div class="w-12 h-12 bg-blue-50 text-brand-navy rounded-lg flex items-center justify-center text-xl mb-6">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3">Web Development</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Custom web applications</li>
+                        <li>• SEO-friendly responsive design</li>
+                        <li>• Secure hosting & deployment</li>
+                        <li>• Performance optimization</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card p-8 bg-white border border-gray-100 rounded-xl shadow-sm">
+                    <div class="w-12 h-12 bg-orange-50 text-brand-orange rounded-lg flex items-center justify-center text-xl mb-6">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3">Mobile App Dev</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Android native development</li>
+                        <li>• Cross-platform solutions</li>
+                        <li>• User engagement focus</li>
+                        <li>• Operational efficiency tools</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card p-8 bg-white border border-gray-100 rounded-xl shadow-sm">
+                    <div class="w-12 h-12 bg-blue-50 text-brand-navy rounded-lg flex items-center justify-center text-xl mb-6">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3">Database Solutions</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Secure system architecture</li>
+                        <li>• MySQL & Firebase implementation</li>
+                        <li>• Cloud-based data services</li>
+                        <li>• Scalable design</li>
+                    </ul>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="service-card p-8 bg-white border border-gray-100 rounded-xl shadow-sm">
+                    <div class="w-12 h-12 bg-blue-50 text-brand-navy rounded-lg flex items-center justify-center text-xl mb-6">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3">Interactive & EdTech</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• STEM learning tools</li>
+                        <li>• Gamification & Serious Games</li>
+                        <li>• Educational platforms</li>
+                        <li>• Real-time web experiences</li>
+                    </ul>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="service-card p-8 bg-white border border-gray-100 rounded-xl shadow-sm">
+                    <div class="w-12 h-12 bg-orange-50 text-brand-orange rounded-lg flex items-center justify-center text-xl mb-6">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3">Digital Utilities</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Task automation tools</li>
+                        <li>• Micro-applications</li>
+                        <li>• Productivity software</li>
+                        <li>• Business logic integration</li>
+                    </ul>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="service-card p-8 bg-white border border-gray-100 rounded-xl shadow-sm">
+                    <div class="w-12 h-12 bg-blue-50 text-brand-navy rounded-lg flex items-center justify-center text-xl mb-6">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3">Design & Branding</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Logo & Identity systems</li>
+                        <li>• UI/UX Design</li>
+                        <li>• Visual brand development</li>
+                        <li>• User interface prototyping</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- In-House Products -->
+    <section id="products" class="py-24 bg-brand-gray border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div class="max-w-2xl">
+                    <h2 class="text-3xl font-bold text-brand-navy">Vylex Product Ecosystem</h2>
+                    <p class="mt-4 text-gray-600">
+                        Beyond consulting, we operate as a product publisher, releasing free-to-use web applications and tools that solve real-world problems.
+                    </p>
+                </div>
+                <!-- Optional Link to a dedicated products page if exists -->
+                <!-- <a href="products.html" class="text-brand-orange font-bold mt-4 md:mt-0 hover:underline">View All Products <i class="fas fa-arrow-right ml-1"></i></a> -->
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Category: Education -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-brand-navy">
+                    <h4 class="font-bold text-lg mb-4 flex items-center"><i class="fas fa-book-open mr-2 text-brand-orange"></i> Education</h4>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex justify-between border-b pb-2"><span>Bible Explorer</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between border-b pb-2"><span>Lexico Learning</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between border-b pb-2"><span>EdTech STEM</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between"><span>Global Dictionary</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                    </ul>
+                </div>
+
+                <!-- Category: Productivity -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-brand-orange">
+                    <h4 class="font-bold text-lg mb-4 flex items-center"><i class="fas fa-chart-line mr-2 text-brand-navy"></i> Productivity</h4>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex justify-between border-b pb-2"><span>VyTrack Finance</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between border-b pb-2"><span>TaskMaster</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between border-b pb-2"><span>LexWriter</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between"><span>Text Analysis Tool</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                    </ul>
+                </div>
+
+                <!-- Category: Information -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-brand-navy">
+                    <h4 class="font-bold text-lg mb-4 flex items-center"><i class="fas fa-globe mr-2 text-brand-orange"></i> Info & Data</h4>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex justify-between border-b pb-2"><span>Nexora AI</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between border-b pb-2"><span>BitNexys Crypto</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between border-b pb-2"><span>AI Tools Aggregator</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between"><span>News API Feed</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                    </ul>
+                </div>
+
+                <!-- Category: Media/Games -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-brand-orange">
+                    <h4 class="font-bold text-lg mb-4 flex items-center"><i class="fas fa-gamepad mr-2 text-brand-navy"></i> Media & Labs</h4>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex justify-between border-b pb-2"><span>Game Lab</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between border-b pb-2"><span>VisualVault</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between border-b pb-2"><span>Movie Explorer</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                        <li class="flex justify-between"><span>NexysSocial</span> <i class="fas fa-external-link-alt text-xs text-gray-400"></i></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Portfolio -->
+    <section id="portfolio" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-brand-navy">Trusted By</h2>
+                <p class="text-gray-600 mt-2">Delivering excellence for diverse industries.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="p-6 bg-gray-50 rounded border border-gray-100 flex items-center justify-center text-center text-xs font-bold text-gray-500 uppercase tracking-wide h-24">
+                    Pathfinders Empowerment
+                </div>
+                <div class="p-6 bg-gray-50 rounded border border-gray-100 flex items-center justify-center text-center text-xs font-bold text-gray-500 uppercase tracking-wide h-24">
+                    Luxury Shutters & Blinds
+                </div>
+                <div class="p-6 bg-gray-50 rounded border border-gray-100 flex items-center justify-center text-center text-xs font-bold text-gray-500 uppercase tracking-wide h-24">
+                    Lance Clothing Brand
+                </div>
+                <div class="p-6 bg-gray-50 rounded border border-gray-100 flex items-center justify-center text-center text-xs font-bold text-gray-500 uppercase tracking-wide h-24">
+                    Andrews Pool Services
+                </div>
+                <div class="p-6 bg-gray-50 rounded border border-gray-100 flex items-center justify-center text-center text-xs font-bold text-gray-500 uppercase tracking-wide h-24">
+                    AJ Vehicle Registration
+                </div>
+                <div class="p-6 bg-gray-50 rounded border border-gray-100 flex items-center justify-center text-center text-xs font-bold text-gray-500 uppercase tracking-wide h-24">
+                    Avuyile Mthembu Portfolio
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company & Leadership -->
+    <section id="about" class="py-24 bg-brand-navy text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Leadership Profile -->
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Leadership & Vision</h2>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        VylexNexys was founded by <strong>Avuyile Mthembu</strong>, a multi-disciplinary technologist with a vision to empower the African digital economy. 
+                    </p>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-6 mb-6 backdrop-blur-sm">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-brand-orange text-brand-navy rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">A</div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">Avuyile Mthembu</h4>
+                                <span class="text-brand-orange text-sm font-medium uppercase tracking-wider">Founder & md</span>
+                                <p class="text-xs text-gray-400 mt-2">Full-Stack Developer • Cybersecurity Analyst (CEH, CompTIA Security+) • Systems Architect</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Values -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-6">Our Core Values</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="border-l-2 border-brand-orange pl-4">
+                            <h4 class="font-bold text-white">Client-Centricity</h4>
+                            <p class="text-sm text-gray-400 mt-1">Tailored solutions that fit specific business needs.</p>
+                        </div>
+                        <div class="border-l-2 border-brand-orange pl-4">
+                            <h4 class="font-bold text-white">Innovation with Purpose</h4>
+                            <p class="text-sm text-gray-400 mt-1">Practical technology applications over hype.</p>
+                        </div>
+                        <div class="border-l-2 border-brand-orange pl-4">
+                            <h4 class="font-bold text-white">Africa-First Perspective</h4>
+                            <p class="text-sm text-gray-400 mt-1">Global standards optimized for local contexts.</p>
+                        </div>
+                        <div class="border-l-2 border-brand-orange pl-4">
+                            <h4 class="font-bold text-white">Quality Craftsmanship</h4>
+                            <p class="text-sm text-gray-400 mt-1">Attention to detail in code and design.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    
+                    <!-- Contact Info -->
+                    <div class="bg-brand-navy p-10 text-white flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6">Let's start a conversation</h3>
+                            <p class="text-gray-300 mb-8">
+                                Whether you need a custom website, a mobile app, or a digital strategy, we are ready to help.
+                            </p>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded bg-brand-orange text-brand-navy flex items-center justify-center"><i class="fas fa-envelope"></i></div>
+                                    <div>
+                                        <p class="text-xs text-gray-400 uppercase">Email</p>
+                                        <p class="font-medium">info@vylexnexys.co.za</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded bg-brand-orange text-brand-navy flex items-center justify-center"><i class="fas fa-phone"></i></div>
+                                    <div>
+                                        <p class="text-xs text-gray-400 uppercase">Phone / WhatsApp</p>
+                                        <p class="font-medium">+27 64 878 4287</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded bg-brand-orange text-brand-navy flex items-center justify-center"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div>
+                                        <p class="text-xs text-gray-400 uppercase">Location</p>
+                                        <p class="font-medium">South Africa</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-12 flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-linkedin text-xl"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-github text-xl"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <div class="p-10">
+                        <form id="contactForm" class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
+                                <input type="text" id="name" required class="w-full px-4 py-3 rounded border border-gray-300 focus:border-brand-navy focus:ring-1 focus:ring-brand-navy outline-none transition bg-gray-50">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Service Interest</label>
+                                <select id="interest" class="w-full px-4 py-3 rounded border border-gray-300 focus:border-brand-navy focus:ring-1 focus:ring-brand-navy outline-none transition bg-gray-50">
+                                    <option value="Consulting">Consulting / Custom Dev</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="Mobile App">Mobile App</option>
+                                    <option value="EdTech">EdTech / Games</option>
+                                    <option value="Partnership">Partnership</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                                <textarea id="message" rows="4" required class="w-full px-4 py-3 rounded border border-gray-300 focus:border-brand-navy focus:ring-1 focus:ring-brand-navy outline-none transition bg-gray-50" placeholder="Tell us about your project..."></textarea>
+                            </div>
+
+                            <button type="submit" id="submitBtn" class="w-full py-4 bg-brand-navy text-white font-bold rounded hover:bg-brand-orange hover:text-brand-navy transition-all duration-300 shadow-lg flex justify-center items-center gap-2">
+                                <i class="fab fa-whatsapp text-lg"></i> Contact via WhatsApp
+                            </button>
+                            <p id="formStatus" class="text-xs text-center text-gray-500 hidden">Redirecting...</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-navy text-slate-400 py-12 border-t border-white/10 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <span class="block text-white font-bold text-lg mb-1">Vylex Nexys</span>
+                <p>&copy; <span id="year"></span> All rights reserved. Built in South Africa.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="/privacy" class="hover:text-white transition-colors">Privacy</a>
+                <a href="/terms" class="hover:text-white transition-colors">Terms</a>
+                <a href="/sitemap" class="hover:text-white transition-colors">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Copyright Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Sticky Nav Logic
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('nav-sticky');
+            } else {
+                nav.classList.remove('nav-sticky');
             }
-          }else{
-            closeDrawer(); // external link; still close
-          }
         });
-      }
-      document.querySelectorAll('a[href^="#"]').forEach(smoothLink);
-      drawer.querySelectorAll('a').forEach(smoothLink);
 
-      // Year
-      if(yearEl) yearEl.textContent = new Date().getFullYear();
+        // WhatsApp Form Logic
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusEl = document.getElementById('formStatus');
 
-      // Contact form -> WhatsApp handoff
-      const form = document.getElementById('contactForm');
-      const submitBtn = document.getElementById('submitBtn');
-      const statusEl = document.getElementById('formStatus');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const interest = document.getElementById('interest').value;
+            const message = document.getElementById('message').value;
 
-      function validateEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+            // Construct WhatsApp Message
+            const whatsappMessage = `*New Inquiry via Corporate Site*%0A%0A*Name:* ${name}%0A*Interest:* ${interest}%0A*Message:* ${message}`;
+            
+            // Provided Phone Number
+            const phoneNumber = "27648784287"; 
+            
+            const waURL = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
 
-      if(form){
-        form.addEventListener('submit', (e)=>{
-          e.preventDefault();
-          const name = (document.getElementById('name').value || '').trim();
-          const email = (document.getElementById('email').value || '').trim();
-          const message = (document.getElementById('message').value || '').trim();
+            // UI Feedback
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            statusEl.classList.remove('hidden');
 
-          if(!name || !email || !message){
-            statusEl.classList.remove('visually-hidden');
-            statusEl.textContent = 'Please complete all fields.';
-            return;
-          }
-          if(!validateEmail(email)){
-            statusEl.classList.remove('visually-hidden');
-            statusEl.textContent = 'Please enter a valid email address.';
-            return;
-          }
-
-          const whatsappMessage =
-`Hi! I'm ${name} and I'm interested in working with VylexNexys.
-
-Contact Details:
-Email: ${email}
-
-Project Details:
-${message}
-
-I'd like to discuss this project further. When would be a good time to talk?`;
-
-          const encoded = encodeURIComponent(whatsappMessage);
-          const waURL = `https://wa.me/27648784287?text=${encoded}`;
-
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Redirecting...';
-          statusEl.classList.remove('visually-hidden');
-          statusEl.textContent = 'Opening WhatsApp...';
-
-          setTimeout(()=>{
-            window.open(waURL, '_blank', 'noopener');
-            setTimeout(()=>{
-              form.reset();
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'Send Message';
-              statusEl.textContent = 'If WhatsApp did not open, please email us at info@vylexnexys.co.za.';
-            }, 1200);
-          }, 600);
+            setTimeout(() => {
+                window.open(waURL, '_blank');
+                form.reset();
+                submitBtn.innerHTML = '<i class="fab fa-whatsapp text-lg"></i> Contact via WhatsApp';
+                statusEl.classList.add('hidden');
+            }, 800);
         });
-      }
-    })();
-  </script>
+    </script>
 </body>
 </html>
