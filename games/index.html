@@ -1,841 +1,519 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="8QCAaqQsO5s-JhKbqsiCfXk0BbJnUXRSoIe7be2Y2cs" />
 
-    <!-- SEO Meta Tags -->
-    <title>VylexNexys | Future-Ready Tech Solutions for Africa & Beyond</title>
+    <!-- SEO Meta -->
     <meta name="description"
-        content="VylexNexys is an African-born tech company crafting innovative web, mobile, and AI-powered solutions. We empower businesses, non-profits, and youth with modern digital tools and smart systems." />
+        content="Vylex Game Lab - Play free online games including Zombie Shooter, Bitcoin Adventure, South Africa Quiz, Memory Match and more. Fun web games crafted with passion and precision.">
     <meta name="keywords"
-        content="VylexNexys, software development, web apps, mobile apps, tech company, digital tools, AI, IT services, South Africa tech, African startups" />
-    <meta name="author" content="VylexNexys Tech" />
-    <meta name="robots" content="index, follow" />
+        content="Vylex Game Lab, online games, web games, zombie shooter, bitcoin adventure, South Africa quiz, memory games, snake game, free games">
+    <meta name="author" content="VylexNexys">
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://vylexnexys.co.za/" />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://vylexnexys.co.za/" />
-    <meta property="og:title" content="VylexNexys | Digital Solutions for Web, Mobile, and AI" />
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Vylex Game Lab - Free Online Games">
     <meta property="og:description"
-        content="Custom-built tech, tailored for African innovation. Explore our web tools, apps, and enterprise systems." />
-    <meta property="og:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
-    <!-- Ensure this image exists and is compelling -->
+        content="Play our collection of engaging web games including Zombie Shooter, Bitcoin Adventure and more. Challenge yourself and have fun!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vylexnexys.co.za/games">
+    <meta property="og:image" content="https://vylexnexys.co.za/images/gamelab-preview.jpg">
 
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://vylexnexys.co.za/" />
-    <meta name="twitter:title" content="VylexNexys | Future-Focused Tech Solutions" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vylex Game Lab - Free Online Games">
     <meta name="twitter:description"
-        content="Explore smart web and mobile tools from Africa's rising tech powerhouse." />
-    <meta name="twitter:image" content="https://vylexnexys.co.za/assets/og-banner.jpg" />
-    <!-- Ensure this image exists -->
+        content="Play our collection of engaging web games including Zombie Shooter, Bitcoin Adventure and more!">
+    <meta name="twitter:image" content="https://vylexnexys.co.za/images/gamelab-preview.jpg">
 
     <!-- Favicon -->
-    <link rel="icon" href="/assets/favicon.png" type="image/png" /> <!-- Ensure this path is correct -->
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"> <!-- Optional: For Apple devices -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
-    <!-- Fonts & Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
+    <!-- Fonts & Core Styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Main Styles -->
-    <style>
-    :root{
-      /* Brand taken from your logo */
-      --brand-primary: #F7A823; /* Golden orange */
-      --brand-dark: #1B2635;    /* Deep navy slate similar to logotype */
-      --brand-mid: #3E4A5C;     /* Nexys grey */
-      --brand-mid-2:#4A5568;
-      --bg:#ffffff;
-      --bg-subtle:#F7F8FA;
-      --text:#374151;
-      --text-soft:#6B7280;
-      --heading:#1f2937;
-      --border:#E5E7EB;
-      --white:#fff;
-      --shadow-sm: 0 4px 10px rgba(0,0,0,.06);
-      --shadow-md: 0 14px 30px rgba(0,0,0,.12);
-      --radius:12px;
-      --radius-sm:10px;
-      --speed: 280ms;
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0E141C;
-        --bg-subtle:#0B1017;
-        --text:#E5E7EB;
-        --text-soft:#A3AAB6;
-        --heading:#F9FAFB;
-        --border:#243244;
-        --shadow-sm: 0 6px 16px rgba(0,0,0,.35);
-        --shadow-md: 0 20px 45px rgba(0,0,0,.5);
-      }
-      .brand-logo {
-        /* This clever filter makes dark text white, while preserving the orange hue */
-        filter: invert(1) hue-rotate(180deg);
-      }
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
-      color:var(--text);
-      background:var(--bg);
-      line-height:1.65;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-    }
-    body.nav-open{overflow:hidden}
-
-    .container{width:min(1200px,92%); margin-inline:auto}
-    section{padding:6rem 0}
-
-    /* ===== Header - Premium Glass, Shrinks on Scroll ===== */
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  backdrop-filter: saturate(1.4) blur(10px);
-  background: color-mix(in srgb, var(--bg) 80%, transparent);
-  border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
-  transition:
-    background var(--speed) ease,
-    transform var(--speed) ease,
-    box-shadow var(--speed) ease;
-}
-
-/* On Scroll */
-.header.scrolled {
-  background: color-mix(in srgb, var(--bg) 96%, transparent);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Navigation Wrapper */
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 0;
-}
-
-/* Brand Logo Link */
-.brand {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  user-select: none;
-}
-
-/* Logo Image */
-.brand-logo {
-  max-height: 48px;
-  width: auto;
-  object-fit: contain;
-}
-
-/* Responsive: Smaller on scroll */
-.header.scrolled .brand-logo {
-  max-height: 40px;
-  transition: max-height var(--speed) ease;
-}
-
-    /* Primary nav (desktop) */
-    .nav-links{
-      display:flex; align-items:center; gap:2rem;
-    }
-    .nav-links a{
-      color:var(--text); text-decoration:none; font-weight:600;
-      position:relative; padding:0.4rem 0; transition:color var(--speed) ease;
-    }
-    .nav-links a::after{
-      content:""; position:absolute; left:0; bottom:-2px; height:2px; width:0;
-      background:var(--brand-primary); border-radius:2px; transition:width var(--speed) ease;
-    }
-    .nav-links a:hover, .nav-links a:focus{color:var(--brand-primary) tex}
-    .nav-links a:hover::after, .nav-links a:focus::after{width:100%}
-
-    .nav-cta{
-      display:inline-flex; align-items:center; gap:10px; text-decoration:none;
-      background:var(--brand-primary); color:#111827; /* more readable on orange */
-      padding:0.7rem 1.1rem; border-radius:100px; font-weight:800;
-      box-shadow:0 10px 18px rgba(247,168,35,.25); border:2px solid transparent;
-      transition:transform var(--speed) ease, box-shadow var(--speed) ease, background var(--speed) ease;
-    }
-    .nav-cta i{font-size:0.95rem}
-    .nav-cta:hover, .nav-cta:focus{
-      transform:translateY(-2px);
-      box-shadow:0 16px 30px rgba(247,168,35,.35);
-      background:#f8b032;
-    }
-
-    /* Premium Hamburger */
-    .hamburger{
-      -webkit-tap-highlight-color:transparent;
-      appearance:none; border:none; background:transparent;
-      width:42px; height:42px; display:none; place-items:center; border-radius:50%;
-      position:relative; cursor:pointer;
-    }
-    .hamburger:focus-visible{outline:2px solid var(--brand-primary); outline-offset:3px}
-    .ham-lines{
-      width:22px; height:16px; position:relative;
-    }
-    .ham-lines span{
-      position:absolute; left:0; width:100%; height:2px; background:var(--heading);
-      border-radius:2px; transform-origin:center; transition:transform var(--speed) ease, opacity var(--speed) ease;
-    }
-    .ham-lines span:nth-child(1){top:0}
-    .ham-lines span:nth-child(2){top:7px}
-    .ham-lines span:nth-child(3){bottom:0}
-    .hamburger.active .ham-lines span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-    .hamburger.active .ham-lines span:nth-child(2){opacity:0}
-    .hamburger.active .ham-lines span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-
-    /* Drawer + Overlay */
-    .overlay{
-      position:fixed; inset:0; background:rgba(15,23,42,.5);
-      -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
-      opacity:0; pointer-events:none; transition:opacity var(--speed) ease; z-index:999;
-    }
-    .overlay.active{opacity:1; pointer-events:auto}
-
-    .drawer{
-      position:fixed; top:0; right:-100%;
-      width:min(420px, 92%); height:100dvh; z-index:1000;
-      background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 96%, transparent), color-mix(in srgb, var(--bg) 92%, transparent));
-      border-left:1px solid var(--border);
-      box-shadow: -24px 0 60px rgba(0,0,0,.25);
-      transition:right var(--speed) cubic-bezier(.4,.0,.2,1);
-      display:flex; flex-direction:column;
-      padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-    }
-    .drawer.active{right:0}
-    .drawer-header{
-      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;
-    }
-    .drawer-brand{display:flex; align-items:center; gap:12px}
-    .drawer-close{
-      appearance:none; border:none; background:transparent; width:40px; height:40px; border-radius:10px; cursor:pointer;
-      display:grid; place-items:center; transition:background var(--speed) ease;
-    }
-    .drawer-close:hover{background:color-mix(in srgb, var(--border) 25%, transparent)}
-    .drawer nav ul{
-      list-style:none; padding:0; margin:10px 0 0; display:flex; flex-direction:column; gap:10px;
-    }
-    .drawer nav a{
-      display:flex; align-items:center; gap:12px; text-decoration:none; padding:14px 12px; border-radius:12px;
-      color:var(--text); font-weight:700; letter-spacing:.2px; transition:background var(--speed) ease, color var(--speed) ease;
-    }
-    .drawer nav a i{color:var(--brand-primary); width:20px; text-align:center}
-    .drawer nav a:hover{background:color-mix(in srgb, var(--border) 25%, transparent); color:var(--brand-primary)}
-    .drawer-cta{
-      margin-top:auto; display:grid; gap:10px;
-    }
-    .drawer-cta .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:14px 16px;
-      border-radius:12px; border:1px solid var(--border); background:var(--bg-subtle); color:var(--heading);
-      font-weight:800; text-decoration:none; transition:transform var(--speed) ease, background var(--speed) ease;
-    }
-    .drawer-cta .btn.primary{
-      background:var(--brand-primary); color:#111827; border-color:transparent; box-shadow:0 12px 24px rgba(247,168,35,.28);
-    }
-    .drawer-cta .btn:hover{transform:translateY(-2px)}
-    .drawer-social{
-      display:flex; gap:10px; margin-top:10px;
-    }
-    .drawer-social a{
-      width:44px; height:44px; display:grid; place-items:center; border-radius:10px; text-decoration:none;
-      border:1px solid var(--border); color:var(--heading); background:color-mix(in srgb, var(--bg) 96%, transparent);
-      transition:transform var(--speed) ease, background var(--speed) ease, color var(--speed) ease;
-    }
-    .drawer-social a:hover{
-      background:var(--brand-primary); color:#111827; transform:translateY(-2px)
-    }
-
-    /* Section titles */
-    .section-title{
-      font-family:Poppins, Inter, sans-serif;
-      font-size:clamp(2rem, 4.5vw, 3rem);
-      color:var(--heading);
-      text-align:center; margin:0 0 2.2rem; line-height:1.1;
-      letter-spacing:.2px;
-      position:relative; padding-bottom:.75rem;
-    }
-    .section-title::after{
-      content:""; position:absolute; width:80px; height:4px; left:50%; bottom:0;
-      transform:translateX(-50%); border-radius:3px; background:var(--brand-primary);
-    }
-
-    /* Hero */
-    .hero{
-      min-height:100dvh; display:grid; place-items:center; text-align:center; padding-top:7.5rem; padding-bottom:3rem; position:relative; overflow:hidden;
-      background:
-        radial-gradient(1000px 600px at 85% -20%, rgba(247,168,35,.18), transparent 60%),
-        radial-gradient(800px 500px at -10% 110%, rgba(247,168,35,.12), transparent 60%),
-        linear-gradient(160deg, var(--bg-subtle) 0%, var(--bg) 70%);
-    }
-    .hero::before{
-      content:""; position:absolute; inset:-20% -10% auto -10%; height:60%;
-      background-image:
-        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(255,255,255,.06) 1px, transparent 1px);
-      background-size: 24px 24px;
-      opacity:.35; pointer-events:none;
-    }
-    .hero .content{max-width:900px; margin-inline:auto}
-    .hero h1{
-      font-family:Poppins, Inter, sans-serif;
-      font-weight:800; color:var(--heading);
-      font-size:clamp(2.2rem, 6vw, 4.2rem); line-height:1.08; margin:0 0 1rem;
-    }
-    .hero h1 .highlight{color:var(--brand-primary)}
-    .hero p{
-      font-size:clamp(1.05rem, 2.4vw, 1.25rem);
-      color:var(--text);
-      max-width:720px; margin:0 auto 2rem;
-    }
-    .hero-cta{
-      display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-    }
-    .btn{
-      display:inline-flex; align-items:center; gap:10px; padding:0.95rem 1.4rem; border-radius:999px;
-      text-decoration:none; font-weight:800; border:1px solid var(--border); color:var(--heading);
-      background:var(--bg); transition:transform var(--speed) ease, box-shadow var(--speed) ease, background var(--speed) ease;
-    }
-    .btn:hover{transform:translateY(-3px)}
-    .btn.primary{background:var(--brand-primary); color:#111827; border-color:transparent; box-shadow:0 16px 32px rgba(247,168,35,.3)}
-    .btn.secondary{background:var(--bg-subtle)}
-
-    .scroll-cue{
-      position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
-      color:var(--text-soft); font-size:.9rem; display:flex; align-items:center; gap:8px;
-      opacity:.85;
-    }
-    .scroll-cue i{animation:bob 1.4s ease-in-out infinite}
-    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
-
-    /* Services */
-    .services{background:var(--bg-subtle)}
-    .services-grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.5rem;
-    }
-    .card{
-      background:var(--bg); border:1px solid var(--border); border-radius:16px;
-      padding:1.6rem; box-shadow:var(--shadow-sm); transition:transform var(--speed) ease, box-shadow var(--speed) ease, border-color var(--speed) ease;
-      display:flex; flex-direction:column; gap:10px;
-    }
-    .card:hover{transform:translateY(-6px); box-shadow:var(--shadow-md); border-color:color-mix(in srgb, var(--brand-primary) 40%, var(--border))}
-    .card .icon{
-      width:50px; height:50px; border-radius:12px; display:grid; place-items:center;
-      background:color-mix(in srgb, var(--brand-primary) 18%, transparent);
-      color:var(--brand-primary); font-size:1.4rem;
-    }
-    .card h3{margin:.2rem 0 .2rem; color:var(--heading); font-size:1.25rem}
-    .card p{margin:0 0 .5rem; color:var(--text)}
-    .learn-more{
-      margin-top:auto; display:inline-flex; align-items:center; gap:8px; color:var(--brand-primary); text-decoration:none; font-weight:800;
-    }
-    .learn-more i{transition:transform var(--speed) ease}
-    .learn-more:hover i{transform:translateX(4px)}
-
-    /* About */
-    .about .grid{
-      display:grid; grid-template-columns:1fr; gap:2rem; max-width:1000px; margin-inline:auto;
-    }
-    @media (min-width: 900px){
-      .about .grid{grid-template-columns:1.05fr .95fr}
-    }
-    .about .panel{
-      background:var(--bg); border:1px solid var(--border); border-radius:16px; padding:1.6rem; box-shadow:var(--shadow-sm);
-    }
-
-    /* Contact */
-    .contact{background:var(--bg-subtle)}
-    .contact-wrap{
-      background:var(--bg); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow-md);
-      display:grid; grid-template-columns:1fr; gap:2rem; padding:2rem; max-width:1100px; margin-inline:auto;
-    }
-    .contact-wrap a{
-        color: orange;
-    }
-    @media (min-width: 980px){
-      .contact-wrap{grid-template-columns:1fr 1.1fr; padding:3rem}
-    }
-    .contact .info p{margin:.4rem 0; font-size:1.05rem}
-    .contact .info i{color:var(--brand-primary); margin-right:.6rem}
-
-    .form-group{margin-bottom:1.1rem}
-    .form-group label{display:block; margin-bottom:.45rem; color:var(--heading); font-weight:600}
-    .form-control{
-      width:100%; padding:.9rem 1rem; border-radius:12px; border:1px solid var(--border); background:var(--bg-subtle); color:var(--heading);
-      font:inherit; transition:border-color var(--speed) ease, background var(--speed) ease, box-shadow var(--speed) ease;
-    }
-    .form-control::placeholder{color:var(--text-soft)}
-    .form-control:focus{
-      outline:none; border-color:color-mix(in srgb, var(--brand-primary) 70%, var(--border));
-      background:var(--bg); box-shadow:0 0 0 3px color-mix(in srgb, var(--brand-primary) 25%, transparent);
-    }
-    .submit{
-      width:100%; padding:1rem; border:none; border-radius:12px; cursor:pointer; font-weight:800;
-      background:var(--brand-primary); color:#111827; box-shadow:0 14px 28px rgba(247,168,35,.3);
-      transition:transform var(--speed) ease, box-shadow var(--speed) ease, background var(--speed) ease;
-    }
-    .submit:hover:not(:disabled){transform:translateY(-2px); background:#f8b032}
-    .submit:disabled{opacity:.65; cursor:not-allowed}
-
-    /* Footer */
-    .footer{
-      background:var(--brand-dark); color:#cbd5e1; padding:4rem 0 2rem; margin-top:2rem;
-    }
-    .footer-grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:2rem; margin-bottom:1.8rem;
-    }
-    .footer h4{color:#fff; margin:0 0 .8rem; font-size:1.1rem}
-    .footer a{color:#cbd5e1; text-decoration:none}
-    .footer a:hover{color:var(--brand-primary); text-decoration:underline}
-    .footer .social{
-      display:flex; gap:10px; margin:1rem 0;
-    }
-    .footer .social a{
-      width:40px; height:40px; border-radius:50%; display:grid; place-items:center; background:rgba(255,255,255,.08);
-      color:#fff; transition:transform var(--speed) ease, background var(--speed) ease;
-    }
-    .footer .social a:hover{transform:translateY(-2px); background:var(--brand-primary); color:#111827}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,.15); margin-top:1.6rem; padding-top:1.4rem; text-align:center; color:#9fb0c9; font-size:.95rem}
-
-    /* Utilities */
-    .visually-hidden{
-      position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px, 1px, 1px, 1px);
-      white-space:nowrap; clip-path:inset(50%); border:0; padding:0; margin:-1px;
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 980px){
-      .hamburger{display:grid}
-      .nav-links{display:none}
-    }
-    @media (prefers-reduced-motion: reduce){
-      *{animation:none !important; transition:none !important}
-    }
-  </style>
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Organization",
-    "name":"VylexNexys",
-    "url":"https://vylexnexys.co.za/",
-    "logo":"https://vylexnexys.co.za/assets/images/vylex-nexys-logo.jpg",
-    "sameAs":[
-      "https://linkedin.com/company/vylexnexys",
-      "https://twitter.com/vylexnexys",
-      "https://github.com/vylexnexys",
-      "https://instagram.com/vylexnexys",
-      "https://tiktok.com/@vylexnexys"
-    ],
-    "contactPoint": [{
-      "@type":"ContactPoint",
-      "email":"info@vylexnexys.co.za",
-      "telephone":"+27-648-784-287",
-      "contactType":"customer support",
-      "areaServed":"ZA"
-    }]
-  }
-  </script>
-</head>
-<body>
-  <!-- Overlay + Drawer for premium burger -->
-  <div class="overlay" id="overlay" aria-hidden="true" tabindex="-1"></div>
-  <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Site menu">
-    <div class="drawer-header">
-      <a href="#home" class="drawer-brand brand" aria-label="VylexNexys home">
-        <img src="https://vylexnexys.co.za/assets/images/vylex-nexys-logo.jpg" alt="VylexNexys Logo" class="brand-logo" />
-      </a>
-      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
-        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-      </button>
-    </div>
-    <nav aria-label="Mobile">
-      <ul>
-        <li><a href="services.html"><i class="fa-solid fa-grid-2"></i> Services</a></li>
-        <li><a href="#about"><i class="fa-solid fa-circle-info"></i> About</a></li>
-        <li><a href="portfolio.html"><i class="fa-solid fa-briefcase"></i> Portfolio</a></li>
-        <li><a href="#contact"><i class="fa-solid fa-paper-plane"></i> Contact</a></li>
-        <li><a href="pricing.html"><i class="fa-solid fa-money-bill-wave"></i> Pricing</a></li>
-      </ul>
-    </nav>
-    <div class="drawer-cta">
-      <a class="btn primary" href="#contact"><i class="fa-solid fa-bolt"></i> Start a Project</a>
-      <a class="btn" href="mailto:info@vylexnexys.co.za"><i class="fa-solid fa-envelope"></i> info@vylexnexys.co.za</a>
-      <div class="drawer-social" aria-label="Social links">
-        <a href="https://linkedin.com/company/vylexnexys" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-        <a href="https://twitter.com/vylexnexys" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="https://github.com/vylexnexys" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://instagram.com/vylexnexys" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://tiktok.com/@vylexnexys" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Header -->
-  <header class="header" id="header">
-    <div class="container">
-      <div class="nav" role="navigation" aria-label="Main">
-        <a class="brand" href="#home" aria-label="VylexNexys home">
-          <span style="color: orange;">VylexNexys</span>
-        </a>
-        <div class="nav-links" id="navLinks">
-          <a href="services.html">Services</a>
-          <a href="#about">About</a>
-          <a href="portfolio.html">Portfolio</a>
-          <a href="#contact">Contact</a>
-          <a href="pricing.html">Contact</a>
-
-          <a class="nav-cta" href="#contact"><i class="fa-solid fa-rocket"></i> Get a Quote</a>
-        </div>
-        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
-          <span class="ham-lines" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main id="main">
-    <!-- Hero -->
-    <section id="home" class="hero" aria-labelledby="home-title">
-      <div class="content container">
-        <h1 id="home-title">
-          Building Digital Pathways to  <span class="highlight">Progress</span>
-        </h1>
-        <p>
-          Proudly African-born, we innovate for the web, mobile, and smart technologies. We design, build, and launch reliable digital products that empower businesses, non-profits, and young innovators to thrive in the digital age.
-        </p>
-        <div class="hero-cta">
-          <a class="btn primary" href="#contact"><i class="fa-solid fa-handshake-simple"></i> Get Started</a>
-          <a class="btn secondary" href="portfolio.html"><i class="fa-solid fa-briefcase"></i> View Work</a>
-        </div>
-      </div>
-      <div class="scroll-cue" aria-hidden="true">
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
-    </section>
-
-    <!-- Services -->
-    <section id="services" class="services" aria-labelledby="services-title">
-      <div class="container">
-        <h2 class="section-title" id="services-title">What We Do</h2>
-        <div class="services-grid">
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-code"></i></div>
-            <h3>Web Development</h3>
-            <p>Modern, SEO-friendly websites and robust web apps with secure hosting and best-practice performance.</p>
-            <a class="learn-more" href="services.html#web-development">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
-            <h3>Mobile Apps</h3>
-            <p>Android and cross-platform apps built to engage users and streamline operations.</p>
-            <a class="learn-more" href="services.html#mobile-apps">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-wrench"></i></div>
-            <h3>Digital Solutions</h3>
-            <p>Targeted tools and micro‑apps that automate tasks, boost productivity, and support learning.</p>
-            <a class="learn-more" href="services.html#digital-tools">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-database"></i></div>
-            <h3>Database Solutions</h3>
-            <p>Secure data systems with MySQL, Firebase, and cloud services—designed for reliability and scale.</p>
-            <a class="learn-more" href="services.html#database-solutions">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-gamepad"></i></div>
-            <h3>Interactive Applications</h3>
-            <p>Education platforms, serious games, and interactive web experiences that deliver real value.</p>
-            <a class="learn-more" href="services.html#interactive-apps">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-          <article class="card">
-            <div class="icon"><i class="fa-solid fa-palette"></i></div>
-            <h3>Design & Branding</h3>
-            <p>Logos, identity systems, and interfaces that reflect your brand and feel effortless to use.</p>
-            <a class="learn-more" href="services.html#design-branding">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section id="about" class="about" aria-labelledby="about-title">
-      <div class="container">
-        <h2 class="section-title" id="about-title">About VylexNexys</h2>
-        <div class="grid">
-          <div class="panel">
-            <p>VylexNexys is an independent technology company focused on practical, innovative digital products and tailored software solutions. We specialize in custom web apps, Android development, and smart tools designed to solve everyday problems.</p>
-            <p>Our products range from learning platforms and utility tools to interactive apps, built with a deep understanding of user needs and modern tech. We support individuals, startups, and small businesses with websites, branding, and cloud-connected applications.</p>
-            <p>Whether you need ready-to-use tools or bespoke solutions, we turn ideas into clean, functional digital experiences.</p>
-          </div>
-          <div class="panel" aria-label="Brand identity">
-            <h3 style="margin-top:0; color:var(--heading)">Our Identity</h3>
-            <p>Our brand pairs a confident deep navy with a warm golden orange. The stepped wedge symbol represents forward motion, growth, and a path to the next (“Nexys”) milestone.</p>
-            <ul style="margin:0; padding-left:1.1rem; color:var(--text)">
-              <li>Reliable engineering with human-centered design.</li>
-              <li>Lean execution and measurable outcomes.</li>
-              <li>Africa-first perspective with global standards.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="contact" aria-labelledby="contact-title">
-      <div class="container">
-        <h2 class="section-title" id="contact-title">Let's Work Together</h2>
-        <div class="contact-wrap">
-          <div class="info">
-            <p>Ready to bring your digital ideas to life? Whether you need a website, mobile app, or custom tool, we’re here to help.</p>
-            <p><i class="fa-solid fa-envelope"></i><a href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
-            <p><i class="fa-solid fa-phone"></i><a href="tel:0648784287">064-878-4287</a></p>
-          </div>
-          <form id="contactForm" class="form" novalidate>
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input class="form-control" type="text" id="name" name="name" required placeholder="e.g., Jane Doe" autocomplete="name" />
-            </div>
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input class="form-control" type="email" id="email" name="email" required placeholder="e.g., jane.doe@example.com" autocomplete="email" />
-            </div>
-            <div class="form-group">
-              <label for="message">Project Details / Inquiry</label>
-              <textarea class="form-control" id="message" name="message" rows="5" required placeholder="Tell us about your project or what you need help with..."></textarea>
-            </div>
-            <button type="submit" class="submit" id="submitBtn">Send Message</button>
-            <p id="formStatus" class="visually-hidden" role="status" aria-live="polite"></p>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <h4>VylexNexys</h4>
-          <p>An emerging technology company specializing in practical digital solutions for businesses. We create custom web applications, mobile apps, and digital tools that help your business grow.</p>
-          <div class="social" aria-label="Social links">
-            <a href="https://linkedin.com/company/vylexnexys" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://twitter.com/vylexnexys" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab-brands fab fa-twitter"></i></a>  
-            <a href="https://github.com/vylexnexys" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://instagram.com/vylexnexys" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://tiktok.com/@vylexnexys" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-          </div>
-        </div>
-        <div>
-          <h4>Quick Links</h4>
-          <ul style="list-style:none; padding:0; margin:0">
-            <li><a href="services.html">Our Services</a></li>
-            <li><a href="portfolio.html">Product Portfolio</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Contact Info</h4>
-          <address style="font-style:normal">
-            <p>Email: <a href="mailto:info@vylexnexys.co.za">info@vylexnexys.co.za</a></p>
-            <p>Phone: <a href="tel:0648784287">064-878-4287</a></p>
-            <p>Location: South Africa</p>
-            <p>Building digital solutions one project at a time.</p>
-          </address>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© <span id="year"></span> VylexNexys. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    (function(){
-      const header = document.getElementById('header');
-      const hamburger = document.getElementById('hamburger');
-      const drawer = document.getElementById('drawer');
-      const overlay = document.getElementById('overlay');
-      const drawerClose = document.getElementById('drawerClose');
-      const main = document.getElementById('main');
-      const yearEl = document.getElementById('year');
-
-      // Header scroll behavior
-      const onScroll = () => {
-        if(window.scrollY > 8){ header.classList.add('scrolled'); }
-        else { header.classList.remove('scrolled'); }
-      };
-      onScroll();
-      window.addEventListener('scroll', onScroll, {passive:true});
-
-      // Focus trap for drawer
-      let focusTrapCleanup = null;
-      function trapFocus(container, restoreEl){
-        const selectors = [
-          'a[href]', 'area[href]', 'button:not([disabled])', 'input:not([disabled])',
-          'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])'
-        ];
-        const focusables = () => Array.from(container.querySelectorAll(selectors.join(','))).filter(el=>el.offsetParent!==null || container === el);
-
-        function handleKey(e){
-          if(e.key !== 'Tab') return;
-          const items = focusables();
-          if(items.length === 0) return;
-          const first = items[0], last = items[items.length - 1];
-          if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-          else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-        }
-        document.addEventListener('keydown', handleKey);
-        return () => {
-          document.removeEventListener('keydown', handleKey);
-          if(restoreEl){ restoreEl.focus({preventScroll:true}); }
-        };
-      }
-
-      function openDrawer(){
-        drawer.classList.add('active');
-        overlay.classList.add('active');
-        drawer.setAttribute('aria-hidden', 'false');
-        overlay.setAttribute('aria-hidden', 'false');
-        hamburger.classList.add('active');
-        hamburger.setAttribute('aria-expanded','true');
-        document.body.classList.add('nav-open');
-        // Accessibility
-        main.setAttribute('aria-hidden','true');
-        focusTrapCleanup = trapFocus(drawer, hamburger);
-        // Focus first link
-        const firstLink = drawer.querySelector('a[href]');
-        setTimeout(()=> firstLink?.focus(), 10);
-      }
-      function closeDrawer(){
-        drawer.classList.remove('active');
-        overlay.classList.remove('active');
-        drawer.setAttribute('aria-hidden', 'true');
-        overlay.setAttribute('aria-hidden', 'true');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded','false');
-        document.body.classList.remove('nav-open');
-        main.removeAttribute('aria-hidden');
-        if(typeof focusTrapCleanup === 'function'){ focusTrapCleanup(); focusTrapCleanup = null; }
-      }
-
-      hamburger.addEventListener('click', ()=>{
-        const isOpen = drawer.classList.contains('active');
-        isOpen ? closeDrawer() : openDrawer();
-      });
-      drawerClose.addEventListener('click', closeDrawer);
-      overlay.addEventListener('click', closeDrawer);
-      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && drawer.classList.contains('active')) closeDrawer(); });
-
-      // Smooth scroll for on-page anchors inside drawer and header links
-      function smoothLink(link){
-        link.addEventListener('click', (e)=>{
-          const href = link.getAttribute('href') || '';
-          if(href.startsWith('#') && href.length > 1){
-            const target = document.querySelector(href);
-            if(target){
-              e.preventDefault();
-              closeDrawer();
-              target.scrollIntoView({behavior:'smooth', block:'start'});
-              history.pushState(null, '', href);
+    <!-- Tailwind Theme Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#051b38',      // Deep Corporate Navy
+                            blue: '#0a2e5c',      // Secondary Blue
+                            orange: '#fba919',    // Accent Amber/Orange
+                            gray: '#f8fafc',      // Light background
+                            slate: '#e2e8f0',     // Borders
+                            darkslate: '#1e293b', // Dark slate for text/footers
+                        }
+                    }
+                }
             }
-          }else{
-            closeDrawer(); // external link; still close
-          }
+        }
+    </script>
+
+    <!-- Global Styles -->
+    <style>
+        /* === GAME LAB SPECIFIC === */
+
+/* Radial Dot Pattern */
+.hero-bg {
+    background-color: #051b38;
+    background-image: radial-gradient(#0a2e5c 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+/* Darker Overlay for Games */
+.hero-overlay {
+    background: linear-gradient(to bottom, rgba(5, 27, 56, 0.8), #051b38);
+}
+
+/* Game Card Floating Effect */
+.game-card {
+    transition: all 0.3s ease;
+}
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #fba919;
+}
+
+/* Play Button Animation */
+.play-btn-pulse:hover {
+    animation: none;
+}
+    </style>
+</head>
+
+<body class="font-sans text-slate-600 antialiased bg-brand-gray">
+
+    <!-- Navbar (Standardized) -->
+    <nav class="fixed w-full z-50 bg-white border-b border-gray-200 transition-transform duration-300 transform translate-y-0"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/index.html" class="flex items-center">
+                        <img src="/assets/images/vxnx-logo.png" alt="Vylex Nexys" class="h-10 w-auto object-contain">
+
+                        <span class="logo-separator"></span>
+
+                        <div class="flex flex-col justify-center">
+                            <span class="text-brand-navy font-bold text-lg leading-none uppercase tracking-tight">
+                                INTERACTIVE
+                            </span>
+                            <span
+                                class="text-[10px] font-semibold text-gray-400 tracking-widest uppercase leading-none mt-1">
+                                Game Lab Unit
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#featured"
+                        class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">Featured</a>
+                    <a href="#arcade"
+                        class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">Arcade</a>
+                    <a href="#about"
+                        class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">About
+                        Lab</a>
+                    <a href="https://vylexnexys.co.za"
+                        class="px-6 py-2.5 rounded border border-brand-navy text-brand-navy font-semibold hover:bg-brand-navy hover:text-white transition-all duration-200 shadow-sm text-sm">
+                        Back to Corporate
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-navy hover:text-brand-orange focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="#featured"
+                    class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">Featured
+                    Games</a>
+                <a href="#arcade"
+                    class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">Arcade
+                    Collection</a>
+                <a href="#about"
+                    class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">About The
+                    Lab</a>
+                <a href="https://vylexnexys.co.za"
+                    class="block px-3 py-3 mt-4 text-center rounded text-base font-bold bg-gray-100 text-brand-navy">Back
+                    to Main Site</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-24 hero-bg text-white overflow-hidden">
+        <div class="absolute inset-0 hero-overlay"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="inline-block mb-6 px-3 py-1 bg-brand-orange/10 border border-brand-orange/30 rounded-full text-xs font-bold uppercase tracking-widest text-brand-orange">
+                Vylex Nexys Game Lab
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6 text-white">
+                Immersive Web <br>
+                <span class="text-brand-orange">Experiences.</span>
+            </h1>
+
+            <p class="text-lg text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto">
+                Pushing the boundaries of browser technologies. We build high-performance 3D and 2D games to showcase
+                the interactive capabilities of the modern web.
+            </p>
+
+            <div class="flex justify-center gap-4">
+                <a href="#featured"
+                    class="px-8 py-3 rounded bg-brand-orange text-brand-navy font-bold hover:bg-white transition-colors duration-200 shadow-lg uppercase text-sm tracking-wide">
+                    Play Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured 3D Section -->
+    <section id="featured" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="h-px bg-gray-200 flex-1"></div>
+                <h2 class="text-2xl font-bold text-brand-navy uppercase tracking-wider">Premium 3D Titles</h2>
+                <div class="h-px bg-gray-200 flex-1"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Mr Racer -->
+                <div
+                    class="game-card group bg-white rounded-xl overflow-hidden border border-brand-slate shadow-sm flex flex-col h-full relative">
+                    <div
+                        class="absolute top-4 right-4 bg-brand-orange text-brand-navy text-xs font-bold px-2 py-1 rounded">
+                        HOT</div>
+                    <div class="h-48 bg-gray-800 flex items-center justify-center relative overflow-hidden">
+                        <!-- Placeholder for Game Image -->
+                        <div class="absolute inset-0 bg-brand-navy opacity-50"></div>
+                        <i class="fas fa-flag-checkered text-6xl text-brand-orange relative z-10"></i>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-navy mb-2">Mr Racer Ultimate</h3>
+                        <p class="text-sm text-gray-500 mb-6 flex-grow">
+                            High-fidelity 3D traffic racer. Dynamic weather, day/night cycles, and smart traffic AI. The
+                            flagship driving experience.
+                        </p>
+                        <a href="https://vylexnexys.co.za/games/mr-racer-ultimate"
+                            class="w-full py-3 bg-brand-navy text-white text-center rounded font-semibold hover:bg-brand-orange hover:text-brand-navy transition-colors uppercase text-xs tracking-wider">
+                            Start Engine
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Zombie Shooter -->
+                <div
+                    class="game-card group bg-white rounded-xl overflow-hidden border border-brand-slate shadow-sm flex flex-col h-full">
+                    <div class="h-48 bg-gray-800 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-red-900 opacity-40"></div>
+                        <i class="fas fa-biohazard text-6xl text-white relative z-10"></i>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-navy mb-2">Zombie Shooter 3D</h3>
+                        <p class="text-sm text-gray-500 mb-6 flex-grow">
+                            Intense survival FPS. Hunt zombies, collect resources, and survive the apocalypse in a fully
+                            3D environment.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="https://vylexnexys.co.za/games/zombie-shooter"
+                                class="py-3 bg-brand-navy text-white text-center rounded font-semibold hover:bg-brand-orange hover:text-brand-navy transition-colors uppercase text-xs tracking-wider">
+                                Play V1
+                            </a>
+                            <a href="z-shooterv2.html"
+                                class="py-3 border border-brand-navy text-brand-navy text-center rounded font-semibold hover:bg-brand-navy hover:text-white transition-colors uppercase text-xs tracking-wider">
+                                Try V2 Beta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bitcoin Adventure -->
+                <div
+                    class="game-card group bg-white rounded-xl overflow-hidden border border-brand-slate shadow-sm flex flex-col h-full">
+                    <div class="h-48 bg-gray-800 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-yellow-900 opacity-40"></div>
+                        <i class="fab fa-bitcoin text-6xl text-yellow-400 relative z-10"></i>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-navy mb-2">Bitcoin Adventure</h3>
+                        <p class="text-sm text-gray-500 mb-6 flex-grow">
+                            Join Avuyile in this 3D runner. Collect digital assets while dodging obstacles. A Vylex
+                            exclusive.
+                        </p>
+                        <a href="https://vylexnexys.co.za/games/bitcoin-collector"
+                            class="w-full py-3 bg-brand-navy text-white text-center rounded font-semibold hover:bg-brand-orange hover:text-brand-navy transition-colors uppercase text-xs tracking-wider">
+                            Play Now
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Arcade & Casual Section -->
+    <section id="arcade" class="py-20 bg-brand-gray border-t border-brand-slate">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-brand-navy">Arcade & Casual</h2>
+                <p class="text-gray-500 mt-2">Quick-play experiences for desktop and mobile.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- SA Quiz -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">SA Quiz Challenge</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Test your knowledge of South African history and culture.
+                    </p>
+                    <a href="sa-quiz-challenge.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Memory Match -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Memory Match</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Classic card matching to sharpen your cognitive skills.
+                    </p>
+                    <a href="memory-match.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Slither Snake -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-worm"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Slither Snake</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">The retro classic reimagined. Grow longer, don't crash.
+                    </p>
+                    <a href="slither.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Stellar Defender -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Stellar Defender</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Action-packed space shooter. Defend the perimeter.</p>
+                    <a href="stellar-defender.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Happy Pet -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Pet Garden</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Relaxing garden simulator. Grow plants and care for pets.
+                    </p>
+                    <a href="pet-garden.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- 30 Seconds -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">30 Seconds</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Fast-paced word guessing for quick thinkers.</p>
+                    <a href="30-seconds.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Speed Clicker -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Speed Clicker</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Test your reflexes and clicking speed (CPS).</p>
+                    <a href="speed-clicker.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- RPS -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-hand-rock"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Rock Paper Scissors</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">
+                        A classic quick-play challenge of choice and chance.
+                    </p>
+                    <a href="https://vylexnexys.co.za/games/rock-paper-scissors.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">
+                        Play
+                    </a>
+                </div>
+
+                <!-- Dodge Survive -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Dodge Survive</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">High-stakes arcade dodging. Survive as long as you can.
+                    </p>
+                    <a href="dodge-survive.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experimental / Footer Links Section -->
+    <section class="py-12 bg-white border-t border-brand-slate">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <h3 class="font-bold text-brand-navy mb-1">Experimental Projects</h3>
+                <p class="text-sm text-gray-500">Early access prototypes and web demos.</p>
+            </div>
+            <div class="flex gap-4">
+                <a href="3dportfolio.html"
+                    class="text-sm font-semibold text-brand-blue hover:text-brand-orange transition-colors">
+                    <i class="fas fa-cube mr-2"></i>3D Portfolio
+                </a>
+                <span class="text-gray-300">|</span>
+                <a href="quote-jokes-and-advice.html"
+                    class="text-sm font-semibold text-brand-blue hover:text-brand-orange transition-colors">
+                    <i class="fas fa-quote-right mr-2"></i>Daily Quotes and Jokes
+                </a>
+                <span class="text-gray-300">|</span>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Identical to Corporate) -->
+    <footer class="bg-brand-navy text-slate-400 py-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="/assets/images/vxnx-logo.png" alt="Vylex Nexys" class="h-6 w-auto opacity-60 saturate-0">
+                        <span class="text-white font-bold text-xl tracking-tighter">
+                            Interactive Division
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-500 leading-relaxed">
+                        The gaming and immersive media unit of Vylex Nexys. Creating digital entertainment for the
+                        modern web.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold uppercase text-xs tracking-wider mb-4">Site Map</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://vylexnexys.co.za"
+                                class="hover:text-brand-orange transition-colors">Corporate Home</a></li>
+                        <li><a href="/index.html" class="hover:text-brand-orange transition-colors">Web Division</a>
+                        </li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold uppercase text-xs tracking-wider mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://vylexnexys.co.za/privacy-policy"
+                                class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="https://vylexnexys.co.za/terms" class="hover:text-white transition-colors">Terms of
+                                Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center text-xs text-gray-600 border-t border-gray-800 pt-8">
+                &copy; 2025 Vylex Nexys Technology Group. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Logic
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('open');
+            });
+        }
+
+        // Smart Navbar Logic
+        let lastScrollTop = 0;
+        const nav = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (!menu.classList.contains('open')) {
+                if (scrollTop > lastScrollTop && scrollTop > 80) {
+                    nav.style.transform = 'translateY(-100%)';
+                } else {
+                    nav.style.transform = 'translateY(0)';
+                    if (scrollTop > 20) {
+                        nav.classList.add('nav-sticky');
+                    } else {
+                        nav.classList.remove('nav-sticky');
+                    }
+                }
+            }
+            lastScrollTop = scrollTop;
         });
-      }
-      document.querySelectorAll('a[href^="#"]').forEach(smoothLink);
-      drawer.querySelectorAll('a').forEach(smoothLink);
-
-      // Year
-      if(yearEl) yearEl.textContent = new Date().getFullYear();
-
-      // Contact form -> WhatsApp handoff
-      const form = document.getElementById('contactForm');
-      const submitBtn = document.getElementById('submitBtn');
-      const statusEl = document.getElementById('formStatus');
-
-      function validateEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-
-      if(form){
-        form.addEventListener('submit', (e)=>{
-          e.preventDefault();
-          const name = (document.getElementById('name').value || '').trim();
-          const email = (document.getElementById('email').value || '').trim();
-          const message = (document.getElementById('message').value || '').trim();
-
-          if(!name || !email || !message){
-            statusEl.classList.remove('visually-hidden');
-            statusEl.textContent = 'Please complete all fields.';
-            return;
-          }
-          if(!validateEmail(email)){
-            statusEl.classList.remove('visually-hidden');
-            statusEl.textContent = 'Please enter a valid email address.';
-            return;
-          }
-
-          const whatsappMessage =
-`Hi! I'm ${name} and I'm interested in working with VylexNexys.
-
-Contact Details:
-Email: ${email}
-
-Project Details:
-${message}
-
-I'd like to discuss this project further. When would be a good time to talk?`;
-
-          const encoded = encodeURIComponent(whatsappMessage);
-          const waURL = `https://wa.me/27648784287?text=${encoded}`;
-
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Redirecting...';
-          statusEl.classList.remove('visually-hidden');
-          statusEl.textContent = 'Opening WhatsApp...';
-
-          setTimeout(()=>{
-            window.open(waURL, '_blank', 'noopener');
-            setTimeout(()=>{
-              form.reset();
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'Send Message';
-              statusEl.textContent = 'If WhatsApp did not open, please email us at info@vylexnexys.co.za.';
-            }, 1200);
-          }, 600);
-        });
-      }
-    })();
-  </script>
+    </script>
 </body>
+
 </html>
