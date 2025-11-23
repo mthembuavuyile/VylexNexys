@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Site Verification -->
     <meta name="google-site-verification" content="8QCAaqQsO5s-JhKbqsiCfXk0BbJnUXRSoIe7be2Y2cs" />
+
+    <!-- SEO Meta -->
     <meta name="description"
         content="Vylex Game Lab - Play free online games including Zombie Shooter, Bitcoin Adventure, South Africa Quiz, Memory Match and more. Fun web games crafted with passion and precision.">
     <meta name="keywords"
         content="Vylex Game Lab, online games, web games, zombie shooter, bitcoin adventure, South Africa quiz, memory games, snake game, free games">
     <meta name="author" content="VylexNexys">
 
-    <!-- Open Graph / Social Media Meta Tags -->
+    <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Vylex Game Lab - Free Online Games">
     <meta property="og:description"
         content="Play our collection of engaging web games including Zombie Shooter, Bitcoin Adventure and more. Challenge yourself and have fun!">
@@ -19,392 +23,519 @@
     <meta property="og:url" content="https://vylexnexys.co.za/games">
     <meta property="og:image" content="https://vylexnexys.co.za/images/gamelab-preview.jpg">
 
-    <!-- Twitter Card data -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Vylex Game Lab - Free Online Games">
     <meta name="twitter:description"
         content="Play our collection of engaging web games including Zombie Shooter, Bitcoin Adventure and more!">
     <meta name="twitter:image" content="https://vylexnexys.co.za/images/gamelab-preview.jpg">
 
-    <title>Vylex Game Lab - Play Free Online Games | VylexNexys</title>
-
     <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
+    <!-- Fonts & Core Styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Theme Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#051b38',      // Deep Corporate Navy
+                            blue: '#0a2e5c',      // Secondary Blue
+                            orange: '#fba919',    // Accent Amber/Orange
+                            gray: '#f8fafc',      // Light background
+                            slate: '#e2e8f0',     // Borders
+                            darkslate: '#1e293b', // Dark slate for text/footers
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Global Styles -->
     <style>
-        :root {
-            --primary: #00c4ff;
-            --secondary: #ff2957;
-            --dark: #1a1a1a;
-            --light: #f0f0f0;
+        /* Shared Corporate Styles */
+        .nav-sticky {
+            background: rgba(255, 255, 255, 0.98);
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .hero-bg {
+            background-color: #051b38;
+            /* Slightly different pattern for Gaming Division to distinguish it */
+            background-image: radial-gradient(#0a2e5c 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--dark);
-            color: var(--light);
-            line-height: 1.6;
-            overflow-x: hidden;
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(5, 27, 56, 0.8), #051b38);
         }
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1rem;
-            background: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-            text-decoration: none;
+        #mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
         }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--light);
-            font-size: 1.5rem;
-            cursor: pointer;
-            /* Removed invalid CSS property */
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .hero {
-            min-height: 100vh;
-            padding: 6rem 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(0, 196, 255, 0.1), rgba(255, 41, 87, 0.1));
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin-bottom: 2rem;
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
+        /* Game Card Specifics */
         .game-card {
-            background: rgba(51, 51, 51, 0.8);
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .game-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #fba919;
         }
 
-        .game-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .game-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .game-desc {
-            font-size: 0.9rem;
-            color: #ccc;
-            margin-bottom: 1.5rem;
-        }
-
-        .play-btn {
+        .logo-separator {
             display: inline-block;
-            padding: 0.8rem 2rem;
-            background: var(--primary);
-            color: var(--dark);
-            text-decoration: none;
-            border-radius: 2rem;
-            font-weight: bold;
-            transition: transform 0.3s, background 0.3s;
+            height: 28px;
+            width: 1px;
+            background-color: #cbd5e1;
+            margin: 0 16px;
         }
 
-        .play-btn:hover {
-            background: var(--secondary);
-            transform: scale(1.05);
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .featured-games {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-
-        .featured-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: var(--primary);
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .nav-links {
-                display: none;
-                position: fixed;
-                top: 60px;
-                left: 0;
-                width: 100%;
-                background: rgba(26, 26, 26, 0.95);
-                padding: 1rem;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+        /* Play Button Pulse */
+        .play-btn-pulse:hover {
+            animation: none;
         }
     </style>
-
-    <!-- Structured data for better SEO -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Vylex Game Lab",
-      "url": "https://vylexnexys.co.za/games",
-      "description": "Free online games collection by VylexNexys",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://vylexnexys.co.za/games/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
 </head>
 
-<body>
-    <header>
-        <nav class="navbar">
-            <a href="#" class="logo" aria-label="Vylex Game Lab Home">Vylex Game Lab</a>
-            <button class="menu-toggle" aria-label="Toggle navigation menu">☰</button>
-            <!-- aria-label is correctly used as an HTML attribute -->
-            <div class="nav-links">
-                <a href="#games" aria-label="Browse Games">Games</a>
-                <a href="https://vylexnexys.co.za" aria-label="Visit Vylex Nexys Main Site">Main Site</a>
-                <a href="#about" aria-label="About Vylex Game Lab">About</a>
+<body class="font-sans text-slate-600 antialiased bg-brand-gray">
+
+    <!-- Navbar (Standardized) -->
+    <nav class="fixed w-full z-50 bg-white border-b border-gray-200 transition-transform duration-300 transform translate-y-0"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/index.html" class="flex items-center">
+                        <img src="/assets/images/vxnx-logo.png" alt="Vylex Nexys" class="h-10 w-auto object-contain">
+
+                        <span class="logo-separator"></span>
+
+                        <div class="flex flex-col justify-center">
+                            <span class="text-brand-navy font-bold text-lg leading-none uppercase tracking-tight">
+                                INTERACTIVE
+                            </span>
+                            <span
+                                class="text-[10px] font-semibold text-gray-400 tracking-widest uppercase leading-none mt-1">
+                                Game Lab Unit
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#featured"
+                        class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">Featured</a>
+                    <a href="#arcade"
+                        class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">Arcade</a>
+                    <a href="#about"
+                        class="text-brand-navy font-medium hover:text-brand-orange transition-colors text-sm uppercase tracking-wide">About
+                        Lab</a>
+                    <a href="https://vylexnexys.co.za"
+                        class="px-6 py-2.5 rounded border border-brand-navy text-brand-navy font-semibold hover:bg-brand-navy hover:text-white transition-all duration-200 shadow-sm text-sm">
+                        Back to Corporate
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-navy hover:text-brand-orange focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
-        </nav>
-    </header>
+        </div>
 
-    <main>
-        <section class="hero">
-            <h1>Welcome to Vylex Nexys Game Lab</h1>
-            <p>Experience our collection of engaging web games crafted with passion and precision. Challenge yourself,
-                beat high scores, and have fun!</p>
-        </section>
+        <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="#featured"
+                    class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">Featured
+                    Games</a>
+                <a href="#arcade"
+                    class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">Arcade
+                    Collection</a>
+                <a href="#about"
+                    class="block px-3 py-3 border-b border-gray-50 text-base font-medium text-brand-navy">About The
+                    Lab</a>
+                <a href="https://vylexnexys.co.za"
+                    class="block px-3 py-3 mt-4 text-center rounded text-base font-bold bg-gray-100 text-brand-navy">Back
+                    to Main Site</a>
+            </div>
+        </div>
+    </nav>
 
-        <section class="featured-games">
-            <h2 class="featured-title">Featured 3D Games</h2>
-            <div class="games-grid">
-                <div class="game-card">
-                    <div class="game-icon">🧟</div>
-                    <h3 class="game-title">Zombie Shooter 3D</h3>
-                    <p class="game-desc">Intense 3D action game where you hunt zombies and collect health boxes to
-                        survive the apocalypse.</p>
-                    <a href="https://vylexnexys.co.za/games/zombie-shooter" class="play-btn">Play Now</a>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-24 hero-bg text-white overflow-hidden">
+        <div class="absolute inset-0 hero-overlay"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="inline-block mb-6 px-3 py-1 bg-brand-orange/10 border border-brand-orange/30 rounded-full text-xs font-bold uppercase tracking-widest text-brand-orange">
+                Vylex Nexys Game Lab
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6 text-white">
+                Immersive Web <br>
+                <span class="text-brand-orange">Experiences.</span>
+            </h1>
+
+            <p class="text-lg text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto">
+                Pushing the boundaries of browser technologies. We build high-performance 3D and 2D games to showcase
+                the interactive capabilities of the modern web.
+            </p>
+
+            <div class="flex justify-center gap-4">
+                <a href="#featured"
+                    class="px-8 py-3 rounded bg-brand-orange text-brand-navy font-bold hover:bg-white transition-colors duration-200 shadow-lg uppercase text-sm tracking-wide">
+                    Play Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured 3D Section -->
+    <section id="featured" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="h-px bg-gray-200 flex-1"></div>
+                <h2 class="text-2xl font-bold text-brand-navy uppercase tracking-wider">Premium 3D Titles</h2>
+                <div class="h-px bg-gray-200 flex-1"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Mr Racer -->
+                <div
+                    class="game-card group bg-white rounded-xl overflow-hidden border border-brand-slate shadow-sm flex flex-col h-full relative">
+                    <div
+                        class="absolute top-4 right-4 bg-brand-orange text-brand-navy text-xs font-bold px-2 py-1 rounded">
+                        HOT</div>
+                    <div class="h-48 bg-gray-800 flex items-center justify-center relative overflow-hidden">
+                        <!-- Placeholder for Game Image -->
+                        <div class="absolute inset-0 bg-brand-navy opacity-50"></div>
+                        <i class="fas fa-flag-checkered text-6xl text-brand-orange relative z-10"></i>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-navy mb-2">Mr Racer Ultimate</h3>
+                        <p class="text-sm text-gray-500 mb-6 flex-grow">
+                            High-fidelity 3D traffic racer. Dynamic weather, day/night cycles, and smart traffic AI. The
+                            flagship driving experience.
+                        </p>
+                        <a href="https://vylexnexys.co.za/games/mr-racer-ultimate"
+                            class="w-full py-3 bg-brand-navy text-white text-center rounded font-semibold hover:bg-brand-orange hover:text-brand-navy transition-colors uppercase text-xs tracking-wider">
+                            Start Engine
+                        </a>
+                    </div>
                 </div>
 
-                <div class="game-card">
-                    <div class="game-icon">₿</div>
-                    <h3 class="game-title">Avuyile's Bitcoin Adventure</h3>
-                    <p class="game-desc">Join Avuyile in this exciting 3D game where you collect bitcoins while dodging
-                        challenging obstacles.</p>
-                    <a href="https://vylexnexys.co.za/games/bitcoin-collector" class="play-btn">Play Now</a>
+                <!-- Zombie Shooter -->
+                <div
+                    class="game-card group bg-white rounded-xl overflow-hidden border border-brand-slate shadow-sm flex flex-col h-full">
+                    <div class="h-48 bg-gray-800 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-red-900 opacity-40"></div>
+                        <i class="fas fa-biohazard text-6xl text-white relative z-10"></i>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-navy mb-2">Zombie Shooter 3D</h3>
+                        <p class="text-sm text-gray-500 mb-6 flex-grow">
+                            Intense survival FPS. Hunt zombies, collect resources, and survive the apocalypse in a fully
+                            3D environment.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="https://vylexnexys.co.za/games/zombie-shooter"
+                                class="py-3 bg-brand-navy text-white text-center rounded font-semibold hover:bg-brand-orange hover:text-brand-navy transition-colors uppercase text-xs tracking-wider">
+                                Play V1
+                            </a>
+                            <a href="z-shooterv2.html"
+                                class="py-3 border border-brand-navy text-brand-navy text-center rounded font-semibold hover:bg-brand-navy hover:text-white transition-colors uppercase text-xs tracking-wider">
+                                Try V2 Beta
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="game-card">
-                    <div class="game-icon">🏎️</div>
-                    <h3 class="game-title">Mr Racer Ultimate</h3>
-                    <p class="game-desc">
-                        A high-speed 3D traffic racer by Vylex Nexys for desktop and mobile. Weave through smart traffic
-                        cars, hit nitro, and stack combos across a living world with day/night, rain, and auto
-                        performance tuning. Optional tilt steering and text-only achievements keep your view clear while
-                        you chase new records.
+                <!-- Bitcoin Adventure -->
+                <div
+                    class="game-card group bg-white rounded-xl overflow-hidden border border-brand-slate shadow-sm flex flex-col h-full">
+                    <div class="h-48 bg-gray-800 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-yellow-900 opacity-40"></div>
+                        <i class="fab fa-bitcoin text-6xl text-yellow-400 relative z-10"></i>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-navy mb-2">Bitcoin Adventure</h3>
+                        <p class="text-sm text-gray-500 mb-6 flex-grow">
+                            Join Avuyile in this 3D runner. Collect digital assets while dodging obstacles. A Vylex
+                            exclusive.
+                        </p>
+                        <a href="https://vylexnexys.co.za/games/bitcoin-collector"
+                            class="w-full py-3 bg-brand-navy text-white text-center rounded font-semibold hover:bg-brand-orange hover:text-brand-navy transition-colors uppercase text-xs tracking-wider">
+                            Play Now
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Arcade & Casual Section -->
+    <section id="arcade" class="py-20 bg-brand-gray border-t border-brand-slate">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-brand-navy">Arcade & Casual</h2>
+                <p class="text-gray-500 mt-2">Quick-play experiences for desktop and mobile.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- SA Quiz -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">SA Quiz Challenge</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Test your knowledge of South African history and culture.
                     </p>
-                    <a href="https://vylexnexys.co.za/games/mr-racer-ultimate" class="play-btn"
-                        aria-label="Play Mr Racer Ultimate">Play Now</a>
+                    <a href="sa-quiz-challenge.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Memory Match -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Memory Match</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Classic card matching to sharpen your cognitive skills.
+                    </p>
+                    <a href="memory-match.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Slither Snake -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-worm"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Slither Snake</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">The retro classic reimagined. Grow longer, don't crash.
+                    </p>
+                    <a href="slither.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Stellar Defender -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Stellar Defender</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Action-packed space shooter. Defend the perimeter.</p>
+                    <a href="stellar-defender.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Happy Pet -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Pet Garden</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Relaxing garden simulator. Grow plants and care for pets.
+                    </p>
+                    <a href="pet-garden.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- 30 Seconds -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">30 Seconds</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Fast-paced word guessing for quick thinkers.</p>
+                    <a href="30-seconds.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- Speed Clicker -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Speed Clicker</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">Test your reflexes and clicking speed (CPS).</p>
+                    <a href="speed-clicker.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
+                </div>
+
+                <!-- RPS -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-hand-rock"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Rock Paper Scissors</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">
+                        A classic quick-play challenge of choice and chance.
+                    </p>
+                    <a href="https://vylexnexys.co.za/games/rock-paper-scissors.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">
+                        Play
+                    </a>
+                </div>
+
+                <!-- Dodge Survive -->
+                <div class="game-card bg-white p-6 rounded-lg border border-brand-slate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-brand-navy rounded flex items-center justify-center text-white">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="font-bold text-brand-navy">Dodge Survive</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4 h-10">High-stakes arcade dodging. Survive as long as you can.
+                    </p>
+                    <a href="dodge-survive.html"
+                        class="block w-full py-2 border border-gray-200 text-center rounded hover:bg-brand-orange hover:border-brand-orange hover:text-brand-navy transition-colors text-xs font-bold uppercase">Play</a>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="games" class="games-grid">
-            <div class="game-card">
-                <div class="game-icon">🧠🇿🇦</div>
-                <h3 class="game-title">South Africa Quiz Challenge</h3>
-                <p class="game-desc">Answer trivia questions on South Africa's rich culture, history, and geography.</p>
-                <a href="sa-quiz-challenge.html" class="play-btn">Play Now</a>
+    <!-- Experimental / Footer Links Section -->
+    <section class="py-12 bg-white border-t border-brand-slate">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <h3 class="font-bold text-brand-navy mb-1">Experimental Projects</h3>
+                <p class="text-sm text-gray-500">Early access prototypes and web demos.</p>
             </div>
-
-            <div class="game-card">
-                <div class="game-icon">🎴</div>
-                <h3 class="game-title">Memory Match</h3>
-                <p class="game-desc">Sharpen your memory with this classic card-matching game. Can you find all the
-                    pairs?</p>
-                <a href="memory-match.html" class="play-btn">Play Now</a>
+            <div class="flex gap-4">
+                <a href="3dportfolio.html"
+                    class="text-sm font-semibold text-brand-blue hover:text-brand-orange transition-colors">
+                    <i class="fas fa-cube mr-2"></i>3D Portfolio
+                </a>
+                <span class="text-gray-300">|</span>
+                <a href="quote-jokes-and-advice.html"
+                    class="text-sm font-semibold text-brand-blue hover:text-brand-orange transition-colors">
+                    <i class="fas fa-quote-right mr-2"></i>Daily Quotes and Jokes
+                </a>
+                <span class="text-gray-300">|</span>
+                
             </div>
+        </div>
+    </section>
 
-            <div class="game-card">
-                <div class="game-icon">🐍</div>
-                <h3 class="game-title">Slither Snake Game</h3>
-                <p class="game-desc">Guide your snake to collect apples and grow longer in this classic snake game.</p>
-                <a href="slither.html" class="play-btn">Play Now</a>
+    <!-- Footer (Identical to Corporate) -->
+    <footer class="bg-brand-navy text-slate-400 py-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="/assets/images/vxnx-logo.png" alt="Vylex Nexys" class="h-6 w-auto opacity-60 saturate-0">
+                        <span class="text-white font-bold text-xl tracking-tighter">
+                            Interactive Division
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-500 leading-relaxed">
+                        The gaming and immersive media unit of Vylex Nexys. Creating digital entertainment for the
+                        modern web.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold uppercase text-xs tracking-wider mb-4">Site Map</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://vylexnexys.co.za"
+                                class="hover:text-brand-orange transition-colors">Corporate Home</a></li>
+                        <li><a href="/index.html" class="hover:text-brand-orange transition-colors">Web Division</a>
+                        </li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold uppercase text-xs tracking-wider mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://vylexnexys.co.za/privacy-policy"
+                                class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="https://vylexnexys.co.za/terms" class="hover:text-white transition-colors">Terms of
+                                Service</a></li>
+                    </ul>
+                </div>
             </div>
-
-            <div class="game-card">
-                <div class="game-icon">⚔️</div>
-                <h3 class="game-title">Stellar Defender Shooting Game</h3>
-                <p class="game-desc">Aim, shoot, and take down targets in this action-packed game.</p>
-                <a href="stellar-defender.html" class="play-btn">Play Now</a>
+            <div class="text-center text-xs text-gray-600 border-t border-gray-800 pt-8">
+                &copy; 2025 Vylex Nexys Technology Group. All rights reserved.
             </div>
-
-            <div class="game-card">
-                <div class="game-icon">🌱</div>
-                <h3 class="game-title">Happy Pet Garden</h3>
-                <p class="game-desc">Build your dream garden, care for your pets, and grow plants in this fun simulator.
-                </p>
-                <a href="pet-garden.html" class="play-btn">Play Now</a>
-            </div>
-
-            <div class="game-card">
-                <div class="game-icon">✌️</div>
-                <h3 class="game-title">Rock Paper Scissors</h3>
-                <p class="game-desc">Challenge the computer in this classic game of chance and strategy.</p>
-                <a href="rock-paper-scissors.html" class="play-btn">Play Now</a>
-            </div>
-
-            <div class="game-card">
-                <div class="game-icon">⏳</div>
-                <h3 class="game-title">30 Seconds</h3>
-                <p class="game-desc">Test your quick thinking and teamwork in this fast-paced word guessing game.</p>
-                <a href="30-seconds.html" class="play-btn">Play Now</a>
-            </div>
-
-            <div class="game-card">
-                <div class="game-icon">☁️</div>
-                <h3 class="game-title">Sky Fall</h3>
-                <p class="game-desc">Catch falling items with your basket and rack up points in this engaging arcade
-                    game.</p>
-                <a href="sky-fall.html" class="play-btn">Play Now</a>
-            </div>
-
-            <div class="game-card">
-                <div class="game-icon">⚡</div>
-                <h3 class="game-title">Speed Clicker</h3>
-                <p class="game-desc">How fast can you click? Test your clicking speed and aim for the highest CPS!</p>
-                <a href="speed-clicker.html" class="play-btn">Play Now</a>
-            </div>
-
-            <div class="game-card">
-                <div class="game-icon">🎮</div>
-                <h3 class="game-title">Dodge Survive</h3>
-                <p class="game-desc">Test your reflexes in this fast-paced arcade game. Dodge obstacles and survive as
-                    long as you can!</p>
-                <a href="dodge-survive.html" class="play-btn">Play Now</a>
-            </div>
-
-            <a href="3dportfolio.html">3D Portfolio</a>
-            <a href="quote-jokes-and-advice.html">quote-jokes-and-advice</a>
-            <a href="z-shooterv2.html">zombie-shooter v2</a>
-        </section>
-
-        <section id="about" class="hero">
-            <h2>About Vylex Game Lab</h2>
-            <p>Vylex Game Lab is a division of VylexNexys dedicated to creating fun, engaging web games for all ages.
-                Our games range from simple classics to modern 3D experiences, all designed to provide entertainment and
-                challenge your skills.</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Vylex Nexys. All Rights Reserved.</p>
-        <p>
-            <a href="https://vylexnexys.co.za/privacy-policy">Privacy Policy</a> |
-            <a href="https://vylexnexys.co.za/terms">Terms of Use</a> |
-            <a href="https://vylexnexys.co.za/contact">Contact Us</a>
-        </p>
+        </div>
     </footer>
 
     <script>
-        document.querySelector('.menu-toggle').addEventListener('click', () => {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
+        // Mobile Menu Logic
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
 
-        // Add lazy loading for better performance
-        document.addEventListener('DOMContentLoaded', function () {
-            // Track page view for analytics (replace with your actual analytics code)
-            console.log('Page loaded: Vylex Game Lab');
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('open');
+            });
+        }
+
+        // Smart Navbar Logic
+        let lastScrollTop = 0;
+        const nav = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (!menu.classList.contains('open')) {
+                if (scrollTop > lastScrollTop && scrollTop > 80) {
+                    nav.style.transform = 'translateY(-100%)';
+                } else {
+                    nav.style.transform = 'translateY(0)';
+                    if (scrollTop > 20) {
+                        nav.classList.add('nav-sticky');
+                    } else {
+                        nav.classList.remove('nav-sticky');
+                    }
+                }
+            }
+            lastScrollTop = scrollTop;
         });
     </script>
 </body>
