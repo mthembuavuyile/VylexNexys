@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Lesson 7: Trigonometric Functions - Vylex Nexys</title>
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Math Lesson 7:</span><br> Trigonometric Functions</h1>
+        </div>
+
+        <!-- 7.1 Graphs Overview -->
+        <div class="section">
+            <h2>Graphs of Trigonometric Functions</h2>
+            <p>Trigonometric functions are fundamental in mathematics and have various real-world applications. These functions are periodic, meaning they repeat their values in regular intervals.</p>
+            <p>The general form of a trigonometric function is:</p>
+            <p class="text-center"><strong>$y = a \cdot \sin(bx + p) + q$</strong> &nbsp;or&nbsp; <strong>$y = a \cdot \cos(bx + p) + q$</strong></p>
+            <p>Where:</p>
+            <ul>
+                <li><strong>a</strong> affects the amplitude (height)</li>
+                <li><strong>b</strong> affects the period (frequency)</li>
+                <li><strong>p</strong> affects the horizontal shift (phase shift)</li>
+                <li><strong>q</strong> affects the vertical shift</li>
+            </ul>
+
+            <div class="exercise">
+                <h3>Exercise: Identifying Basic Trig Graphs</h3>
+                <p>Match the following functions to their characteristic shapes:</p>
+                <ol>
+                    <li>$y = \sin(x)$</li>
+                    <li>$y = \cos(x)$</li>
+                    <li>$y = \tan(x)$</li>
+                </ol>
+                <button onclick="showTrig1Solution()" class="btn">Show Solution</button>
+                <div id="trig1Solution" class="solution-box" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <!-- 7.2 Amplitude -->
+        <div class="section">
+            <h2>The Effect of 'a': Change in Amplitude</h2>
+            <p>The amplitude is the distance from the midline to a maximum or minimum point. For $y = a \sin(x)$ or $y = a \cos(x)$:</p>
+            <ul>
+                <li>If $|a| > 1$, the amplitude increases (vertical stretch).</li>
+                <li>If $0 < |a| < 1$, the amplitude decreases (vertical compression).</li>
+                <li>If $a < 0$, the graph is reflected over the x-axis.</li>
+            </ul>
+            <div class="exercise">
+                <h3>Exercise: Amplitude Changes</h3>
+                <p>Describe how the amplitude of $y = \sin(x)$ changes for each of these functions:</p>
+                <ol>
+                    <li>$y = 2\sin(x)$</li>
+                    <li>$y = 0.5\sin(x)$</li>
+                    <li>$y = -\sin(x)$</li>
+                </ol>
+                <button onclick="showTrig2Solution()" class="btn">Show Solution</button>
+                <div id="trig2Solution" class="solution-box" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <!-- 7.3 Vertical Shift -->
+        <div class="section">
+            <h2>The Effect of 'q': Vertical Shift</h2>
+            <p>The '$q$' value causes a vertical translation of the entire graph:</p>
+            <ul>
+                <li>If $q > 0$, the graph shifts <strong>up</strong>.</li>
+                <li>If $q < 0$, the graph shifts <strong>down</strong>.</li>
+            </ul>
+            <div class="exercise">
+                <h3>Exercise: Vertical Shifts</h3>
+                <p>Describe the vertical shift for each of these functions:</p>
+                <ol>
+                    <li>$y = \sin(x) + 2$</li>
+                    <li>$y = \cos(x) - 1$</li>
+                    <li>$y = \tan(x) + 0.5$</li>
+                </ol>
+                <button onclick="showTrig3Solution()" class="btn">Show Solution</button>
+                <div id="trig3Solution" class="solution-box" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <!-- 7.4 Period -->
+        <div class="section">
+            <h2>The Effect of 'b': Change in Period</h2>
+            <p>The period is the distance required for one full cycle. For $y = \sin(bx)$ or $y = \cos(bx)$:</p>
+            <ul>
+                <li>The period is calculated as: <strong>Period = $\frac{360^\circ}{|b|}$</strong> or <strong>$\frac{2\pi}{|b|}$</strong></li>
+                <li>If $|b| > 1$, the period decreases (horizontal compression).</li>
+                <li>If $0 < |b| < 1$, the period increases (horizontal stretch).</li>
+            </ul>
+            <div class="exercise">
+                <h3>Exercise: Period Changes</h3>
+                <p>Calculate the period for each of these functions (in radians):</p>
+                <ol>
+                    <li>$y = \sin(2x)$</li>
+                    <li>$y = \cos(0.5x)$</li>
+                    <li>$y = \tan(\pi x)$</li>
+                </ol>
+                <button onclick="showTrig4Solution()" class="btn">Show Solution</button>
+                <div id="trig4Solution" class="solution-box" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <!-- 7.5 Horizontal Shift -->
+        <div class="section">
+            <h2>The Effect of 'p': Horizontal Shift</h2>
+            <p>The '$p$' value causes a horizontal shift (phase shift):</p>
+            <ul>
+                <li>If $p > 0$, the graph shifts <strong>left</strong>.</li>
+                <li>If $p < 0$, the graph shifts <strong>right</strong>.</li>
+            </ul>
+            <div class="exercise">
+                <h3>Exercise: Horizontal Shifts</h3>
+                <p>Describe the horizontal shift for each of these functions:</p>
+                <ol>
+                    <li>$y = \sin(x + \frac{\pi}{2})$</li>
+                    <li>$y = \cos(x - \pi)$</li>
+                    <li>$y = \tan(x + \frac{\pi}{4})$</li>
+                </ol>
+                <button onclick="showTrig5Solution()" class="btn">Show Solution</button>
+                <div id="trig5Solution" class="solution-box" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <!-- Tools & Resources -->
+        <div class="section text-center">
+            <h2>Visual Learning</h2>
+            <p>See these transformations in real-time with our visualizer:</p>
+            <a href="/tools/" class="btn">Open Trig Visualizer</a>
+        </div>
+
+        <!-- AI Interaction -->
+        <div class="section">
+            <h2>AI Interaction</h2>
+            <div class="exercise">
+                <p>Confused about amplitude vs period? Ask our AI assistant for a simplified explanation:</p>
+                <input type="text" id="userPrompt" placeholder="Ask AI about trig graphs..." style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section text-center">
+            <a href="06_functions.html" class="btn" style="background: var(--text-muted);">Back to Lesson 6</a>
+            <a href="../../index.html" class="btn">Back to Dashboard</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        function showTrig1Solution() {
+            document.getElementById('trig1Solution').innerHTML = 
+                "<ul style='list-style:none; padding:0;'><li>✅ <strong>1. Sin(x):</strong> Wave crossing the origin (0,0).</li>" +
+                "<li>✅ <strong>2. Cos(x):</strong> Wave starting at maximum (0,1).</li>" +
+                "<li>✅ <strong>3. Tan(x):</strong> Periodic curves with vertical asymptotes.</li></ul>";
+        }
+
+        function showTrig2Solution() {
+            document.getElementById('trig2Solution').innerHTML = 
+                "<ul style='list-style:none; padding:0;'><li>1. Amplitude doubles to 2.</li>" +
+                "<li>2. Amplitude halves to 0.5.</li>" +
+                "<li>3. Reflected over x-axis, amplitude remains 1.</li></ul>";
+        }
+
+        function showTrig3Solution() {
+            document.getElementById('trig3Solution').innerHTML = 
+                "<ul style='list-style:none; padding:0;'><li>1. Shifts 2 units UP.</li>" +
+                "<li>2. Shifts 1 unit DOWN.</li>" +
+                "<li>3. Shifts 0.5 units UP.</li></ul>";
+        }
+
+        function showTrig4Solution() {
+            document.getElementById('trig4Solution').innerHTML = 
+                "<ul style='list-style:none; padding:0;'><li>1. Period = $2\pi / 2 = \pi$</li>" +
+                "<li>2. Period = $2\pi / 0.5 = 4\pi$</li>" +
+                "<li>3. Period = $\pi / \pi = 1$ (Note: Tan natural period is $\pi$)</li></ul>";
+        }
+
+        function showTrig5Solution() {
+            document.getElementById('trig5Solution').innerHTML = 
+                "<ul style='list-style:none; padding:0;'><li>1. Shifts left by $\pi/2$ units.</li>" +
+                "<li>2. Shifts right by $\pi$ units.</li>" +
+                "<li>3. Shifts left by $\pi/4$ units.</li></ul>";
+        }
+
+        function askAI() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            if (!userPrompt) {
+                responseDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+        }
+    </script>
+</body>
+</html>

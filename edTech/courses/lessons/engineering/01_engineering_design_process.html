@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Lesson 1: Design Process - Vylex Nexys</title>
+    <meta name="canonical" href="https://vylexnexys.co.za/edTech/lessons/engineering/01_engineering_design_process.html">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Engineering Lesson 1:</span><br> The Engineering Design Process</h1>
+        </div>
+
+        <div class="section">
+            <h2>Introduction</h2>
+            <p>Engineering isn't just about building; it's about solving problems. The <strong>Engineering Design Process (EDP)</strong> is a series of steps that guides engineering teams as they solve problems.</p>
+        </div>
+
+        <div class="section">
+            <h2>1. Define & Imagine</h2>
+            <p>First, engineers define the problem: What needs to be solved? Who is it for? Then, they brainstorm as many ideas as possible.</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Problem Definition</h3>
+                <p>Imagine you need to build a bridge for a local park. What is your primary goal?</p>
+                <input type="text" id="problemStatement" placeholder="e.g., Carry 50 people across a 10m stream" style="width: 90%;">
+                <br><br>
+                <button onclick="setGoal()" class="btn">Set Goal</button>
+                <div id="goalResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. Plan & Create</h2>
+            <p>During this stage, you pick one idea, list materials, and build a <strong>prototype</strong> (a preliminary version of the device).</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Material Selection</h3>
+                <p>Select a material for your bridge prototype and see the trade-off:</p>
+                <select id="materialSelect" style="padding: 10px; width: 60%;">
+                    <option value="">-- Choose a Material --</option>
+                    <option value="Steel">Steel (Strong but Heavy)</option>
+                    <option value="Wood">Wood (Cheap but Decays)</option>
+                    <option value="Carbon Fiber">Carbon Fiber (Light but Expensive)</option>
+                </select>
+                <button onclick="checkMaterial()" class="btn">Check Property</button>
+                <div id="materialResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. Test & Improve</h2>
+            <p>Testing helps find weaknesses. If the prototype fails, engineers don't quit—they <strong>iterate</strong> (improve) the design and try again.</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Stress Test Simulation</h3>
+                <p>Click the button to simulate a weight test on your design:</p>
+                <button onclick="runTest()" class="btn" style="background-color: #e67e22;">Run Stress Test</button>
+                <div id="testResult" style="margin-top: 10px; font-family: monospace; padding: 10px; border: 1px dashed #ccc;">
+                    Ready for testing...
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>AI Design Assistant</h2>
+            <div class="exercise">
+                <p>Need help brainstorming solutions for a specific engineering problem? Ask our AI:</p>
+                <input type="text" id="userPrompt" placeholder="How can I filter water cheaply?" style="width: 70%;">
+                <button onclick="askAI()" class="btn">Get Ideas</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <div class="section text-center">
+            <a href="../../index.html" class="btn" style="background: var(--text-muted);">Back to Hub</a>
+            <a href="02_intro_to_circuits.html" class="btn">Next: Intro to Circuits</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        function setGoal() {
+            const goal = document.getElementById('problemStatement').value;
+            const res = document.getElementById('goalResult');
+            if(!goal) { res.innerHTML = "Please enter a goal."; return; }
+            res.innerHTML = `<span style='color: green;'>Goal Locked:</span> Your design must ${goal}.`;
+        }
+
+        function checkMaterial() {
+            const val = document.getElementById('materialSelect').value;
+            const res = document.getElementById('materialResult');
+            if(!val) { res.innerHTML = "Select a material first."; return; }
+            res.innerHTML = `Engineer's Note: Using <span style='color: var(--highlight-color);'>${val}</span> requires careful budget and weight calculations.`;
+        }
+
+        function runTest() {
+            const res = document.getElementById('testResult');
+            res.innerHTML = "Testing in progress...";
+            setTimeout(() => {
+                const outcomes = [
+                    "FAIL: Structural collapse at 50% load. Recommendation: Reinforce joints.",
+                    "SUCCESS: Design held 110% of target load. Recommendation: Optimize for weight.",
+                    "MARGINAL: Excessive bending detected. Recommendation: Change material thickness."
+                ];
+                const random = outcomes[Math.floor(Math.random() * outcomes.length)];
+                res.innerHTML = `<strong>Result:</strong> ${random}`;
+            }, 1000);
+        }
+
+        function askAI() {
+            document.getElementById('aiResponse').innerHTML = "Connecting to Design Brain... (Offline Mode)";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEM Learning - Vylex Nexys</title>
+  <link rel="canonical" href="https://vylexnexys.co.za/edTech/">
+  <!-- Single CSS Link -->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body data-root-path="/"> <!-- Tells JS where root is -->
+
+  <!-- Header injected here -->
+  <header id="main-header"></header>
+
+  <main class="container">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h1><span class="highlight">STEM Learning</span> Hub</h1>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab" role="tablist">
+      <button class="tablinks" id="mathematics-tab" onclick="openSubject(event, 'Mathematics')">Mathematics</button>
+      <button class="tablinks" id="science-tab" onclick="openSubject(event, 'Science')">Science</button>
+      <button class="tablinks" id="technology-tab" onclick="openSubject(event, 'Technology')">Technology</button>
+      <button class="tablinks" id="engineering-tab" onclick="openSubject(event, 'Engineering')">Engineering</button>
+    </div>
+
+    <!-- Tab Content: Mathematics -->
+    <div id="Mathematics" class="tabcontent"> 
+      <h2>Mathematics</h2>
+
+      <div class="card">
+        <h3>Lesson 1: Basic Arithmetic</h3>
+        <p>Learn addition, subtraction, multiplication, and division.</p>
+        <a href="lessons/math/01_basic_arithmetic.html" class="btn">Start Lesson</a>
+        <div class="progress-bar"><div class="progress" style="width: 20%"></div></div>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 2: Fractions & Decimals</h3>
+        <p>Understand fractions, decimals, and how to convert between them.</p>
+        <a href="lessons/math/02_fractions_and_decimals.html" class="btn">Start Lesson</a>
+        <div class="progress-bar"><div class="progress" style="width: 10%"></div></div>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 3: Exponents & Surds</h3>
+        <p>Explore powers, roots, and simplifying surds.</p>
+        <a href="lessons/math/03_exponents_and_surds.html" class="btn">Start Lesson</a>
+        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 4: Algebra</h3>
+        <p>Solve equations and simplify algebraic expressions.</p>
+        <a href="lessons/math/04_algebra.html" class="btn">Start Lesson</a>
+        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 5: Number Patterns & Sequences</h3>
+        <p>Identify patterns and work with arithmetic sequences.</p>
+        <a href="lessons/math/05_number_patterns_sequences_series.html" class="btn">Start Lesson</a>
+        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 6: Functions</h3>
+        <p>Understand function notation, domain, and range.</p>
+        <a href="lessons/math/06_functions.html" class="btn">Start Lesson</a>
+        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 7: Trigonometric Functions</h3>
+        <p>Learn sine, cosine, tangent, and their applications.</p>
+        <a href="lessons/math/07_trig_functions.html" class="btn">Start Lesson</a>
+        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Tab Content: Science -->
+    <div id="Science" class="tabcontent">
+      <h2>Science</h2>
+
+      <div class="card">
+        <h3>Lesson 1: Introduction to Physics</h3>
+        <p>Explore motion, forces, and energy fundamentals.</p>
+        <a href="lessons/science/01_intro_to_physics.html" class="btn">Start Lesson</a>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 2: Basic Chemistry Concepts</h3>
+        <p>Understand atoms, elements, and chemical reactions.</p>
+        <a href="lessons/science/02_basic_chemistry.html" class="btn">Start Lesson</a>
+      </div>
+    </div>
+
+    <!-- Tab Content: Technology -->
+    <div id="Technology" class="tabcontent">
+      <h2>Technology</h2>
+
+      <div class="card">
+        <h3>Lesson 1: Intro to Computers</h3>
+        <p>Hardware, software, and how computers work.</p>
+        <a href="lessons/tech/01introduction_to_computers.html" class="btn">Start Lesson</a>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 2: Introduction to Programming</h3>
+        <p>Learn basic programming logic and problem-solving concepts.</p>
+        <a href="lessons/tech/02basic_programming_concepts.html" class="btn">Start Lesson</a>
+      </div>
+    </div>
+
+    <!-- Tab Content: Engineering -->
+    <div id="Engineering" class="tabcontent">
+      <h2>Engineering</h2>
+
+      <div class="card">
+        <h3>Lesson 1: Engineering Design Process</h3>
+        <p>Understand how engineers solve real-world problems step by step.</p>
+        <a href="lessons/engineering/01_engineering_design_process.html" class="btn">Start Lesson</a>
+      </div>
+
+      <div class="card">
+        <h3>Lesson 2: Introduction to Circuits</h3>
+        <p>Learn about current, voltage, and simple electrical circuits.</p>
+        <a href="lessons/engineering/02_intro_to_circuits.html" class="btn">Start Lesson</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer injected here -->
+  <footer id="main-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="js/global.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

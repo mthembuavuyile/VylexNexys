@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Lesson 2: Intro to Circuits - Vylex Nexys</title>
+    <meta name="canonical" href="https://vylexnexys.co.za/edTech/lessons/engineering/02_intro_to_circuits.html">
+    <link rel="stylesheet" href="../../css/main.css">
+    <style>
+        .bulb { width: 50px; height: 50px; border-radius: 50%; background: #555; margin: 10px auto; border: 2px solid #333; transition: 0.3s; }
+        .bulb.on { background: #f1c40f; box-shadow: 0 0 20px #f1c40f; }
+    </style>
+</head>
+
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Engineering Lesson 2:</span><br> Introduction to Circuits</h1>
+        </div>
+
+        <div class="section">
+            <h2>What is a Circuit?</h2>
+            <p>An electrical circuit is a closed loop that allows electricity to flow. It usually consists of a <strong>power source</strong> (battery), <strong>conductors</strong> (wires), and a <strong>load</strong> (light bulb or motor).</p>
+        </div>
+
+        <div class="section">
+            <h2>1. Ohm's Law</h2>
+            <p>The relationship between Voltage ($V$), Current ($I$), and Resistance ($R$) is defined by Ohm's Law: $V = I \times R$.</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Voltage Calculator</h3>
+                <p>Calculate the Voltage needed if you know the Current (Amps) and Resistance (Ohms):</p>
+                <input type="number" id="currentInput" placeholder="Current (I) in Amps" style="width: 40%;">
+                <input type="number" id="resistanceInput" placeholder="Resistance (R) in Ohms" style="width: 40%;">
+                <br><br>
+                <button onclick="calcVoltage()" class="btn">Calculate Voltage (V)</button>
+                <div id="calcResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. The Simple Switch</h2>
+            <p>A switch breaks the circuit. When the switch is <strong>open</strong>, current cannot flow. When it is <strong>closed</strong>, the loop is complete.</p>
+            
+            <div class="exercise text-center">
+                <h3>Exercise: Virtual Circuit</h3>
+                <div id="lightBulb" class="bulb"></div>
+                <p id="circuitStatus">Circuit is currently: <strong>OPEN</strong></p>
+                <button onclick="toggleSwitch()" class="btn">Flip Switch</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. Series vs. Parallel</h2>
+            <p>In <strong>Series</strong>, components are in one single path. If one bulb breaks, they all go out. In <strong>Parallel</strong>, each component has its own path.</p>
+        </div>
+
+        <div class="section">
+            <h2>AI Electronics Lab</h2>
+            <div class="exercise">
+                <p>Ask about specific components like resistors, capacitors, or transistors:</p>
+                <input type="text" id="userPrompt" placeholder="What does a resistor do?" style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <div class="section text-center">
+            <a href="01_engineering_design_process.html" class="btn" style="background: var(--text-muted);">Back to Lesson 1</a>
+            <a href="../../index.html" class="btn">Back to Dashboard</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        function calcVoltage() {
+            const i = parseFloat(document.getElementById('currentInput').value);
+            const r = parseFloat(document.getElementById('resistanceInput').value);
+            const res = document.getElementById('calcResult');
+
+            if (isNaN(i) || isNaN(r)) {
+                res.innerHTML = "<span style='color: red;'>Please enter valid numbers.</span>";
+                return;
+            }
+            const v = i * r;
+            res.innerHTML = `Result: Required Voltage is <span style='color: var(--highlight-color);'>${v.toFixed(2)} Volts</span>.`;
+        }
+
+        let isLightOn = false;
+        function toggleSwitch() {
+            isLightOn = !isLightOn;
+            const bulb = document.getElementById('lightBulb');
+            const status = document.getElementById('circuitStatus');
+            
+            if (isLightOn) {
+                bulb.classList.add('on');
+                status.innerHTML = "Circuit is currently: <strong style='color: green;'>CLOSED (Current Flowing)</strong>";
+            } else {
+                bulb.classList.remove('on');
+                status.innerHTML = "Circuit is currently: <strong style='color: red;'>OPEN (No Flow)</strong>";
+            }
+        }
+
+        function askAI() {
+            document.getElementById('aiResponse').innerHTML = "AI Electronics assistant is currently initializing...";
+        }
+    </script>
+</body>
+</html>

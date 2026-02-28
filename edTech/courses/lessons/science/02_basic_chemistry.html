@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Lesson 2: Basic Chemistry Concepts - Vylex Nexys</title>
+    <meta name="canonical" href="https://vylexnexys.co.za/edTech/lessons/science/02_basic_chemistry.html">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Science Lesson 2:</span><br> Basic Chemistry Concepts</h1>
+        </div>
+
+        <div class="section">
+            <h2>Introduction to Chemistry</h2>
+            <p>Chemistry is the branch of science that deals with the properties, composition, and structure of elements and compounds, how they can change, and the energy that is released or absorbed when they change.</p>
+        </div>
+
+        <div class="section">
+            <h2>The Structure of an Atom</h2>
+            
+            <p>Atoms are the basic building blocks of matter. They consist of three main subatomic particles:</p>
+            <ul>
+                <li><strong>Protons:</strong> Positively charged particles in the nucleus.</li>
+                <li><strong>Neutrons:</strong> Particles with no charge in the nucleus.</li>
+                <li><strong>Electrons:</strong> Negatively charged particles orbiting the nucleus.</li>
+            </ul>
+            <p>The <strong>Atomic Mass</strong> of an atom is roughly equal to the sum of its protons and neutrons.</p>
+            <div class="exercise">
+                <h3>Exercise: Calculate Atomic Mass</h3>
+                <label>Number of Protons:</label>
+                <input type="number" id="protons" placeholder="0"> 
+                <label>Number of Neutrons:</label>
+                <input type="number" id="neutrons" placeholder="0">
+                <button onclick="checkMass()" class="btn">Calculate Mass</button>
+                <div id="massResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Elements and the Periodic Table</h2>
+            
+            <p>An element is a pure substance consisting only of atoms that all have the same numbers of protons. The Periodic Table organizes all known elements based on their atomic number and chemical properties.</p>
+        </div>
+
+        <div class="section">
+            <h2>Chemical Reactions</h2>
+            
+            <p>A chemical reaction is a process that leads to the chemical transformation of one set of chemical substances to another. The starting materials are called <strong>reactants</strong>, and the new substances formed are called <strong>products</strong>.</p>
+        </div>
+
+        <div class="section">
+            <h2>AI Interaction</h2>
+            <div class="exercise">
+                <p>Have more questions about molecules, reactions, or the periodic table? Ask our AI assistant:</p>
+                <input type="text" id="userPrompt" placeholder="Ask AI anything..." style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <div class="section text-center">
+            <a href="01_intro_to_physics.html" class="btn" style="background: var(--text-muted);">Previous: Physics</a>
+            <a href="../../index.html" class="btn">Back to Dashboard</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        // Atomic Mass Logic
+        function checkMass() {
+            var protons = parseInt(document.getElementById('protons').value) || 0;
+            var neutrons = parseInt(document.getElementById('neutrons').value) || 0;
+            var result = protons + neutrons;
+            document.getElementById('massResult').innerHTML = "The estimated atomic mass number is: <span class='highlight'>" + result + "</span>";
+        }
+
+        // AI Logic
+        function askAI() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            if (!userPrompt) {
+                responseDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+        }
+    </script>
+</body>
+
+</html>

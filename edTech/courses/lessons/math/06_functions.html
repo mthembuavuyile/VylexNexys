@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Lesson 6: Functions - Vylex Nexys</title>
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Math Lesson 6:</span><br> Functions</h1>
+        </div>
+
+        <!-- 6.1 Definition -->
+        <div class="section">
+            <h2>Understanding Functions</h2>
+            <p>A function is a relationship where every input ($x$) from the <strong>domain</strong> has exactly one output ($y$) in the <strong>range</strong>. Think of it as a mathematical machine.</p>
+            <p><strong>Function Notation:</strong> We write functions as $f(x)$, where $f$ is the name and $x$ is the input. For example, if $f(x) = 2x$, then $f(5) = 10$.</p>
+        </div>
+
+        <!-- 6.2 Linear Functions -->
+        <div class="section">
+            <h2>Linear Functions</h2>
+            <p>A linear function creates a straight line. The standard form is: <strong>f(x) = mx + c</strong>, where $m$ is the gradient and $c$ is the y-intercept.</p>
+            <div class="exercise">
+                <h3>Exercise: Substitution</h3>
+                <p>For the function <strong>f(x) = 2x - 1</strong>, find the value of <strong>f(4)</strong>:</p>
+                <input type="number" id="linearInput" placeholder="Enter value..."> 
+                <button onclick="checkLinear()" class="btn">Check Answer</button>
+                <div id="linearResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <!-- 6.3 Quadratic Functions -->
+        <div class="section">
+            <h2>Quadratic Functions</h2>
+            <p>Quadratic functions create a U-shaped curve called a <strong>parabola</strong>. The general form is: <strong>f(x) = ax² + bx + c</strong>.</p>
+            <div class="exercise">
+                <h3>Exercise: Solving Quadratics</h3>
+                <p>If <strong>f(x) = x² + 3x - 2</strong>, what is the value of <strong>f(2)</strong>?</p>
+                <input type="number" id="quadInput" placeholder="Enter value..."> 
+                <button onclick="checkQuadratic()" class="btn">Check Answer</button>
+                <div id="quadResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <!-- 6.4 Exponential Functions -->
+        <div class="section">
+            <h2>Exponential Functions</h2>
+            <p>In an exponential function, the variable is in the exponent: <strong>f(x) = a · bˣ</strong>. These functions represent rapid growth or decay.</p>
+            <div class="exercise">
+                <h3>Exercise: Exponents</h3>
+                <p>Calculate <strong>f(3)</strong> for the function: <strong>f(x) = 3ˣ</strong></p>
+                <input type="number" id="expInput" placeholder="Enter value..."> 
+                <button onclick="checkExponential()" class="btn">Check Answer</button>
+                <div id="expResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <!-- 6.5 Inverses and Logs -->
+        <div class="section">
+            <h2>Inverse & Logarithmic Functions</h2>
+            <p>An <strong>inverse function</strong>, $f^{-1}(x)$, reverses the effect of the original function. The inverse of an exponential function is a <strong>logarithmic function</strong>.</p>
+            <p>Example: if $2³ = 8$, then $\log_{2}(8) = 3$.</p>
+        </div>
+
+        <!-- Tools & Resources -->
+        <div class="section text-center">
+            <h2>Visual Learning</h2>
+            <p>Use our interactive tool to see how changing coefficients affects the shape of a graph:</p>
+            <a href="/tools/" class="btn">Open Function Visualizer</a>
+        </div>
+
+        <!-- AI Interaction -->
+        <div class="section">
+            <h2>AI Interaction</h2>
+            <div class="exercise">
+                <p>Need help finding a domain or range? Ask our AI assistant for a step-by-step explanation:</p>
+                <input type="text" id="userPrompt" placeholder="Ask AI anything about functions..." style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section text-center">
+            <a href="05_number_patterns.html" class="btn" style="background: var(--text-muted);">Back to Lesson 5</a>
+            <a href="07_trig_functions.html" class="btn">Next Lesson: Trig Functions</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        // 6.2 Linear Logic
+        function checkLinear() {
+            const ans = document.getElementById('linearInput').value;
+            const res = document.getElementById('linearResult');
+            // 2(4) - 1 = 7
+            if (ans === "7") {
+                res.innerHTML = "Correct! $f(4) = 2(4) - 1 = 7$.";
+                res.style.color = "inherit";
+            } else {
+                res.innerHTML = "<span style='color: red;'>Incorrect. Substitute 4 into the 'x' position.</span>";
+            }
+        }
+
+        // 6.3 Quadratic Logic
+        function checkQuadratic() {
+            const ans = document.getElementById('quadInput').value;
+            const res = document.getElementById('quadResult');
+            // (2)^2 + 3(2) - 2 = 4 + 6 - 2 = 8
+            if (ans === "8") {
+                res.innerHTML = "Correct! $f(2) = (2)^2 + 3(2) - 2 = 8$.";
+                res.style.color = "inherit";
+            } else {
+                res.innerHTML = "<span style='color: red;'>Try again. Remember to square the 2 first.</span>";
+            }
+        }
+
+        // 6.4 Exponential Logic
+        function checkExponential() {
+            const ans = document.getElementById('expInput').value;
+            const res = document.getElementById('expResult');
+            // 3^3 = 27
+            if (ans === "27") {
+                res.innerHTML = "Correct! $3^{3} = 3 \times 3 \times 3 = 27$.";
+                res.style.color = "inherit";
+            } else {
+                res.innerHTML = "<span style='color: red;'>Incorrect. $3^3$ is not $3 \times 3$.</span>";
+            }
+        }
+
+        // AI Logic
+        function askAI() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            if (!userPrompt) {
+                responseDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+        }
+    </script>
+</body>
+</html>

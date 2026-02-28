@@ -1,0 +1,97 @@
+@import url('_variables.css');
+@import url('_base.css');
+@import url('_layout.css');
+@import url('_components.css');
+
+
+
+/* --- Mobile Navigation Styles --- */
+
+/* Hide burger on desktop */
+.burger {
+    display: none;
+    cursor: pointer;
+}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Tablet and Mobile Styles */
+@media screen and (max-width: 768px) {
+    body {
+        overflow-x: hidden; /* Prevent side-scroll when menu is hidden */
+    }
+
+    .nav-links {
+        position: fixed;
+        right: 0px;
+        height: 100vh;
+        top: 0; /* Changed from 8vh to cover full screen */
+        background-color: var(--surface-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 70%;
+        transform: translateX(100%);
+        transition: transform 0.5s ease-in;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        z-index: 99;
+    }
+
+    .nav-links li {
+        opacity: 0;
+        margin: 20px 0;
+    }
+
+    .burger {
+        display: block;
+        z-index: 101;
+    }
+
+    /* Tabs responsiveness */
+    .tab {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .tablinks {
+        padding: 0.8rem 1rem;
+        white-space: nowrap;
+    }
+}
+
+/* Toggle Class for JS */
+.nav-active {
+    transform: translateX(0%);
+}
+
+/* Burger to X Animation */
+.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+.toggle .line2 {
+    opacity: 0;
+}
+.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Fade in for links */
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}

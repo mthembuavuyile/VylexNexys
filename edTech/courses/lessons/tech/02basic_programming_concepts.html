@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Lesson 2: Basic Programming Concepts - Vylex Nexys</title>
+    <meta name="canonical" href="https://vylexnexys.co.za/edTech/lessons/tech/02basic_programming_concepts.html">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Tech Lesson 2:</span><br> Basic Programming Concepts</h1>
+        </div>
+
+        <div class="section">
+            <h2>Introduction</h2>
+            <p>In this lesson, we'll learn about four fundamental programming concepts: <strong>variables</strong>, <strong>conditionals</strong>, <strong>loops</strong>, and <strong>functions</strong>. These concepts form the building blocks of almost every programming language in existence.</p>
+        </div>
+
+        <div class="section">
+            <h2>1. Variables</h2>
+            <p>Variables are used to store data in a program. Think of them as labeled boxes that can hold different types of information, such as numbers, text, or true/false values.</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Variables</h3>
+                <p>Declare a variable and assign it a value to see how it is stored:</p>
+                <input type="text" id="varName" placeholder="Variable name (e.g., playerName)" style="width: 45%;">
+                <input type="text" id="varValue" placeholder="Variable value (e.g., 100)" style="width: 45%;">
+                <br><br>
+                <button onclick="declareVariable()" class="btn">Declare</button>
+                <div id="varResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. Conditionals</h2>
+            <p>Conditionals allow programs to make decisions. The most common form is the <strong>if-else</strong> statement, which tells the computer to do one thing if a condition is true, and another if it is false.</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Logic Check</h3>
+                <p>Enter a number to see if the program classifies it as positive or negative:</p>
+                <input type="number" id="condNumber" placeholder="Enter a number" style="margin-bottom: 10px;">
+                <br>
+                <button onclick="checkCondition()" class="btn">Check Logic</button>
+                <div id="condResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. Loops</h2>
+            <p>Loops allow you to repeat a block of code multiple times without writing it out again. This is useful for tasks like counting, searching through lists, or repeating animations.</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Repeat Action</h3>
+                <p>How many times should the loop run? (1-100):</p>
+                <input type="number" id="loopNumber" placeholder="N" style="width: 60px;">
+                <button onclick="runLoop()" class="btn">Run Loop</button>
+                <div id="loopResult" style="margin-top: 10px; font-family: monospace; word-wrap: break-word;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. Functions</h2>
+            <p>Functions are reusable blocks of code that perform specific tasks. Instead of writing the same math or logic repeatedly, you "call" the function whenever you need it.</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Calculate with Functions</h3>
+                <p>This function calculates the area of a rectangle ($Area = Length \times Width$):</p>
+                <input type="number" id="rectLength" placeholder="Length" style="width: 30%;">
+                <input type="number" id="rectWidth" placeholder="Width" style="width: 30%;">
+                <button onclick="calculateArea()" class="btn">Calculate</button>
+                <div id="funcResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>AI Interaction</h2>
+            <div class="exercise">
+                <p>Need a deeper explanation of loops or variables? Ask our AI assistant:</p>
+                <input type="text" id="userPrompt" placeholder="Ask about programming..." style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <div class="section text-center">
+            <a href="01introduction_to_computers.html" class="btn" style="background: var(--text-muted);">Back to Lesson 1</a>
+            <a href="../../index.html" class="btn">Back to Dashboard</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        // Variables Logic
+        function declareVariable() {
+            const name = document.getElementById('varName').value;
+            const value = document.getElementById('varValue').value;
+            const resultDiv = document.getElementById('varResult');
+            
+            if (!name || !value) {
+                resultDiv.innerHTML = "<span style='color: red;'>Please enter both a name and a value.</span>";
+                return;
+            }
+            resultDiv.innerHTML = `<span style='color: green;'>Success:</span> Variable <code>${name}</code> is now storing <code>"${value}"</code>.`;
+        }
+
+        // Conditionals Logic
+        function checkCondition() {
+            const num = parseInt(document.getElementById('condNumber').value);
+            const resultDiv = document.getElementById('condResult');
+
+            if (isNaN(num)) {
+                resultDiv.innerHTML = "<span style='color: red;'>Please enter a valid number.</span>";
+                return;
+            }
+
+            let result = num > 0 ? "positive" : num < 0 ? "negative" : "zero";
+            resultDiv.innerHTML = `Result: The number ${num} is <span style='color: var(--highlight-color);'>${result}</span>.`;
+        }
+
+        // Loops Logic
+        function runLoop() {
+            const n = parseInt(document.getElementById('loopNumber').value);
+            const resultDiv = document.getElementById('loopResult');
+            
+            if (isNaN(n) || n < 1 || n > 100) {
+                resultDiv.innerHTML = "<span style='color: red;'>Please enter a number between 1 and 100.</span>";
+                return;
+            }
+
+            let output = "Looping: ";
+            for (let i = 1; i <= n; i++) {
+                output += i + (i === n ? "" : ", ");
+            }
+            resultDiv.innerHTML = output;
+        }
+
+        // Functions Logic
+        function calculateArea() {
+            const length = parseFloat(document.getElementById('rectLength').value);
+            const width = parseFloat(document.getElementById('rectWidth').value);
+            const resultDiv = document.getElementById('funcResult');
+
+            if (isNaN(length) || isNaN(width)) {
+                resultDiv.innerHTML = "<span style='color: red;'>Please enter valid dimensions.</span>";
+                return;
+            }
+
+            const area = length * width;
+            resultDiv.innerHTML = `Function Output: The area is <span style='color: green;'>${area.toFixed(2)}</span>`;
+        }
+
+        // AI Logic
+        function askAI() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            
+            if (!userPrompt) {
+                responseDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+            
+            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+        }
+    </script>
+</body>
+
+</html>

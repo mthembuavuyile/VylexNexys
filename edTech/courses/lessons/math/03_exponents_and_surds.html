@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Lesson 3: Exponents and Surds - Vylex Nexys</title>
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Math Lesson 3:</span><br> Exponents and Surds</h1>
+        </div>
+
+        <div class="section">
+            <h2>The Number System</h2>
+            <p>This section covers the fundamental concepts of the number system, including natural numbers, integers, rational numbers, and irrational numbers.</p>
+            <div class="exercise">
+                <h3>Exercise: Number Classification</h3>
+                <p>Classify <strong>√2</strong>. Is it Rational or Irrational?</p>
+                <input type="text" id="numClassInput" placeholder="Type here..."> 
+                <button onclick="checkClassification()" class="btn">Check Answer</button>
+                <div id="classificationResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Working with Irrational Numbers (Surds)</h2>
+            <p>Surds are irrational numbers that are roots of rational numbers. We can simplify them by finding perfect square factors.</p>
+            <div class="exercise">
+                <h3>Exercise: Simplifying Surds</h3>
+                <p>Simplify <strong>√12</strong> (Format example: 2√3):</p>
+                <input type="text" id="surdInput" placeholder="0√0"> 
+                <button onclick="checkSurd()" class="btn">Check Answer</button>
+                <div id="surdResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Laws of Exponents</h2>
+            <p>Exponents follow specific laws for multiplication, division, and powers. For example, $x^a \cdot x^b = x^{a+b}$.</p>
+            
+            <div class="exercise">
+                <h3>Exercise: Exponent Laws</h3>
+                <p>Simplify <strong>(z⁴)²</strong>:</p>
+                <input type="text" id="exponentInput" placeholder="z^0"> 
+                <button onclick="checkExponents()" class="btn">Check Answer</button>
+                <div id="exponentResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Exponential Equations</h2>
+            <p>To solve exponential equations, we try to make the bases on both sides the same.</p>
+            <div class="exercise">
+                <h3>Exercise: Solving for x</h3>
+                <p>Solve for x: <strong>2<sup>x</sup> = 16</strong></p>
+                <input type="number" id="solveXInput" placeholder="0"> 
+                <button onclick="checkEquation()" class="btn">Check Answer</button>
+                <div id="equationResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>AI Interaction</h2>
+            <div class="exercise">
+                <p>Have more questions about Surds or Exponents? Ask our AI assistant:</p>
+                <input type="text" id="userPrompt" placeholder="Ask AI anything..." style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <div class="section text-center">
+            <a href="02_fractions_and_decimals.html" class="btn" style="background: var(--text-muted);">Back to Lesson 2</a>
+            <a href="04_algebra.html" class="btn">Next Lesson: Algebra</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        // Classification Logic
+        function checkClassification() {
+            var ans = document.getElementById('numClassInput').value.toLowerCase().trim();
+            if (ans === "irrational") {
+                document.getElementById('classificationResult').innerHTML = "Correct! <span class='highlight'>√2</span> cannot be written as a simple fraction.";
+            } else {
+                document.getElementById('classificationResult').innerHTML = "<span style='color: red;'>Try again. Hint: Does the decimal ever end?</span>";
+            }
+        }
+
+        // Surd Logic
+        function checkSurd() {
+            var ans = document.getElementById('surdInput').value.trim();
+            if (ans === "2√3") {
+                document.getElementById('surdResult').innerHTML = "Correct! √12 = √(4 × 3) = <span class='highlight'>2√3</span>.";
+            } else {
+                document.getElementById('surdResult').innerHTML = "<span style='color: red;'>Not quite. Look for the largest square factor of 12.</span>";
+            }
+        }
+
+        // Exponent Logic
+        function checkExponents() {
+            var ans = document.getElementById('exponentInput').value.toLowerCase().trim();
+            if (ans === "z^8" || ans === "z8") {
+                document.getElementById('exponentResult').innerHTML = "Correct! Multiply the powers: 4 × 2 = <span class='highlight'>8</span>.";
+            } else {
+                document.getElementById('exponentResult').innerHTML = "<span style='color: red;'>Remember the power of a power rule: (x^a)^b = x^(a*b).</span>";
+            }
+        }
+
+        // Equation Logic
+        function checkEquation() {
+            var ans = parseInt(document.getElementById('solveXInput').value);
+            if (ans === 4) {
+                document.getElementById('equationResult').innerHTML = "Correct! 2⁴ = <span class='highlight'>16</span>.";
+            } else {
+                document.getElementById('equationResult').innerHTML = "<span style='color: red;'>Not quite. 2 × 2 × 2 × 2 = ?</span>";
+            }
+        }
+
+        // AI Logic
+        function askAI() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            if (!userPrompt) {
+                responseDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+        }
+    </script>
+</body>
+</html>

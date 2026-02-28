@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Lesson 5: Number Patterns - Vylex Nexys</title>
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Math Lesson 5:</span><br> Number Patterns & Series</h1>
+        </div>
+
+        <!-- 5.1 Number Patterns -->
+        <div class="section">
+            <h2>Introduction to Patterns</h2>
+            <p>Number patterns are sequences that follow a specific rule, such as adding, subtracting, or multiplying by a constant value to find the next term.</p>
+            <div class="exercise">
+                <h3>Exercise: Identify the Pattern</h3>
+                <p>What is the next number in the sequence: <strong>1, 3, 5, 7, ...</strong>?</p>
+                <input type="number" id="patternInput" placeholder="Enter number..."> 
+                <button onclick="checkPattern()" class="btn">Check Answer</button>
+                <div id="patternResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <!-- 5.2 Arithmetic Sequences -->
+        <div class="section">
+            <h2>Arithmetic Sequences</h2>
+            <p>In an arithmetic sequence, the difference (<strong>d</strong>) between terms is constant. <br>
+               Formula: $T_n = a + (n - 1)d$</p>
+            <div class="exercise">
+                <h3>Exercise: Finding the nth Term</h3>
+                <p>Find the 10th term of the sequence: <strong>3, 7, 11, 15...</strong></p>
+                <input type="number" id="arithmeticInput" placeholder="Enter value..."> 
+                <button onclick="checkArithmetic()" class="btn">Check Answer</button>
+                <div id="arithmeticResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <!-- 5.3 Quadratic Sequences -->
+        <div class="section">
+            <h2>Quadratic Sequences</h2>
+            <p>A quadratic sequence has a <strong>constant second difference</strong>. <br>
+               Formula: $T_n = an^2 + bn + c$</p>
+            <div class="exercise">
+                <h3>Exercise: The General Term</h3>
+                <p>For the sequence <strong>2, 6, 12, 20...</strong>, determine the coefficients:</p>
+                <div style="margin-bottom: 10px;">
+                    $T_n =$ 
+                    <input type="number" id="quadA" style="width: 50px;" placeholder="a"> $n^2 +$ 
+                    <input type="number" id="quadB" style="width: 50px;" placeholder="b"> $n +$ 
+                    <input type="number" id="quadC" style="width: 50px;" placeholder="c">
+                </div>
+                <button onclick="checkQuadratic()" class="btn">Check Answer</button>
+                <div id="quadraticResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <!-- 5.4 Geometric Sequences -->
+        <div class="section">
+            <h2>Geometric Sequences</h2>
+            <p>In a geometric sequence, each term is found by multiplying the previous term by a <strong>constant ratio (r)</strong>. <br>
+               Formula: $T_n = a \cdot r^{n-1}$</p>
+            <div class="exercise">
+                <h3>Exercise: Exponential Growth</h3>
+                <p>Find the 7th term of the sequence: <strong>2, 6, 18, 54...</strong></p>
+                <input type="number" id="geometricInput" placeholder="Enter value..."> 
+                <button onclick="checkGeometric()" class="btn">Check Answer</button>
+                <div id="geometricResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <!-- 5.5 Series -->
+        <div class="section">
+            <h2>Series (Summation)</h2>
+            <p>A series is the sum of the terms of a sequence. We use $S_n$ to represent the sum of the first $n$ terms.</p>
+            <div class="exercise">
+                <h3>Exercise: Arithmetic Series</h3>
+                <p>Sum of the first 12 terms of <strong>2 + 5 + 8 + ...</strong>?</p>
+                <input type="number" id="arithSeriesInput" placeholder="Sum..."> 
+                <button onclick="checkArithmeticSeries()" class="btn">Check Answer</button>
+                <div id="arithSeriesResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <!-- AI Interaction -->
+        <div class="section">
+            <h2>AI Interaction</h2>
+            <div class="exercise">
+                <p>Confused by a complex sequence? Ask our AI assistant for a step-by-step breakdown:</p>
+                <input type="text" id="userPrompt" placeholder="Ask AI anything about patterns..." style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section text-center">
+            <a href="04_algebra.html" class="btn" style="background: var(--text-muted);">Back to Lesson 4</a>
+            <a href="06_functions.html" class="btn">Next Lesson: Functions</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        // 5.1 Pattern Logic
+        function checkPattern() {
+            const ans = document.getElementById('patternInput').value;
+            const res = document.getElementById('patternResult');
+            if (ans === "9") {
+                res.innerHTML = "Correct! The rule is <span class='highlight'>+2</span>.";
+                res.style.color = "inherit";
+            } else {
+                res.innerHTML = "<span style='color: red;'>Try again. Look at the difference between terms.</span>";
+            }
+        }
+
+        // 5.2 Arithmetic Logic
+        function checkArithmetic() {
+            const ans = document.getElementById('arithmeticInput').value;
+            const res = document.getElementById('arithmeticResult');
+            // a=3, d=4, n=10: 3 + (9*4) = 39
+            if (ans === "39") {
+                res.innerHTML = "Correct! $T_{10} = 3 + (9)(4) =$ <span class='highlight'>39</span>.";
+                res.style.color = "inherit";
+            } else {
+                res.innerHTML = "<span style='color: red;'>Incorrect. Use the formula: a + (n-1)d.</span>";
+            }
+        }
+
+        // 5.3 Quadratic Logic
+        function checkQuadratic() {
+            const a = document.getElementById('quadA').value;
+            const b = document.getElementById('quadB').value;
+            const c = document.getElementById('quadC').value;
+            const res = document.getElementById('quadraticResult');
+            // Sequence: 2, 6, 12, 20. Diff: 4, 6, 8. 2nd Diff: 2. 
+            // 2a=2 -> a=1. 3a+b=4 -> 3(1)+b=4 -> b=1. a+b+c=2 -> 1+1+c=2 -> c=0.
+            if (a === "1" && b === "1" && c === "0") {
+                res.innerHTML = "Correct! The formula is <span class='highlight'>n² + n</span>.";
+                res.style.color = "inherit";
+            } else {
+                res.innerHTML = "<span style='color: red;'>Not quite. Remember: 2a = second difference.</span>";
+            }
+        }
+
+        // 5.4 Geometric Logic
+        function checkGeometric() {
+            const ans = document.getElementById('geometricInput').value;
+            const res = document.getElementById('geometricResult');
+            // a=2, r=3, n=7: 2 * 3^6 = 2 * 729 = 1458
+            if (ans === "1458") {
+                res.innerHTML = "Correct! $2 \cdot 3^{6} =$ <span class='highlight'>1458</span>.";
+                res.style.color = "inherit";
+            } else {
+                res.innerHTML = "<span style='color: red;'>Try again. Multiply the first term by the ratio 6 times.</span>";
+            }
+        }
+
+        // 5.5 Series Logic
+        function checkArithmeticSeries() {
+            const ans = document.getElementById('arithSeriesInput').value;
+            const res = document.getElementById('arithSeriesResult');
+            // n=12, a=2, d=3. S12 = 12/2 [2(2) + 11(3)] = 6 [4 + 33] = 6 * 37 = 222
+            if (ans === "222") {
+                res.innerHTML = "Correct! The sum is <span class='highlight'>222</span>.";
+                res.style.color = "inherit";
+            } else {
+                res.innerHTML = "<span style='color: red;'>Use the sum formula: S_n = n/2 [2a + (n-1)d]</span>";
+            }
+        }
+
+        // AI Logic
+        function askAI() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            if (!userPrompt) {
+                responseDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+        }
+    </script>
+</body>
+</html>

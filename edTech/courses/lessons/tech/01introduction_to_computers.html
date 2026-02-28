@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Lesson 1: Introduction to Computers - Vylex Nexys</title>
+    <meta name="canonical" href="https://vylexnexys.co.za/edTech/lessons/tech/01introduction_to_computers.html">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Tech Lesson 1:</span><br> Introduction to Computers</h1>
+        </div>
+
+        <div class="section">
+            <h2>What is a Computer?</h2>
+            
+            <p>A computer is an electronic device that processes data according to a set of instructions (called a program). It can store, retrieve, and process data, making it an essential tool in today's digital world.</p>
+        </div>
+
+        <div class="section">
+            <h2>Main Components of a Computer</h2>
+            <p>A computer system consists of both hardware (physical parts) and software (programs). Let's explore the main hardware components inside the machine:</p>
+            
+            
+            <ul>
+                <li><strong>Central Processing Unit (CPU):</strong> The "brain" of the computer. It performs calculations and executes instructions.</li>
+                <li><strong>Random Access Memory (RAM):</strong> The computer's short-term memory. It temporarily stores data that the CPU needs to quickly access.</li>
+                <li><strong>Storage Devices:</strong> Hard Disk Drives (HDD) and Solid-State Drives (SSD). They store data permanently, even when the computer is turned off.</li>
+                <li><strong>Motherboard:</strong> The main circuit board that connects all the components and allows them to communicate with each other.</li>
+                <li><strong>Power Supply Unit (PSU):</strong> Converts electrical power from an outlet into usable power for all the internal components.</li>
+            </ul>
+            
+            <div class="exercise">
+                <h3>Exercise: Identify Computer Components</h3>
+                <p>Select a component and describe its function to check your understanding:</p>
+                <select id="componentSelect" style="margin-bottom: 10px; padding: 5px;">
+                    <option value="">Select a component...</option>
+                    <option value="cpu">CPU</option>
+                    <option value="ram">RAM</option>
+                    <option value="storage">Storage Devices</option>
+                    <option value="motherboard">Motherboard</option>
+                    <option value="psu">Power Supply Unit</option>
+                </select>
+                <br>
+                <input type="text" id="componentDescription" placeholder="Enter keyword (e.g., 'brain', 'memory')" style="width: 60%; margin-bottom: 10px;">
+                <button onclick="checkComponent()" class="btn">Check</button>
+                <div id="componentResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Input and Output Devices</h2>
+            [Image showing a flowchart diagram with input devices (keyboard, mouse) feeding data into the system unit, and output devices (monitor, printer) displaying the processed results]
+            <p>Computers interact with the outside world through peripherals known as input and output devices:</p>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <h3>Input Devices:</h3>
+                    <ul>
+                        <li>Keyboard</li>
+                        <li>Mouse</li>
+                        <li>Microphone</li>
+                        <li>Webcam</li>
+                    </ul>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <h3>Output Devices:</h3>
+                    <ul>
+                        <li>Monitor</li>
+                        <li>Speakers</li>
+                        <li>Printer</li>
+                        <li>Headphones</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3>Exercise: Classify Devices</h3>
+                <p>Is the device used to send data IN to the computer, or get data OUT?</p>
+                <select id="deviceSelect" style="padding: 5px;">
+                    <option value="">Select a device...</option>
+                    <option value="keyboard">Keyboard</option>
+                    <option value="monitor">Monitor</option>
+                    <option value="mouse">Mouse</option>
+                    <option value="speakers">Speakers</option>
+                    <option value="microphone">Microphone</option>
+                    <option value="printer">Printer</option>
+                </select>
+                <select id="deviceType" style="padding: 5px;">
+                    <option value="">Select type...</option>
+                    <option value="input">Input Device</option>
+                    <option value="output">Output Device</option>
+                </select>
+                <button onclick="classifyDevice()" class="btn">Classify</button>
+                <div id="deviceResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>How Computers Work</h2>
+            <p>Computers process information by following a continuous loop called the <strong>Input-Process-Output (IPO) cycle</strong>:</p>
+            <ol>
+                <li><strong>Input:</strong> Data is entered into the computer through input devices.</li>
+                <li><strong>Processing:</strong> The CPU processes the data according to instructions from software.</li>
+                <li><strong>Storage:</strong> Processed data can be stored in RAM (temporarily) or drives (permanently).</li>
+                <li><strong>Output:</strong> Results are displayed or transmitted through output devices.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>AI Interaction</h2>
+            <div class="exercise">
+                <p>Have more questions about hardware, software, or how computers work? Ask our AI assistant:</p>
+                <input type="text" id="userPrompt" placeholder="Ask AI anything..." style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <div class="section text-center">
+            <a href="../../index.html" class="btn" style="background: var(--text-muted);">Back to Dashboard</a>
+            <a href="02basic_programming_concepts.html" class="btn">Next Lesson: Basic Programming</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        // Component Checker Logic
+        function checkComponent() {
+            const component = document.getElementById('componentSelect').value;
+            const description = document.getElementById('componentDescription').value.toLowerCase();
+            let result = "";
+
+            if (!component || !description) {
+                document.getElementById('componentResult').innerHTML = "<span style='color: red;'>Please select a component and enter a description keyword.</span>";
+                return;
+            }
+
+            switch(component) {
+                case 'cpu':
+                    result = description.includes('brain') || description.includes('process') || description.includes('calculate') 
+                        ? "<span style='color: green;'>Correct!</span> The CPU acts as the brain." 
+                        : "<span style='color: red;'>Not quite.</span> Think of words like 'brain' or 'process'.";
+                    break;
+                case 'ram':
+                    result = description.includes('memory') || description.includes('temporary') || description.includes('short')
+                        ? "<span style='color: green;'>Correct!</span> RAM is the temporary short-term memory." 
+                        : "<span style='color: red;'>Not quite.</span> Think of words like 'memory' or 'temporary'.";
+                    break;
+                case 'storage':
+                    result = description.includes('store') || description.includes('permanent') || description.includes('save')
+                        ? "<span style='color: green;'>Correct!</span> Storage drives hold data permanently." 
+                        : "<span style='color: red;'>Not quite.</span> Think of words like 'store' or 'permanent'.";
+                    break;
+                case 'motherboard':
+                    result = description.includes('connect') || description.includes('communicate') || description.includes('board')
+                        ? "<span style='color: green;'>Correct!</span> The motherboard connects everything." 
+                        : "<span style='color: red;'>Not quite.</span> Think of words like 'connect' or 'communicate'.";
+                    break;
+                case 'psu':
+                    result = description.includes('power') || description.includes('electrical') || description.includes('energy')
+                        ? "<span style='color: green;'>Correct!</span> The PSU provides power." 
+                        : "<span style='color: red;'>Not quite.</span> Think of words like 'power' or 'electrical'.";
+                    break;
+            }
+
+            document.getElementById('componentResult').innerHTML = result;
+        }
+
+        // Device Classifier Logic
+        function classifyDevice() {
+            const device = document.getElementById('deviceSelect').value;
+            const type = document.getElementById('deviceType').value;
+            let result = "";
+
+            const inputDevices = ['keyboard', 'mouse', 'microphone'];
+            const outputDevices = ['monitor', 'speakers', 'printer'];
+
+            if (device && type) {
+                if ((inputDevices.includes(device) && type === 'input') || (outputDevices.includes(device) && type === 'output')) {
+                    result = "<span style='color: green;'>Correct!</span> You've classified the device correctly.";
+                } else {
+                    result = "<span style='color: red;'>Not quite right.</span> Try again!";
+                }
+            } else {
+                result = "<span style='color: red;'>Please select both a device and a type.</span>";
+            }
+
+            document.getElementById('deviceResult').innerHTML = result;
+        }
+
+        // AI Logic
+        function askAI() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            
+            if (!userPrompt) {
+                responseDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+            
+            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+        }
+    </script>
+</body>
+
+</html>

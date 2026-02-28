@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Lesson 1: Introduction to Physics - Vylex Nexys</title>
+    <meta name="canonical" href="https://vylexnexys.co.za/edTech/lessons/science/01_intro_to_physics.html">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body data-root-path="/">
+
+    <header id="main-header"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <h1><span class="highlight">Science Lesson 1:</span><br> Introduction to Physics</h1>
+        </div>
+
+        <div class="section">
+            <h2>Welcome to Physics</h2>
+            <p>Physics is the study of matter, energy, and how they interact. In this lesson, we will explore the fundamental concepts of motion, forces, and energy that govern the physical world around us.</p>
+        </div>
+
+        <div class="section">
+            <h2>Motion and Speed</h2>
+            [Image of an object in motion illustrating distance, time, and velocity vectors]
+            <p>Motion occurs when an object changes its position over time. One of the simplest ways to measure motion is by calculating <strong>speed</strong>, which is the distance traveled divided by the time it took.</p>
+            <p>Formula: $v = \frac{d}{t}$ (where $v$ is speed, $d$ is distance, and $t$ is time)</p>
+            <div class="exercise">
+                <h3>Exercise: Calculate Speed</h3>
+                <label>Distance (meters):</label>
+                <input type="number" id="dist" placeholder="0"> 
+                <label>Time (seconds):</label>
+                <input type="number" id="time" placeholder="0">
+                <button onclick="checkSpeed()" class="btn">Calculate Speed</button>
+                <div id="speedResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Forces and Newton's Laws</h2>
+            [Image illustrating Newton's Second Law with mass, force, and acceleration]
+            <p>A force is a push or pull upon an object resulting from the object's interaction with another object. According to Newton's Second Law of Motion, Force equals mass times acceleration.</p>
+            <p>Formula: $F = m \cdot a$</p>
+            <div class="exercise">
+                <h3>Exercise: Calculate Force</h3>
+                <label>Mass (kg):</label>
+                <input type="number" id="mass" placeholder="0"> 
+                <label>Acceleration (m/s²):</label>
+                <input type="number" id="accel" placeholder="0">
+                <button onclick="checkForce()" class="btn">Calculate Force</button>
+                <div id="forceResult" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Energy</h2>
+            [Image of a swinging pendulum demonstrating the conversion between kinetic and potential energy]
+            <p>Energy is the capacity to do work. The two main types of mechanical energy are <strong>Kinetic Energy</strong> (the energy of motion) and <strong>Potential Energy</strong> (stored energy based on position).</p>
+        </div>
+
+        <div class="section">
+            <h2>AI Interaction</h2>
+            <div class="exercise">
+                <p>Curious about gravity, quantum physics, or motion? Ask our AI assistant:</p>
+                <input type="text" id="userPrompt" placeholder="Ask AI anything..." style="width: 70%;">
+                <button onclick="askAI()" class="btn">Ask AI</button>
+                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+            </div>
+        </div>
+
+        <div class="section text-center">
+            <a href="../../index.html" class="btn" style="background: var(--text-muted);">Back to Dashboard</a>
+            <a href="02_basic_chemistry.html" class="btn">Next Lesson: Basic Chemistry</a>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <script src="../../js/global.js"></script>
+    <script>
+        // Speed Calculation Logic
+        function checkSpeed() {
+            var dist = parseFloat(document.getElementById('dist').value) || 0;
+            var time = parseFloat(document.getElementById('time').value) || 0;
+            if (time === 0) {
+                document.getElementById('speedResult').innerHTML = "<span style='color: red;'>Time cannot be zero!</span>";
+            } else {
+                var result = (dist / time).toFixed(2);
+                document.getElementById('speedResult').innerHTML = "The speed is: <span class='highlight'>" + result + " m/s</span>";
+            }
+        }
+
+        // Force Calculation Logic
+        function checkForce() {
+            var mass = parseFloat(document.getElementById('mass').value) || 0;
+            var accel = parseFloat(document.getElementById('accel').value) || 0;
+            var result = (mass * accel).toFixed(2);
+            document.getElementById('forceResult').innerHTML = "The force is: <span class='highlight'>" + result + " Newtons (N)</span>";
+        }
+
+        // AI Logic
+        function askAI() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            if (!userPrompt) {
+                responseDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+        }
+    </script>
+</body>
+
+</html>
