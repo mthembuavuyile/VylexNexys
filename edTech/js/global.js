@@ -15,7 +15,7 @@ function loadSharedComponents() {
             
             <ul class="nav-links" id="nav-menu">
                 <li><a href="${rootPath}index.html">Home</a></li>
-                <li><a href="${rootPath}edTech/courses">Courses</a></li>
+                <li><a href="${rootPath}edTech/index.html">Courses</a></li>
                 <li><a href="${rootPath}about.html">About</a></li>
                 <li><a href="${rootPath}tools/">Tools</a></li>
                 <li><a href="${rootPath}contact.html">Contact</a></li>
