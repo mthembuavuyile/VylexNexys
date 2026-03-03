@@ -1,11 +1,265 @@
-/*main.css*/
-@import url('_variables.css');
-@import url('_base.css');
-@import url('_layout.css');
-@import url('_components.css');
-/* --- Mobile Navigation Styles --- */
+/* ==========================================================================
+   1. VARIABLES
+   ========================================================================== */
+:root {
+    /* Modern EdTech Palette */
+    --primary-color: #2563eb; /* Strong Blue */
+    --secondary-color: #3b82f6; /* Lighter Blue */
+    --accent-color: #f59e0b; /* Warm Orange for highlights */
+    --bg-color: #f8fafc; /* Very light slate for background */
+    --surface-color: #ffffff; /* White for cards/containers */
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    
+    /* Typography */
+    --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    
+    /* Spacing & Layout */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    
+    /* Effects */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --transition: all 0.2s ease-in-out;
+}
 
-/* Hide burger on desktop */
+/* ==========================================================================
+   2. BASE / RESET
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    line-height: 1.6;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+}
+
+h1, h2, h3 {
+    color: var(--text-main);
+    margin-bottom: var(--spacing-md);
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-muted);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Base Utilities */
+.highlight {
+    color: var(--primary-color);
+    font-weight: 800;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* ==========================================================================
+   3. LAYOUT
+   ========================================================================== */
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg) 0;
+}
+
+#main-header {
+    background: var(--surface-color);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#main-header .container {
+    padding: var(--spacing-md) 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-lg);
+}
+
+.nav-links a {
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+#main-footer {
+    background-color: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   4. COMPONENTS
+   ========================================================================== */
+/* Buttons */
+.btn {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--surface-color);
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Tabs */
+.tab {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: var(--spacing-sm);
+}
+
+.tablinks {
+    background: transparent;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    transition: var(--transition);
+}
+
+.tablinks:hover {
+    color: var(--primary-color);
+    background-color: #e0e7ff;
+}
+
+.tablinks.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.tabcontent {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Cards & Grids */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+}
+
+.card {
+    background: var(--surface-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.card h3 { 
+    color: var(--primary-color); 
+}
+
+.card .btn { 
+    margin-top: auto; 
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    background-color: var(--border-color);
+    border-radius: 999px;
+    height: 8px;
+    margin-top: var(--spacing-md);
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background-color: var(--accent-color);
+    border-radius: 999px;
+}
+
+/* Lesson Sections */
+.section {
+    background: var(--surface-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.exercise {
+    background: var(--bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--accent-color);
+    margin-top: var(--spacing-md);
+}
+
+/* Forms & Inputs */
+input[type="number"], 
+input[type="text"], 
+select {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    margin: 0.5rem 0;
+}
+
+input:focus, 
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Mobile Nav Burger */
 .burger {
     display: none;
     cursor: pointer;
@@ -19,17 +273,59 @@
     transition: all 0.3s ease;
 }
 
-/* Tablet and Mobile Styles */
+/* ==========================================================================
+   5. STATE / UTILITIES (JS Toggles)
+   ========================================================================== */
+.nav-active {
+    transform: translateX(0%);
+}
+
+.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.toggle .line2 {
+    opacity: 0;
+}
+
+.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* ==========================================================================
+   6. ANIMATIONS
+   ========================================================================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+/* ==========================================================================
+   7. MEDIA QUERIES
+   ========================================================================== */
+
+/* Tablet & Mobile Navigation */
 @media screen and (max-width: 768px) {
     body {
-        overflow-x: hidden; /* Prevent side-scroll when menu is hidden */
+        overflow-x: hidden;
     }
 
     .nav-links {
         position: fixed;
         right: 0px;
         height: 100vh;
-        top: 0; /* Changed from 8vh to cover full screen */
+        top: 0;
         background-color: var(--surface-color);
         display: flex;
         flex-direction: column;
@@ -66,30 +362,24 @@
     }
 }
 
-/* Toggle Class for JS */
-.nav-active {
-    transform: translateX(0%);
-}
-
-/* Burger to X Animation */
-.toggle .line1 {
-    transform: rotate(-45deg) translate(-5px, 6px);
-}
-.toggle .line2 {
-    opacity: 0;
-}
-.toggle .line3 {
-    transform: rotate(45deg) translate(-5px, -6px);
-}
-
-/* Fade in for links */
-@keyframes navLinkFade {
-    from {
-        opacity: 0;
-        transform: translateX(50px);
+/* Small Screens (Mobile Layouts) */
+@media screen and (max-width: 600px) {
+    .container {
+        width: 95%;
+        padding: 10px;
     }
-    to {
-        opacity: 1;
-        transform: translateX(0px);
+
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .exercise input[type="number"], 
+    .exercise input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
     }
 }
