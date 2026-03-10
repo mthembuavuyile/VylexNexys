@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+
   <title>Vylex Nexys | Digital Learning & Productivity Platform for Africa</title>
-  
+
   <meta name="description" content="Vylex Nexys is a modern digital platform providing accessible learning resources, academic support systems, and intelligent productivity tools. Built in South Africa to empower the next generation across Africa." />
   <meta name="keywords" content="Vylex Nexys, digital learning platform Africa, education technology South Africa, student productivity platform, academic support tools, STEM learning Africa" />
   <meta name="author" content="Vylex Nexys" />
@@ -33,7 +33,6 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -45,12 +44,9 @@
     "@type": "EducationalOrganization",
     "name": "Vylex Nexys",
     "url": "https://vylexnexys.co.za",
-    "logo": "https://vylexnexys.co.za/images/logo.png", 
+    "logo": "https://vylexnexys.co.za/images/logo.png",
     "description": "Vylex Nexys provides free interactive STEM courses, educational tools, calculators, and resources to empower students across Africa.",
-    "areaServed": {
-      "@type": "Country",
-      "name": "South Africa"
-    },
+    "areaServed": { "@type": "Country", "name": "South Africa" },
     "sameAs": [
       "https://facebook.com/vylexnexys",
       "https://twitter.com/vylexnexys",
@@ -67,72 +63,384 @@
 
   <style>
     /* =========================================
-       PAGE-SPECIFIC: HOME
+       PAGE-SPECIFIC: HOME — IMPROVED
        ========================================= */
+
+    /* --- Scroll Reveal --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+
+    /* --- HERO --- */
     #hero {
-      background: linear-gradient(135deg, rgba(196, 218, 250, 0.2), rgba(70, 130, 180, 0.2)), url(images/AI-learning-background.jpg);
+      position: relative;
+      background:
+        linear-gradient(160deg, rgba(10, 36, 80, 0.78) 0%, rgba(70, 130, 180, 0.58) 100%),
+        url(images/AI-learning-background.jpg);
       background-size: cover;
       background-position: center;
-      min-height: 85vh;
+      background-attachment: fixed;
+      min-height: 92vh;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       color: white;
       margin-top: var(--nav-height);
-      padding: 0 20px;
+      padding: 60px 20px 80px;
+      overflow: hidden;
+    }
+
+    /* Soft animated radial glow */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(70,130,180,0.22) 0%, transparent 75%);
+      animation: heroPulse 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes heroPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.08); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      animation: heroFadeIn 0.9s ease forwards;
+    }
+
+    @keyframes heroFadeIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.13);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.28);
+      padding: 7px 18px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 26px;
+      color: #d6ecff;
+      letter-spacing: 0.4px;
     }
 
     .hero-content h1 {
-      font-size: 3.5rem;
-      line-height: 1.2;
-      margin-bottom: 20px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      font-size: 3.9rem;
+      line-height: 1.14;
+      margin-bottom: 22px;
+      text-shadow: 0 3px 18px rgba(0,0,0,0.3);
+      letter-spacing: -0.5px;
+    }
+
+    .hero-content h1 .highlight {
+      color: #7ecde8;
     }
 
     .hero-content p {
-      font-size: 1.25rem;
-      max-width: 750px;
-      margin: 0 auto 40px auto;
-      color: #e6f3ff;
+      font-size: 1.18rem;
+      max-width: 660px;
+      margin: 0 auto 42px;
+      color: #c8e4ff;
+      line-height: 1.75;
     }
 
-    #about .card-lg {
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 55px;
+    }
+
+    .btn-hero-outline {
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.55);
+      color: white;
+      backdrop-filter: blur(6px);
+    }
+    .btn-hero-outline:hover {
+      background: rgba(255,255,255,0.22);
+      border-color: white;
+      transform: translateY(-3px);
+    }
+
+    .scroll-indicator {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      animation: scrollBob 2.2s ease-in-out infinite;
+    }
+
+    @keyframes scrollBob {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(7px); }
+    }
+
+    /* --- STATS BAR --- */
+    #stats {
+      background: var(--primary-dark);
+      padding: 28px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
       text-align: center;
     }
 
+    .stat-item { padding: 10px 5px; }
+
+    .stat-number {
+      font-family: var(--font-head);
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: #7ecde8;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.65);
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    /* --- ABOUT --- */
+    #about .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    #about .about-text p {
+      color: var(--text-light);
+      margin-bottom: 16px;
+      font-size: 1.04rem;
+      line-height: 1.82;
+    }
+    #about .about-text p:last-child { margin-bottom: 0; }
+
+    .about-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .value-item {
+      background: var(--bg-body);
+      border-radius: 10px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      border-left: 3px solid var(--accent);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .value-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(13,71,161,0.1);
+    }
+
+    .value-item i    { font-size: 1.3rem; color: var(--primary); }
+    .value-item span { font-weight: 700; font-family: var(--font-head); color: var(--primary-dark); font-size: 0.93rem; }
+    .value-item small { color: var(--text-light); font-size: 0.8rem; line-height: 1.45; }
+
+    /* --- TOOLS / ECOSYSTEM --- */
+    #tools { background: linear-gradient(to bottom, #f4f9ff, white); }
+
+    /* --- WHY VYLEX NEXYS --- */
+    #why-us { background: var(--bg-body); }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .why-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 22px;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 14px rgba(13,71,161,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .why-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .why-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 10px;
+      background: rgba(70,130,180,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.05rem;
+    }
+
+    .why-item h4 { font-size: 0.98rem; color: var(--primary-dark); margin-bottom: 5px; font-family: var(--font-head); }
+    .why-item p  { font-size: 0.86rem; color: var(--text-light); line-height: 1.5; margin: 0; }
+
+    /* --- CONTACT --- */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 5fr 8fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .contact-info {
+      background: var(--primary-dark);
+      color: white;
+      border-radius: var(--radius);
+      padding: 38px 28px;
+      height: 100%;
+    }
+
+    .contact-info h3 { font-size: 1.5rem; margin-bottom: 10px; font-family: var(--font-head); }
+    .contact-info > p { color: rgba(255,255,255,0.72); font-size: 0.93rem; margin-bottom: 28px; line-height: 1.65; }
+
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      color: rgba(255,255,255,0.82);
+      font-size: 0.88rem;
+    }
+
+    .contact-detail .cd-icon {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+    }
+
+    .social-links-contact {
+      display: flex;
+      gap: 9px;
+      margin-top: 28px;
+    }
+
+    .social-links-contact a {
+      width: 38px;
+      height: 38px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.9rem;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .social-links-contact a:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Form improvements */
     .form-wrapper {
-      max-width: 700px;
-      margin: 0 auto;
       background: var(--bg-white);
-      padding: 40px;
+      padding: 38px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
     }
 
-    .form-group {
-      margin-bottom: 20px;
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group { margin-bottom: 18px; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
     }
 
     input, textarea {
       width: 100%;
-      padding: 15px;
+      padding: 13px 15px;
       border: 2px solid #e0e6ed;
       border-radius: 8px;
       font-family: inherit;
       font-size: 1rem;
-      transition: 0.3s;
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+      background: #fafcff;
+      color: var(--text-main);
     }
+
+    input::placeholder, textarea::placeholder { color: #a8b8cc; }
 
     input:focus, textarea:focus {
       outline: none;
       border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(70,130,180,0.12);
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 900px) {
+      #about .about-inner { grid-template-columns: 1fr; }
+      .contact-grid       { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
-      .hero-content h1 {
-        font-size: 2.5rem;
-      }
+      #hero { background-attachment: scroll; padding-bottom: 60px; }
+      .hero-content h1 { font-size: 2.4rem; }
+      .hero-content p  { font-size: 1.05rem; }
+      .about-values    { grid-template-columns: 1fr 1fr; }
+      .form-row        { grid-template-columns: 1fr; }
+      .form-wrapper    { padding: 24px 18px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-content h1 { font-size: 2rem; }
+      .about-values    { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -140,41 +448,108 @@
 <body>
   <div id="header-placeholder"></div>
 
+  <!-- ========== HERO ========== -->
   <section id="hero">
     <div class="container hero-content">
-      <h1>Learn, Explore, Empower Yourself.</h1>
-      <p>Vylex Nexys empowers students, researchers, and professionals with powerful digital tools and interactive STEM learning, all accessible across Africa.</p>
+      <div class="hero-badge">
+        <i class="fa-solid fa-location-dot"></i> Built in South Africa, For Africa
+      </div>
 
-      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-        <a href="edTech/" class="btn btn-primary">Start Learning</a>
-        <a href="tools/" class="btn btn-outline" style="border-color: white; color: white;">Explore Tools</a>
+      <h1>Learn, Explore,<br><span class="highlight">Empower Yourself.</span></h1>
+      <p>Vylex Nexys equips students, researchers, and professionals with powerful digital tools and free interactive STEM learning — accessible across Africa.</p>
+
+      <div class="hero-cta">
+        <a href="edTech/" class="btn btn-primary">
+          <i class="fa-solid fa-rocket"></i> Start Learning Free
+        </a>
+        <a href="tools/" class="btn btn-hero-outline">
+          <i class="fa-solid fa-border-all"></i> Explore Tools
+        </a>
+      </div>
+
+      <div class="scroll-indicator">
+        <span>Scroll to explore</span>
+        <i class="fa-solid fa-chevron-down"></i>
       </div>
     </div>
   </section>
 
+  <!-- ========== STATS BAR ========== -->
+  <section id="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Free Forever</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Digital Tools</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">Gr 8–12</div>
+          <div class="stat-label">STEM Courses</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">🌍</div>
+          <div class="stat-label">Pan-African Vision</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
   <section id="about" class="section-padding">
     <div class="container">
-      <div class="text-center">
+      <div class="text-center reveal">
         <h2 class="section-title">Built in South Africa, For Africa</h2>
         <p class="section-subtitle">Democratizing access to premium educational and productivity software.</p>
       </div>
 
       <div class="card-lg">
-        <p><strong>Vylex Nexys</strong> is a multidisciplinary EdTech platform combining professional-grade software and free STEM education. Whether plotting engineering functions, citing research, or mastering high school science, we empower learners and professionals across Africa—without letting cost be a barrier.</p>
-        <p>A division of <strong style="color: var(--primary-dark);">Vylex</strong>, our mission is accessibility, innovation, and education for all.</p>
+        <div class="about-inner">
+          <div class="about-text reveal">
+            <p><strong>Vylex Nexys</strong> is a multidisciplinary EdTech platform combining professional-grade software with free STEM education. Whether plotting engineering functions, citing research, or mastering high school science — we empower learners and professionals across Africa without letting cost be a barrier.</p>
+            <p>A division of <strong style="color: var(--primary-dark);">Vylex</strong>, our mission is clear: accessibility, innovation, and quality education for all.</p>
+          </div>
+
+          <div class="about-values reveal reveal-d2">
+            <div class="value-item">
+              <i class="fa-solid fa-lock-open"></i>
+              <span>Free Access</span>
+              <small>No paywalls, no barriers. All tools and courses are free.</small>
+            </div>
+            <div class="value-item">
+              <i class="fa-solid fa-flask"></i>
+              <span>Interactive Labs</span>
+              <small>Hands-on virtual experiments and simulations.</small>
+            </div>
+            <div class="value-item">
+              <i class="fa-solid fa-chart-line"></i>
+              <span>Pro-Grade Tools</span>
+              <small>Graphing, analysis, and citation tools built for real work.</small>
+            </div>
+            <div class="value-item">
+              <i class="fa-solid fa-earth-africa"></i>
+              <span>Africa-First</span>
+              <small>Designed around the needs of African learners.</small>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="tools" class="section-padding" style="background: white;">
+  <!-- ========== ECOSYSTEM / TOOLS ========== -->
+  <section id="tools" class="section-padding">
     <div class="container">
-      <div class="text-center">
+      <div class="text-center reveal">
         <h2 class="section-title">Our Ecosystem</h2>
-        <p class="section-subtitle">Tools and resources designed to help you succeed.</p>
+        <p class="section-subtitle">Tools and resources designed to help you succeed — at every stage of your journey.</p>
       </div>
 
       <div class="grid-3">
-        <div class="feature-card">
+        <div class="feature-card reveal reveal-d1">
           <div class="icon-box icon-steel">
             <i class="fa-solid fa-layer-group"></i>
           </div>
@@ -183,47 +558,146 @@
           <a href="tools/" class="btn btn-outline">Open Gallery</a>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card reveal reveal-d2">
           <div class="icon-box icon-dark">
             <i class="fa-solid fa-graduation-cap"></i>
           </div>
           <h3>Interactive Courses</h3>
           <p>Self-paced modules in Mathematics, Science, and Technology. Perfect for Grade 8–12 learners and matric students.</p>
-          <a href="edTech/" class="btn btn-secondary">Browse EdTech Courses</a>
+          <a href="edTech/" class="btn btn-secondary">Browse Courses</a>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card reveal reveal-d3">
           <div class="icon-box icon-accent">
             <i class="fa-solid fa-heart"></i>
           </div>
-          <h3>Support Mission</h3>
-          <p>We are a 100% free EdTech platform. Your support fuels tool development and keeps our servers running.</p>
+          <h3>Support Our Mission</h3>
+          <p>We are a 100% free EdTech platform. Your support fuels tool development and keeps our servers running for everyone.</p>
           <a href="donate.html" class="btn btn-primary">Donate Now</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="contact" class="section-padding">
+  <!-- ========== WHY VYLEX NEXYS ========== -->
+  <section id="why-us" class="section-padding">
     <div class="container">
-      <div class="text-center">
-        <h2 class="section-title">Get in Touch</h2>
-        <p class="section-subtitle">Have suggestions, ideas, or want to collaborate?</p>
+      <div class="text-center reveal">
+        <h2 class="section-title">Why Vylex Nexys?</h2>
+        <p class="section-subtitle">We're more than a website — we're a commitment to accessible, quality learning for every African student.</p>
       </div>
 
-      <div class="form-wrapper">
-        <form>
-          <div class="form-group">
-            <input type="text" placeholder="Your Name" required>
+      <div class="why-grid">
+        <div class="why-item reveal reveal-d1">
+          <div class="why-icon"><i class="fa-solid fa-infinity"></i></div>
+          <div>
+            <h4>Always Free</h4>
+            <p>Every tool, every course — permanently free with no sign-up required.</p>
           </div>
-          <div class="form-group">
-            <input type="email" placeholder="Your Email Address" required>
+        </div>
+        <div class="why-item reveal reveal-d1">
+          <div class="why-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+          <div>
+            <h4>Works on Any Device</h4>
+            <p>Fully responsive — use Vylex Nexys on your phone, tablet, or desktop.</p>
           </div>
-          <div class="form-group">
-            <textarea rows="5" placeholder="How can we help you?" required></textarea>
+        </div>
+        <div class="why-item reveal reveal-d2">
+          <div class="why-icon"><i class="fa-solid fa-gauge-high"></i></div>
+          <div>
+            <h4>Low Data Friendly</h4>
+            <p>Lightweight and optimised for South Africa's connectivity landscape.</p>
           </div>
-          <button type="submit" class="btn btn-secondary" style="width: 100%;">Send Message</button>
-        </form>
+        </div>
+        <div class="why-item reveal reveal-d2">
+          <div class="why-icon"><i class="fa-solid fa-book-open-reader"></i></div>
+          <div>
+            <h4>Curriculum-Aligned</h4>
+            <p>Content built to complement the SA CAPS curriculum and STEM standards.</p>
+          </div>
+        </div>
+        <div class="why-item reveal reveal-d3">
+          <div class="why-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+          <div>
+            <h4>Always Growing</h4>
+            <p>New tools and courses added regularly, shaped by learner feedback.</p>
+          </div>
+        </div>
+        <div class="why-item reveal reveal-d3">
+          <div class="why-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div>
+            <h4>Privacy Focused</h4>
+            <p>No tracking, no ads, no data harvesting. Your learning stays yours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact" class="section-padding" style="background: white;">
+    <div class="container">
+      <div class="text-center reveal">
+        <h2 class="section-title">Get in Touch</h2>
+        <p class="section-subtitle">Have suggestions, ideas, or want to collaborate? We'd love to hear from you.</p>
+      </div>
+
+      <div class="contact-grid reveal">
+        <div class="contact-info">
+          <h3>Let's Connect</h3>
+          <p>Whether you have a question, want to partner with us, or simply want to share feedback — reach out anytime.</p>
+
+          <div class="contact-detail">
+            <span class="cd-icon"><i class="fa-solid fa-envelope"></i></span>
+            <span>hello@vylexnexys.co.za</span>
+          </div>
+          <div class="contact-detail">
+            <span class="cd-icon"><i class="fa-solid fa-location-dot"></i></span>
+            <span>South Africa 🇿🇦</span>
+          </div>
+          <div class="contact-detail">
+            <span class="cd-icon"><i class="fa-solid fa-clock"></i></span>
+            <span>We reply within 24–48 hours</span>
+          </div>
+
+          <div class="social-links-contact">
+            <a href="https://facebook.com/vylexnexys" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/vylexnexys" aria-label="Twitter / X" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-x-twitter"></i>
+            </a>
+            <a href="https://linkedin.com/company/vylexnexys" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="form-wrapper">
+          <form id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name">Your Name</label>
+                <input type="text" id="contact-name" placeholder="e.g. Thabo Nkosi" required>
+              </div>
+              <div class="form-group">
+                <label for="contact-email">Email Address</label>
+                <input type="email" id="contact-email" placeholder="you@example.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="contact-subject">Subject</label>
+              <input type="text" id="contact-subject" placeholder="What's this about?">
+            </div>
+            <div class="form-group">
+              <label for="contact-message">Message</label>
+              <textarea id="contact-message" rows="5" placeholder="Tell us how we can help..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary" style="width: 100%;">
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -231,5 +705,19 @@
   <div id="footer-placeholder"></div>
 
   <script src="/js/script.js"></script>
+  <script>
+    // Scroll Reveal via IntersectionObserver
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+  </script>
 </body>
 </html>

@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA Cite — South African Student Citation Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1a6b3c;
+  --green-mid: #2d8c54;
+  --green-light: #e8f5ee;
+  --gold: #c8952a;
+  --gold-light: #fdf3e3;
+  --ink: #1a1a1a;
+  --ink-mid: #4a4a4a;
+  --ink-light: #8a8a8a;
+  --paper: #fafaf8;
+  --white: #ffffff;
+  --rule: #e0ddd8;
+  --danger: #c0392b;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: var(--green);
+  color: white;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: 20%;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: rgba(200,149,42,0.15);
+}
+.header-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 36px 24px 32px;
+  position: relative;
+  z-index: 1;
+}
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(200,149,42,0.25);
+  border: 1px solid rgba(200,149,42,0.5);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f5d78e;
+  margin-bottom: 14px;
+}
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+.header h1 span { color: #f5d78e; }
+.header p {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  max-width: 500px;
+}
+
+/* ─── STYLE SELECTOR STRIP ─── */
+.style-strip {
+  background: var(--ink);
+  border-bottom: 3px solid var(--gold);
+}
+.style-strip-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.style-strip-inner::-webkit-scrollbar { display: none; }
+.style-btn {
+  flex-shrink: 0;
+  padding: 14px 20px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.style-btn:hover { color: rgba(255,255,255,0.85); }
+.style-btn.active {
+  color: #f5d78e;
+  border-bottom-color: var(--gold);
+  font-weight: 600;
+}
+.style-btn .style-abbr {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  margin-top: 1px;
+}
+.style-btn.active .style-abbr { opacity: 1; color: rgba(245,215,142,0.7); }
+
+/* ─── MAIN ─── */
+.main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+/* ─── STYLE INFO CARD ─── */
+.style-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--green-light);
+  border: 1px solid #b8dfc6;
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 28px;
+  animation: slideIn 0.3s ease;
+}
+.style-info-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.style-info strong {
+  display: block;
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.style-info p {
+  font-size: 12.5px;
+  color: #3a6b4a;
+  line-height: 1.5;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── SOURCE TYPE TABS ─── */
+.source-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.source-tab {
+  padding: 8px 16px;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  background: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.source-tab:hover { border-color: var(--green-mid); color: var(--green); }
+.source-tab.active {
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
+}
+
+/* ─── CARD ─── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+/* ─── FORM ─── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+}
+.field-full { grid-column: 1 / -1; }
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-mid);
+  margin-bottom: 6px;
+}
+.field label .req { color: var(--danger); }
+
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  transition: border-color 0.18s, box-shadow 0.18s;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--green-mid);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(45,140,84,0.12);
+}
+.field input.err { border-color: var(--danger); }
+.field .err-msg { font-size: 11px; color: var(--danger); margin-top: 4px; }
+.field textarea { resize: vertical; min-height: 60px; }
+.field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a4a4a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+/* ─── AUTHORS ─── */
+.authors-wrap { grid-column: 1 / -1; }
+.author-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.author-row input { flex: 1; }
+.rm-btn {
+  width: 28px; height: 28px;
+  border: none;
+  background: #fde8e6;
+  color: var(--danger);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  line-height: 1;
+}
+.rm-btn:hover { background: #f9c6c2; }
+.add-author-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1.5px dashed var(--rule);
+  border-radius: 6px;
+  background: none;
+  color: var(--ink-light);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: all 0.18s;
+}
+.add-author-btn:hover { border-color: var(--green-mid); color: var(--green); }
+
+/* ─── LEGAL SOURCES SPECIAL ─── */
+.oscola-note {
+  background: #fff8e6;
+  border: 1px solid #f0d080;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 12.5px;
+  color: #7a5c00;
+  margin-bottom: 16px;
+  grid-column: 1 / -1;
+}
+.oscola-note strong { font-weight: 600; }
+
+/* ─── GENERATE BUTTON ─── */
+.gen-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 22px;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 0.02em;
+}
+.gen-btn:hover { background: #155a32; box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+.gen-btn:active { transform: translateY(0); }
+
+/* ─── OUTPUT ─── */
+.output-card {
+  background: var(--ink);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.output-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.output-label .dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; }
+.copy-btn {
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 5px;
+  color: rgba(255,255,255,0.7);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+.copy-btn.copied { background: rgba(74,222,128,0.15); color: #4ade80; border-color: rgba(74,222,128,0.3); }
+.output-body {
+  padding: 22px 22px 24px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.88);
+  min-height: 80px;
+}
+.output-body em { font-style: italic; color: #f5d78e; }
+.output-body.empty { color: rgba(255,255,255,0.25); font-style: italic; font-family: 'DM Sans', sans-serif; }
+
+/* ─── FOOTER NOTE ─── */
+.footer-note {
+  margin-top: 32px;
+  padding: 20px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--gold-light);
+}
+.footer-note h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  color: #7a5c00;
+  margin-bottom: 8px;
+}
+.footer-note p {
+  font-size: 12.5px;
+  color: #8a6820;
+  line-height: 1.6;
+}
+.footer-note strong { color: #6a4c00; }
+
+footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 12px;
+  color: var(--ink-light);
+  border-top: 1px solid var(--rule);
+  margin-top: 20px;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .field-full { grid-column: 1; }
+  .authors-wrap { grid-column: 1; }
+  .header-inner { padding: 24px 16px 20px; }
+  .main { padding: 20px 16px 40px; }
+  .card { padding: 18px; }
+  .style-btn { padding: 12px 14px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-badge">🇿🇦 Built for South African Students</div>
+    <h1>SA <span>Cite</span></h1>
+    <p>Generate accurate references in Harvard, APA, Chicago, OSCOLA & Vancouver — the styles used at South African universities.</p>
+  </div>
+</header>
+
+<div class="style-strip">
+  <div class="style-strip-inner" id="styleStrip"></div>
+</div>
+
+<main class="main">
+  <div class="style-info" id="styleInfo"></div>
+
+  <div class="source-tabs" id="sourceTabs"></div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot"></span><span id="formTitle">Book Details</span></div>
+    <div id="formBody"></div>
+    <button class="gen-btn" id="genBtn">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+      Generate Citation
+    </button>
+  </div>
+
+  <div class="output-card">
+    <div class="output-header">
+      <div class="output-label"><span class="dot"></span> Generated Reference</div>
+      <button class="copy-btn" id="copyBtn">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy
+      </button>
+    </div>
+    <div class="output-body empty" id="outputBody">Your citation will appear here…</div>
+  </div>
+
+  <div class="footer-note">
+    <h3>⚠️ Always verify your citations</h3>
+    <p>South African universities often publish their own adapted referencing guides. <strong>Check your institution's library website</strong> (UNISA, Wits, UCT, UP, etc.) for their specific version — punctuation and formatting can differ slightly. This tool follows widely accepted standard rules but cannot account for every institutional variation.</p>
+  </div>
+</main>
+
+<footer>SA Cite — Helping South African students reference correctly.</footer>
+
+<script>
+const STYLES = [
+  {
+    id: 'harvard',
+    name: 'Harvard (Author-Date)',
+    abbr: 'HARVARD',
+    icon: '📚',
+    desc: 'Most widely used across South African universities (UNISA, Wits, UCT, UP). Default for humanities, social sciences and business. If your lecturer hasn\'t specified a style, use this.',
+    popular: true
+  },
+  {
+    id: 'apa',
+    name: 'APA 7th Edition',
+    abbr: 'APA 7',
+    icon: '🧠',
+    desc: 'Used in psychology, education, social work and health sciences. Very similar to Harvard — common in many SA departments.'
+  },
+  {
+    id: 'chicago',
+    name: 'Chicago / Turabian',
+    abbr: 'CHICAGO',
+    icon: '🏛️',
+    desc: 'Used in history, theology and some humanities programs. Uses footnote/endnote citations with a separate bibliography.'
+  },
+  {
+    id: 'oscola',
+    name: 'OSCOLA',
+    abbr: 'OSCOLA',
+    icon: '⚖️',
+    desc: 'Oxford Standard for Citation of Legal Authorities. The standard style for all South African law faculties and legal writing.'
+  },
+  {
+    id: 'vancouver',
+    name: 'Vancouver',
+    abbr: 'VANCOUVER',
+    icon: '🏥',
+    desc: 'Used in health sciences, medicine and nursing programs. Numbers citations in the order they appear in the text.'
+  }
+];
+
+const SOURCE_TYPES = {
+  book: {
+    label: '📖 Book',
+    fields: [
+      { id: 'authors', type: 'authors', label: 'Author(s)', full: true },
+      { id: 'title', label: 'Book Title', req: true, full: true },
+      { id: 'year', label: 'Year Published', type: 'number', req: true },
+      { id: 'edition', label: 'Edition (e.g., 3rd)' },
+      { id: 'place', label: 'Place of Publication' },
+      { id: 'publisher', label: 'Publisher', req: true },
+    ]
+  },
+  journal: {
+    label: '📄 Journal Article',
+    fields: [
+      { id: 'authors', type: 'authors', label: 'Author(s)', full: true },
+      { id: 'article-title', label: 'Article Title', req: true, full: true },
+      { id: 'journal-name', label: 'Journal Name', req: true, full: true },
+      { id: 'year', label: 'Year Published', type: 'number', req: true },
+      { id: 'volume', label: 'Volume' },
+      { id: 'issue', label: 'Issue Number' },
+      { id: 'pages', label: 'Pages (e.g., 45–67)' },
+      { id: 'doi', label: 'DOI (if available)', full: true },
+    ]
+  },
+  website: {
+    label: '🌐 Website',
+    fields: [
+      { id: 'authors', type: 'authors', label: 'Author(s) or Organisation', full: true },
+      { id: 'page-title', label: 'Page / Article Title', req: true, full: true },
+      { id: 'site-name', label: 'Website Name', req: true },
+      { id: 'year', label: 'Year Published / Updated', type: 'number' },
+      { id: 'url', label: 'URL', req: true, full: true },
+      { id: 'access-date', label: 'Date Accessed', type: 'date', req: true },
+    ]
+  },
+  chapter: {
+    label: '📑 Book Chapter',
+    fields: [
+      { id: 'authors', type: 'authors', label: 'Chapter Author(s)', full: true },
+      { id: 'chapter-title', label: 'Chapter Title', req: true, full: true },
+      { id: 'editors', type: 'authors', label: 'Book Editor(s)', full: true, isEditor: true },
+      { id: 'book-title', label: 'Book Title', req: true, full: true },
+      { id: 'year', label: 'Year Published', type: 'number', req: true },
+      { id: 'pages', label: 'Chapter Pages (e.g., 45–67)' },
+      { id: 'place', label: 'Place of Publication' },
+      { id: 'publisher', label: 'Publisher', req: true },
+    ]
+  },
+  thesis: {
+    label: '🎓 Thesis / Dissertation',
+    fields: [
+      { id: 'authors', type: 'authors', label: 'Author', full: true },
+      { id: 'title', label: 'Thesis Title', req: true, full: true },
+      { id: 'year', label: 'Year', type: 'number', req: true },
+      { id: 'degree', label: 'Degree (e.g., PhD thesis, MA dissertation)' },
+      { id: 'institution', label: 'University / Institution', req: true },
+      { id: 'place', label: 'City' },
+    ]
+  },
+  legal: {
+    label: '⚖️ Legal Case / Act',
+    fields: [
+      { id: 'legal-type', label: 'Source Type', type: 'select', opts: ['Case', 'Legislation / Act', 'Journal Article (Legal)'], full: false },
+      { id: 'case-name', label: 'Case / Act Name', req: true, full: true },
+      { id: 'year', label: 'Year', type: 'number', req: true },
+      { id: 'report', label: 'Law Report / Volume (e.g., 2 SA 45 (CC))', full: true },
+      { id: 'court', label: 'Court (for cases)' },
+      { id: 'act-no', label: 'Act Number (for legislation)' },
+    ]
+  }
+};
+
+// ─── State ───
+let activeStyle = 'harvard';
+let activeSource = 'book';
+let authorsData = [['', '']];
+let editorsData = [['', '']];
+
+// ─── Init ───
+function init() {
+  buildStyleStrip();
+  buildSourceTabs();
+  renderStyleInfo();
+  renderForm();
+  document.getElementById('genBtn').addEventListener('click', generate);
+  document.getElementById('copyBtn').addEventListener('click', copyResult);
+}
+
+function buildStyleStrip() {
+  const strip = document.getElementById('styleStrip');
+  strip.innerHTML = STYLES.map(s => `
+    <button class="style-btn ${s.id === activeStyle ? 'active' : ''}" data-style="${s.id}">
+      ${s.icon} ${s.name}
+      <span class="style-abbr">${s.abbr}${s.popular ? ' ★' : ''}</span>
+    </button>
+  `).join('');
+  strip.querySelectorAll('.style-btn').forEach(btn => btn.addEventListener('click', () => {
+    activeStyle = btn.dataset.style;
+    strip.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderStyleInfo();
+    clearOutput();
+  }));
+}
+
+function buildSourceTabs() {
+  const tabs = document.getElementById('sourceTabs');
+  tabs.innerHTML = Object.entries(SOURCE_TYPES).map(([id, s]) => `
+    <button class="source-tab ${id === activeSource ? 'active' : ''}" data-src="${id}">${s.label}</button>
+  `).join('');
+  tabs.querySelectorAll('.source-tab').forEach(btn => btn.addEventListener('click', () => {
+    activeSource = btn.dataset.src;
+    authorsData = [['', '']];
+    editorsData = [['', '']];
+    tabs.querySelectorAll('.source-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderForm();
+    clearOutput();
+  }));
+}
+
+function renderStyleInfo() {
+  const s = STYLES.find(x => x.id === activeStyle);
+  document.getElementById('styleInfo').innerHTML = `
+    <div class="style-info-icon">${s.icon}</div>
+    <div><strong>${s.name}${s.popular ? ' — Most Common in SA' : ''}</strong><p>${s.desc}</p></div>
+  `;
+}
+
+function renderForm() {
+  const src = SOURCE_TYPES[activeSource];
+  document.getElementById('formTitle').textContent = src.label.replace(/[^\w\s]/g, '').trim() + ' Reference';
+  const body = document.getElementById('formBody');
+  let html = '<div class="form-grid">';
+
+  if (activeSource === 'legal' && activeStyle === 'oscola') {
+    html += `<div class="oscola-note field-full"><strong>OSCOLA Legal Citation:</strong> Enter the case or statute details below. OSCOLA uses a specific format — e.g. <em>Carmichele v Minister of Safety</em> 2001 (4) SA 938 (CC).</div>`;
+  }
+
+  src.fields.forEach(f => {
+    if (f.type === 'authors') {
+      const dataKey = f.isEditor ? 'editorsData' : 'authorsData';
+      const currentData = f.isEditor ? editorsData : authorsData;
+      html += `<div class="field authors-wrap ${f.full ? 'field-full' : ''}">
+        <label>${f.label}</label>
+        <div id="${f.id}-rows">
+          ${currentData.map((a, i) => authorRow(f.id, i, a[0], a[1])).join('')}
+        </div>
+        <button type="button" class="add-author-btn" data-list="${f.id}">+ Add another</button>
+      </div>`;
+    } else if (f.type === 'select') {
+      html += `<div class="field ${f.full ? 'field-full' : ''}">
+        <label>${f.label}${f.req ? '<span class="req"> *</span>' : ''}</label>
+        <select id="${f.id}"><option value="">Select…</option>${f.opts.map(o => `<option>${o}</option>`).join('')}</select>
+      </div>`;
+    } else {
+      html += `<div class="field ${f.full ? 'field-full' : ''}">
+        <label>${f.label}${f.req ? '<span class="req"> *</span>' : ''}</label>
+        <input type="${f.type || 'text'}" id="${f.id}" ${f.type === 'number' ? 'min="1000" max="2030"' : ''} ${f.type === 'date' ? `value="${todayISO()}"` : ''}>
+        <span class="err-msg" id="${f.id}-err"></span>
+      </div>`;
+    }
+  });
+
+  html += '</div>';
+  body.innerHTML = html;
+
+  // Author row events
+  body.querySelectorAll('.add-author-btn').forEach(btn => {
+    btn.addEventListener('click', () => addAuthorRow(btn.dataset.list));
+  });
+  body.addEventListener('click', e => {
+    if (e.target.closest('.rm-btn')) {
+      const btn = e.target.closest('.rm-btn');
+      const row = btn.closest('.author-row');
+      const listId = btn.dataset.list;
+      const idx = parseInt(btn.dataset.idx);
+      if (listId === 'editors') {
+        if (editorsData.length > 1) { editorsData.splice(idx, 1); renderForm(); }
+      } else {
+        if (authorsData.length > 1) { authorsData.splice(idx, 1); renderForm(); }
+      }
+    }
+  });
+  body.addEventListener('input', e => {
+    const el = e.target;
+    if (el.classList.contains('a-first') || el.classList.contains('a-last')) {
+      const listId = el.dataset.list;
+      const idx = parseInt(el.dataset.idx);
+      const part = el.classList.contains('a-first') ? 0 : 1;
+      const data = listId === 'editors' ? editorsData : authorsData;
+      if (data[idx]) data[idx][part] = el.value;
+    }
+  });
+}
+
+function authorRow(listId, idx, first = '', last = '') {
+  const isEditor = listId === 'editors';
+  const showRm = (isEditor ? editorsData : authorsData).length > 1;
+  return `<div class="author-row">
+    <input type="text" class="a-first" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" placeholder="First name / Initials" value="${esc(first)}">
+    <input type="text" class="a-last" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" placeholder="Last name / Organisation" value="${esc(last)}">
+    ${showRm ? `<button class="rm-btn" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" title="Remove">×</button>` : ''}
+  </div>`;
+}
+
+function addAuthorRow(listId) {
+  const isEditor = listId === 'editors';
+  if (isEditor) editorsData.push(['', '']);
+  else authorsData.push(['', '']);
+  renderForm();
+}
+
+function esc(s) { return s.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function todayISO() { return new Date().toISOString().split('T')[0]; }
+
+// ─── Data Collection ───
+function collectData() {
+  const src = SOURCE_TYPES[activeSource];
+  const data = { authors: [...authorsData], editors: [...editorsData] };
+  const errors = [];
+
+  // Sync live input values
+  document.querySelectorAll('.a-first, .a-last').forEach(el => {
+    const listId = el.dataset.list;
+    const idx = parseInt(el.dataset.idx);
+    const part = el.classList.contains('a-first') ? 0 : 1;
+    const d = listId === 'editors' ? data.editors : data.authors;
+    if (d[idx]) d[idx][part] = el.value.trim();
+  });
+
+  src.fields.forEach(f => {
+    if (f.type === 'authors') return;
+    const el = document.getElementById(f.id);
+    if (!el) return;
+    const val = el.value.trim();
+    data[f.id] = val;
+    if (f.req && !val) {
+      errors.push(f.id);
+      el.classList.add('err');
+      const errEl = document.getElementById(f.id + '-err');
+      if (errEl) errEl.textContent = f.label.replace(' *','') + ' is required.';
+    } else {
+      el.classList.remove('err');
+      const errEl = document.getElementById(f.id + '-err');
+      if (errEl) errEl.textContent = '';
+    }
+  });
+
+  return { data, errors };
+}
+
+// ─── Formatting Helpers ───
+function authorList(pairs, style, role) {
+  const valid = pairs.filter(p => p[0] || p[1]);
+  if (!valid.length) return '';
+  const n = valid.length;
+
+  if (style === 'harvard') {
+    const fmt = (p, i) => i === 0
+      ? `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join('') : ''}`
+      : `${p[0] ? p[0].split(' ').map(w => w[0] + '.').join('') + ' ' : ''}${p[1] || ''}`;
+    if (n === 1) return fmt(valid[0], 0);
+    if (n <= 3) return valid.map(fmt).join(', ');
+    return fmt(valid[0], 0) + ' et al.';
+  }
+  if (style === 'apa') {
+    const fmt = (p, i) => i === 0
+      ? `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join(' ') : ''}`
+      : `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join(' ') : ''}`;
+    if (n === 1) return fmt(valid[0], 0);
+    const parts = valid.map(fmt);
+    if (n === 2) return parts[0] + ', & ' + parts[1];
+    if (n <= 20) return parts.slice(0, -1).join(', ') + ', & ' + parts[parts.length - 1];
+    return parts.slice(0, 19).join(', ') + ' … ' + fmt(valid[n-1], 1);
+  }
+  if (style === 'chicago') {
+    const fmt0 = p => `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] || ''}`;
+    const fmtN = p => `${p[0] || ''} ${p[1] || ''}`.trim();
+    if (n === 1) return fmt0(valid[0]);
+    if (n <= 10) return [fmt0(valid[0]), ...valid.slice(1).map(fmtN)].join(', and ');
+    return fmt0(valid[0]) + ', et al.';
+  }
+  if (style === 'oscola') {
+    const fmt = p => `${p[0] || ''} ${p[1] || ''}`.trim();
+    if (n === 1) return fmt(valid[0]);
+    return valid.map(fmt).join(' and ');
+  }
+  if (style === 'vancouver') {
+    const fmt = p => `${p[1] || ''} ${p[0] ? p[0].split(' ').map(w => w[0]).join('') : ''}`.trim();
+    if (n <= 6) return valid.map(fmt).join(', ');
+    return valid.slice(0, 6).map(fmt).join(', ') + ' et al';
+  }
+  return valid.map(p => `${p[0] || ''} ${p[1] || ''}`.trim()).join(', ');
+}
+
+function italics(s) { return s ? `<em>${s}</em>` : ''; }
+
+function fmtDate(iso, style) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  const day = d.getDate();
+  const yr = d.getFullYear();
+  const mon = ['January','February','March','April','May','June','July','August','September','October','November','December'][d.getMonth()];
+  const monAbbr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+  if (style === 'harvard') return `${day} ${mon} ${yr}`;
+  if (style === 'apa') return `${mon} ${day}, ${yr}`;
+  if (style === 'chicago') return `${mon} ${day}, ${yr}`;
+  return `${day} ${mon} ${yr}`;
+}
+
+function doiLink(doi) {
+  if (!doi) return '';
+  const clean = doi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:/i, '');
+  return `https://doi.org/${clean}`;
+}
+
+// ─── Citation Generators ───
+function generate() {
+  const { data, errors } = collectData();
+  if (errors.length) return;
+  const citation = buildCitation(activeStyle, activeSource, data);
+  showOutput(citation);
+}
+
+function buildCitation(style, src, d) {
+  const A = authorList(d.authors, style, 'author');
+  const E = authorList(d.editors, style, 'editor');
+  const yr = d.year || 'n.d.';
+  const place = d.place || '';
+  const pub = d.publisher || '';
+  const ed = d.edition ? (style === 'apa' ? `(${d.edition} ed.)` : `${d.edition} ed.`) : '';
+  const doi = doiLink(d.doi);
+  const vol = d.volume || '';
+  const iss = d.issue || '';
+  const pp = d.pages || '';
+
+  // BOOK
+  if (src === 'book') {
+    const T = d.title || '';
+    if (style === 'harvard')
+      return `${A}${A ? ' ' : ''}${yr}. ${italics(T)}${ed ? '. ' + ed : ''}. ${place ? place + ': ' : ''}${pub}.`;
+    if (style === 'apa')
+      return `${A}${A ? ' ' : ''}(${yr}). ${italics(T)}${ed ? ' ' + ed : ''}. ${pub}.`;
+    if (style === 'chicago')
+      return `${A}${A ? '. ' : ''}${italics(T)}${ed ? ', ' + ed : ''}. ${place ? place + ': ' : ''}${pub}, ${yr}.`;
+    if (style === 'oscola')
+      return `${A}${A ? ', ' : ''}${italics(T)}${ed ? ' (' + d.edition + ' edn, ' : ' ('}${pub} ${yr})`;
+    if (style === 'vancouver')
+      return `${A}${A ? '. ' : ''}${T}${ed ? '. ' + d.edition + ' ed' : ''}. ${place ? place + ': ' : ''}${pub}; ${yr}.`;
+  }
+
+  // JOURNAL
+  if (src === 'journal') {
+    const AT = d['article-title'] || '';
+    const JN = d['journal-name'] || '';
+    if (style === 'harvard')
+      return `${A}${A ? ' ' : ''}${yr}. ${AT}. ${italics(JN)}${vol ? ', ' + vol : ''}${iss ? '(' + iss + ')' : ''}${pp ? ':' + pp : ''}.${doi ? ' doi:' + doi : ''}`;
+    if (style === 'apa')
+      return `${A}${A ? ' ' : ''}(${yr}). ${AT}. ${italics(JN)}${vol ? ', ' + italics(vol) : ''}${iss ? '(' + iss + ')' : ''}${pp ? ', ' + pp : ''}.${doi ? ' https://doi.org/' + d.doi.replace(/^https?:\/\/doi\.org\//i,'').replace(/^doi:/i,'') : ''}`;
+    if (style === 'chicago')
+      return `${A}${A ? '. ' : ''}"${AT}." ${italics(JN)} ${vol}${iss ? ', no. ' + iss : ''} (${yr})${pp ? ': ' + pp : ''}.${doi ? ' ' + doi + '.' : ''}`;
+    if (style === 'oscola')
+      return `${A}${A ? ', ' : ''}'${AT}' (${yr}) ${vol}${iss ? '(' + iss + ')' : ''} ${italics(JN)} ${pp}`;
+    if (style === 'vancouver')
+      return `${A}${A ? '. ' : ''}${AT}. ${JN}. ${yr}${vol ? ';' + vol : ''}${iss ? '(' + iss + ')' : ''}${pp ? ':' + pp : ''}.${doi ? ' doi:' + doi : ''}`;
+  }
+
+  // WEBSITE
+  if (src === 'website') {
+    const PT = d['page-title'] || '';
+    const SN = d['site-name'] || '';
+    const url = d.url || '';
+    const acc = fmtDate(d['access-date'], style);
+    if (style === 'harvard')
+      return `${A || SN}${A || SN ? ' ' : ''}${yr}. ${PT}. ${italics(SN)}. [Online]. Available: ${url} [${acc}].`;
+    if (style === 'apa')
+      return `${A || SN}${A || SN ? ' ' : ''}(${yr}). ${italics(PT)}. ${SN}. Retrieved ${acc}, from ${url}`;
+    if (style === 'chicago')
+      return `${A || SN}${A || SN ? '. ' : ''}"${PT}." ${italics(SN)}, ${yr}. Accessed ${acc}. ${url}.`;
+    if (style === 'oscola')
+      return `${A || SN}${A || SN ? ', ' : ''}'${PT}' (${italics(SN)}) &lt;${url}&gt; accessed ${acc}`;
+    if (style === 'vancouver')
+      return `${A || SN}${A || SN ? '. ' : ''}${PT}. ${SN} [Internet]. ${yr} [cited ${acc}]. Available from: ${url}`;
+  }
+
+  // CHAPTER
+  if (src === 'chapter') {
+    const CT = d['chapter-title'] || '';
+    const BT = d['book-title'] || '';
+    if (style === 'harvard')
+      return `${A}${A ? ' ' : ''}${yr}. ${CT}. In: ${E ? E + ' (ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}.) ' : ''}${italics(BT)}. ${place ? place + ': ' : ''}${pub}${pp ? ', pp. ' + pp : ''}.`;
+    if (style === 'apa')
+      return `${A}${A ? ' ' : ''}(${yr}). ${CT}. In ${E ? E + ' (Ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}.), ' : ''}${italics(BT)} (pp. ${pp || 'xx–xx'}). ${pub}.`;
+    if (style === 'chicago')
+      return `${A}${A ? '. ' : ''}"${CT}." In ${italics(BT)}, edited by ${E || '[Editor]'}${pp ? ', ' + pp : ''}. ${place ? place + ': ' : ''}${pub}, ${yr}.`;
+    if (style === 'oscola')
+      return `${A}${A ? ', ' : ''}'${CT}' in ${E ? E + ' (ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}) ' : ''}${italics(BT)} (${pub} ${yr})${pp ? ' ' + pp : ''}`;
+    if (style === 'vancouver')
+      return `${A}${A ? '. ' : ''}${CT}. In: ${E ? E + ', editor${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}. ' : ''}${BT}. ${place ? place + ': ' : ''}${pub}; ${yr}${pp ? '. p. ' + pp : ''}.`;
+  }
+
+  // THESIS
+  if (src === 'thesis') {
+    const T = d.title || '';
+    const deg = d.degree || 'Thesis';
+    const inst = d.institution || '';
+    if (style === 'harvard')
+      return `${A}${A ? ' ' : ''}${yr}. ${italics(T)}. ${deg}. ${inst}${place ? ', ' + place : ''}.`;
+    if (style === 'apa')
+      return `${A}${A ? ' ' : ''}(${yr}). ${italics(T)} [${deg}, ${inst}].`;
+    if (style === 'chicago')
+      return `${A}${A ? '. ' : ''}${italics(T)}. ${deg}, ${inst}, ${yr}.`;
+    if (style === 'oscola')
+      return `${A}${A ? ', ' : ''}${italics(T)} (${deg}, ${inst} ${yr})`;
+    if (style === 'vancouver')
+      return `${A}${A ? '. ' : ''}${T} [${deg}]. ${place ? place + ': ' : ''}${inst}; ${yr}.`;
+  }
+
+  // LEGAL / OSCOLA specialised
+  if (src === 'legal') {
+    const cn = d['case-name'] || '';
+    const report = d.report || '';
+    const court = d.court || '';
+    const actNo = d['act-no'] || '';
+    const ltype = d['legal-type'] || 'Case';
+
+    if (style === 'oscola') {
+      if (ltype === 'Legislation / Act')
+        return `${italics(cn)}${actNo ? ' ' + actNo : ''} of ${yr}`;
+      return `${italics(cn)} ${yr} ${report}${court ? ' (' + court + ')' : ''}`;
+    }
+    if (style === 'harvard') {
+      if (ltype === 'Legislation / Act')
+        return `${cn}${actNo ? ' No. ' + actNo : ''} of ${yr}.`;
+      return `${cn} ${yr} ${report}${court ? ' (' + court + ')' : ''}.`;
+    }
+    // Default for other styles
+    if (ltype === 'Legislation / Act')
+      return `${cn}${actNo ? ' No. ' + actNo : ''} of ${yr}.`;
+    return `${italics(cn)} ${yr} ${report}${court ? ' (' + court + ')' : ''}.`;
+  }
+
+  return '<span style="color:#c0392b">Unable to generate citation — please check your fields.</span>';
+}
+
+function showOutput(html) {
+  const out = document.getElementById('outputBody');
+  // Clean up spacing
+  const clean = html.replace(/\s{2,}/g, ' ').replace(/\. \./g, '.').replace(/\s\./g, '.').trim();
+  out.innerHTML = clean;
+  out.classList.remove('empty');
+  document.getElementById('copyBtn').disabled = false;
+}
+
+function clearOutput() {
+  const out = document.getElementById('outputBody');
+  out.innerHTML = 'Your citation will appear here…';
+  out.classList.add('empty');
+}
+
+function copyResult() {
+  const out = document.getElementById('outputBody');
+  const text = out.innerText;
+  if (!text || out.classList.contains('empty')) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`;
+    }, 2000);
+  });
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy PDF Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f4f7f6;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            background: #f8fafc;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+
+        .advanced-toggle {
+            color: #3b82f6;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            user-select: none;
+        }
+
+        .advanced-options {
+            display: none;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quick-btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: #475569;
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .search-btn {
+            width: 100%;
+            padding: 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-btn:hover {
+            background: #2563eb;
+        }
+
+        .search-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="header">
+            <h1>📄 Easy PDF Finder</h1>
+            <p>Find specific documents without the clutter.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="mainTopic">What are you looking for?</label>
+            <input type="text" id="mainTopic" placeholder="e.g., dog training, macroeconomics, camera manual">
+        </div>
+
+        <div class="quick-buttons">
+            <button class="quick-btn" onclick="setQuickSearch('university')">🎓 University Papers</button>
+            <button class="quick-btn" onclick="setQuickSearch('government')">🏛️ Gov Reports</button>
+            <button class="quick-btn" onclick="setQuickSearch('manual')">📘 Instruction Manuals</button>
+        </div>
+
+        <div class="form-group">
+            <label for="sourceSelect">Where should we look?</label>
+            <select id="sourceSelect">
+                <option value="">Anywhere on the web</option>
+                <option value=".ac.za">South African Universities (.ac.za)</option>
+                <option value=".edu">Universities (.edu)</option>
+                <option value=".gov">Only Government websites (.gov)</option>
+                <option value=".org">Only Non-profits & Organizations (.org)</option>
+            </select>
+        </div>
+
+        <div class="advanced-toggle" onclick="toggleAdvanced()">
+            + Show more options
+        </div>
+
+        <div class="advanced-options" id="advancedOptions">
+            <div class="form-group">
+                <label for="exactPhrase">Must include this exact phrase:</label>
+                <input type="text" id="exactPhrase" placeholder="e.g., chapter 1">
+            </div>
+            <div class="form-group">
+                <label for="ignoreWords">Words to ignore (optional):</label>
+                <input type="text" id="ignoreWords" placeholder="e.g., buy, subscribe, syllabus">
+            </div>
+        </div>
+
+        <button class="search-btn" onclick="performSearch()">
+            Search Google for PDFs 🔍
+        </button>
+        <p class="search-note">Results will open in a new tab.</p>
+    </div>
+
+    <script>
+        // Toggle the advanced options menu
+        function toggleAdvanced() {
+            const adv = document.getElementById('advancedOptions');
+            const toggleBtn = document.querySelector('.advanced-toggle');
+            if (adv.style.display === 'block') {
+                adv.style.display = 'none';
+                toggleBtn.innerText = '+ Show more options';
+            } else {
+                adv.style.display = 'block';
+                toggleBtn.innerText = '- Hide extra options';
+            }
+        }
+
+        // Handle the friendly quick buttons
+        function setQuickSearch(type) {
+    const topicInput = document.getElementById('mainTopic');
+    const sourceSelect = document.getElementById('sourceSelect');
+
+    if (type === 'university') {
+        sourceSelect.value = '.ac.za';
+        if (!topicInput.value) topicInput.value = "research paper";
+
+    } else if (type === 'education') {
+        sourceSelect.value = '.edu';
+        if (!topicInput.value) topicInput.value = "research paper";
+
+    } else if (type === 'government') {
+        sourceSelect.value = '.gov';
+        if (!topicInput.value) topicInput.value = "annual report";
+
+    } else if (type === 'organization') {
+        sourceSelect.value = '.org';
+        if (!topicInput.value) topicInput.value = "report";
+
+    } else if (type === 'manual') {
+        sourceSelect.value = '';
+        if (!topicInput.value) topicInput.value = "user manual";
+    }
+}
+
+        // Build and execute the search
+        function performSearch() {
+            let topic = document.getElementById('mainTopic').value.trim();
+            const source = document.getElementById('sourceSelect').value;
+            const exactPhrase = document.getElementById('exactPhrase').value.trim();
+            const ignoreWords = document.getElementById('ignoreWords').value.trim();
+
+            if (!topic && !exactPhrase) {
+                alert("Please tell us what you're looking for first!");
+                return;
+            }
+
+            // Always force the PDF filetype
+            let finalQuery = `filetype:pdf `;
+
+            // Add the main topic
+            if (topic) {
+                finalQuery += `${topic} `;
+            }
+
+            // Add the exact phrase if provided
+            if (exactPhrase) {
+                finalQuery += `"${exactPhrase}" `;
+            }
+
+            // Add the site filter if one is selected
+            if (source) {
+                finalQuery += `site:${source} `;
+            }
+
+            // Add excluded words
+            if (ignoreWords) {
+                const wordsToExclude = ignoreWords.split(/[ ,]+/); // split by spaces or commas
+                wordsToExclude.forEach(word => {
+                    if (word) finalQuery += `-${word} `;
+                });
+            }
+
+            // Create the Google URL and open it
+            const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(finalQuery.trim());
+            window.open(googleUrl, '_blank');
+        }
+
+        // Allow pressing "Enter" to search
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

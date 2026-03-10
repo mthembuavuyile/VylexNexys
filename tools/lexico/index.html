@@ -1,188 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Primary Meta Tags -->
-  <title>Lexico | Vylex Nexys Language Intelligence - Advanced Language Learning Tools</title>
-  <meta name="title" content="Lexico | Vylex Nexys Language Intelligence - Advanced Language Learning Tools" />
-  <meta name="description" content="Lexico by Vylex Nexys offers intelligent language tools including definitions, synonyms, pronunciation, etymology, and more for smarter learning." />
-  <meta name="keywords" content="language learning, lexico, intelligent dictionary, etymology, synonyms, pronunciation, linguistic tools, Vylex Nexys" />
-  <meta name="author" content="Vylex Nexys" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://vylexnexys.co.za/edTech/tools/lexico/" />
+    <!-- Primary Meta Tags -->
+    <title>Lexico | Vylex Nexys Language Intelligence</title>
+    <meta name="description" content="Lexico by Vylex Nexys offers intelligent language tools including definitions, synonyms, pronunciation, etymology, and text-to-speech for smarter learning." />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://vylexnexys.co.za/favicon.ico" />
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://vylexnexys.co.za/edTech/tools/lexico/" />
-  <meta property="og:title" content="Lexico | Advanced Language Learning Tools by Vylex Nexys" />
-  <meta property="og:description" content="Discover Lexico by Vylex Nexys – advanced tools for language learners including intelligent definitions, pronunciation guides, and more." />
-  <meta property="og:image" content="https://vylexnexys.co.za/images/lexico-og.jpg" />
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://vylexnexys.co.za/edTech/tools/lexico/" />
-  <meta property="twitter:title" content="Lexico | Advanced Language Learning Tools by Vylex Nexys" />
-  <meta property="twitter:description" content="Explore Lexico by Vylex Nexys – tools for mastering language with intelligent definitions, pronunciation, and etymology." />
-  <meta property="twitter:image" content="https://vylexnexys.co.za/images/lexico-og.jpg" />
-
-  <!-- Favicon & Touch Icon -->
-  <link rel="icon" href="https://vylexnexys.co.za/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="https://vylexnexys.co.za/apple-touch-icon.png" />
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-  <!-- Schema.org JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "EducationalApplication",
-    "name": "Lexico",
-    "applicationCategory": "Language Learning Tool",
-    "url": "https://vylexnexys.co.za/edTech/tools/lexico/",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "ZAR"
-    },
-    "provider": {
-      "@type": "Organization",
-      "name": "Vylex Nexys",
-      "url": "https://vylexnexys.co.za"
-    }
-  }
-  </script>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+    <!-- Header -->
     <header>
         <div class="header-content">
             <div class="brand">
-                <h1>Lexico</h1>
+                <h1><i class="fas fa-language"></i> Lexico</h1>
             </div>
             <nav id="nav">
-                <a href="#"><i class="fas fa-home"></i> Home</a>
-                <a href="../lexico-v2/index.html"><i class="fas fa-book"></i> 2nd version</a>
-                <a href="../../index.html"><i class="fas fa-graduation-cap"></i> Learn</a>
-                <a href="../advanced-text-analysis.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="/edTech/"><i class="fas fa-graduation-cap"></i> Learn</a>
+                <a href="../text-analysis/"><i class="fas fa-chart-bar"></i> Analytics</a>
             </nav>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
             </div>
         </div>
     </header>
 
-    <main>
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="wordInput" placeholder="Enter a word to explore..." />
-                <button onclick="fetchWordData()" class="search-btn">
-                    <i class="fas fa-search"></i>
-                    Search
+    <main class="container">
+        <!-- Navigation & Controls -->
+        <nav class="nav-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="dictionary">
+                    <i class="fas fa-book"></i> Dictionary
+                </button>
+                <button class="tab-button" data-tab="tts">
+                    <i class="fas fa-volume-up"></i> Text-to-Speech
                 </button>
             </div>
-            <button onclick="openSearchHistory()" class="search-btn">
-                <i class="fas fa-history"></i>
-                History
-            </button>
-        </div>
-
-        <div id="loading" class="loading">
-            <i class="fas fa-spinner fa-spin"></i> Analyzing word...
-        </div>
-        <div id="error" class="error"></div>
-
-        <div class="results-grid">
-            <div class="result-card">
-                <h3><i class="fas fa-book"></i> Definitions</h3>
-                <ul id="definitionList" class="result-list"></ul>
+            <div class="controls">
+                <button id="theme-toggle" class="btn">
+                    <i class="fas fa-sun"></i> Light Mode
+                </button>
+                <button class="btn" id="history-btn">
+                    <i class="fas fa-history"></i> History
+                </button>
             </div>
+        </nav>
 
-            <div class="result-card">
-                <h3><i class="fas fa-exchange-alt"></i> Synonyms</h3>
-                <ul id="synonymList" class="result-list"></ul>
-            </div>
+        <!-- Visualizer -->
+        <div id="visualizer" class="visualizer hidden"></div>
 
-            <div class="result-card">
-                <h3><i class="fas fa-volume-up"></i> Pronunciation</h3>
-                <div id="pronunciation"></div>
-                <div class="pronunciation-player">
-                    <select id="voiceSelect" class="voice-select"></select>
-                    <button class="play-btn" onclick="playPronunciation()">
-                        <i class="fas fa-play"></i> 
+        <!-- Dictionary Tab -->
+        <div id="dictionary-content" class="content-section">
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="wordInput" placeholder="Enter a word to explore..." class="search-input" />
+                    <button id="clearSearchBtn" class="clear-btn hidden" title="Clear">
+                        <i class="fas fa-times"></i>
                     </button>
-                    <span id="phonetic"></span>
+                    <button id="searchBtn" class="btn primary">
+                        <i class="fas fa-search"></i> Search
+                    </button>
                 </div>
             </div>
 
-            <div class="result-card">
-                <h3><i class="fas fa-music"></i> Rhymes</h3>
-                <ul id="rhymeList" class="result-list"></ul>
+            <!-- Loading & Error States -->
+            <div id="loading" class="loading hidden">
+                <i class="fas fa-spinner fa-spin"></i> Analyzing word...
+            </div>
+            <div id="error" class="error hidden"></div>
+
+            <!-- Results -->
+            <div id="resultsContainer" class="results-container hidden">
+                <div id="wordHeader" class="word-header glass-card"></div>
+                
+                <div class="sections-grid">
+                    <div class="section glass-card">
+                        <h3><i class="fas fa-quote-left"></i> Definitions & Examples</h3>
+                        <ul id="definitionList" class="definition-list"></ul>
+                    </div>
+                    
+                    <div class="side-sections">
+                        <div class="section glass-card mb-4">
+                            <h3><i class="fas fa-link"></i> Synonyms</h3>
+                            <ul id="synonymList" class="interactive-list"></ul>
+                        </div>
+                        <div class="section glass-card">
+                            <h3><i class="fas fa-music"></i> Rhymes</h3>
+                            <ul id="rhymeList" class="interactive-list"></ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section glass-card mt-6">
+                    <h3><i class="fas fa-feather-alt"></i> Etymology</h3>
+                    <div id="etymologyContent" class="etymology-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text-to-Speech Tab -->
+        <div id="tts-content" class="content-section hidden">
+            <h2 class="section-title"><i class="fas fa-volume-up"></i> Text-to-Speech Synthesizer</h2>
+            
+            <textarea id="ttsText" placeholder="Enter text to speak..." class="tts-textarea"></textarea>
+
+            <div class="tts-controls">
+                <div class="control-group">
+                    <label for="voiceSelect"><i class="fas fa-user"></i> Voice</label>
+                    <select id="voiceSelect" class="select"><option value="">Loading voices...</option></select>
+                </div>
+                <div class="control-group">
+                    <label for="speechRate"><i class="fas fa-tachometer-alt"></i> Speed: <span id="rateValue">1.0</span></label>
+                    <input type="range" id="speechRate" class="slider" min="0.5" max="2" step="0.1" value="1">
+                </div>
+                <div class="control-group">
+                    <label for="speechPitch"><i class="fas fa-wave-square"></i> Pitch: <span id="pitchValue">1.0</span></label>
+                    <input type="range" id="speechPitch" class="slider" min="0.5" max="2" step="0.1" value="1">
+                </div>
+                <div class="control-group">
+                    <label><i class="fas fa-magic"></i> Auto-Speak</label>
+                    <button id="autoSpeakToggle" class="btn outline w-full">Auto-Speak: OFF</button>
+                </div>
             </div>
 
-            <div class="result-card">
-                <h3><i class="fas fa-language"></i> Etymology</h3>
-                <div id="etymology" class="etymology"></div>
+            <div class="tts-buttons">
+                <button id="ttsSpeakBtn" class="btn primary"><i class="fas fa-play"></i> Speak</button>
+                <button id="ttsClearBtn" class="btn danger"><i class="fas fa-eraser"></i> Clear</button>
             </div>
 
-            <div class="result-card">
-                <h3><i class="fas fa-book-open"></i> Usage Examples</h3>
-                <div id="examples" class="examples"></div>
+            <div id="ttsHistorySection" class="section glass-card mt-6 hidden">
+                <h3><i class="fas fa-history"></i> Recent Speech</h3>
+                <ul id="ttsHistoryList" class="interactive-list history-list"></ul>
             </div>
         </div>
     </main>
 
-    <button class="theme-toggle" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i>
-    </button>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>About Vylex Nexys</h4>
-                <p>Empowering language learning through innovative technology and comprehensive linguistic tools.</p>
-                <div class="social-links">
-                    <a href="https://twitter.com/vylexnexys" title="Follow us on Twitter" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-                    <a href="https://linkedin.com/company/vylex-nexys" title="Connect on LinkedIn" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/vylex-nexys" title="Visit our GitHub" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="https://vylexnexys.co.za" title="Visit Vylex Nexys">Parent Company</a></li>
-                    <li><a href="https://vylexnexys.co.za/portfolio" title="Our Products">Products</a></li>
-                    <li><a href="https://vylexnexys.co.za/services" title="Our Services">Services</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="https://vylexnexys.co.za/edTech" title="Learning platform">Learning</a></li>
-                    <li><a href="https://vylexnexys.co.za/ai" title="AI Tools aggregator">AI Tools</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Contact Us</h4>
-                <ul>
-                    <li><a href="mailto:info@vylexnexys.com"><i class="fas fa-envelope"></i> info@vylexnexys.com</a></li>
-                    <li><a href="tel:+27648784287"><i class="fas fa-phone"></i> +27 (0) 64-878-4287</a></li>
-                    <li><a href="https://vylexnexys.co.za/contact" title="Our Location"><i class="fas fa-map-marker-alt"></i> Durban, SA</a></li>
-                </ul>
-            </div>
+    <!-- History Modal -->
+    <div id="historyModal" class="modal hidden">
+        <div class="modal-content glass-card">
+            <button class="close-modal"><i class="fas fa-times"></i></button>
+            <h3 class="modal-title"><i class="fas fa-history"></i> Search History</h3>
+            <ul id="modalHistoryList" class="modal-history-list"></ul>
+            <button id="clearHistoryBtn" class="btn danger w-full mt-4"><i class="fas fa-trash"></i> Clear History</button>
         </div>
-        
+    </div>
+
+    <!-- Footer -->
+    <footer>
         <div class="footer-bottom">
             <p>&copy; 2024 <a href="https://vylexnexys.co.za">Vylex Nexys</a>. All rights reserved.</p>
         </div>

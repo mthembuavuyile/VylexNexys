@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VylexNexys — Text Analysis Suite</title>
+    <meta name="description" content="Professional text analysis and content optimization suite by VylexNexys.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <div id="overlay"></div>
+
+    <button id="sidebarToggle" aria-label="Toggle sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+
+    <button id="themeToggle" aria-label="Toggle theme">🌙</button>
+
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">VylexNexys</div>
+            <div class="sidebar-title">Text Analysis<br>Suite</div>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-label">Tools</div>
+            <div class="sidebar-item active" onclick="showTool('wordCount', this)">
+                <span class="icon">📊</span> Word Counter
+            </div>
+            <div class="sidebar-item" onclick="showTool('caseConverter', this)">
+                <span class="icon">🔡</span> Case Converter
+            </div>
+            <div class="sidebar-item" onclick="showTool('textAnalyzer', this)">
+                <span class="icon">🔬</span> Text Analyzer
+            </div>
+            <div class="sidebar-item" onclick="showTool('readability', this)">
+                <span class="icon">📖</span> Readability Score
+            </div>
+            <div class="sidebar-item" onclick="showTool('findReplace', this)">
+                <span class="icon">🔍</span> Find & Replace
+            </div>
+            <div class="sidebar-item" onclick="showTool('textCleaner', this)">
+                <span class="icon">🧹</span> Text Cleaner
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <a href="https://mthembuavuyile.github.io/VylexNexys/">© 2025 Vylex Nexys</a>
+        </div>
+    </nav>
+
+    <div id="mainContent">
+
+        <!-- ── Word Counter ── -->
+        <section id="wordCount" class="tool-section active">
+            <div class="tool-header">
+                <div class="tool-tag">// 01 — Counter</div>
+                <h2>Word Counter</h2>
+                <p>Paste your text to instantly see word, character, and unique word counts.</p>
+            </div>
+            <textarea id="countText" placeholder="Start typing or paste your text here…" oninput="countWordsAndChars()"></textarea>
+            <div class="char-bar-wrap">
+                <div class="char-bar-meta">
+                    <span id="charBarLabel">0 characters</span>
+                    <span id="charBarPct"></span>
+                </div>
+                <div class="char-bar-track"><div class="char-bar-fill" id="charBarFill"></div></div>
+            </div>
+            <div id="countResults" class="results-grid"></div>
+        </section>
+
+        <!-- ── Case Converter ── -->
+        <section id="caseConverter" class="tool-section">
+            <div class="tool-header">
+                <div class="tool-tag">// 02 — Convert</div>
+                <h2>Case Converter</h2>
+                <p>Transform your text into any case style in one click.</p>
+            </div>
+            <textarea id="caseText" placeholder="Enter your text here…"></textarea>
+            <div class="btn-group" style="margin-top:12px;">
+                <button class="btn btn-primary" onclick="convertCase('upper')">UPPERCASE</button>
+                <button class="btn btn-secondary" onclick="convertCase('lower')">lowercase</button>
+                <button class="btn btn-secondary" onclick="convertCase('title')">Title Case</button>
+                <button class="btn btn-secondary" onclick="convertCase('sentence')">Sentence case</button>
+                <button class="btn btn-secondary" onclick="convertCase('camel')">camelCase</button>
+                <button class="btn btn-secondary" onclick="convertCase('snake')">snake_case</button>
+            </div>
+            <div id="caseOutput" style="display:none;">
+                <div class="copy-row">
+                    <span class="copy-label">Result</span>
+                    <button class="btn btn-secondary" onclick="copyText('caseResult')">📋 Copy</button>
+                </div>
+                <div class="output-box" id="caseResult"></div>
+            </div>
+        </section>
+
+        <!-- ── Text Analyzer ── -->
+        <section id="textAnalyzer" class="tool-section">
+            <div class="tool-header">
+                <div class="tool-tag">// 03 — Analyze</div>
+                <h2>Text Analyzer</h2>
+                <p>Deep dive into your text statistics — sentences, paragraphs, reading time and more.</p>
+            </div>
+            <textarea id="statsText" placeholder="Paste your text for analysis…" oninput="analyzeText()"></textarea>
+            <div id="statsResults" style="margin-top:16px;"></div>
+            <div id="freqSection" style="display:none; margin-top:20px;">
+                <div class="section-divider"></div>
+                <p style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:12px;">Top Word Frequencies</p>
+                <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+                    <table class="freq-table" id="freqTable"></table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Readability ── -->
+        <section id="readability" class="tool-section">
+            <div class="tool-header">
+                <div class="tool-tag">// 04 — Readability</div>
+                <h2>Readability Score</h2>
+                <p>Measure your content's reading level using the Flesch-Kincaid formula.</p>
+            </div>
+            <textarea id="readText" placeholder="Paste your text to score readability…" oninput="scoreReadability()"></textarea>
+            <div id="readResults" style="margin-top:16px;"></div>
+        </section>
+
+        <!-- ── Find & Replace ── -->
+        <section id="findReplace" class="tool-section">
+            <div class="tool-header">
+                <div class="tool-tag">// 05 — Find & Replace</div>
+                <h2>Find &amp; Replace</h2>
+                <p>Search for any word or phrase and replace it across your entire text.</p>
+            </div>
+            <textarea id="frText" placeholder="Paste your text here…" oninput="updateFRPreview()"></textarea>
+            <div class="input-row" style="margin-top:14px;">
+                <div class="input-group">
+                    <label>Find</label>
+                    <input type="text" id="findInput" placeholder="Search text…" oninput="updateFRPreview()">
+                </div>
+                <div class="input-group">
+                    <label>Replace with</label>
+                    <input type="text" id="replaceInput" placeholder="Replacement…" oninput="updateFRPreview()">
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="applyReplace()">Apply Replace</button>
+                <button class="btn btn-secondary" onclick="resetFR()">Reset</button>
+                <label style="font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--text-muted);">
+                    <input type="checkbox" id="caseSensitive" oninput="updateFRPreview()"> Case sensitive
+                </label>
+            </div>
+            <div class="match-count" id="matchCount"></div>
+            <div id="frOutputWrap" style="display:none;margin-top:12px;">
+                <div class="copy-row">
+                    <span class="copy-label">Result</span>
+                    <button class="btn btn-secondary" onclick="copyText('frResult')">📋 Copy</button>
+                </div>
+                <div class="output-box" id="frResult"></div>
+            </div>
+        </section>
+
+        <!-- ── Text Cleaner ── -->
+        <section id="textCleaner" class="tool-section">
+            <div class="tool-header">
+                <div class="tool-tag">// 06 — Clean</div>
+                <h2>Text Cleaner</h2>
+                <p>Strip, remove, and tidy up your text with one-click operations.</p>
+            </div>
+            <textarea id="cleanText" placeholder="Paste text to clean…"></textarea>
+            <div class="cleaner-options" style="margin-top:14px;">
+                <button class="cleaner-btn" onclick="clean('extraSpaces')">Remove extra spaces</button>
+                <button class="cleaner-btn" onclick="clean('duplicateLines')">Remove duplicate lines</button>
+                <button class="cleaner-btn" onclick="clean('emptyLines')">Remove empty lines</button>
+                <button class="cleaner-btn" onclick="clean('lineBreaks')">Strip line breaks</button>
+                <button class="cleaner-btn" onclick="clean('numbers')">Remove numbers</button>
+                <button class="cleaner-btn" onclick="clean('punctuation')">Remove punctuation</button>
+                <button class="cleaner-btn" onclick="clean('html')">Strip HTML tags</button>
+                <button class="cleaner-btn" onclick="clean('trim')">Trim each line</button>
+            </div>
+            <div id="cleanOutputWrap" style="display:none;">
+                <div class="copy-row">
+                    <span class="copy-label">Cleaned text</span>
+                    <button class="btn btn-secondary" onclick="copyText('cleanResult')">📋 Copy</button>
+                </div>
+                <div class="output-box" id="cleanResult"></div>
+            </div>
+        </section>
+
+        <footer>
+            <a href="https://mthembuavuyile.github.io/VylexNexys/">© 2025 Vylex Nexys</a> — Text Analysis Suite
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">✓ Copied to clipboard</div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
