@@ -52,6 +52,7 @@ body {
 .mt-6 { margin-top: 1.5rem; }
 .mb-4 { margin-bottom: 1rem; }
 .w-full { width: 100%; }
+.section-title { margin-bottom: 1rem; color: var(--accent); }
 
 /* Header & Nav */
 header {
@@ -87,6 +88,7 @@ nav a:hover { opacity: 0.8; }
     margin: 2rem auto;
     padding: 0 1rem;
     flex-grow: 1;
+    width: 100%;
 }
 
 /* Tabs & Controls */
@@ -110,6 +112,9 @@ nav a:hover { opacity: 0.8; }
     font-weight: 600;
     backdrop-filter: blur(10px);
     transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .tab-button:hover { background: rgba(59, 130, 246, 0.1); }
@@ -128,6 +133,7 @@ nav a:hover { opacity: 0.8; }
     transition: 0.3s;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
 }
 
@@ -151,12 +157,17 @@ nav a:hover { opacity: 0.8; }
 .search-container {
     display: flex;
     gap: 1rem;
-    position: relative;
     margin-bottom: 2rem;
 }
 
-.search-input {
+.search-wrapper {
+    position: relative;
     flex: 1;
+    display: flex;
+}
+
+.search-input {
+    width: 100%;
     background: var(--card);
     border: 2px solid var(--glass-border);
     color: var(--text);
@@ -171,7 +182,7 @@ nav a:hover { opacity: 0.8; }
 
 .clear-btn {
     position: absolute;
-    right: 140px;
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
     background: none;
@@ -179,6 +190,7 @@ nav a:hover { opacity: 0.8; }
     color: var(--text-muted);
     cursor: pointer;
     font-size: 1.2rem;
+    padding: 0.5rem;
 }
 
 /* Results Grid */
@@ -190,7 +202,7 @@ nav a:hover { opacity: 0.8; }
 }
 
 .word-header { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
-.word-header h2 { font-size: 2.5rem; color: var(--accent); text-transform: capitalize; }
+.word-header h2 { font-size: 2.5rem; color: var(--accent); text-transform: capitalize; word-break: break-word; }
 .word-header p { color: var(--text-muted); font-size: 1.1rem; }
 .play-pronunciation { align-self: flex-start; margin-top: 0.5rem; }
 
@@ -237,7 +249,7 @@ nav a:hover { opacity: 0.8; }
 }
 
 .control-group { display: flex; flex-direction: column; gap: 0.5rem; }
-.select { background: var(--card); color: var(--text); border: 1px solid var(--glass-border); padding: 0.75rem; border-radius: 0.5rem; outline: none; }
+.select { background: var(--card); color: var(--text); border: 1px solid var(--glass-border); padding: 0.75rem; border-radius: 0.5rem; outline: none; width: 100%; }
 .slider { width: 100%; accent-color: var(--accent); }
 
 .tts-buttons { display: flex; gap: 1rem; }
@@ -280,7 +292,7 @@ nav a:hover { opacity: 0.8; }
 }
 .close-modal {
     position: absolute; top: 1rem; right: 1rem; background: none; border: none;
-    color: var(--text); font-size: 1.5rem; cursor: pointer;
+    color: var(--text); font-size: 1.5rem; cursor: pointer; padding: 0.5rem;
 }
 .modal-history-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
 .modal-history-list li {
@@ -301,12 +313,45 @@ footer {
 }
 footer a { color: white; text-decoration: underline; }
 
-/* Responsive */
+/* ----------------------------------
+   Mobile Responsive Rules 
+----------------------------------- */
 @media (max-width: 768px) {
-    .sections-grid { grid-template-columns: 1fr; }
-    nav { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 1rem; }
+    /* Header Mobile Fixes */
+    nav { 
+        display: none; 
+        position: absolute; 
+        top: 100%; 
+        left: 0; 
+        width: 100%; 
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        flex-direction: column; 
+        padding: 1.5rem 1rem; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
     nav.active { display: flex; }
     .hamburger { display: flex; }
-    .search-container { flex-direction: column; }
-    .clear-btn { right: 10px; top: 25%; }
+
+    /* Nav Tabs & Controls: Make them grids for even touch targets */
+    .nav-container { flex-direction: column; gap: 1rem; }
+    .tab-buttons { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 0.5rem; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 0.5rem; }
+    .tab-button, .btn { padding: 0.75rem 0.5rem; font-size: 0.9rem; }
+
+    /* Search Layout */
+    .search-container { flex-direction: column; gap: 0.75rem; }
+    #searchBtn { width: 100%; padding: 1rem; font-size: 1.1rem; }
+
+    /* Grid Layout Fallback */
+    .sections-grid { grid-template-columns: 1fr; }
+    
+    /* Typography Adjustments */
+    .word-header h2 { font-size: 2rem; }
+    
+    /* TTS Buttons stack */
+    .tts-buttons { flex-direction: column; }
+    .tts-buttons .btn { width: 100%; padding: 1rem; }
+    
+    /* Cards padding adjusted for smaller screens */
+    .glass-card { padding: 1rem; }
 }

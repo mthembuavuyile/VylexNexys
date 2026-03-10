@@ -112,9 +112,9 @@ body.dark .site-header {
   background-color: var(--light-bg);
 }
 
-/* ── Burger Button ── */
+/* ── Burger Button (Now visible globally) ── */
 .burger {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -156,9 +156,9 @@ body.dark .site-header {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* ── Mobile Nav Drawer ── */
+/* ── Nav Drawer (Now visible globally) ── */
 .mobile-nav {
-  display: none;
+  display: flex;
   position: fixed;
   top: 0;
   right: 0;
@@ -180,20 +180,22 @@ body.dark .site-header {
   transform: translateX(0);
 }
 
-/* Overlay */
+/* Overlay (Now visible globally) */
 .nav-overlay {
-  display: none;
+  display: block;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.35);
   z-index: 140;
   opacity: 0;
-  transition: opacity 0.35s ease;
+  visibility: hidden; /* prevents clicking when closed */
+  transition: opacity 0.35s ease, visibility 0.35s ease;
   backdrop-filter: blur(2px);
 }
 
 .nav-overlay.open {
   opacity: 1;
+  visibility: visible;
 }
 
 .mobile-nav-section {
@@ -437,18 +439,6 @@ body.dark .site-header {
     font-size: 1.5rem;
   }
 
-  .burger {
-    display: flex;
-  }
-
-  .mobile-nav {
-    display: flex;
-  }
-
-  .nav-overlay {
-    display: block;
-  }
-
   .tools-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
@@ -533,9 +523,9 @@ body.dark .site-header {
 
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Pages</div>
-      <a href="index.html"><span class="nav-icon">🏠</span> Home</a>
-      <a href="about.html"><span class="nav-icon">ℹ️</span> About</a>
-      <a href="contact.html"><span class="nav-icon">✉️</span> Contact</a>
+      <a href="/index.html"><span class="nav-icon">🏠</span> Home</a>
+      <a href="/about.html"><span class="nav-icon">ℹ️</span> About</a>
+      <a href="/contact.html"><span class="nav-icon">✉️</span> Contact</a>
     </div>
 
     <div class="mobile-nav-divider"></div>
@@ -555,7 +545,6 @@ body.dark .site-header {
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Language & Text</div>
       <a href="lexico/index.html"><span class="nav-icon">📖</span> Lexico Dictionary</a>
-      <a href="lexico-v2/index.html"><span class="nav-icon">🗣️</span> Lexico v2</a>
       <a href="advanced-text-analysis.html"><span class="nav-icon">📝</span> Advanced Text Analysis</a>
       <a href="writing-assistant.html"><span class="nav-icon">✍️</span> Writing Assistant</a>
     </div>
@@ -574,7 +563,7 @@ body.dark .site-header {
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Productivity</div>
       <a href="achieva/index.html"><span class="nav-icon">🎯</span> Achieva</a>
-      <a href="https://vylexnexys.co.za/notes"><span class="nav-icon">🗒️</span> NoteMaster</a>
+      <a href="notes/"><span class="nav-icon">🗒️</span> NoteMaster</a>
     </div>
 
     <div class="mobile-nav-divider"></div>

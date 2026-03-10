@@ -2,21 +2,17 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <!-- Primary Meta Tags -->
     <title>Lexico | Vylex Nexys Language Intelligence</title>
     <meta name="description" content="Lexico by Vylex Nexys offers intelligent language tools including definitions, synonyms, pronunciation, etymology, and text-to-speech for smarter learning." />
     
-    <!-- Favicon -->
     <link rel="icon" href="https://vylexnexys.co.za/favicon.ico" />
 
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="header-content">
             <div class="brand">
@@ -34,7 +30,6 @@
     </header>
 
     <main class="container">
-        <!-- Navigation & Controls -->
         <nav class="nav-container">
             <div class="tab-buttons">
                 <button class="tab-button active" data-tab="dictionary">
@@ -46,7 +41,7 @@
             </div>
             <div class="controls">
                 <button id="theme-toggle" class="btn">
-                    <i class="fas fa-sun"></i> Light Mode
+                    <i class="fas fa-sun"></i> Light
                 </button>
                 <button class="btn" id="history-btn">
                     <i class="fas fa-history"></i> History
@@ -54,30 +49,28 @@
             </div>
         </nav>
 
-        <!-- Visualizer -->
         <div id="visualizer" class="visualizer hidden"></div>
 
-        <!-- Dictionary Tab -->
         <div id="dictionary-content" class="content-section">
             <div class="search-section">
                 <div class="search-container">
-                    <input type="text" id="wordInput" placeholder="Enter a word to explore..." class="search-input" />
-                    <button id="clearSearchBtn" class="clear-btn hidden" title="Clear">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <div class="search-wrapper">
+                        <input type="text" id="wordInput" placeholder="Enter a word..." class="search-input" />
+                        <button id="clearSearchBtn" class="clear-btn hidden" title="Clear">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                     <button id="searchBtn" class="btn primary">
                         <i class="fas fa-search"></i> Search
                     </button>
                 </div>
             </div>
 
-            <!-- Loading & Error States -->
             <div id="loading" class="loading hidden">
                 <i class="fas fa-spinner fa-spin"></i> Analyzing word...
             </div>
             <div id="error" class="error hidden"></div>
 
-            <!-- Results -->
             <div id="resultsContainer" class="results-container hidden">
                 <div id="wordHeader" class="word-header glass-card"></div>
                 
@@ -106,9 +99,8 @@
             </div>
         </div>
 
-        <!-- Text-to-Speech Tab -->
         <div id="tts-content" class="content-section hidden">
-            <h2 class="section-title"><i class="fas fa-volume-up"></i> Text-to-Speech Synthesizer</h2>
+            <h2 class="section-title"><i class="fas fa-volume-up"></i> Synthesizer</h2>
             
             <textarea id="ttsText" placeholder="Enter text to speak..." class="tts-textarea"></textarea>
 
@@ -143,7 +135,6 @@
         </div>
     </main>
 
-    <!-- History Modal -->
     <div id="historyModal" class="modal hidden">
         <div class="modal-content glass-card">
             <button class="close-modal"><i class="fas fa-times"></i></button>
@@ -153,7 +144,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-bottom">
             <p>&copy; 2024 <a href="https://vylexnexys.co.za">Vylex Nexys</a>. All rights reserved.</p>
