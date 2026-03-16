@@ -628,6 +628,111 @@ nav {
   border-radius: 50px;
 }
 
+/* =========================================
+   FEATURED TOOLS
+   ========================================= */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 28px;
+}
+
+.tool-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Top Accent Line */
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tool-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow);
+  border-color: rgba(13, 71, 161, 0.18);
+}
+
+.tool-card:hover::before {
+  transform: scaleX(1);
+}
+
+.tool-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  margin-bottom: 22px;
+  transition: transform 0.3s ease;
+}
+
+/* Icon scale/bounce on hover */
+.tool-card:hover .tool-icon {
+  transform: scale(1.1) rotate(-4deg);
+}
+
+/* Specific Badge Colors */
+.icon-blue    { background: #eff6ff; color: #2563eb; }
+.icon-emerald { background: #ecfdf5; color: #059669; }
+.icon-purple  { background: #faf5ff; color: #9333ea; }
+.icon-rose    { background: #fff1f2; color: #e11d48; }
+
+.tool-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-content h4 {
+  font-size: 1.15rem;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+  transition: color 0.2s ease;
+}
+
+.tool-card:hover .tool-content h4 {
+  color: var(--accent);
+}
+
+.tool-content p {
+  font-size: 0.92rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.tool-meta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: auto;
+}
+
 .icon-box {
   width: 58px;
   height: 58px;

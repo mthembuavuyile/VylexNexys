@@ -8,519 +8,47 @@
   <meta name="author" content="Vylex Nexys Team">
   <link rel="icon" href="favicon.ico">
   <title>Edu Tools Gallery | Vylex Nexys</title>
-  <style>
-    /* Variables */
-:root {
-  --primary-color: #4682b4;
-  --secondary-color: #5f9ea0;
-  --accent-color: #e8491d;
-  --bg-color: #f0f8ff;
-  --text-color: #333;
-  --light-bg: #e6f3ff;
-  --link-color: var(--accent-color);
-  --link-hover: var(--secondary-color);
-  --transition: 0.3s ease;
-  --card-shadow: 0 3px 10px rgba(0,0,0,0.05);
-  --card-shadow-hover: 0 6px 20px rgba(0,0,0,0.1);
-}
 
-/* Dark theme override */
-body.dark {
-  --bg-color: #1f2937;
-  --text-color: #f3f4f6;
-  --light-bg: #33383f;
-  --card-shadow: 0 3px 10px rgba(0,0,0,0.15);
-  --card-shadow-hover: 0 6px 20px rgba(0,0,0,0.25);
-}
-
-/* Global */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  line-height: 1.6;
-  scroll-behavior: smooth;
-  scroll-padding-top: 4.5rem;
-}
-
-/* Layout */
-.container {
-  width: min(1200px, 100% - 2rem);
-  margin: 0 auto;
-  padding: 2rem 0;
-}
-
-/* Header */
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  background-color: rgba(230, 243, 255, 0.85);
-  border-bottom: 1px solid var(--secondary-color);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 100;
-  transition: background-color var(--transition);
-}
-
-body.dark .site-header {
-  background-color: rgba(51, 56, 63, 0.85);
-}
-
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.site-header h1 {
-  font-size: 1.75rem;
-  color: var(--primary-color);
-  font-weight: 700;
-}
-
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-#theme-toggle {
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-  color: var(--text-color);
-  transition: all var(--transition);
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-}
-
-#theme-toggle:hover {
-  color: var(--accent-color);
-  background-color: var(--light-bg);
-}
-
-/* ── Burger Button (Now visible globally) ── */
-.burger {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 2.5rem;
-  height: 2.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.4rem;
-  border-radius: 0.5rem;
-  transition: background-color var(--transition);
-  z-index: 200;
-}
-
-.burger:hover {
-  background-color: var(--light-bg);
-}
-
-.burger span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background-color: var(--text-color);
-  border-radius: 2px;
-  transition: transform 0.35s ease, opacity 0.25s ease, width 0.3s ease;
-  transform-origin: center;
-}
-
-/* Animated X state */
-.burger.open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.burger.open span:nth-child(2) {
-  opacity: 0;
-  width: 0;
-}
-.burger.open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-/* ── Nav Drawer (Now visible globally) ── */
-.mobile-nav {
-  display: flex;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: min(320px, 85vw);
-  background-color: var(--bg-color);
-  border-left: 1px solid var(--secondary-color);
-  z-index: 150;
-  flex-direction: column;
-  padding: 5rem 2rem 2rem;
-  gap: 0.5rem;
-  transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: -8px 0 32px rgba(0,0,0,0.12);
-  overflow-y: auto;
-}
-
-.mobile-nav.open {
-  transform: translateX(0);
-}
-
-/* Overlay (Now visible globally) */
-.nav-overlay {
-  display: block;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  z-index: 140;
-  opacity: 0;
-  visibility: hidden; /* prevents clicking when closed */
-  transition: opacity 0.35s ease, visibility 0.35s ease;
-  backdrop-filter: blur(2px);
-}
-
-.nav-overlay.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.mobile-nav-section {
-  margin-bottom: 1.25rem;
-}
-
-.mobile-nav-section-title {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--secondary-color);
-  margin-bottom: 0.5rem;
-  padding-left: 0.75rem;
-}
-
-.mobile-nav a {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 0.75rem;
-  text-decoration: none;
-  color: var(--text-color);
-  font-size: 0.95rem;
-  border-radius: 0.6rem;
-  transition: all var(--transition);
-  font-weight: 500;
-}
-
-.mobile-nav a:hover {
-  background-color: var(--light-bg);
-  color: var(--primary-color);
-  padding-left: 1.1rem;
-}
-
-.mobile-nav a .nav-icon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  width: 1.5rem;
-  text-align: center;
-}
-
-.mobile-nav-divider {
-  height: 1px;
-  background: var(--secondary-color);
-  opacity: 0.3;
-  margin: 0.5rem 0 1rem;
-}
-
-/* Sections */
-.hero {
-  padding-top: 6rem;
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.section-title {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.intro {
-  margin-bottom: 2rem;
-  font-size: 1.2rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  opacity: 0.9;
-}
-
-/* Tool grid */
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.tool-card {
-  background-color: var(--light-bg);
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: var(--card-shadow);
-  transition: all var(--transition);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-.tool-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-  transform: scaleX(0);
-  transition: transform var(--transition);
-  transform-origin: left;
-}
-
-.tool-card:hover::before {
-  transform: scaleX(1);
-}
-
-.tool-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.tool-card a {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  text-decoration: none;
-  color: var(--primary-color);
-  transition: color var(--transition);
-  margin-bottom: 1rem;
-}
-
-.tool-card a:hover {
-  color: var(--accent-color);
-}
-
-.tool-card a:focus {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 2px;
-  border-radius: 0.5rem;
-}
-
-.tool-card .icon {
-  width: 2rem;
-  height: 2rem;
-  stroke-width: 2;
-  flex-shrink: 0;
-  transition: transform var(--transition);
-}
-
-.tool-card:hover .icon {
-  transform: scale(1.1);
-}
-
-.tool-card h3 {
-  font-size: 1.3rem;
-  margin: 0;
-  font-weight: 600;
-}
-
-.tool-card p {
-  margin: 0;
-  color: var(--text-color);
-  font-size: 0.95rem;
-  flex-grow: 1;
-  opacity: 0.8;
-  line-height: 1.5;
-}
-
-/* Categories */
-.category-section {
-  margin-bottom: 4rem;
-}
-
-.category-title {
-  font-size: 1.8rem;
-  color: var(--primary-color);
-  margin-bottom: 1.5rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.category-title::before {
-  content: '';
-  width: 4px;
-  height: 2rem;
-  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-  border-radius: 2px;
-}
-
-/* Footer */
-.site-footer {
-  background-color: var(--light-bg);
-  padding: 3rem 2rem 2rem;
-  text-align: center;
-  border-top: 1px solid var(--secondary-color);
-  margin-top: 4rem;
-}
-
-.footer-nav {
-  margin-bottom: 2rem;
-}
-
-.footer-nav a {
-  margin: 0 1.5rem;
-  text-decoration: none;
-  color: var(--primary-color);
-  transition: all var(--transition);
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-}
-
-.footer-nav a:hover {
-  color: var(--accent-color);
-  background-color: var(--bg-color);
-}
-
-.copyright {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.copyright a {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.copyright a:hover {
-  text-decoration: underline;
-  color: var(--accent-color);
-}
-
-/* Responsive */
-@media(max-width: 768px) {
-  .header-inner {
-    padding: 1rem 1.5rem;
-  }
-
-  .site-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .tools-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .tool-card {
-    padding: 1.5rem;
-  }
-
-  .category-title {
-    font-size: 1.5rem;
-  }
-}
-
-@media(max-width: 480px) {
-  .tools-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .header-inner {
-    padding: 1rem;
-  }
-
-  .hero {
-    padding-top: 5.5rem;
-  }
-
-  .tool-card {
-    padding: 1.25rem;
-  }
-
-  .footer-nav a {
-    margin: 0 0.75rem;
-    font-size: 0.9rem;
-  }
-}
-
-/* Animation for cards */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.tool-card {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-/* Stagger animation */
-.tool-card:nth-child(1) { animation-delay: 0.1s; }
-.tool-card:nth-child(2) { animation-delay: 0.2s; }
-.tool-card:nth-child(3) { animation-delay: 0.3s; }
-.tool-card:nth-child(4) { animation-delay: 0.4s; }
-.tool-card:nth-child(5) { animation-delay: 0.5s; }
-.tool-card:nth-child(6) { animation-delay: 0.6s; }
-
-  </style>
+  <!-- Fonts & Icons matching Home Page -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Link your global CSS -->
+  <link rel="stylesheet" href="/css/global.css">
+<link rel="stylesheet" href="css/tools.css">
 </head>
 <body>
+  <!-- ===================== HEADER ===================== -->
   <header role="banner" class="site-header">
-    <div class="header-inner">
-      <h1>Edu Tools Gallery</h1>
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+      
+      <a href="index.html" class="logo">
+        <span>Edu</span> Tools
+      </a>
+
       <div class="header-controls">
+        <!-- Desktop Nav: Only Home -->
+        <div class="desktop-only-links">
+          <a href="/index.html"><i class="fa-solid fa-house"></i> Home</a>
+        </div>
+        
         <button id="theme-toggle" aria-label="Toggle light/dark theme">🌗</button>
-        <button class="burger" id="burger-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
-          <span></span>
-          <span></span>
-          <span></span>
+        
+        <!-- Mobile Nav: Burger Button -->
+        <button class="burger" id="burger-btn" aria-label="Open navigation menu" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
         </button>
       </div>
+
     </div>
   </header>
 
+  <!-- ===================== MOBILE NAV OVERLAY & MENU ===================== -->
   <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
 
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
-
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Pages</div>
       <a href="/index.html"><span class="nav-icon">🏠</span> Home</a>
@@ -553,7 +81,7 @@ body.dark .site-header {
 
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Academic & Research</div>
-      <a href="NexaCite.html"><span class="nav-icon">📚</span> NexaCite</a>
+      <a href="SaCite.html"><span class="nav-icon">📚</span> SACite</a>
       <a href="studyHub.html"><span class="nav-icon">🏫</span> Study Hub</a>
       <a href="schedulegenerator.html"><span class="nav-icon">📅</span> Schedule Generator</a>
     </div>
@@ -574,180 +102,240 @@ body.dark .site-header {
       <a href="/edTech/"><span class="nav-icon">🔬</span> STEM Courses</a>
       <a href="virtual-lab.html"><span class="nav-icon">🧪</span> Virtual Lab</a>
     </div>
-
   </nav>
 
-  <main role="main" class="container">
-  <section class="hero">
-    <h2 class="section-title">Explore Our Tools & Resources</h2>
-    <p class="intro">
-      Whether you're calculating, visualising, budgeting, or learning — we've got comprehensive tools for every educational need.
-    </p>
-  </section>
-
-  <section class="category-section">
-    <h3 class="category-title">Mathematics & Calculators</h3>
-    <div class="tools-grid">
-      <div class="tool-card">
-        <a href="calculator.html">
-          <h3>Calculator</h3>
-        </a>
-        <p>Advanced scientific calculator with extensive mathematical functions.</p>
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <main role="main">
+    
+    <!-- Hero Header matching home page style -->
+    <section class="section-padding section-alt" style="padding-bottom: 60px;">
+      <div class="container text-center">
+        <span class="section-label">Digital Resources</span>
+        <h2 class="section-title">Explore Our Tools Gallery</h2>
+        <p class="section-subtitle">
+          Whether you're calculating, visualising, budgeting, or learning — we've got comprehensive tools for every educational need.
+        </p>
       </div>
+    </section>
 
-      <div class="tool-card">
-        <a href="apscalculator.html">
-          <h3>APS Score Calculator</h3>
-        </a>
-        <p>Instantly compute your Admission Point Score for South African universities.</p>
+    <!-- Mathematics Category -->
+    <section class="section-padding">
+      <div class="container">
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Mathematics & Calculators</h3>
+        <div class="tools-grid">
+          <a href="calculator.html" class="tool-card reveal">
+            <div class="tool-icon icon-blue"><i class="fa-solid fa-calculator"></i></div>
+            <div class="tool-content">
+              <h4>Calculator</h4>
+              <p>Advanced scientific calculator with extensive mathematical functions.</p>
+            </div>
+            <div class="tool-meta">Math &middot; Utility</div>
+          </a>
+
+          <a href="apscalculator.html" class="tool-card reveal">
+            <div class="tool-icon icon-accent"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="tool-content">
+              <h4>APS Score Calculator</h4>
+              <p>Instantly compute your Admission Point Score for South African universities.</p>
+            </div>
+            <div class="tool-meta">Math &middot; Admissions</div>
+          </a>
+
+          <a href="Math-Function-Visualizer.html" class="tool-card reveal">
+            <div class="tool-icon icon-emerald"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="tool-content">
+              <h4>Math Function Visualizer</h4>
+              <p>Interactive graphing tool for plotting and exploring functions.</p>
+            </div>
+            <div class="tool-meta">Math &middot; Graphing</div>
+          </a>
+
+          <a href="math-resolver.html" class="tool-card reveal">
+            <div class="tool-icon icon-purple"><i class="fa-solid fa-square-root-variable"></i></div>
+            <div class="tool-content">
+              <h4>Math Resolver</h4>
+              <p>Comprehensive mathematical solution suite.</p>
+            </div>
+            <div class="tool-meta">Math &middot; Resolver</div>
+          </a>
+
+          <a href="sequence-solver.html" class="tool-card reveal">
+            <div class="tool-icon icon-rose"><i class="fa-solid fa-arrow-down-1-9"></i></div>
+            <div class="tool-content">
+              <h4>Sequence Solver</h4>
+              <p>Analyse arithmetic and geometric sequences to reveal patterns.</p>
+            </div>
+            <div class="tool-meta">Math &middot; Sequence</div>
+          </a>
+
+          <a href="trigonometry-solver.html" class="tool-card reveal">
+            <div class="tool-icon icon-steel"><i class="fa-solid fa-shapes"></i></div>
+            <div class="tool-content">
+              <h4>Trigonometry Solver</h4>
+              <p>Comprehensive trigonometry helper.</p>
+            </div>
+            <div class="tool-meta">Math &middot; Trig</div>
+          </a>
+        </div>
       </div>
+    </section>
 
-      <div class="tool-card">
-        <a href="Math-Function-Visualizer.html">
-          <h3>Math Function Visualizer</h3>
-        </a>
-        <p>Interactive graphing tool for plotting and exploring functions.</p>
+    <!-- Language Category -->
+    <section class="section-padding section-alt">
+      <div class="container">
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Language & Text Tools</h3>
+        <div class="tools-grid">
+          <a href="lexico/index.html" class="tool-card reveal">
+            <div class="tool-icon icon-dark"><i class="fa-solid fa-book-open"></i></div>
+            <div class="tool-content">
+              <h4>Lexico Dictionary</h4>
+              <p>Definitions, TTS, etymology, and usage examples to level up vocabulary.</p>
+            </div>
+            <div class="tool-meta">Text &middot; Reference</div>
+          </a>
+
+          <a href="text-analysis/" class="tool-card reveal">
+            <div class="tool-icon icon-emerald"><i class="fa-solid fa-spell-check"></i></div>
+            <div class="tool-content">
+              <h4>Advanced Text Analysis</h4>
+              <p>Word count, reading time, case converter, markdown viewer, and more.</p>
+            </div>
+            <div class="tool-meta">Text &middot; Analysis</div>
+          </a>
+
+          <a href="writing-assistant/" class="tool-card reveal">
+            <div class="tool-icon icon-blue"><i class="fa-solid fa-pen-nib"></i></div>
+            <div class="tool-content">
+              <h4>Writing Assistant</h4>
+              <p>Enhance your writing with smart grammar, structure, and style suggestions.</p>
+            </div>
+            <div class="tool-meta">Text &middot; Writing</div>
+          </a>
+        </div>
       </div>
+    </section>
 
-      <div class="tool-card">
-        <a href="math-resolver.html">
-          <h3>Math Resolver</h3>
-        </a>
-        <p>Comprehensive mathematical solution suite.</p>
+    <!-- Academic Category -->
+    <section class="section-padding">
+      <div class="container">
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Academic & Research Tools</h3>
+        <div class="tools-grid">
+          <a href="SACite.html" class="tool-card reveal">
+            <div class="tool-icon icon-purple"><i class="fa-solid fa-quote-right"></i></div>
+            <div class="tool-content">
+              <h4>SA Cite</h4>
+              <p>Generate APA, MLA, Harvard, and Chicago citations in seconds.</p>
+            </div>
+            <div class="tool-meta">Research &middot; Referencing</div>
+          </a>
+
+          <a href="studyHub.html" class="tool-card reveal">
+            <div class="tool-icon icon-steel"><i class="fa-solid fa-school"></i></div>
+            <div class="tool-content">
+              <h4>Study Hub</h4>
+              <p>Centralised platform for educational resources and digital libraries.</p>
+            </div>
+            <div class="tool-meta">Academic &middot; Resources</div>
+          </a>
+
+          <a href="advanced-search.html" class="tool-card reveal">
+            <div class="tool-icon icon-dark"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <div class="tool-content">
+              <h4>Advanced Search</h4>
+              <p>Google dorking tool for rapid academic resource finding.</p>
+            </div>
+            <div class="tool-meta">Research &middot; Dorking</div>
+          </a>
+
+          <a href="schedulegenerator.html" class="tool-card reveal">
+            <div class="tool-icon icon-rose"><i class="fa-solid fa-calendar-days"></i></div>
+            <div class="tool-content">
+              <h4>Schedule Generator</h4>
+              <p>Create conflict-free timetables with smart optimisation.</p>
+            </div>
+            <div class="tool-meta">Academic &middot; Timetable</div>
+          </a>
+        </div>
       </div>
+    </section>
 
-      <div class="tool-card">
-        <a href="sequence-solver.html">
-          <h3>Sequence Solver</h3>
-        </a>
-        <p>Analyse arithmetic and geometric sequences to reveal patterns.</p>
+    <!-- Productivity Category -->
+    <section class="section-padding section-alt">
+      <div class="container">
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Productivity & Management</h3>
+        <div class="tools-grid">
+          <a href="achieva/index.html" class="tool-card reveal">
+            <div class="tool-icon icon-accent"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="tool-content">
+              <h4>Achieva</h4>
+              <p>Track goals, academic records, milestones, and long-term progress.</p>
+            </div>
+            <div class="tool-meta">Productivity &middot; Goals</div>
+          </a>
+
+          <a href="notes/" class="tool-card reveal">
+            <div class="tool-icon icon-emerald"><i class="fa-solid fa-note-sticky"></i></div>
+            <div class="tool-content">
+              <h4>Notes Hub</h4>
+              <p>Note-taking apps for efficient planning and studying.</p>
+            </div>
+            <div class="tool-meta">Productivity &middot; Notes</div>
+          </a>
+        </div>
       </div>
+    </section>
 
-      <div class="tool-card">
-        <a href="trigonometry-solver.html">
-          <h3>Trigonometry Solver</h3>
-        </a>
-        <p>Comprehensive trigonometry helper.</p>
+    <!-- Tech & AI Category -->
+    <section class="section-padding">
+      <div class="container">
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Technology & AI</h3>
+        <div class="tools-grid">
+          <a href="ai-aggregator.html" class="tool-card reveal">
+            <div class="tool-icon icon-purple"><i class="fa-solid fa-robot"></i></div>
+            <div class="tool-content">
+              <h4>AI Tools Aggregator</h4>
+              <p>Curated collection of AI-powered utilities for various applications.</p>
+            </div>
+            <div class="tool-meta">AI &middot; Tools</div>
+          </a>
+
+          <a href="/edTech/" class="tool-card reveal">
+            <div class="tool-icon icon-blue"><i class="fa-solid fa-microscope"></i></div>
+            <div class="tool-content">
+              <h4>STEM Courses</h4>
+              <p>Interactive, project-based learning in Science, Tech, Engineering, and Math.</p>
+            </div>
+            <div class="tool-meta">STEM &middot; Learning</div>
+          </a>
+
+          <a href="virtual-lab.html" class="tool-card reveal">
+            <div class="tool-icon icon-rose"><i class="fa-solid fa-flask"></i></div>
+            <div class="tool-content">
+              <h4>Virtual Lab</h4>
+              <p>Simulate scientific experiments in a safe, interactive digital environment.</p>
+            </div>
+            <div class="tool-meta">Science &middot; Simulation</div>
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <section class="category-section">
-    <h3 class="category-title">Language & Text Tools</h3>
-    <div class="tools-grid">
-      <div class="tool-card">
-        <a href="lexico/index.html">
-          <h3>Lexico Dictionary</h3>
-        </a>
-        <p>Definitions, TTS, etymology, and usage examples to level up vocabulary.</p>
-      </div>
-
-      <div class="tool-card">
-        <a href="text-analysis/">
-          <h3>Advanced Text Analysis</h3>
-        </a>
-        <p>Word count, reading time, case converter, markdown viewer, and more.</p>
-      </div>
-
-      <div class="tool-card">
-        <a href="writing-assistant/">
-          <h3>Writing Assistant</h3>
-        </a>
-        <p>Enhance your writing with smart grammar, structure, and style suggestions.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="category-section">
-    <h3 class="category-title">Academic & Research Tools</h3>
-    <div class="tools-grid">
-      <div class="tool-card">
-        <a href="SACite.html">
-          <h3>SA Cite</h3>
-        </a>
-        <p>Generate APA, MLA, Harvard, and Chicago citations in seconds.</p>
-      </div>
-
-      <div class="tool-card">
-        <a href="studyHub.html">
-          <h3>Study Hub</h3>
-        </a>
-        <p>Centralised platform for educational resources and digital libraries.</p>
-      </div>
-
-      <div class="tool-card">
-        <a href="advanced-search.html">
-          <h3>Advanced search</h3>
-        </a>
-        <p>Google dorking tool.</p>
-      </div>
-
-      <div class="tool-card">
-        <a href="schedulegenerator.html">
-          <h3>Schedule Generator</h3>
-        </a>
-        <p>Create conflict-free timetables with smart optimisation.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="category-section">
-    <h3 class="category-title">Productivity & Management</h3>
-    <div class="tools-grid">
-      <div class="tool-card">
-        <a href="achieva/index.html">
-          <h3>Achieva</h3>
-        </a>
-        <p>Track goals, academic records, milestones, and long-term progress.</p>
-      </div>
-
-      <div class="tool-card">
-        <a href="notes/">
-          <h3>Notes Hub</h3>
-        </a>
-        <p>Note-taking apps for efficient planning.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="category-section">
-    <h3 class="category-title">Technology & AI</h3>
-    <div class="tools-grid">
-      <div class="tool-card">
-        <a href="ai-aggregator.html">
-          <h3>AI Tools Aggregator</h3>
-        </a>
-        <p>Curated collection of AI-powered utilities for various applications.</p>
-      </div>
-
-      <div class="tool-card">
-        <a href="/edTech/">
-          <h3>STEM Courses</h3>
-        </a>
-        <p>Interactive, project-based learning in Science, Technology, Engineering, and Mathematics.</p>
-      </div>
-
-      <div class="tool-card">
-        <a href="virtual-lab.html">
-          <h3>Virtual Lab</h3>
-        </a>
-        <p>Simulate scientific experiments in a safe, interactive digital environment.</p>
-      </div>
-    </div>
-  </section>
-</main>
-
+  <!-- ===================== FOOTER ===================== -->
   <footer role="contentinfo" class="site-footer">
-    <nav class="footer-nav">
-      <a href="/index.html">Home</a>
-      <a href="/contact.html">Contact</a>
-      <a href="/about.html">About</a>
-    </nav>
-    <p class="copyright">
-      © 2025 <a href="https://vylexnexys.co.za">Vylex Nexys</a>. All Rights Reserved.
-    </p>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="/index.html">Home</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/about.html">About</a>
+      </div>
+      <p class="copyright">
+        © 2025 <a href="https://vylexnexys.co.za">Vylex Nexys</a>. All Rights Reserved.
+      </p>
+    </div>
   </footer>
 
+   <!-- ===================== SCRIPTS ===================== -->
   <script>
     // ── Theme Toggle ──
     const toggle = document.getElementById('theme-toggle');
@@ -757,11 +345,11 @@ body.dark .site-header {
       if (isDark) {
         body.classList.add('dark');
         toggle.setAttribute('aria-label', 'Switch to Light mode');
-        toggle.textContent = '☀️';
+        toggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
       } else {
         body.classList.remove('dark');
         toggle.setAttribute('aria-label', 'Switch to Dark mode');
-        toggle.textContent = '🌗';
+        toggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
       }
     }
 
@@ -779,30 +367,22 @@ body.dark .site-header {
       setTheme(isDark);
     });
 
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme')) setTheme(e.matches);
-    });
-
-    // ── Burger Menu ──
+    // ── Mobile Burger Menu ──
     const burgerBtn = document.getElementById('burger-btn');
     const mobileNav = document.getElementById('mobile-nav');
     const navOverlay = document.getElementById('nav-overlay');
 
     function openNav() {
-      burgerBtn.classList.add('open');
       mobileNav.classList.add('open');
       navOverlay.classList.add('open');
       burgerBtn.setAttribute('aria-expanded', 'true');
-      navOverlay.setAttribute('aria-hidden', 'false');
-      body.style.overflow = 'hidden'; // prevent background scroll
+      body.style.overflow = 'hidden'; 
     }
 
     function closeNav() {
-      burgerBtn.classList.remove('open');
       mobileNav.classList.remove('open');
       navOverlay.classList.remove('open');
       burgerBtn.setAttribute('aria-expanded', 'false');
-      navOverlay.setAttribute('aria-hidden', 'true');
       body.style.overflow = '';
     }
 
@@ -812,7 +392,7 @@ body.dark .site-header {
 
     navOverlay.addEventListener('click', closeNav);
 
-    // Close on nav link click
+    // Close on mobile nav link click
     mobileNav.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', closeNav);
     });
@@ -821,56 +401,20 @@ body.dark .site-header {
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         if (mobileNav.classList.contains('open')) closeNav();
-        else document.activeElement.blur();
       }
     });
 
-    // ── Smooth scroll ──
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-
-    // ── Card entrance animations ──
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
+    // ── Scroll Reveal via IntersectionObserver (matching home page) ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
         }
       });
-    }, observerOptions);
-
-    document.querySelectorAll('.tool-card').forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(30px)';
-      card.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-      observer.observe(card);
-    });
-
-    // ── Focus styles ──
-    const style = document.createElement('style');
-    style.textContent = `
-      .tool-card a:focus-visible {
-        outline: 2px solid var(--accent-color);
-        outline-offset: 2px;
-        border-radius: 0.5rem;
-      }
-      #theme-toggle:focus-visible,
-      .burger:focus-visible {
-        outline: 2px solid var(--accent-color);
-        outline-offset: 2px;
-      }
-    `;
-    document.head.appendChild(style);
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => revealObserver.observe(el));
   </script>
 </body>
 </html>
