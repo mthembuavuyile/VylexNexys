@@ -1,153 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Lesson 1: Basic Arithmetic - Vylex Nexys</title>
-    <meta name="canonical" href="https://vylexnexys.co.za/edTech/courses/math/01_basic_arithmetic.html">
-    <link rel="stylesheet" href="/edTech/css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Arithmetic - Mathematics | STEM Learning HUB</title>
+  <link rel="canonical" href="https://vylexnexys.co.za/edTech/courses/math/01_basic_arithmetic.html">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/lesson.css">
 </head>
+<body data-root-path="../../">
 
-<body data-root-path="/">
+  <header id="main-header"></header>
 
-    <header id="main-header"></header>
+  <div class="lesson-layout">
+      <aside class="lesson-sidebar">
+          <h3>Module 1: Foundations</h3>
+          <ul class="module-list">
+              <li class="module-item active"><a href="01_basic_arithmetic.html">1. Basic Arithmetic</a></li>
+              <li class="module-item"><a href="02_fractions_and_decimals.html">2. Fractions & Decimals</a></li>
+              <li class="module-item"><a href="03_exponents_and_surds.html">3. Exponents & Surds</a></li>
+          </ul>
 
-    <main class="container">
-        <div class="text-center">
-            <h1><span class="highlight">Math Lesson 1:</span><br> Basic Arithmetic</h1>
-        </div>
+          <h3>Module 2: Algebra Core</h3>
+          <ul class="module-list">
+              <li class="module-item"><a href="04_algebra.html">4. Introduction to Algebra</a></li>
+              <li class="module-item"><a href="05_number_patterns.html">5. Number Patterns</a></li>
+          </ul>
+      </aside>
 
-        <!-- Introduction -->
-        <div class="section">
-            <h2>Introduction to Basic Arithmetic</h2>
-            <p>In this lesson, we'll learn about the four basic arithmetic operations: addition, subtraction,
-                multiplication, and division. These operations are the foundation of mathematics and are used in
-                everyday life.</p>
-        </div>
+      <main class="lesson-content">
+          <div class="lesson-header">
+              <span class="course-badge">Mathematics</span>
+              <h1>Lesson 1: Basic Arithmetic</h1>
+              <p class="subtitle">Master the fundamental properties of numbers: addition, subtraction, multiplication, and division.</p>
+          </div>
 
-        <!-- Addition -->
-        <div class="section">
-            <h2>Addition (+)</h2>
-            <p>Addition is the process of combining two or more numbers to get a sum. For example, 2 + 3 = 5.</p>
-            <div class="exercise">
-                <h3>Exercise: Addition</h3>
-                <input type="number" id="add1" placeholder="0"> +
-                <input type="number" id="add2" placeholder="0">
-                <button onclick="checkAddition()" class="btn">Check Answer</button>
-                <div id="addResult" style="margin-top: 10px; font-weight: bold;"></div>
-            </div>
-        </div>
+          <div class="video-wrapper">
+              <div class="video-placeholder">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p>Video Player (Placeholder)</p>
+              </div>
+          </div>
 
-        <!-- Subtraction -->
-        <div class="section">
-            <h2>Subtraction (-)</h2>
-            <p>Subtraction is the process of taking away one number from another. For example, 5 - 2 = 3.</p>
-            <div class="exercise">
-                <h3>Exercise: Subtraction</h3>
-                <input type="number" id="sub1" placeholder="0"> -
-                <input type="number" id="sub2" placeholder="0">
-                <button onclick="checkSubtraction()" class="btn">Check Answer</button>
-                <div id="subResult" style="margin-top: 10px; font-weight: bold;"></div>
-            </div>
-        </div>
+          <article class="lesson-article">
+              <h2>The Four Operations</h2>
+              <p>Arithmetic is the oldest and most elementary branch of mathematics. It consists of the study of numbers and the properties of the traditional operations on them. Let's explore and practice the four basic operations below.</p>
+              
+              <div class="interactive-quiz">
+                  <h3>Addition (+)</h3>
+                  <p>Addition is the process of combining two or more numbers to get a sum. For example, 2 + 3 = 5.</p>
+                  <div class="quiz-input-group" style="display: flex; align-items: center; gap: 10px;">
+                      <input type="number" id="add1" class="quiz-input" placeholder="0" style="width: 80px;"> 
+                      <strong>+</strong>
+                      <input type="number" id="add2" class="quiz-input" placeholder="0" style="width: 80px;">
+                      <button onclick="checkAddition()" class="btn">Calculate</button>
+                  </div>
+                  <div id="addResult" class="quiz-feedback" style="margin-top: 10px;"></div>
+              </div>
 
-        <!-- Multiplication -->
-        <div class="section">
-            <h2>Multiplication (×)</h2>
-            <p>Multiplication is repeated addition. For example, 3 × 4 means adding 3 four times: 3 + 3 + 3 + 3 = 12.
-            </p>
-            <div class="exercise">
-                <h3>Exercise: Multiplication</h3>
-                <input type="number" id="mul1" placeholder="0"> ×
-                <input type="number" id="mul2" placeholder="0">
-                <button onclick="checkMultiplication()" class="btn">Check Answer</button>
-                <div id="mulResult" style="margin-top: 10px; font-weight: bold;"></div>
-            </div>
-        </div>
+              <div class="interactive-quiz">
+                  <h3>Subtraction (-)</h3>
+                  <p>Subtraction is the process of taking away one number from another. For example, 5 - 2 = 3.</p>
+                  <div class="quiz-input-group" style="display: flex; align-items: center; gap: 10px;">
+                      <input type="number" id="sub1" class="quiz-input" placeholder="0" style="width: 80px;"> 
+                      <strong>-</strong>
+                      <input type="number" id="sub2" class="quiz-input" placeholder="0" style="width: 80px;">
+                      <button onclick="checkSubtraction()" class="btn">Calculate</button>
+                  </div>
+                  <div id="subResult" class="quiz-feedback" style="margin-top: 10px;"></div>
+              </div>
 
-        <!-- Division -->
-        <div class="section">
-            <h2>Division (÷)</h2>
-            <p>Division is the process of splitting a number into equal parts. For example, 8 ÷ 2 = 4.</p>
-            <div class="exercise">
-                <h3>Exercise: Division</h3>
-                <input type="number" id="div1" placeholder="0"> ÷
-                <input type="number" id="div2" placeholder="0">
-                <button onclick="checkDivision()" class="btn">Check Answer</button>
-                <div id="divResult" style="margin-top: 10px; font-weight: bold;"></div>
-            </div>
-        </div>
+              <div class="interactive-quiz">
+                  <h3>Multiplication (×)</h3>
+                  <p>Multiplication is repeated addition. For example, 3 × 4 means adding 3 four times: 3 + 3 + 3 + 3 = 12.</p>
+                  <div class="quiz-input-group" style="display: flex; align-items: center; gap: 10px;">
+                      <input type="number" id="mul1" class="quiz-input" placeholder="0" style="width: 80px;"> 
+                      <strong>×</strong>
+                      <input type="number" id="mul2" class="quiz-input" placeholder="0" style="width: 80px;">
+                      <button onclick="checkMultiplication()" class="btn">Calculate</button>
+                  </div>
+                  <div id="mulResult" class="quiz-feedback" style="margin-top: 10px;"></div>
+              </div>
 
-        <!-- AI Section -->
-        <div class="section">
-            <h2>AI Interaction</h2>
-            <div class="exercise">
-                <p>Have more questions? Ask our AI assistant:</p>
-                <input type="text" id="userPrompt" placeholder="Ask AI anything..." style="width: 70%;">
-                <button onclick="askAI()" class="btn">Ask AI</button>
-                <div id="aiResponse" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
-            </div>
-        </div>
+              <div class="interactive-quiz">
+                  <h3>Division (÷)</h3>
+                  <p>Division is the process of splitting a number into equal parts. For example, 8 ÷ 2 = 4.</p>
+                  <div class="quiz-input-group" style="display: flex; align-items: center; gap: 10px;">
+                      <input type="number" id="div1" class="quiz-input" placeholder="0" style="width: 80px;"> 
+                      <strong>÷</strong>
+                      <input type="number" id="div2" class="quiz-input" placeholder="0" style="width: 80px;">
+                      <button onclick="checkDivision()" class="btn">Calculate</button>
+                  </div>
+                  <div id="divResult" class="quiz-feedback" style="margin-top: 10px;"></div>
+              </div>
 
-        <!-- Navigation Buttons -->
-        <div class="section text-center">
-            <a href="../../index.html" class="btn" style="background: var(--text-muted);">Back to Dashboard</a>
-            <a href="02_fractions_and_decimals.html" class="btn">Next Lesson: Fractions</a>
-        </div>
-    </main>
+              <h2>BODMAS Rule</h2>
+              <p>When solving an equation with multiple operations, it's crucial to follow the order of operations, commonly remembered as BODMAS:</p>
+              
+              <div class="math-block">
+                  Brackets → Orders (Powers) → Division → Multiplication → Addition → Subtraction
+              </div>
 
-    <footer id="main-footer"></footer>
+              <p>Let's look at a simple example. Suppose we have the expression: <strong>4 + 3 × 2</strong>. According to BODMAS, we must perform the multiplication before the addition. So, 3 × 2 = 6, and then 4 + 6 = 10.</p>
 
-    <script src="../../js/global.js"></script>
-    <script>
-        // Addition Logic
-        function checkAddition() {
-            var num1 = parseInt(document.getElementById('add1').value) || 0;
-            var num2 = parseInt(document.getElementById('add2').value) || 0;
-            var result = num1 + num2;
-            document.getElementById('addResult').innerHTML = "The sum is: <span class='highlight'>" + result + "</span>";
-        }
+              <div class="interactive-quiz" data-answer="16">
+                  <h3>
+                      <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20" style="vertical-align: middle;"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                      Quick Check
+                  </h3>
+                  <p class="quiz-question">What is the result of: <strong>10 - 2 + 8 ÷ 2 × 2 ?</strong></p>
+                  <div class="quiz-input-group" style="display: flex; gap: 10px;">
+                      <input type="number" placeholder="Enter your answer" class="quiz-input" id="q1-input" style="flex-grow: 1;">
+                      <button class="btn quiz-submit">Check Answer</button>
+                  </div>
+                  <div class="quiz-feedback"></div>
+              </div>
 
-        // Subtraction Logic
-        function checkSubtraction() {
-            var num1 = parseInt(document.getElementById('sub1').value) || 0;
-            var num2 = parseInt(document.getElementById('sub2').value) || 0;
-            var result = num1 - num2;
-            document.getElementById('subResult').innerHTML = "The difference is: <span class='highlight'>" + result + "</span>";
-        }
+              <div class="interactive-quiz">
+                  <h3>
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    AI Assistant
+                  </h3>
+                  <p>Have more questions about Basic Arithmetic or BODMAS? Ask our AI assistant:</p>
+                  <div class="quiz-input-group" style="display: flex; gap: 10px;">
+                      <input type="text" id="userPrompt" class="quiz-input" placeholder="Ask AI anything..." style="flex-grow: 1;">
+                      <button onclick="askAI()" class="btn">Ask AI</button>
+                  </div>
+                  <div id="aiResponse" class="quiz-feedback" style="margin-top: 15px; font-style: italic; color: var(--text-muted);"></div>
+              </div>
 
-        // Multiplication Logic
-        function checkMultiplication() {
-            var num1 = parseInt(document.getElementById('mul1').value) || 0;
-            var num2 = parseInt(document.getElementById('mul2').value) || 0;
-            var result = num1 * num2;
-            document.getElementById('mulResult').innerHTML = "The product is: <span class='highlight'>" + result + "</span>";
-        }
+          </article>
 
-        // Division Logic
-        function checkDivision() {
-            var num1 = parseInt(document.getElementById('div1').value) || 0;
-            var num2 = parseInt(document.getElementById('div2').value) || 1;
-            if (num2 === 0) {
-                document.getElementById('divResult').innerHTML = "<span style='color: red;'>Cannot divide by zero!</span>";
-            } else {
-                var result = (num1 / num2).toFixed(2);
-                document.getElementById('divResult').innerHTML = "The quotient is: <span class='highlight'>" + result + "</span>";
-            }
-        }
+          <div class="lesson-nav">
+              <button class="btn btn-secondary disabled" disabled>
+                  ← Previous Lesson
+              </button>
+              <a href="02_fractions_and_decimals.html" class="btn">
+                  Next Lesson →
+              </a>
+          </div>
+      </main>
+  </div>
 
-        // AI Logic
-        function askAI() {
-            const userPrompt = document.getElementById('userPrompt').value;
-            const responseDiv = document.getElementById('aiResponse');
-            if (!userPrompt) {
-                responseDiv.innerHTML = "Please enter a question.";
-                return;
-            }
-            responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
-        }
-    </script>
+  <footer id="main-footer"></footer>
+
+  <script src="../../js/global.js"></script>
+  <script src="../../js/lesson.js"></script>
+  
+  <script>
+      // Addition Logic
+      function checkAddition() {
+          var num1 = parseInt(document.getElementById('add1').value) || 0;
+          var num2 = parseInt(document.getElementById('add2').value) || 0;
+          var result = num1 + num2;
+          document.getElementById('addResult').innerHTML = "The sum is: <strong style='color: var(--primary-color);'>" + result + "</strong>";
+      }
+
+      // Subtraction Logic
+      function checkSubtraction() {
+          var num1 = parseInt(document.getElementById('sub1').value) || 0;
+          var num2 = parseInt(document.getElementById('sub2').value) || 0;
+          var result = num1 - num2;
+          document.getElementById('subResult').innerHTML = "The difference is: <strong style='color: var(--primary-color);'>" + result + "</strong>";
+      }
+
+      // Multiplication Logic
+      function checkMultiplication() {
+          var num1 = parseInt(document.getElementById('mul1').value) || 0;
+          var num2 = parseInt(document.getElementById('mul2').value) || 0;
+          var result = num1 * num2;
+          document.getElementById('mulResult').innerHTML = "The product is: <strong style='color: var(--primary-color);'>" + result + "</strong>";
+      }
+
+      // Division Logic
+      function checkDivision() {
+          var num1 = parseInt(document.getElementById('div1').value) || 0;
+          var num2 = parseInt(document.getElementById('div2').value) || 1;
+          if (num2 === 0) {
+              document.getElementById('divResult').innerHTML = "<span style='color: red; font-weight: 600;'>Cannot divide by zero!</span>";
+          } else {
+              var result = (num1 / num2).toFixed(2);
+              // Remove trailing decimals if it's a whole number
+              if (result.endsWith('.00')) result = parseInt(result);
+              document.getElementById('divResult').innerHTML = "The quotient is: <strong style='color: var(--primary-color);'>" + result + "</strong>";
+          }
+      }
+
+      // AI Logic
+      function askAI() {
+          const userPrompt = document.getElementById('userPrompt').value;
+          const responseDiv = document.getElementById('aiResponse');
+          
+          if (!userPrompt.trim()) {
+              responseDiv.innerHTML = "<span style='color: red;'>Please enter a question.</span>";
+              return;
+          }
+          responseDiv.innerHTML = "I apologize, but the AI service is currently offline. Please try again later.";
+      }
+  </script>
 </body>
-
 </html>

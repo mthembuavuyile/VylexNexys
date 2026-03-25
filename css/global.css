@@ -14,12 +14,12 @@
   --text-light:    #64748b;
   --text-muted:    #94a3b8;
   --border:        rgba(13, 71, 161, 0.1);
-  --shadow-sm:     0 2px 8px rgba(13, 71, 161, 0.08);
-  --shadow:        0 10px 30px -8px rgba(13, 71, 161, 0.15);
-  --shadow-lg:     0 20px 50px -12px rgba(13, 71, 161, 0.22);
-  --radius-sm:     8px;
-  --radius:        14px;
-  --radius-lg:     20px;
+  --shadow-sm:     0 4px 12px rgba(13, 71, 161, 0.05);
+  --shadow:        0 12px 35px -8px rgba(13, 71, 161, 0.12);
+  --shadow-lg:     0 24px 50px -12px rgba(13, 71, 161, 0.18);
+  --radius-sm:     10px;
+  --radius:        16px;
+  --radius-lg:     24px;
   --nav-height:    80px;
   --font-head:     'Outfit', sans-serif;
   --font-body:     'Plus Jakarta Sans', sans-serif;
@@ -87,6 +87,7 @@ h1, h2, h3, h4 {
   font-family: var(--font-head);
   font-weight: 700;
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .section-label {
@@ -104,16 +105,17 @@ h1, h2, h3, h4 {
 }
 
 .section-title {
-  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-size: clamp(2rem, 4vw, 2.75rem);
   color: var(--primary-dark);
   margin-bottom: 1rem;
 }
 
 .section-subtitle {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--text-light);
   max-width: 640px;
   margin: 0 auto 3.5rem auto;
+  line-height: 1.75;
 }
 
 /* =========================================
@@ -123,11 +125,12 @@ h1, h2, h3, h4 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  padding: 13px 30px;
+  gap: 10px;
+  padding: 14px 34px;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
   cursor: pointer;
   border: 2px solid transparent;
   transition: var(--transition);
@@ -297,8 +300,8 @@ nav {
    ========================================= */
 #hero {
   position: relative;
-  background: linear-gradient(160deg, #071e4a 0%, #0d47a1 50%, #1565c0 100%);
-  min-height: 88vh;
+  background: linear-gradient(135deg, #051838 0%, #0a3378 50%, #1152a1 100%);
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -380,11 +383,11 @@ nav {
 }
 
 .hero-content h1 {
-  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  font-size: clamp(2.8rem, 6.5vw, 4.5rem);
   margin-bottom: 22px;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  letter-spacing: -0.03em;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.3);
 }
 
 .hero-accent {
@@ -402,11 +405,11 @@ nav {
 }
 
 .hero-sub {
-  font-size: 1.1rem;
-  max-width: 620px;
+  font-size: 1.2rem;
+  max-width: 680px;
   margin: 0 auto 44px;
-  color: rgba(255,255,255,0.8);
-  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.8;
 }
 
 .hero-cta {
@@ -572,7 +575,7 @@ nav {
 .feature-card {
   background: var(--bg-white);
   border-radius: var(--radius-lg);
-  padding: 40px 32px;
+  padding: 46px 36px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   transition: var(--transition);
@@ -641,7 +644,7 @@ nav {
   background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 32px 24px;
+  padding: 38px 30px;
   display: flex;
   flex-direction: column;
   transition: var(--transition);
