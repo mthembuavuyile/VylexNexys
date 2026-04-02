@@ -63,8 +63,18 @@ const App = {
     bindEvents() {
         // Theme & hamburger nav
         this.elements['theme-toggle'].addEventListener('click', () => this.toggleTheme());
-        this.elements.hamburger.addEventListener('click', () =>
-            this.elements.nav.classList.toggle('active'));
+        this.elements.hamburger.addEventListener('click', () => {
+            this.elements.nav.classList.toggle('active');
+            this.elements.hamburger.classList.toggle('open');
+        });
+
+        // Close mobile nav when a link is tapped
+        this.elements.nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                this.elements.nav.classList.remove('active');
+                this.elements.hamburger.classList.remove('open');
+            });
+        });
 
         // Tab switching
         this.elements.tabBtns.forEach(btn =>
