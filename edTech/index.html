@@ -1,152 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>STEM Learning - Vylex Nexys</title>
-  <link rel="canonical" href="https://vylexnexys.co.za/edTech/">
-  <!-- Single CSS Link -->
-  <link rel="stylesheet" href="css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vylex Nexys edTech | Advanced STEM Platform</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="js/tailwind-config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body data-root-path="/"> <!-- Tells JS where root is -->
 
-  <!-- Header injected here -->
-  <header id="main-header"></header>
+<body class="min-h-screen mesh-bg font-sans overscroll-none overflow-x-hidden">
 
-  <main class="container">
-    <div class="hero">
-        <h1><span class="highlight">STEM Learning</span> Hub</h1>
-        <p class="subtitle">Empowering your future with interactive, modern education in Science, Technology, Engineering, and Mathematics.</p>
-    </div>
+    <header id="app-header" class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/5 view-hidden">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <!-- App Root Link -->
+            <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-blue-500 flex items-center justify-center">
+                    <i data-feather="hexagon" class="text-white w-4 h-4"></i>
+                </div>
+                <span class="font-display font-bold text-lg tracking-tight">
+                    Vylex Nexys <span class="text-brand-400">EdTech</span>
+                </span>
+            </a>
 
-    <!-- Tab Navigation -->
-    <div class="tab" role="tablist">
-      <button class="tablinks" id="mathematics-tab" onclick="openSubject(event, 'Mathematics')">Mathematics</button>
-      <button class="tablinks" id="science-tab" onclick="openSubject(event, 'Science')">Science</button>
-      <button class="tablinks" id="technology-tab" onclick="openSubject(event, 'Technology')">Technology</button>
-      <button class="tablinks" id="engineering-tab" onclick="openSubject(event, 'Engineering')">Engineering</button>
-    </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-full border border-white/5">
+                    <i data-feather="zap" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                    <span id="streak-counter" class="text-sm font-bold text-white">1</span>
+                </div>
 
-    <!-- Tab Content: Mathematics -->
-    <div id="Mathematics" class="tabcontent"> 
-      <h2>Mathematics Hub</h2>
+                <!-- Project Root Link -->
+                <a href="../index.html"
+                    class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center hover:bg-slate-700 transition"
+                    title="Back to Project Root">
+                    <i data-feather="home" class="w-4 h-4 text-slate-400"></i>
+                </a>
 
-      <div class="card-grid">
-      <div class="card">
-        <h3>Lesson 1: Basic Arithmetic</h3>
-        <p>Learn addition, subtraction, multiplication, and division.</p>
-        <a href="courses/math/01_basic_arithmetic.html" class="btn">Start Lesson</a>
-        <div class="progress-bar"><div class="progress" style="width: 20%"></div></div>
-      </div>
+                <!-- Profile Placeholder -->
+                <div onclick="switchAppView('profile', document.getElementById('nav-profile-btn'))"
+                    class="w-8 h-8 rounded-full bg-brand-900 border border-brand-500 cursor-pointer flex items-center justify-center overflow-hidden">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=1e293b"
+                        class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </header>
 
-      <div class="card">
-        <h3>Lesson 2: Fractions & Decimals</h3>
-        <p>Understand fractions, decimals, and how to convert between them.</p>
-        <a href="courses/math/02_fractions_and_decimals.html" class="btn">Start Lesson</a>
-        <div class="progress-bar"><div class="progress" style="width: 10%"></div></div>
-      </div>
+    <main class="w-full relative h-[100dvh]">
+        <!-- LANDING -->
+        <section id="view-landing"
+            class="absolute inset-0 flex flex-col items-center justify-center px-6 animate-fade-in z-20">
+            <div class="z-10 text-center max-w-2xl mx-auto flex flex-col items-center">
+                <h1 class="font-display text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                    Master Advanced STEM. <br>
+                    <span class="gradient-text">Free.</span>
+                </h1>
+                <p class="text-slate-400 text-lg md:text-xl mb-10 max-w-xl mx-auto">
+                    Interactive, high-level modules designed for South African learners.
+                </p>
+                <button onclick="navigate('onboarding')"
+                    class="px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white rounded-2xl font-bold text-lg transition-all shadow-[0_0_30px_rgba(124,58,237,0.4)] flex items-center gap-2">
+                    Initialize Session <i data-feather="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </section>
 
-      <div class="card">
-        <h3>Lesson 3: Exponents & Surds</h3>
-        <p>Explore powers, roots, and simplifying surds.</p>
-        <a href="courses/math/03_exponents_and_surds.html" class="btn">Start Lesson</a>
-        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
-      </div>
+        <!-- ONBOARDING -->
+        <section id="view-onboarding" class="absolute inset-0 pt-16 px-6 view-hidden animate-fade-in bg-[#0f172a] z-30">
+            <div class="max-w-md mx-auto pt-10 h-full flex flex-col">
+                <div class="w-full h-1.5 bg-slate-800 rounded-full mb-8">
+                    <div id="onboard-progress" class="h-full bg-brand-500 w-1/2 transition-all duration-500"></div>
+                </div>
 
-      <div class="card">
-        <h3>Lesson 4: Algebra</h3>
-        <p>Solve equations and simplify algebraic expressions.</p>
-        <a href="courses/math/04_algebra.html" class="btn">Start Lesson</a>
-        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
-      </div>
+                <div id="ob-step-1" class="animate-slide-up h-full pb-10">
+                    <h2 class="font-display text-3xl font-bold mb-2">Select Curriculum Level</h2>
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <button onclick="selectGrade(10, this)"
+                            class="grade-btn py-6 glass-panel rounded-2xl border border-slate-700 hover:border-brand-500 transition-all">
+                            <span class="text-4xl font-display font-black text-slate-300">10</span>
+                        </button>
+                        <button onclick="selectGrade(11, this)"
+                            class="grade-btn py-6 glass-panel rounded-2xl border border-slate-700 hover:border-brand-500 transition-all">
+                            <span class="text-4xl font-display font-black text-slate-300">11</span>
+                        </button>
+                        <button onclick="selectGrade(12, this)"
+                            class="grade-btn col-span-2 py-6 glass-panel rounded-2xl border border-slate-700 hover:border-brand-500 transition-all">
+                            <span class="text-3xl font-display font-black text-slate-300">12 (Matric)</span>
+                        </button>
+                    </div>
+                </div>
 
-      <div class="card">
-        <h3>Lesson 5: Number Patterns & Sequences</h3>
-        <p>Identify patterns and work with arithmetic sequences.</p>
-        <a href="courses/math/05_number_patterns_sequences_series.html" class="btn">Start Lesson</a>
-        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
-      </div>
+                <div id="ob-step-2" class="view-hidden pt-4 pb-10">
+                    <h2 class="font-display text-3xl font-bold mb-8">Primary Focus Area</h2>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="finishOnboarding('Maths')"
+                            class="p-4 glass-panel border border-slate-700 hover:border-blue-500 rounded-2xl text-left">
+                            <h3 class="font-bold text-white text-lg">Mathematics</h3>
+                        </button>
+                        <button onclick="finishOnboarding('Science')"
+                            class="p-4 glass-panel border border-slate-700 hover:border-brand-500 rounded-2xl text-left">
+                            <h3 class="font-bold text-white text-lg">Physical Sciences</h3>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      <div class="card">
-        <h3>Lesson 6: Functions</h3>
-        <p>Understand function notation, domain, and range.</p>
-        <a href="courses/math/06_functions.html" class="btn">Start Lesson</a>
-        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
-      </div>
+        <!-- LEARN (Dashboard) -->
+        <section id="view-learn"
+            class="app-view absolute inset-0 pt-20 pb-24 px-4 overflow-y-auto view-hidden animate-fade-in bg-[#0f172a]">
+            <div class="max-w-4xl mx-auto space-y-8">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <p class="text-slate-400 mb-1">Session Active</p>
+                        <h2 class="font-display text-2xl font-bold text-white">Grade <span id="dash-grade-txt"></span>
+                            Dashboard</h2>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-brand-400 uppercase">Total XP</span>
+                        <div class="font-display text-3xl font-bold text-white dash-xp-display">0</div>
+                    </div>
+                </div>
+                <div id="subject-tabs-container" class="flex gap-2 overflow-x-auto pb-2"></div>
+                <div id="subject-content-container" class="relative"></div>
+            </div>
+        </section>
 
-      <div class="card">
-        <h3>Lesson 7: Trigonometric Functions</h3>
-        <p>Learn sine, cosine, tangent, and their applications.</p>
-        <a href="courses/math/07_trig_functions.html" class="btn">Start Lesson</a>
-        <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
-      </div>
-      </div>
-    </div>
+        <!-- LABS -->
+        <section id="view-labs"
+            class="app-view absolute inset-0 pt-20 pb-24 px-4 overflow-y-auto view-hidden animate-fade-in bg-[#0f172a]">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <h2 class="font-display text-3xl font-bold text-white">Virtual Labs</h2>
+                <div id="labs-container" class="space-y-4"></div>
+            </div>
+        </section>
 
-    <!-- Tab Content: Science -->
-    <div id="Science" class="tabcontent">
-      <h2>Science Hub</h2>
-      
-      <div class="card-grid">
-      <div class="card">
-        <h3>Lesson 1: Introduction to Physics</h3>
-        <p>Explore motion, forces, and energy fundamentals.</p>
-        <a href="courses/science/01_intro_to_physics.html" class="btn">Start Lesson</a>
-      </div>
+        <!-- STATS -->
+        <section id="view-stats"
+            class="app-view absolute inset-0 pt-20 pb-24 px-4 overflow-y-auto view-hidden animate-fade-in bg-[#0f172a]">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <h2 class="font-display text-3xl font-bold text-white">Performance</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-700">
+                        <div class="text-brand-400 mb-1"><i data-feather="zap"></i></div>
+                        <div class="text-sm font-bold text-white">Current Streak</div>
+                        <div class="text-xl font-bold text-brand-400 mt-1">1 Day</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-700">
+                        <div class="text-amber-400 mb-1"><i data-feather="star"></i></div>
+                        <div class="text-sm font-bold text-white">Total XP</div>
+                        <div class="text-xl font-bold text-amber-400 mt-1 dash-xp-display">0</div>
+                    </div>
+                </div>
+                <div class="space-y-4" id="stats-mastery-container"></div>
+            </div>
+        </section>
 
-      <div class="card">
-        <h3>Lesson 2: Basic Chemistry Concepts</h3>
-        <p>Understand atoms, elements, and chemical reactions.</p>
-        <a href="courses/science/02_basic_chemistry.html" class="btn">Start Lesson</a>
-      </div>
-      </div>
-    </div>
+        <!-- PROFILE -->
+        <section id="view-profile"
+            class="app-view absolute inset-0 pt-20 pb-24 px-4 overflow-y-auto view-hidden animate-fade-in bg-[#0f172a]">
+            <div class="max-w-4xl mx-auto flex flex-col items-center">
+                <div class="w-24 h-24 rounded-full bg-slate-800 border-2 border-brand-500 mb-4 overflow-hidden">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=1e293b"
+                        class="w-full h-full object-cover">
+                </div>
+                <h2 class="font-display text-2xl font-bold text-white">Learner</h2>
+                <p class="text-brand-400 mb-8" id="profile-grade-display"></p>
 
-    <!-- Tab Content: Technology -->
-    <div id="Technology" class="tabcontent">
-      <h2>Technology Hub</h2>
+                <div class="w-full space-y-3">
+                    <button onclick="resetProgress()"
+                        class="w-full p-4 glass-panel rounded-2xl border border-red-900/50 hover:border-red-500 transition-all flex items-center justify-between text-left">
+                        <div class="flex items-center gap-3">
+                            <i data-feather="refresh-cw" class="text-red-400"></i>
+                            <span class="font-bold text-red-500">Reset Progress</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </section>
 
-      <div class="card-grid">
-      <div class="card">
-        <h3>Lesson 1: Intro to Computers</h3>
-        <p>Hardware, software, and how computers work.</p>
-        <a href="courses/tech/01introduction_to_computers.html" class="btn">Start Lesson</a>
-      </div>
+        <!-- BOTTOM NAV -->
+        <nav id="bottom-nav"
+            class="fixed bottom-4 left-4 right-4 glass-panel rounded-2xl border border-white/10 p-2 view-hidden flex justify-between items-center z-50 max-w-sm mx-auto shadow-2xl">
+            <button onclick="switchAppView('learn', this)"
+                class="bottom-nav-btn active flex flex-col items-center gap-1 w-16 p-2 text-white bg-white/10 rounded-xl transition">
+                <i data-feather="grid" class="w-5 h-5"></i><span class="text-[10px] font-bold">Learn</span>
+            </button>
+            <button onclick="switchAppView('labs', this)"
+                class="bottom-nav-btn flex flex-col items-center gap-1 w-16 p-2 text-slate-400 hover:text-white transition">
+                <i data-feather="cpu" class="w-5 h-5"></i><span class="text-[10px] font-bold">Labs</span>
+            </button>
+            <button onclick="switchAppView('stats', this)"
+                class="bottom-nav-btn flex flex-col items-center gap-1 w-16 p-2 text-slate-400 hover:text-white transition">
+                <i data-feather="bar-chart-2" class="w-5 h-5"></i><span class="text-[10px] font-bold">Stats</span>
+            </button>
+            <button id="nav-profile-btn" onclick="switchAppView('profile', this)"
+                class="bottom-nav-btn flex flex-col items-center gap-1 w-16 p-2 text-slate-400 hover:text-white transition">
+                <i data-feather="user" class="w-5 h-5"></i><span class="text-[10px] font-bold">Profile</span>
+            </button>
+        </nav>
+    </main>
 
-      <div class="card">
-        <h3>Lesson 2: Introduction to Programming</h3>
-        <p>Learn basic programming logic and problem-solving concepts.</p>
-        <a href="courses/tech/02basic_programming_concepts.html" class="btn">Start Lesson</a>
-      </div>
-      </div>
-    </div>
-
-    <!-- Tab Content: Engineering -->
-    <div id="Engineering" class="tabcontent">
-      <h2>Engineering Hub</h2>
-
-      <div class="card-grid">
-      <div class="card">
-        <h3>Lesson 1: Engineering Design Process</h3>
-        <p>Understand how engineers solve real-world problems step by step.</p>
-        <a href="courses/engineering/01_engineering_design_process.html" class="btn">Start Lesson</a>
-      </div>
-
-      <div class="card">
-        <h3>Lesson 2: Introduction to Circuits</h3>
-        <p>Learn about current, voltage, and simple electrical circuits.</p>
-        <a href="courses/engineering/02_intro_to_circuits.html" class="btn">Start Lesson</a>
-      </div>
-      </div>
-    </div>
-    
-  </main>
-
-  <!-- Footer injected here -->
-  <footer id="main-footer"></footer>
-
-  <!-- Scripts -->
-  <script src="js/global.js"></script>
-  <script src="js/dashboard.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
 </body>
+
 </html>

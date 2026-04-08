@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lesson: Average Velocity</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="js/tailwind-config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body class="min-h-screen font-sans overscroll-none overflow-x-hidden pb-24">
+
+    <!-- Progress Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/90 backdrop-blur border-b border-slate-800">
+        <div class="px-4 h-14 flex items-center justify-between gap-4">
+            <!-- Back to App Root -->
+            <a href="index.html" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0">
+                <i data-feather="x" class="w-4 h-4 text-slate-400"></i>
+            </a>
+            <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-brand-500 w-1/4 transition-all duration-300"></div>
+            </div>
+            <div class="flex items-center gap-1 font-bold text-sm text-brand-400">
+                <i data-feather="heart" class="w-4 h-4 fill-brand-400"></i>
+                <span>3</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-xl mx-auto pt-20 px-6">
+        <!-- SLIDE 1 -->
+        <div id="slide-1" class="animate-slide-up">
+            <h1 class="font-display text-4xl font-extrabold mb-4 text-white">Velocity vs Speed</h1>
+            <p class="text-slate-400 text-lg mb-6 leading-relaxed">
+                <span class="text-white font-bold">Speed</span> is how fast you are travelling. <span
+                    class="text-brand-400 font-bold">Velocity</span> is speed <b>with a direction</b>.
+            </p>
+            <button onclick="nextSlide(2)"
+                class="w-full mt-8 py-4 bg-brand-600 hover:bg-brand-500 text-white rounded-2xl font-bold text-lg transition">Got
+                it</button>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div id="slide-2" class="view-hidden animate-slide-up">
+            <h1 class="font-display text-3xl font-extrabold mb-4 text-white">The Formula</h1>
+            <div class="math-block text-center text-xl">v = Δx / Δt</div>
+            <button onclick="nextSlide(3)"
+                class="w-full mt-8 py-4 bg-brand-600 hover:bg-brand-500 text-white rounded-2xl font-bold text-lg transition">Let's
+                practice</button>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div id="slide-3" class="view-hidden animate-slide-up">
+            <div class="mb-6 inline-block px-3 py-1 rounded bg-amber-500/20 text-amber-500 font-bold text-sm uppercase">
+                Challenge</div>
+            <h1 class="font-display text-2xl font-extrabold mb-4 text-white">
+                A taxi travels 200km North in 2 hours. What is its average velocity?
+            </h1>
+            <div class="flex flex-col gap-3 mt-8">
+                <button onclick="handleAnswer(this, false)"
+                    class="w-full text-left p-4 glass-panel border-2 border-slate-700 rounded-2xl text-slate-300">100
+                    km/h</button>
+                <button onclick="handleAnswer(this, true)" id="correct-btn"
+                    class="w-full text-left p-4 glass-panel border-2 border-slate-700 rounded-2xl text-slate-300">100
+                    km/h North</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Overlay -->
+    <div id="success-overlay"
+        class="fixed inset-0 z-[100] bg-slate-900/95 backdrop-blur-md flex flex-col items-center justify-center p-6 view-hidden opacity-0 transition-opacity duration-300">
+        <h2 class="font-display text-4xl font-extrabold text-white mb-8 text-center">Correct!</h2>
+        <div
+            class="glass-panel border-amber-500/50 bg-amber-500/10 px-8 py-4 rounded-2xl flex items-center justify-center gap-3 mb-10">
+            <span id="xp-award-text" class="font-display font-extrabold text-3xl text-amber-500">+50 XP</span>
+        </div>
+        <button onclick="finishLesson()"
+            class="w-full max-w-sm py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg">Continue to
+            Dashboard</button>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/lesson.js"></script>
+</body>
+
+</html>

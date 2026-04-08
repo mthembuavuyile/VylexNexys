@@ -1,70 +1,56 @@
-// Lesson logic and interactions
+let earnedXp = 50;
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Sidebar Toggle Logic for Mobile
-    const sidebar = document.querySelector('.lesson-sidebar');
-    
-    // Create toggle button if it doesn't exist but sidebar does
-    if (sidebar && window.innerWidth <= 900) {
-        let toggleBtn = document.querySelector('.sidebar-toggle');
-        if (!toggleBtn) {
-            toggleBtn = document.createElement('div');
-            toggleBtn.className = 'sidebar-toggle';
-            toggleBtn.innerHTML = '☰';
-            document.body.appendChild(toggleBtn);
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            if (sidebar.classList.contains('sidebar-open')) {
-                sidebar.classList.remove('sidebar-open');
-                toggleBtn.innerHTML = '☰';
-            } else {
-                sidebar.classList.add('sidebar-open');
-                toggleBtn.innerHTML = '✕';
-            }
-        });
-
-        // Close sidebar when clicking outside
-        document.addEventListener('click', (e) => {
-            if (sidebar.classList.contains('sidebar-open') && 
-                !sidebar.contains(e.target) && 
-                e.target !== toggleBtn) {
-                sidebar.classList.remove('sidebar-open');
-                toggleBtn.innerHTML = '☰';
-            }
-        });
-    }
-
-    // 2. Interactive Quiz Logic
-    const submitBtns = document.querySelectorAll('.quiz-submit');
-    
-    submitBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const quizContainer = e.target.closest('.interactive-quiz');
-            const input = quizContainer.querySelector('input');
-            const feedback = quizContainer.querySelector('.quiz-feedback');
-            const correctAnswer = quizContainer.dataset.answer;
-
-            // Clear previous feedback
-            feedback.className = 'quiz-feedback';
-
-            if (!input.value.trim()) {
-                feedback.textContent = 'Please enter an answer!';
-                feedback.classList.add('error');
-                return;
-            }
-
-            // Simple validation
-            if (input.value.trim() === correctAnswer) {
-                feedback.textContent = 'Awesome! That is correct, great job.';
-                feedback.classList.add('success');
-                
-                // Add a little celebration animation to the button
-                btn.style.transform = 'scale(1.1)';
-                setTimeout(() => { btn.style.transform = 'scale(1)'; }, 200);
-            } else {
-                feedback.textContent = 'Not quite! Try reviewing the arithmetic rules and try again.';
-                feedback.classList.add('error');
-            }
-        });
-    });
+    feather.replace();
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('b')) earnedXp = 500;
+    document.getElementById('xp-award-text').innerText = `+${earnedXp} XP`;
 });
+
+function nextSlide(num) {
+    document.querySelectorAll('main > div').forEach(el => el.classList.add('view-hidden'));
+    document.getElementById(`slide-${num}`).classList.remove('view-hidden');
+    document.getElementById('progress-bar').style.width = (num * 33) + '%';
+}
+
+function handleAnswer(btn, isCorrect) {
+    document.querySelectorAll('button').forEach(b => b.disabled = true);
+
+    if (isCorrect) {
+        btn.classList.replace('border-slate-700', 'border-emerald-500');
+        btn.classList.replace('text-slate-300', 'text-emerald-400');
+        btn.classList.add('bg-emerald-500/10');
+
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#8b5cf6', '#10b981', '#f59e0b'] });
+
+        setTimeout(() => {
+            const overlay = document.getElementById('success-overlay');
+            overlay.classList.remove('view-hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 50);
+        }, 800);
+    } else {
+        btn.classList.replace('border-slate-700', 'border-red-500');
+        btn.classList.replace('text-slate-300', 'text-red-400');
+        btn.classList.add('bg-red-500/10');
+
+        const correctBtn = document.getElementById('correct-btn');
+        correctBtn.classList.replace('border-slate-700', 'border-emerald-500');
+        correctBtn.classList.replace('text-slate-300', 'text-emerald-400');
+
+        setTimeout(() => {
+            document.querySelectorAll('button').forEach(b => b.disabled = false);
+            btn.classList.replace('border-red-500', 'border-slate-700');
+            btn.classList.replace('text-red-400', 'text-slate-300');
+            btn.classList.remove('bg-red-500/10');
+            correctBtn.classList.replace('border-emerald-500', 'border-slate-700');
+            correctBtn.classList.replace('text-emerald-400', 'text-slate-300');
+        }, 2000);
+    }
+}
+
+function finishLesson() {
+    loadProfile();
+    userProfile.xp += earnedXp;
+    saveProfile();
+    window.location.href = 'index.html';
+}
