@@ -10,7 +10,9 @@ const curriculumData = {
         modules: [
             { id: "m1", title: "Differential Calculus", desc: "First principles, limits, and derivative rules.", progress: 33 },
             { id: "m2", title: "Analytical Geometry", desc: "Coordinate geometry, circles, and tangents.", progress: 0 },
-            { id: "m3", title: "Trigonometry 3D", desc: "Compound angles and 3D problem solving.", progress: 0 }
+            { id: "m3", title: "Trigonometry 3D", desc: "Compound angles and 3D problem solving.", progress: 0 },
+            { id: "m4", title: "Euclidean Geometry", desc: "Circle theorems and cyclic quadrilaterals.", progress: 0 },
+            { id: "m5", title: "Financial Mathematics", desc: "Annuities, sinking funds, and loan calculations.", progress: 0 }
         ],
         bossLevels: [{ id: "b1", title: "Maths Paper 1 - Nov 2023", desc: "Algebra, Calculus, Sequences", xp: 500 }]
     },
@@ -18,9 +20,11 @@ const curriculumData = {
         id: "tab-science", label: "Physical Sciences", color: "blue",
         modules: [
             { id: "s1", title: "Work, Energy & Power", desc: "Work-energy theorem and conservation laws.", progress: 0 },
-            { id: "s2", title: "Organic Chemistry", desc: "Macromolecules, nomenclature, and reactions.", progress: 0 }
+            { id: "s2", title: "Organic Chemistry", desc: "Macromolecules, nomenclature, and reactions.", progress: 0 },
+            { id: "s3", title: "Electrodynamics", desc: "Generators, motors, and alternating current.", progress: 0 },
+            { id: "s4", title: "Momentum & Impulse", desc: "Newton's laws of motion in terms of momentum.", progress: 0 }
         ],
-        bossLevels: []
+        bossLevels: [{ id: "b2", title: "Physics Paper 1 - Trial 2023", desc: "Mechanics, Waves, Electricity", xp: 500 }]
     },
     "Tech": {
         id: "tab-tech", label: "Tech & IT", color: "indigo",
@@ -33,9 +37,9 @@ const curriculumData = {
 };
 
 const labsData = [
-    { id: "l1", title: "Electrodynamics Simulator", desc: "Build AC/DC motors and generators in 3D.", icon: "cpu", color: "blue" },
-    { id: "l2", title: "Chemical Titration", desc: "Virtual titration setup with real-time indicators.", icon: "droplet", color: "emerald" },
-    { id: "l3", title: "Projectile Motion", desc: "Launch varied masses and track parabolas.", icon: "crosshair", color: "orange" }
+    { id: "l1", title: "Electrodynamics Simulator", desc: "Build AC/DC motors and generators in 3D.", icon: "cpu", color: "blue", url: "../tools/virtual-lab.html" },
+    { id: "l2", title: "Chemical Titration", desc: "Virtual titration setup with real-time indicators.", icon: "droplet", color: "emerald", url: "../tools/virtual-lab.html" },
+    { id: "l3", title: "Projectile Motion", desc: "Launch varied masses and track parabolas.", icon: "crosshair", color: "orange", url: "../tools/virtual-lab.html" }
 ];
 
 let userProfile = { grade: null, subject: null, xp: 0 };

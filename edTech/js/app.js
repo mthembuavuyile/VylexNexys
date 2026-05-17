@@ -118,9 +118,12 @@ function renderDynamicData() {
 
     labsData.forEach(lab => {
         labsContainer.innerHTML += `
-            <div class="glass-panel p-5 rounded-2xl border border-slate-700 flex gap-4 items-center cursor-pointer">
+            <a href="${lab.url}" target="_blank" class="block glass-panel p-5 rounded-2xl border border-slate-700 hover:border-brand-500 transition flex gap-4 items-center cursor-pointer">
                 <div class="w-12 h-12 rounded-lg bg-${lab.color}-500/20 text-${lab.color}-400 flex items-center justify-center"><i data-feather="${lab.icon}"></i></div>
-                <div class="flex-1"><h4 class="font-bold text-white">${lab.title}</h4><p class="text-xs text-slate-400">${lab.desc}</p></div>
-            </div>`;
+                <div class="flex-1">
+                    <h4 class="font-bold text-white flex items-center gap-2">${lab.title} <i data-feather="external-link" class="w-4 h-4 text-slate-400"></i></h4>
+                    <p class="text-xs text-slate-400">${lab.desc}</p>
+                </div>
+            </a>`;
     });
 }

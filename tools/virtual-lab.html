@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -7,53 +8,81 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Three.js for Electrodynamics 3D -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
 
   <style>
     :root {
-      --primary: #7c3aed; /* Violet 600 */
-      --primary-dark: #6d28d9; /* Violet 700 */
+      --primary: #7c3aed;
+      /* Violet 600 */
+      --primary-dark: #6d28d9;
+      /* Violet 700 */
       --surface: #ffffff;
-      --background: #f1f5f9;
+      --background: #f8fafc;
     }
 
-    body { 
-      font-family: 'Inter', sans-serif; 
-      background-color: var(--background); 
-      color: #0f172a; 
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: #0f172a;
       -webkit-font-smoothing: antialiased;
     }
-    
-    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
 
     /* Modern Scrollbar */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
 
     /* Glassmorphism & Cards */
     .glass {
       background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.5);
     }
-    
-    .card { 
-      background: white; 
-      border: 1px solid #e2e8f0; 
-      border-radius: 1rem; 
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-      transition: box-shadow 0.3s ease, transform 0.2s ease;
+
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 1.5rem;
+      box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.03), 0 2px 8px -2px rgba(0, 0, 0, 0.02);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
-    .msg { white-space: pre-wrap; }
-    
+
+    .card:hover {
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .msg {
+      white-space: pre-wrap;
+    }
+
     /* Modern Range Inputs */
     input[type="range"] {
       -webkit-appearance: none;
@@ -62,18 +91,23 @@
       cursor: pointer;
       width: 100%;
     }
+
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      height: 20px;
-      width: 20px;
+      height: 24px;
+      width: 24px;
       border-radius: 50%;
       background: white;
       border: 6px solid var(--primary);
-      margin-top: -7px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: transform 0.1s;
+      margin-top: -9px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
     input[type="range"]::-webkit-slider-runnable-track {
       width: 100%;
       height: 6px;
@@ -81,17 +115,105 @@
       background: #e2e8f0;
       border-radius: 99px;
     }
-    input[type="range"]:focus::-webkit-slider-runnable-track { background: #cbd5e1; }
+
+    input[type="range"]:focus::-webkit-slider-runnable-track {
+      background: #cbd5e1;
+    }
 
     /* Animations */
-    @keyframes fade-in-up { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fade { animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    
-    .sidebar-icon {
-        transition: stroke 0.2s;
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
+    .animate-fade {
+      animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .sidebar-icon {
+      transition: stroke 0.3s ease;
+    }
+
     .group:hover .sidebar-icon {
-        stroke: #7c3aed;
+      stroke: #7c3aed;
+    }
+
+    .text-gradient {
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-image: linear-gradient(to right, #7c3aed, #4f46e5);
+    }
+
+    #electroCanvas {
+      width: 100%;
+      height: 100%;
+      outline: none;
+      border-radius: 1.5rem;
+    }
+
+    /* Titration Visuals */
+    .flask-body {
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      border: 4px solid rgba(200, 210, 220, 0.6);
+      border-top: none;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+    }
+
+    .flask-liquid {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      transition: height 0.3s ease, background-color 1s ease;
+    }
+
+    .drop {
+      width: 8px;
+      height: 12px;
+      background: #93c5fd;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -20px;
+      opacity: 0;
+    }
+
+    @keyframes falling-drop {
+      0% {
+        top: -20px;
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
+
+      80% {
+        top: 120px;
+        opacity: 1;
+        transform: translateX(-50%) scale(1.1);
+      }
+
+      100% {
+        top: 150px;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.5);
+      }
+    }
+
+    .animate-drop {
+      animation: falling-drop 0.4s linear;
     }
   </style>
 </head>
@@ -99,13 +221,14 @@
 <body class="h-screen flex overflow-hidden text-slate-800 selection:bg-violet-100 selection:text-violet-900">
 
   <!-- SIDEBAR -->
-  <aside class="w-72 hidden md:flex flex-col bg-white border-r border-slate-200 z-20">
-    <!-- Logo Area -->
+  <aside class="w-72 hidden md:flex flex-col bg-white border-r border-slate-200 z-20 shadow-xl shadow-slate-200/50">
     <div class="p-6">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-violet-200">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        <div
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-violet-200">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
         <div class="flex flex-col">
@@ -115,37 +238,75 @@
       </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="px-4 space-y-1.5 flex-1 overflow-y-auto">
-      <div class="px-3 mb-3 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Learning Modules</div>
-      
-      <button class="w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-sm font-medium transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
-        onclick="showView('tutor')" id="nav-tutor">
-        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-        AI Syllabus Tutor
+    <!-- Navigation (Reordered) -->
+    <nav class="px-4 space-y-2 flex-1 overflow-y-auto">
+      <div class="px-3 mb-4 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Simulations</div>
+
+      <button
+        class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
+        onclick="showView('electro')" id="nav-electro">
+        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+          <path d="M2 12h20"></path>
+        </svg>
+        Electrodynamics (3D)
       </button>
 
-      <button class="w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-sm font-medium transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
+      <button
+        class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
         onclick="showView('projectile')" id="nav-projectile">
-        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"></path><path d="M12 2a10 10 0 0 1 10 10"></path><circle cx="12" cy="12" r="2"></circle></svg>
+        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12h20"></path>
+          <path d="M12 2a10 10 0 0 1 10 10"></path>
+          <circle cx="12" cy="12" r="2"></circle>
+        </svg>
         Projectile Motion
       </button>
 
-      <button class="w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-sm font-medium transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
+      <button
+        class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
         onclick="showView('circuit')" id="nav-circuit">
-        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+        </svg>
         Circuit Laboratory
       </button>
 
-      <button class="w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-sm font-medium transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
-        onclick="showView('chem')" id="nav-chem">
-        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"></path><path d="M14 2v7.31"></path><path d="M8.5 2h7"></path><path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path></svg>
-        Chemistry Mixing
+      <button
+        class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
+        onclick="showView('titration')" id="nav-titration">
+        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 2v7.31"></path>
+          <path d="M14 2v7.31"></path>
+          <path d="M8.5 2h7"></path>
+          <path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+        </svg>
+        Chemical Titration
+      </button>
+
+      <div
+        class="px-3 mb-4 mt-8 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-t border-slate-100 pt-6">
+        Assistant</div>
+
+      <button
+        class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700"
+        onclick="showView('tutor')" id="nav-tutor">
+        <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+        AI Syllabus Tutor
       </button>
     </nav>
 
     <!-- Status Footer -->
-    <div class="p-4 m-4 rounded-2xl bg-slate-50 border border-slate-100">
+    <div class="p-4 m-4 rounded-2xl bg-slate-50 border border-slate-100 shadow-inner">
       <div class="flex items-center gap-3">
         <div class="relative flex h-2.5 w-2.5">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -153,96 +314,116 @@
         </div>
         <div>
           <div class="text-xs font-bold text-slate-700">Systems Online</div>
-          <div class="text-[10px] text-slate-400 font-mono">Engine v2.4</div>
+          <div class="text-[10px] text-slate-400 font-mono">Engine v3.0</div>
         </div>
       </div>
     </div>
   </aside>
 
   <!-- MAIN CONTENT -->
-  <main class="flex-1 overflow-y-auto relative scroll-smooth bg-[#f8fafc]">
-    
+  <main class="flex-1 overflow-y-auto relative scroll-smooth bg-slate-50">
+
     <!-- Mobile Header -->
     <div class="md:hidden glass border-b p-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
       <div class="flex items-center gap-2">
         <div class="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center text-white">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
         <div class="font-bold text-slate-900 tracking-tight">VYLEX</div>
       </div>
-      <select class="bg-white border border-slate-200 rounded-lg py-1.5 px-3 text-sm font-medium outline-none focus:ring-2 focus:ring-violet-500"
+      <select
+        class="bg-white border border-slate-200 rounded-lg py-1.5 px-3 text-sm font-medium outline-none focus:ring-2 focus:ring-violet-500 shadow-sm"
         onchange="showView(this.value)">
-        <option value="tutor">AI Tutor</option>
+        <option value="electro">Electrodynamics</option>
         <option value="projectile">Projectile Motion</option>
         <option value="circuit">Ohm's Law</option>
-        <option value="chem">Chemistry</option>
+        <option value="titration">Titration</option>
+        <option value="tutor">AI Tutor</option>
       </select>
     </div>
 
-    <!-- VIEW: AI TUTOR -->
-    <section id="view-tutor" class="p-4 md:p-8 max-w-7xl mx-auto min-h-full animate-fade">
-      <div class="relative overflow-hidden rounded-3xl p-8 mb-8 bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xl shadow-indigo-100">
-        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-5 mix-blend-overlay blur-3xl"></div>
-        <div class="relative z-10">
-          <h1 class="text-3xl font-extrabold mb-2 tracking-tight">AI Syllabus Assistant</h1>
-          <p class="text-violet-100 max-w-2xl text-sm md:text-base opacity-90 leading-relaxed">
-            Your personalized STEM companion. Ask questions related to the Grade 10–12 Physics, Chemistry, and Math syllabus including concepts like Newton's Laws and Stoichiometry.
-          </p>
+    <!-- VIEW: ELECTRODYNAMICS -->
+    <section id="view-electro" class="p-4 md:p-8 max-w-7xl mx-auto hidden animate-fade">
+      <header class="mb-8">
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Electrodynamics <span class="text-gradient">3D
+            Simulator</span></h1>
+        <div class="flex items-center gap-2 mt-2 text-slate-500 text-sm font-medium">
+          <span>Physics Module</span>
+          <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+          <span>Motors & Generators</span>
         </div>
-      </div>
+      </header>
 
-      <div class="grid lg:grid-cols-4 gap-6 h-[600px]">
-        <!-- Chat Area -->
-        <div class="lg:col-span-3 card flex flex-col overflow-hidden border border-slate-200 shadow-md">
-          <div class="p-4 border-b border-slate-100 bg-white/50 backdrop-blur flex justify-between items-center">
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Live Session</span>
+      <div class="grid lg:grid-cols-12 gap-6">
+        <!-- 3D Visualization -->
+        <div class="lg:col-span-8">
+          <div class="card h-[500px] relative bg-slate-900 p-2 overflow-hidden shadow-2xl flex flex-col">
+            <div
+              class="absolute top-6 left-6 z-10 flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-white text-xs font-bold tracking-wide">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 3D Rendering Engine
+            </div>
+            <div class="absolute top-6 right-6 z-10">
+              <select id="electroMode" onchange="resetElectro()"
+                class="bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-lg py-1.5 px-3 text-sm font-semibold outline-none focus:ring-2 focus:ring-violet-500 shadow-sm appearance-none cursor-pointer">
+                <option value="dc_motor" class="text-slate-800">DC Motor (Split-Ring)</option>
+                <option value="ac_generator" class="text-slate-800">AC Generator (Slip Rings)</option>
+              </select>
+            </div>
+            <!-- The 3D Canvas -->
+            <div id="electroCanvasContainer" class="flex-1 w-full rounded-2xl overflow-hidden relative">
+              <!-- Three.js renders here -->
             </div>
           </div>
-          
-          <div id="chatLog" class="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50">
-            <!-- Messages injected here -->
-          </div>
-
-          <form class="p-4 bg-white border-t border-slate-100 flex gap-3" onsubmit="sendChat(event)">
-            <input id="chatInput" class="flex-1 bg-slate-100 border-transparent focus:bg-white focus:border-violet-300 focus:ring-4 focus:ring-violet-500/10 rounded-xl px-5 py-3 text-sm transition-all outline-none placeholder:text-slate-400"
-              placeholder="Ask a question (e.g., 'What is Newton's Second Law?')" />
-            <button id="chatSendBtn" class="bg-violet-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-violet-700 transition shadow-lg shadow-violet-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
-              Send <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            </button>
-          </form>
         </div>
 
-        <!-- Sidebar Topics -->
-        <div class="space-y-4">
-          <div class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Suggested Topics</div>
-          
-          <button onclick="prefillTopic('Newton\'s Second Law')" class="w-full text-left p-4 rounded-xl bg-white border border-slate-200 hover:border-violet-300 hover:shadow-md transition group">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[10px] font-bold text-white bg-violet-600 px-2 py-0.5 rounded-full">PHYSICS</span>
+        <!-- Controls & Data -->
+        <div class="lg:col-span-4 space-y-6">
+          <div class="card p-6 border-t-4 border-t-violet-600">
+            <h3 class="font-bold text-slate-800 mb-6 flex items-center gap-2 text-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                class="text-violet-600">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                </path>
+              </svg>
+              Parameters
+            </h3>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
+                  <span id="electroSliderLabel">Applied Voltage (V)</span>
+                  <span class="font-mono text-violet-700 bg-violet-50 px-2 rounded border border-violet-100"
+                    id="electroSliderOut">12</span>
+                </div>
+                <input id="electroSlider" type="range" min="0" max="24" value="12" class="w-full">
+              </div>
+              <div>
+                <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
+                  <span>Magnetic Field Strength (T)</span>
+                  <span class="font-mono text-slate-700 bg-slate-50 px-2 rounded border border-slate-200"
+                    id="bFieldOut">1.5</span>
+                </div>
+                <input id="bFieldSlider" type="range" min="0.1" max="5.0" step="0.1" value="1.5" class="w-full">
+              </div>
             </div>
-            <div class="font-bold text-slate-700 text-sm group-hover:text-violet-700 transition-colors">Newton's Second Law</div>
-            <div class="text-xs text-slate-400 mt-1">F = ma explained</div>
-          </button>
+          </div>
 
-          <button onclick="prefillTopic('Ohm\'s Law')" class="w-full text-left p-4 rounded-xl bg-white border border-slate-200 hover:border-violet-300 hover:shadow-md transition group">
-            <div class="flex items-center justify-between mb-2">
-               <span class="text-[10px] font-bold text-white bg-violet-600 px-2 py-0.5 rounded-full">PHYSICS</span>
+          <div class="card p-5 h-[200px] flex flex-col shadow-inner bg-slate-50 border-slate-200">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+              Oscilloscope (EMF)
+            </h3>
+            <div
+              class="flex-1 relative w-full bg-white rounded-lg border border-slate-200 p-2 overflow-hidden shadow-sm">
+              <canvas id="electroChartCanvas"></canvas>
             </div>
-            <div class="font-bold text-slate-700 text-sm group-hover:text-violet-700 transition-colors">Ohm's Law</div>
-            <div class="text-xs text-slate-400 mt-1">V = IR relationships</div>
-          </button>
-
-          <button onclick="prefillTopic('Stoichiometry')" class="w-full text-left p-4 rounded-xl bg-white border border-slate-200 hover:border-violet-300 hover:shadow-md transition group">
-            <div class="flex items-center justify-between mb-2">
-               <span class="text-[10px] font-bold text-white bg-emerald-600 px-2 py-0.5 rounded-full">CHEMISTRY</span>
-            </div>
-            <div class="font-bold text-slate-700 text-sm group-hover:text-emerald-700 transition-colors">Stoichiometry</div>
-            <div class="text-xs text-slate-400 mt-1">Balancing equations</div>
-          </button>
+          </div>
         </div>
       </div>
     </section>
@@ -251,7 +432,7 @@
     <section id="view-projectile" class="p-4 md:p-8 max-w-7xl mx-auto hidden animate-fade">
       <header class="mb-8">
         <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Projectile Motion</h1>
-        <div class="flex items-center gap-2 mt-2 text-slate-500 text-sm">
+        <div class="flex items-center gap-2 mt-2 text-slate-500 text-sm font-medium">
           <span>Kinematics Module</span>
           <span class="w-1 h-1 rounded-full bg-slate-300"></span>
           <span>Simulation</span>
@@ -261,55 +442,89 @@
       <div class="grid lg:grid-cols-12 gap-6">
         <!-- Controls -->
         <div class="lg:col-span-4 space-y-6">
-          <div class="card p-6 border-t-4 border-t-violet-600">
-            <div class="flex items-center gap-2 mb-6 pb-4 border-b border-slate-100">
-              <span class="bg-violet-100 text-violet-700 p-2 rounded-lg">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-              </span>
-              <h2 class="font-bold text-slate-800">Parameters</h2>
-            </div>
+          <div class="card p-6 border-t-4 border-t-blue-500">
+            <h2 class="font-bold text-slate-800 text-lg mb-6 flex items-center gap-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                class="text-blue-500">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                </path>
+              </svg>
+              Launch Setup
+            </h2>
 
-            <div class="mb-6">
-              <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                <span>Initial Velocity (v₀)</span>
-                <span class="font-mono text-violet-600 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded text-xs"><span id="vOut">50</span> m/s</span>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
+                  <span>Initial Velocity (v₀)</span>
+                  <span
+                    class="font-mono text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded text-xs"><span
+                      id="vOut">50</span> m/s</span>
+                </div>
+                <input id="vIn" type="range" min="10" max="150" value="50" oninput="updateProjectile()" class="w-full">
               </div>
-              <input id="vIn" type="range" min="10" max="200" value="50" oninput="updateProjectile()" class="w-full">
-            </div>
 
-            <div class="mb-6">
-              <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                <span>Launch Angle (θ)</span>
-                <span class="font-mono text-violet-600 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded text-xs"><span id="aOut">45</span>°</span>
+              <div>
+                <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
+                  <span>Launch Angle (θ)</span>
+                  <span
+                    class="font-mono text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded text-xs"><span
+                      id="aOut">45</span>°</span>
+                </div>
+                <input id="aIn" type="range" min="5" max="85" value="45" oninput="updateProjectile()" class="w-full">
               </div>
-              <input id="aIn" type="range" min="0" max="90" value="45" oninput="updateProjectile()" class="w-full">
-            </div>
 
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-2">Gravity Environment (g)</label>
-              <div class="relative">
-                <select id="gIn" onchange="updateProjectile()" class="w-full appearance-none p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-violet-500 transition pr-8">
-                  <option value="9.8">Earth (9.8 m/s²)</option>
-                  <option value="1.62">Moon (1.62 m/s²)</option>
-                  <option value="3.72">Mars (3.72 m/s²)</option>
-                </select>
-                <div class="absolute right-3 top-3 pointer-events-none text-slate-400">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+              <div>
+                <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
+                  <span>Mass (kg)</span>
+                  <span
+                    class="font-mono text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded text-xs"><span
+                      id="mOut">10</span> kg</span>
+                </div>
+                <input id="mIn" type="range" min="1" max="100" value="10" oninput="updateProjectile()" class="w-full">
+              </div>
+
+              <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-sm font-semibold text-slate-700">Air Resistance (Drag)</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="dragIn" class="sr-only peer" onchange="updateProjectile()">
+                  <div
+                    class="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600">
+                  </div>
+                </label>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Gravity Environment (g)</label>
+                <div class="relative">
+                  <select id="gIn" onchange="updateProjectile()"
+                    class="w-full appearance-none p-3 bg-white border border-slate-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-violet-500 shadow-sm transition pr-8 cursor-pointer">
+                    <option value="9.8">Earth (9.8 m/s²)</option>
+                    <option value="1.62">Moon (1.62 m/s²)</option>
+                    <option value="3.72">Mars (3.72 m/s²)</option>
+                  </select>
+                  <div class="absolute right-3 top-3.5 pointer-events-none text-slate-400">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="grid grid-cols-3 gap-3">
-            <div class="card p-4 text-center bg-white shadow-sm border border-slate-100">
+            <div class="card p-4 text-center bg-white shadow-sm border border-slate-100 flex flex-col justify-center">
               <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Height</div>
               <div class="font-mono font-bold text-slate-900 text-sm mt-1" id="hMax">0 m</div>
             </div>
-            <div class="card p-4 text-center bg-white shadow-sm border border-slate-100">
+            <div class="card p-4 text-center bg-white shadow-sm border border-slate-100 flex flex-col justify-center">
               <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Range</div>
               <div class="font-mono font-bold text-slate-900 text-sm mt-1" id="rMax">0 m</div>
             </div>
-            <div class="card p-4 text-center bg-white shadow-sm border border-slate-100">
+            <div class="card p-4 text-center bg-white shadow-sm border border-slate-100 flex flex-col justify-center">
               <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Time</div>
               <div class="font-mono font-bold text-slate-900 text-sm mt-1" id="tFly">0 s</div>
             </div>
@@ -318,19 +533,27 @@
 
         <!-- Visualization -->
         <div class="lg:col-span-8 space-y-6">
-          <div class="card p-1 bg-white relative shadow-md">
-            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-xs font-bold text-slate-600 border border-slate-200 shadow-sm z-10 flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-violet-600"></span> Trajectory Visualization
+          <div class="card p-2 bg-white relative shadow-lg h-[400px]">
+            <div
+              class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-xs font-bold text-slate-600 border border-slate-200 shadow-sm z-10 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span> Trajectory Field
             </div>
-            <canvas id="trajCanvas" class="w-full rounded-xl bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] bg-slate-50" height="320"></canvas>
+            <canvas id="trajCanvas"
+              class="w-full h-full rounded-xl bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] bg-slate-50"></canvas>
           </div>
-          
-          <div class="card p-6">
-             <div class="flex items-center gap-2 mb-4">
-               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-               <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Height vs Distance Analysis</span>
-             </div>
-            <div class="h-40">
+
+          <div class="card p-6 shadow-sm">
+            <div class="flex items-center gap-2 mb-4">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="text-slate-400">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Height vs Distance
+                Analysis</span>
+            </div>
+            <div class="h-48 relative w-full">
               <canvas id="trajChart"></canvas>
             </div>
           </div>
@@ -343,210 +566,316 @@
       <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Ohm's Law Laboratory</h1>
-          <div class="flex items-center gap-2 mt-2 text-slate-500 text-sm">
+          <div class="flex items-center gap-2 mt-2 text-slate-500 text-sm font-medium">
             <span>Electricity</span>
             <span class="w-1 h-1 rounded-full bg-slate-300"></span>
             <span>DC Circuit Analysis</span>
           </div>
         </div>
-        <div class="text-right">
-          <div class="font-mono text-xs font-bold text-violet-700 bg-violet-50 border border-violet-100 px-3 py-1.5 rounded-lg inline-flex items-center gap-2">
-             <span class="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span>
-             Ideal Conductor Model
-          </div>
-        </div>
       </header>
 
       <div class="grid lg:grid-cols-12 gap-6">
-        
         <div class="lg:col-span-7 space-y-6">
-          <div class="card h-[400px] relative flex items-center justify-center bg-slate-50 overflow-hidden shadow-inner">
-             <!-- Circuit Visualization Container -->
-             <div class="relative w-[320px] h-[240px]">
-                <!-- Wire Path -->
-                <div class="absolute inset-0 border-[8px] border-slate-700 rounded-2xl shadow-lg"></div>
-                
-                <!-- Battery -->
-                <div class="absolute left-[-24px] top-1/2 -translate-y-1/2 w-12 h-20 bg-white border-2 border-slate-300 rounded-lg shadow-md z-10 flex flex-col items-center justify-center gap-1">
-                  <span class="text-red-500 font-black text-xl leading-none select-none">+</span>
-                  <div class="w-6 h-[2px] bg-slate-200"></div>
-                  <span class="text-blue-500 font-black text-xl leading-none select-none">-</span>
-                </div>
-                <div class="absolute left-[-60px] top-1/2 -translate-y-1/2 font-mono font-bold text-slate-600 bg-white px-2 py-0.5 rounded shadow-sm border border-slate-200 text-xs">
-                  <span id="cvLabel">9.0</span>V
-                </div>
+          <div
+            class="card h-[420px] relative flex items-center justify-center bg-slate-50 overflow-hidden shadow-inner border-slate-200">
+            <!-- Circuit Visualization Container -->
+            <div class="relative w-[340px] h-[260px]">
+              <!-- Wire Path -->
+              <div class="absolute inset-0 border-[10px] border-slate-700 rounded-3xl shadow-lg"></div>
 
-                <!-- Resistor/Bulb -->
-                <div class="absolute right-[-24px] top-1/2 -translate-y-1/2 w-12 h-20 bg-white border-2 border-slate-300 rounded-lg shadow-md z-10 flex items-center justify-center">
-                  <span id="bulb" class="text-4xl transition-all duration-300 drop-shadow-md" style="filter: grayscale(100%) opacity(0.3)">💡</span>
-                </div>
-                <div class="absolute right-[-60px] top-1/2 -translate-y-1/2 font-mono font-bold text-slate-600 bg-white px-2 py-0.5 rounded shadow-sm border border-slate-200 text-xs">
-                  <span id="crLabel">10</span>Ω
-                </div>
+              <!-- Battery -->
+              <div
+                class="absolute left-[-28px] top-1/2 -translate-y-1/2 w-14 h-24 bg-white border-4 border-slate-300 rounded-xl shadow-xl z-10 flex flex-col items-center justify-center gap-1.5">
+                <span class="text-red-500 font-black text-2xl leading-none select-none">+</span>
+                <div class="w-8 h-[3px] bg-slate-200"></div>
+                <span class="text-blue-500 font-black text-2xl leading-none select-none">-</span>
+              </div>
+              <div
+                class="absolute left-[-70px] top-1/2 -translate-y-1/2 font-mono font-bold text-slate-600 bg-white px-2.5 py-1 rounded shadow-md border border-slate-200 text-sm">
+                <span id="cvLabel">9.0</span>V
+              </div>
 
-                <!-- Electron -->
-                <div id="electron" class="absolute top-[-9px] left-0 w-5 h-5 bg-yellow-400 border-2 border-yellow-600 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.6)] z-20"></div>
-             </div>
-             
-             <div class="absolute bottom-4 flex items-center gap-2 px-3 py-1 bg-white/50 backdrop-blur rounded-full border border-slate-100">
-               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-               <span class="text-[10px] text-slate-500 font-medium">Visual speed ∝ Current intensity</span>
-             </div>
-          </div>
+              <!-- Resistor/Bulb -->
+              <div
+                class="absolute right-[-28px] top-1/2 -translate-y-1/2 w-14 h-24 bg-white border-4 border-slate-300 rounded-xl shadow-xl z-10 flex items-center justify-center bg-gradient-to-b from-white to-slate-50">
+                <span id="bulb" class="text-5xl transition-all duration-300 drop-shadow-lg"
+                  style="filter: grayscale(100%) opacity(0.3)">💡</span>
+              </div>
+              <div
+                class="absolute right-[-70px] top-1/2 -translate-y-1/2 font-mono font-bold text-slate-600 bg-white px-2.5 py-1 rounded shadow-md border border-slate-200 text-sm">
+                <span id="crLabel">10</span>Ω
+              </div>
 
-          <div class="card p-6 border-l-4 border-l-blue-500">
-             <h3 class="font-bold text-lg text-slate-800 mb-2">Fundamental Concepts</h3>
-             <div class="text-sm text-slate-600 leading-relaxed space-y-3">
-               <p><strong class="text-slate-900">Ohm’s Law (V = I · R)</strong> states that the current flowing through a conductor is directly proportional to the potential difference (Voltage) and inversely proportional to the Resistance.</p>
-               <p><strong class="text-slate-900">Power (P = V · I)</strong> is the rate at which electrical energy is converted into other forms. Increasing Voltage increases Power quadratically if Resistance is fixed.</p>
-             </div>
+              <!-- Electron -->
+              <div id="electron"
+                class="absolute top-[-11px] left-0 w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-full shadow-[0_0_20px_rgba(250,204,21,0.8)] z-20 transition-transform">
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="lg:col-span-5 space-y-6">
-          
-          <div class="card p-6">
-            <h3 class="font-bold text-slate-800 mb-6 flex items-center gap-2">
-              <span class="w-1.5 h-5 bg-violet-600 rounded-full"></span> Variables
+          <div class="card p-6 shadow-sm border-t-4 border-t-yellow-400">
+            <h3 class="font-bold text-slate-800 mb-6 flex items-center gap-2 text-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                class="text-yellow-500">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              Circuit Parameters
             </h3>
-            
+
             <div class="space-y-8">
               <div>
                 <label class="flex justify-between text-sm font-semibold text-slate-700 mb-3">
                   <span>Voltage Source (V)</span>
-                  <span class="font-mono text-violet-600 bg-violet-50 px-2 rounded"><span id="cvOut">9.0</span> V</span>
+                  <span class="font-mono text-yellow-600 bg-yellow-50 border border-yellow-100 px-2 rounded"><span
+                      id="cvOut">9.0</span> V</span>
                 </label>
-                <input id="cvIn" type="range" min="1" max="24" step="0.5" value="9" oninput="updateCircuit()" class="w-full">
+                <input id="cvIn" type="range" min="1" max="24" step="0.5" value="9" oninput="updateCircuit()"
+                  class="w-full">
               </div>
-              
+
               <div>
                 <label class="flex justify-between text-sm font-semibold text-slate-700 mb-3">
                   Resistance Load (R)
-                  <span class="font-mono text-violet-600 bg-violet-50 px-2 rounded"><span id="crOut">10</span> Ω</span>
+                  <span class="font-mono text-slate-600 bg-slate-100 border border-slate-200 px-2 rounded"><span
+                      id="crOut">10</span> Ω</span>
                 </label>
                 <input id="crIn" type="range" min="1" max="100" value="10" oninput="updateCircuit()" class="w-full">
               </div>
             </div>
           </div>
 
-          <div class="card bg-slate-900 text-white p-6 shadow-xl shadow-slate-300 border-slate-800 relative overflow-hidden">
-            <!-- Background Decoration -->
+          <div class="card bg-slate-900 text-white p-6 shadow-2xl border-slate-800 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
-            
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
+
             <div class="flex items-center justify-between mb-5 border-b border-slate-700 pb-3 relative z-10">
-               <div class="flex items-center gap-2">
-                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400"><path d="M4 17l6-6-6-6"></path><path d="M12 19h8"></path></svg>
-                 <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Live Data Stream</span>
-               </div>
-               <div class="flex gap-1.5">
-                 <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                 <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse delay-75"></div>
-                 <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse delay-150"></div>
-               </div>
+              <div class="flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="text-slate-400">
+                  <path d="M4 17l6-6-6-6"></path>
+                  <path d="M12 19h8"></path>
+                </svg>
+                <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Live Telemetry</span>
+              </div>
+              <div class="flex gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                <div class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse delay-75"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse delay-150"></div>
+              </div>
             </div>
 
-            <div class="space-y-5 font-mono text-sm relative z-10">
+            <div class="space-y-6 font-mono text-sm relative z-10">
               <div>
-                <div class="text-[10px] text-violet-400 mb-1.5">CURRENT CALCULATION (I = V/R)</div>
-                <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700/50 flex items-center flex-wrap gap-2 shadow-inner">
-                   <span class="text-violet-300">I</span> <span class="text-slate-500">=</span> 
-                   <span id="math-v" class="text-white font-bold">9.0</span> <span class="text-slate-500">/</span> 
-                   <span id="math-r" class="text-white font-bold">10</span> 
-                   <span class="text-slate-500">=</span> 
-                   <span id="math-i" class="text-yellow-400 font-bold text-lg">0.90</span> <span class="text-yellow-400">A</span>
+                <div class="text-[10px] text-yellow-400 mb-2 font-bold tracking-wider">CURRENT (I = V/R)</div>
+                <div
+                  class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/50 flex items-center gap-3 shadow-inner">
+                  <span class="text-yellow-300">I</span> <span class="text-slate-500">=</span>
+                  <span id="math-v" class="text-white font-bold">9.0</span> <span class="text-slate-500">/</span>
+                  <span id="math-r" class="text-white font-bold">10</span>
+                  <span class="text-slate-500">=</span>
+                  <span id="math-i" class="text-yellow-400 font-bold text-xl ml-auto">0.90 A</span>
                 </div>
               </div>
 
               <div>
-                <div class="text-[10px] text-blue-400 mb-1.5">POWER CALCULATION (P = V·I)</div>
-                <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700/50 flex items-center flex-wrap gap-2 shadow-inner">
-                   <span class="text-blue-300">P</span> <span class="text-slate-500">=</span> 
-                   <span id="math-v2" class="text-white font-bold">9.0</span> <span class="text-slate-500">×</span> 
-                   <span id="math-i2" class="text-white font-bold">0.90</span> 
-                   <span class="text-slate-500">=</span> 
-                   <span id="math-p" class="text-blue-300 font-bold text-lg">8.1</span> <span class="text-blue-300">W</span>
+                <div class="text-[10px] text-emerald-400 mb-2 font-bold tracking-wider">POWER (P = V·I)</div>
+                <div
+                  class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/50 flex items-center gap-3 shadow-inner">
+                  <span class="text-emerald-300">P</span> <span class="text-slate-500">=</span>
+                  <span id="math-v2" class="text-white font-bold">9.0</span> <span class="text-slate-500">×</span>
+                  <span id="math-i2" class="text-white font-bold">0.90</span>
+                  <span class="text-slate-500">=</span>
+                  <span id="math-p" class="text-emerald-400 font-bold text-xl ml-auto">8.1 W</span>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
 
-    <!-- VIEW: CHEMISTRY -->
-    <section id="view-chem" class="p-4 md:p-8 max-w-7xl mx-auto hidden animate-fade">
+    <!-- VIEW: TITRATION -->
+    <section id="view-titration" class="p-4 md:p-8 max-w-7xl mx-auto hidden animate-fade">
       <header class="mb-8">
-        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Virtual Chemistry Lab</h1>
-        <div class="flex items-center gap-2 mt-2 text-slate-500 text-sm">
-          <span>Inorganic Chemistry</span>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Chemical Titration</h1>
+        <div class="flex items-center gap-2 mt-2 text-slate-500 text-sm font-medium">
+          <span>Chemistry Module</span>
           <span class="w-1 h-1 rounded-full bg-slate-300"></span>
-          <span>Reactions & Precipitates</span>
+          <span>Acid-Base Reaction</span>
         </div>
       </header>
 
-      <div class="grid lg:grid-cols-3 gap-6">
-        <div class="card p-6 lg:col-span-1 border-t-4 border-t-emerald-500 h-fit">
-           <h2 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
-             Select Reagents
-           </h2>
-           <p class="text-xs text-slate-500 mb-4">Select up to 2 reagents to mix in the central beaker.</p>
-           
-           <div id="chemShelf" class="grid grid-cols-1 gap-3">
-             <!-- Reagent buttons injected here -->
-           </div>
+      <div class="grid lg:grid-cols-12 gap-6">
+        <!-- Visuals -->
+        <div class="lg:col-span-5 space-y-6">
+          <div
+            class="card h-[500px] flex flex-col items-center justify-end pb-8 relative bg-slate-50 overflow-hidden shadow-inner border-t-4 border-t-rose-500">
 
-           <div class="mt-4 p-4 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-800 flex gap-3 leading-relaxed">
-             <div class="text-lg">⚠️</div>
-             <div><strong>Simulation Only:</strong> Real chemical reactions may involve heat, fumes, or hazards not fully depicted here.</div>
-           </div>
+            <!-- Burette -->
+            <div
+              class="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[250px] border-4 border-t-0 border-slate-300 bg-white/40 backdrop-blur rounded-b-md shadow-sm z-20 flex flex-col justify-end">
+              <div class="w-full h-full bg-blue-100/80 absolute bottom-0 left-0" id="buretteLiquid"
+                style="height: 100%;"></div>
+              <!-- Stopcock -->
+              <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-6 h-4 bg-slate-400 rounded-sm"></div>
+              <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-2 h-4 bg-slate-300"></div>
+            </div>
+
+            <!-- Drops -->
+            <div id="dropContainer"
+              class="absolute top-[260px] left-1/2 -translate-x-1/2 w-8 h-32 z-10 overflow-hidden">
+              <!-- Javascript will inject drops here -->
+            </div>
+
+            <!-- Flask -->
+            <div class="relative z-10 mt-auto group">
+              <div class="flask-body w-40 h-40">
+                <div id="flaskLiquid" class="flask-liquid h-[40%] bg-white border-t border-slate-200"></div>
+                <div class="absolute top-0 right-4 w-4 h-full bg-white/30 rounded-full blur-[2px]"></div>
+              </div>
+              <div
+                class="w-16 h-12 border-x-4 border-slate-300/60 bg-white/20 backdrop-blur mx-auto relative -bottom-1 z-0">
+              </div>
+              <div
+                class="w-20 h-4 border-[3px] border-slate-300/60 rounded-full bg-slate-50/80 absolute -top-12 left-1/2 -translate-x-1/2 z-20 shadow-sm">
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="lg:col-span-2 space-y-6">
-          <div class="card min-h-[400px] flex flex-col items-center justify-center relative bg-gradient-to-b from-slate-50 to-slate-100 overflow-hidden shadow-inner">
-             
-             <!-- Beaker Assembly -->
-             <div class="relative z-10 mt-auto mb-12 group">
-                <!-- Beaker Glass -->
-                <div class="w-48 h-64 border-[3px] border-slate-300/60 border-t-0 rounded-b-3xl bg-white/20 backdrop-blur-[2px] relative overflow-hidden shadow-2xl">
-                  
-                  <!-- Liquid Level -->
-                  <div id="chemLiquid" class="absolute bottom-0 w-full h-0 transition-all duration-1000 ease-in-out">
-                    <!-- Bubbles overlay (optional css effect) -->
-                  </div>
-                  
-                  <!-- Glass Highlights -->
-                  <div class="absolute top-0 right-4 w-3 h-full bg-gradient-to-l from-white/30 to-transparent rounded-full blur-[1px]"></div>
-                  <div class="absolute top-0 left-3 w-1 h-3/4 bg-gradient-to-r from-white/20 to-transparent rounded-full blur-[1px]"></div>
-                </div>
-                <!-- Rim -->
-                <div class="w-52 h-5 border-[3px] border-slate-300/60 rounded-full bg-slate-50/80 absolute -top-2.5 left-1/2 -translate-x-1/2 z-20 shadow-sm backdrop-blur"></div>
-             </div>
+        <!-- Controls & Data -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="card p-6 shadow-sm border-slate-200">
+            <h2 class="font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                class="text-rose-500">
+                <path d="M10 2v7.31"></path>
+                <path d="M14 2v7.31"></path>
+                <path d="M8.5 2h7"></path>
+                <path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+              </svg>
+              Titration Controls
+            </h2>
+            <p class="text-sm text-slate-500 mb-6">Titrating 50mL of 0.1M HCl (Strong Acid) with 0.1M NaOH (Strong
+              Base). Indicator: Phenolphthalein.</p>
 
-             <!-- Floating Labels -->
-             <div id="chemLabels" class="absolute top-8 right-8 flex flex-col items-end gap-2 z-10"></div>
+            <div class="mb-6">
+              <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
+                <span>Volume NaOH Added (mL)</span>
+                <span
+                  class="font-mono text-rose-600 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded text-xs"><span
+                    id="volOut">0</span> mL</span>
+              </div>
+              <input id="volIn" type="range" min="0" max="100" step="0.5" value="0" oninput="updateTitration()"
+                class="w-full">
+            </div>
 
-             <!-- Controls -->
-             <div class="absolute bottom-6 flex gap-3 z-20">
-               <button onclick="resetChem()" class="px-6 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 hover:text-red-600 transition shadow-sm flex items-center gap-2 text-sm">
-                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                 Empty Beaker
-               </button>
-               <button id="mixBtn" onclick="mixChem()" disabled class="px-6 py-2.5 rounded-xl bg-violet-600 text-white font-semibold hover:bg-violet-700 hover:scale-105 transition shadow-lg shadow-violet-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none flex items-center gap-2 text-sm">
-                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-                 Mix Solution
-               </button>
-             </div>
+            <div class="flex items-center gap-4">
+              <button onclick="resetTitration()"
+                class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition shadow-sm text-sm">
+                Reset Experiment
+              </button>
+            </div>
           </div>
 
-          <div id="chemResultCard" class="card p-6 bg-slate-800 text-slate-100 hidden border-l-4 border-l-emerald-500 shadow-xl">
-            <h3 class="font-bold text-emerald-400 mb-3 flex items-center gap-2">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              Reaction Analysis
-            </h3>
-            <div id="chemResult" class="text-sm font-mono leading-relaxed opacity-90 msg border-t border-slate-700 pt-3"></div>
+          <div class="card p-6 shadow-sm">
+            <div class="flex justify-between items-center mb-4">
+              <div class="flex items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="text-slate-400">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">pH Curve</span>
+              </div>
+              <div class="font-mono text-sm font-bold px-3 py-1 bg-slate-100 rounded-lg text-slate-700">pH: <span
+                  id="phValueOut" class="text-rose-600">1.00</span></div>
+            </div>
+            <div class="h-56 relative w-full">
+              <canvas id="titrationChart"></canvas>
+            </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: AI TUTOR -->
+    <section id="view-tutor" class="p-4 md:p-8 max-w-7xl mx-auto hidden animate-fade">
+      <div
+        class="relative overflow-hidden rounded-3xl p-8 mb-8 bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xl shadow-indigo-100">
+        <div
+          class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-5 mix-blend-overlay blur-3xl">
+        </div>
+        <div class="relative z-10">
+          <h1 class="text-3xl font-extrabold mb-2 tracking-tight">AI Syllabus Assistant</h1>
+          <p class="text-violet-100 max-w-2xl text-sm md:text-base opacity-90 leading-relaxed">
+            Your personalized STEM companion. Ask questions related to the Physics, Chemistry, and Math syllabus.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-4 gap-6 h-[600px]">
+        <!-- Chat Area -->
+        <div class="lg:col-span-3 card flex flex-col overflow-hidden border border-slate-200 shadow-md">
+          <div class="p-4 border-b border-slate-100 bg-white/50 backdrop-blur flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Live Session</span>
+            </div>
+          </div>
+
+          <div id="chatLog" class="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50">
+            <!-- Messages injected here -->
+          </div>
+
+          <form class="p-4 bg-white border-t border-slate-100 flex gap-3" onsubmit="sendChat(event)">
+            <input id="chatInput"
+              class="flex-1 bg-slate-100 border-transparent focus:bg-white focus:border-violet-300 focus:ring-4 focus:ring-violet-500/10 rounded-xl px-5 py-3 text-sm transition-all outline-none placeholder:text-slate-400"
+              placeholder="Ask a question (e.g., 'What is Faraday's Law?')" />
+            <button id="chatSendBtn"
+              class="bg-violet-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-violet-700 transition shadow-lg shadow-violet-200 disabled:opacity-50 flex items-center gap-2">
+              Send <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Sidebar Topics -->
+        <div class="space-y-4">
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Suggested Topics</div>
+
+          <button onclick="prefillTopic('Faraday\'s Law of Induction')"
+            class="w-full text-left p-4 rounded-xl bg-white border border-slate-200 hover:border-violet-300 hover:shadow-md transition group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-bold text-white bg-violet-600 px-2 py-0.5 rounded-full">PHYSICS</span>
+            </div>
+            <div class="font-bold text-slate-700 text-sm group-hover:text-violet-700 transition-colors">Faraday's Law
+            </div>
+            <div class="text-xs text-slate-400 mt-1">Electromagnetic induction</div>
+          </button>
+
+          <button onclick="prefillTopic('Acid-Base Titration')"
+            class="w-full text-left p-4 rounded-xl bg-white border border-slate-200 hover:border-rose-300 hover:shadow-md transition group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-bold text-white bg-rose-500 px-2 py-0.5 rounded-full">CHEMISTRY</span>
+            </div>
+            <div class="font-bold text-slate-700 text-sm group-hover:text-rose-600 transition-colors">Acid-Base
+              Titration</div>
+            <div class="text-xs text-slate-400 mt-1">Equivalence points</div>
+          </button>
+
+          <button onclick="prefillTopic('Projectile Drag')"
+            class="w-full text-left p-4 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:shadow-md transition group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-bold text-white bg-blue-500 px-2 py-0.5 rounded-full">PHYSICS</span>
+            </div>
+            <div class="font-bold text-slate-700 text-sm group-hover:text-blue-600 transition-colors">Projectile Drag
+            </div>
+            <div class="text-xs text-slate-400 mt-1">Air resistance effects</div>
+          </button>
         </div>
       </div>
     </section>
@@ -555,43 +884,555 @@
 
   <script>
     // ==========================================
-    // Core Logic & State Management
+    // Core Logic & View Switcher
     // ==========================================
-    
-    // View Switcher
     function showView(viewId) {
-      // Hide all views
-      ['tutor', 'projectile', 'circuit', 'chem'].forEach(id => {
-        document.getElementById(`view-${id}`).classList.add('hidden');
-        // Update Sidebar Active States (Desktop)
+      ['electro', 'projectile', 'circuit', 'titration', 'tutor'].forEach(id => {
+        const el = document.getElementById(`view-${id}`);
+        if (el) el.classList.add('hidden');
+
         const btn = document.getElementById(`nav-${id}`);
-        if(btn) {
-           if(id === viewId) {
-             btn.classList.add('bg-violet-50', 'text-violet-700');
-             btn.classList.remove('text-slate-600');
-             // Icon color change handled by group-hover css, but we can force it
-             const icon = btn.querySelector('.sidebar-icon');
-             if(icon) icon.classList.add('text-violet-600');
-           } else {
-             btn.classList.remove('bg-violet-50', 'text-violet-700');
-             btn.classList.add('text-slate-600');
-             const icon = btn.querySelector('.sidebar-icon');
-             if(icon) icon.classList.remove('text-violet-600');
-           }
+        if (btn) {
+          if (id === viewId) {
+            btn.classList.add('bg-violet-50', 'text-violet-700');
+            btn.classList.remove('text-slate-600');
+            const icon = btn.querySelector('.sidebar-icon');
+            if (icon) icon.classList.add('text-violet-600');
+          } else {
+            btn.classList.remove('bg-violet-50', 'text-violet-700');
+            btn.classList.add('text-slate-600');
+            const icon = btn.querySelector('.sidebar-icon');
+            if (icon) icon.classList.remove('text-violet-600');
+          }
         }
       });
-      
-      // Show selected
-      document.getElementById(`view-${viewId}`).classList.remove('hidden');
 
-      // Lazy Init
+      const target = document.getElementById(`view-${viewId}`);
+      if (target) target.classList.remove('hidden');
+
+      if (viewId === 'electro') initElectro();
       if (viewId === 'projectile') initProjectile();
       if (viewId === 'circuit') initCircuit();
-      if (viewId === 'chem') initChem();
+      if (viewId === 'titration') initTitration();
     }
 
+
     // ==========================================
-    // 1. AI Tutor Module
+    // 1. Electrodynamics (3D Three.js)
+    // ==========================================
+    let electroInit = false;
+    let scene, camera, renderer, coil, commutatorGroup;
+    let electroChart = null;
+    let electroTime = 0;
+    let chartData = [];
+
+    function initElectro() {
+      if (electroInit) return;
+      electroInit = true;
+
+      // 1. Setup Three.js Scene
+      const container = document.getElementById('electroCanvasContainer');
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color('#0f172a'); // slate-900
+
+      camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.set(0, 4, 8);
+      camera.lookAt(0, 0, 0);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(renderer.domElement);
+
+      // Lighting
+      const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambient);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      dirLight.position.set(5, 10, 5);
+      scene.add(dirLight);
+
+      // Magnets (N and S)
+      const magnetGeo = new THREE.BoxGeometry(2, 2, 1);
+      const matN = new THREE.MeshPhongMaterial({ color: 0xef4444 }); // Red North
+      const matS = new THREE.MeshPhongMaterial({ color: 0x3b82f6 }); // Blue South
+
+      const magN = new THREE.Mesh(magnetGeo, matN);
+      magN.position.set(-3, 0, 0);
+      scene.add(magN);
+
+      const magS = new THREE.Mesh(magnetGeo, matS);
+      magS.position.set(3, 0, 0);
+      scene.add(magS);
+
+      // Shaft
+      const shaftGeo = new THREE.CylinderGeometry(0.1, 0.1, 8, 16);
+      const shaftMat = new THREE.MeshPhongMaterial({ color: 0x94a3b8 });
+      const shaft = new THREE.Mesh(shaftGeo, shaftMat);
+      shaft.rotation.z = Math.PI / 2;
+      scene.add(shaft);
+
+      // Coil (Armature)
+      coil = new THREE.Group();
+      const wireMat = new THREE.MeshPhongMaterial({ color: 0xd97706 }); // Copper
+
+      // Rectangular coil
+      const hWire = new THREE.CylinderGeometry(0.08, 0.08, 4, 8);
+      const vWire = new THREE.CylinderGeometry(0.08, 0.08, 2, 8);
+
+      const topWire = new THREE.Mesh(hWire, wireMat);
+      topWire.position.y = 1;
+      topWire.rotation.z = Math.PI / 2;
+      coil.add(topWire);
+
+      const bottomWire = new THREE.Mesh(hWire, wireMat);
+      bottomWire.position.y = -1;
+      bottomWire.rotation.z = Math.PI / 2;
+      coil.add(bottomWire);
+
+      const leftWire = new THREE.Mesh(vWire, wireMat);
+      leftWire.position.set(-2, 0, 0);
+      coil.add(leftWire);
+
+      const rightWire = new THREE.Mesh(vWire, wireMat);
+      rightWire.position.set(2, 0, 0);
+      coil.add(rightWire);
+
+      scene.add(coil);
+
+      // Handle Resize
+      window.addEventListener('resize', () => {
+        if (!electroInit) return;
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+
+      // 2. Setup Chart.js
+      const ctx = document.getElementById('electroChartCanvas').getContext('2d');
+      electroChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array.from({ length: 100 }, (_, i) => i),
+          datasets: [{
+            label: 'EMF / Current',
+            data: Array(100).fill(0),
+            borderColor: '#7c3aed',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { display: false },
+            y: { min: -30, max: 30, grid: { color: '#f1f5f9' } }
+          }
+        }
+      });
+
+      requestAnimationFrame(animateElectro);
+    }
+
+    function resetElectro() {
+      chartData = Array(100).fill(0);
+      const mode = document.getElementById('electroMode').value;
+      if (mode === 'dc_motor') {
+        document.getElementById('electroSliderLabel').textContent = "Applied Voltage (V)";
+        document.getElementById('electroSlider').max = "24";
+        document.getElementById('electroSlider').value = "12";
+      } else {
+        document.getElementById('electroSliderLabel').textContent = "Crank Speed (RPM)";
+        document.getElementById('electroSlider').max = "100";
+        document.getElementById('electroSlider').value = "30";
+      }
+      if (electroChart) {
+        electroChart.data.datasets[0].data = chartData;
+        electroChart.update();
+      }
+    }
+
+    function animateElectro() {
+      if (document.getElementById('view-electro').classList.contains('hidden')) {
+        requestAnimationFrame(animateElectro);
+        return;
+      }
+
+      const val = parseFloat(document.getElementById('electroSlider').value);
+      const B = parseFloat(document.getElementById('bFieldSlider').value);
+      const mode = document.getElementById('electroMode').value;
+
+      document.getElementById('electroSliderOut').textContent = val;
+      document.getElementById('bFieldOut').textContent = B.toFixed(1);
+
+      let speed = 0;
+      let emf = 0;
+
+      if (mode === 'dc_motor') {
+        // Motor mode: Speed depends on Voltage and B field
+        speed = (val * B) * 0.005;
+        emf = val; // Plot applied voltage roughly
+      } else {
+        // Generator mode: Voltage (EMF) depends on speed and B field
+        speed = val * 0.002;
+      }
+
+      // Rotate Coil
+      if (coil) {
+        coil.rotation.x += speed;
+        // Calculate EMF for Generator based on rotation
+        if (mode === 'ac_generator') {
+          // AC is a sine wave
+          emf = Math.sin(coil.rotation.x) * speed * B * 500;
+        } else if (mode === 'dc_motor') {
+          // It's a DC motor, let's just plot the steady voltage with some commutator ripple
+          emf = val * (0.9 + 0.1 * Math.abs(Math.sin(coil.rotation.x * 2)));
+        }
+      }
+
+      // Update Chart Data
+      chartData.push(emf);
+      if (chartData.length > 100) chartData.shift();
+
+      if (electroChart) {
+        electroChart.data.datasets[0].data = chartData;
+        electroChart.update();
+      }
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animateElectro);
+    }
+
+
+    // ==========================================
+    // 2. Projectile Motion
+    // ==========================================
+    let projChart = null;
+    let projInit = false;
+
+    function initProjectile() {
+      if (projInit) return;
+      projInit = true;
+
+      const ctx = document.getElementById('trajChart');
+      projChart = new Chart(ctx, {
+        type: 'line',
+        data: { datasets: [{ label: 'Trajectory', data: [], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderWidth: 2, pointRadius: 0, fill: true, tension: 0.1 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { type: 'linear', position: 'bottom', title: { display: true, text: 'Distance (m)' } }, y: { min: 0, title: { display: true, text: 'Height (m)' } } } }
+      });
+      updateProjectile();
+    }
+
+    function updateProjectile() {
+      const v0 = parseFloat(document.getElementById('vIn').value);
+      const angDeg = parseFloat(document.getElementById('aIn').value);
+      const mass = parseFloat(document.getElementById('mIn').value);
+      const g = parseFloat(document.getElementById('gIn').value);
+      const hasDrag = document.getElementById('dragIn').checked;
+
+      document.getElementById('vOut').textContent = v0;
+      document.getElementById('aOut').textContent = angDeg;
+      document.getElementById('mOut').textContent = mass;
+
+      const angRad = angDeg * Math.PI / 180;
+      let vx = v0 * Math.cos(angRad);
+      let vy = v0 * Math.sin(angRad);
+      let x = 0;
+      let y = 0;
+      let t = 0;
+      const dt = 0.05;
+
+      const points = [{ x: 0, y: 0 }];
+
+      // Drag coefficient
+      const k = hasDrag ? 0.02 : 0; // drag constant
+
+      let hMax = 0;
+
+      // Euler Integration
+      while (y >= 0 && t < 100) { // Limit to 100s to prevent infinite loops
+        t += dt;
+
+        // Drag acceleration = (k/m) * v^2 opposite to velocity
+        const v = Math.sqrt(vx * vx + vy * vy);
+        const dragAcc = (k / mass) * v * v;
+        const dragX = -dragAcc * (vx / v) || 0;
+        const dragY = -dragAcc * (vy / v) || 0;
+
+        vx += dragX * dt;
+        vy += (dragY - g) * dt;
+
+        x += vx * dt;
+        y += vy * dt;
+
+        if (y > hMax) hMax = y;
+        if (y >= 0) points.push({ x, y });
+      }
+
+      document.getElementById('hMax').textContent = hMax.toFixed(1) + " m";
+      document.getElementById('rMax').textContent = x.toFixed(1) + " m";
+      document.getElementById('tFly').textContent = t.toFixed(1) + " s";
+
+      if (projChart) {
+        projChart.data.datasets[0].data = points;
+        projChart.update();
+      }
+
+      drawProjectileCanvas(points);
+    }
+
+    function drawProjectileCanvas(points) {
+      const canvas = document.getElementById('trajCanvas');
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      if (points.length === 0) return;
+
+      const maxX = Math.max(...points.map(p => p.x), 10);
+      const maxY = Math.max(...points.map(p => p.y), 10);
+      const padding = 20;
+      const w = rect.width - (padding * 2);
+      const h = rect.height - (padding * 2);
+
+      ctx.beginPath();
+      ctx.moveTo(padding, rect.height - padding);
+
+      points.forEach(p => {
+        const px = padding + (p.x / maxX) * w;
+        const py = (rect.height - padding) - (p.y / maxY) * h;
+        ctx.lineTo(px, py);
+      });
+
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Ball
+      const last = points[points.length - 1];
+      const px = padding + (last.x / maxX) * w;
+      const py = (rect.height - padding) - (last.y / maxY) * h;
+
+      ctx.beginPath();
+      ctx.arc(px, py, 6, 0, 2 * Math.PI);
+      ctx.fillStyle = '#10b981'; // emerald
+      ctx.fill();
+    }
+
+
+    // ==========================================
+    // 3. Circuit Analysis
+    // ==========================================
+    let circuitInit = false;
+    let electronPhase = 0;
+
+    function initCircuit() {
+      if (circuitInit) return;
+      circuitInit = true;
+      updateCircuit();
+      requestAnimationFrame(animateCircuit);
+    }
+
+    function updateCircuit() {
+      const V = parseFloat(document.getElementById('cvIn').value);
+      const R = parseFloat(document.getElementById('crIn').value);
+      const I = V / R;
+      const P = V * I;
+
+      document.getElementById('cvOut').textContent = V.toFixed(1);
+      document.getElementById('crOut').textContent = R.toFixed(0);
+      document.getElementById('cvLabel').textContent = V.toFixed(1);
+      document.getElementById('crLabel').textContent = R.toFixed(0);
+
+      document.getElementById('math-v').textContent = V.toFixed(1);
+      document.getElementById('math-r').textContent = R.toFixed(0);
+      document.getElementById('math-i').textContent = I.toFixed(2) + " A";
+
+      document.getElementById('math-v2').textContent = V.toFixed(1);
+      document.getElementById('math-i2').textContent = I.toFixed(2);
+      document.getElementById('math-p').textContent = P.toFixed(1) + " W";
+
+      const bulb = document.getElementById('bulb');
+      const intensity = Math.min(1, P / 40) + 0.1;
+      bulb.style.filter = `grayscale(${100 - intensity * 100}%) opacity(${intensity}) drop-shadow(0 0 ${P}px rgba(255,223,0,0.8))`;
+    }
+
+    function animateCircuit() {
+      if (document.getElementById('view-circuit').classList.contains('hidden')) {
+        requestAnimationFrame(animateCircuit);
+        return;
+      }
+      const V = parseFloat(document.getElementById('cvIn').value);
+      const R = parseFloat(document.getElementById('crIn').value);
+      const I = V / R;
+
+      const speed = 0.5 + (I * 2);
+      electronPhase += speed;
+
+      const dot = document.getElementById('electron');
+      const w = 340;
+      const h = 260;
+      const totalDist = (w * 2) + (h * 2);
+
+      let p = electronPhase % totalDist;
+      let x = 0, y = 0;
+
+      if (p < w) { x = p; y = 0; }
+      else if (p < w + h) { x = w; y = p - w; }
+      else if (p < (w * 2) + h) { x = w - (p - (w + h)); y = h; }
+      else { x = 0; y = h - (p - ((w * 2) + h)); }
+
+      dot.style.transform = `translate(${x - 12}px, ${y - 12}px)`;
+      requestAnimationFrame(animateCircuit);
+    }
+
+
+    // ==========================================
+    // 4. Chemical Titration
+    // ==========================================
+    let titInit = false;
+    let titChart = null;
+    let phData = [];
+
+    function initTitration() {
+      if (titInit) return;
+      titInit = true;
+
+      const ctx = document.getElementById('titrationChart');
+      titChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'pH',
+            data: [],
+            borderColor: '#f43f5e', // rose-500
+            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+            borderWidth: 2,
+            pointRadius: 1,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { title: { display: true, text: 'Vol NaOH (mL)' } },
+            y: { min: 0, max: 14, title: { display: true, text: 'pH' } }
+          }
+        }
+      });
+      updateTitration();
+    }
+
+    function resetTitration() {
+      document.getElementById('volIn').value = 0;
+      updateTitration();
+    }
+
+    let lastVol = 0;
+
+    function updateTitration() {
+      const vol = parseFloat(document.getElementById('volIn').value);
+      document.getElementById('volOut').textContent = vol.toFixed(1);
+
+      // Acid-Base math (Strong Acid, Strong Base)
+      // Flask: 50mL 0.1M HCl. Burette adds 0.1M NaOH.
+      const vAcid = 50;
+      const mAcid = 0.1;
+      const mBase = 0.1;
+      const vTotal = vAcid + vol;
+
+      const molesAcid = (vAcid * mAcid);
+      const molesBase = (vol * mBase);
+
+      let pH = 7;
+      if (molesAcid > molesBase) {
+        const excessH = (molesAcid - molesBase) / vTotal;
+        pH = -Math.log10(excessH);
+      } else if (molesBase > molesAcid) {
+        const excessOH = (molesBase - molesAcid) / vTotal;
+        const pOH = -Math.log10(excessOH);
+        pH = 14 - pOH;
+      } else {
+        pH = 7; // Equivalence point
+      }
+
+      document.getElementById('phValueOut').textContent = pH.toFixed(2);
+
+      // Color Indicator (Phenolphthalein turns pink at pH 8.2)
+      const flaskLiquid = document.getElementById('flaskLiquid');
+      if (pH < 8.2) {
+        flaskLiquid.style.backgroundColor = 'transparent';
+      } else if (pH >= 8.2 && pH < 9.0) {
+        flaskLiquid.style.backgroundColor = 'rgba(253, 164, 175, 0.5)'; // light pink
+      } else {
+        flaskLiquid.style.backgroundColor = 'rgba(225, 29, 72, 0.8)'; // deep pink/magenta
+      }
+
+      // Fill level
+      flaskLiquid.style.height = `${40 + (vol * 0.4)}%`;
+
+      // Burette drain
+      document.getElementById('buretteLiquid').style.height = `${100 - vol}%`;
+
+      // Animate drops if volume increased
+      if (vol > lastVol) {
+        createDrop();
+      }
+      lastVol = vol;
+
+      // Update Chart
+      updateTitrationChart(vol, pH);
+    }
+
+    function createDrop() {
+      const container = document.getElementById('dropContainer');
+      const drop = document.createElement('div');
+      drop.className = 'drop animate-drop';
+      container.appendChild(drop);
+      setTimeout(() => drop.remove(), 400);
+    }
+
+    function updateTitrationChart(currentVol, currentPH) {
+      // Generate static curve data up to currentVol
+      const vAcid = 50; const mAcid = 0.1; const mBase = 0.1;
+      const labels = [];
+      const data = [];
+      for (let v = 0; v <= currentVol; v += 1) {
+        labels.push(v);
+        let p = 7;
+        let mAc = vAcid * mAcid; let mBa = v * mBase; let vT = vAcid + v;
+        if (mAc > mBa) p = -Math.log10((mAc - mBa) / vT);
+        else if (mBa > mAc) p = 14 - (-Math.log10((mBa - mAc) / vT));
+        data.push(p);
+      }
+
+      // Also add exact current vol
+      if (!labels.includes(currentVol)) {
+        labels.push(currentVol);
+        data.push(currentPH);
+      }
+
+      if (titChart) {
+        titChart.data.labels = labels;
+        titChart.data.datasets[0].data = data;
+        titChart.update();
+      }
+    }
+
+
+    // ==========================================
+    // 5. AI Tutor
     // ==========================================
     const chatLog = document.getElementById("chatLog");
     const chatInput = document.getElementById("chatInput");
@@ -601,7 +1442,7 @@
       const isUser = role === 'user';
       const div = document.createElement('div');
       div.className = `flex ${isUser ? 'justify-end' : 'justify-start'} animate-fade`;
-      
+
       div.innerHTML = `
         <div class="max-w-[85%] flex gap-3 ${isUser ? 'flex-row-reverse' : ''}">
           <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold shadow-sm ${isUser ? 'bg-slate-200 text-slate-600' : 'bg-gradient-to-br from-violet-600 to-indigo-600 text-white'}">
@@ -617,7 +1458,7 @@
     }
 
     function escapeHtml(text) {
-      const map = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'};
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
       return text.replace(/[&<>"']/g, m => map[m]);
     }
 
@@ -629,360 +1470,36 @@
     async function sendChat(e) {
       e.preventDefault();
       const txt = chatInput.value.trim();
-      if(!txt) return;
-      
+      if (!txt) return;
+
       addMsg('user', txt);
       chatInput.value = '';
       chatBtn.disabled = true;
 
-      // Simulated AI Delay
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 800));
 
-      let response = "I can help with that. Could you be more specific regarding the Grade 10-12 syllabus?";
+      let response = "I can help with that. Could you provide more details?";
       const lower = txt.toLowerCase();
 
-      // Simple keyword matching for offline demo
-      if(lower.includes("newton")) {
-        response = "Newton's Second Law of Motion:\n\nFormula: F = ma\n\nIt states that the force (F) acting on an object is equal to the mass (m) of that object times its acceleration (a).\n\nKey Concept: Heavier objects require more force to move at the same acceleration.";
-      } else if(lower.includes("ohm") || lower.includes("circuit")) {
-        response = "Ohm's Law:\n\nFormula: V = IR\n\nThis describes the relationship between Voltage (V), Current (I), and Resistance (R).\n\n• If Voltage increases, Current increases.\n• If Resistance increases, Current decreases.";
-      } else if(lower.includes("stoich") || lower.includes("balanc")) {
-        response = "Stoichiometry involves calculating the quantities of reactants and products in chemical reactions.\n\nTip for balancing equations:\n1. Count atoms on each side.\n2. Adjust coefficients (numbers in front).\n3. Do NOT change subscripts (small numbers).";
+      if (lower.includes("faraday") || lower.includes("induct")) {
+        response = "Faraday's Law of Induction states that a change in magnetic flux through a loop of wire induces an electromotive force (EMF) in the loop. This is the principle behind the AC generators in the simulator!";
+      } else if (lower.includes("titrat") || lower.includes("acid")) {
+        response = "In an Acid-Base Titration, you slowly add a known concentration of base to an acid (or vice-versa) until the indicator changes color. This is called the equivalence point, where moles of acid = moles of base.";
+      } else if (lower.includes("drag") || lower.includes("air resistance")) {
+        response = "Air resistance (drag) opposes the motion of a projectile. Unlike in a vacuum where mass doesn't affect trajectory, with air drag, a heavier object (more mass) is less affected by drag and will travel further than a lighter object of the same size!";
       }
 
       addMsg('ai', response);
       chatBtn.disabled = false;
     }
 
-    // Initial Welcome
+    // Initialize UI
     addMsg('ai', "Hello! I am the Vylex Syllabus Assistant. Ask me about Physics, Chemistry, or Math.");
 
-    // ==========================================
-    // 2. Projectile Module
-    // ==========================================
-    let projChart = null;
-    let projInit = false;
-
-    function initProjectile() {
-      if(projInit) return;
-      projInit = true;
-
-      const ctx = document.getElementById('trajChart');
-      projChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          datasets: [{
-            label: 'Trajectory',
-            data: [],
-            borderColor: '#7c3aed',
-            backgroundColor: 'rgba(124, 58, 237, 0.1)',
-            borderWidth: 2,
-            pointRadius: 0,
-            fill: true,
-            tension: 0.4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { type: 'linear', position: 'bottom', title: {display:true, text:'Distance (m)'}, grid: {color:'#f1f5f9'} },
-            y: { min: 0, title: {display:true, text:'Height (m)'}, grid: {color:'#f1f5f9'} }
-          }
-        }
-      });
-      updateProjectile();
-    }
-
-    function updateProjectile() {
-      const v = parseFloat(document.getElementById('vIn').value);
-      const angDeg = parseFloat(document.getElementById('aIn').value);
-      const g = parseFloat(document.getElementById('gIn').value);
-
-      document.getElementById('vOut').textContent = v;
-      document.getElementById('aOut').textContent = angDeg;
-
-      const angRad = angDeg * Math.PI / 180;
-      const vx = v * Math.cos(angRad);
-      const vy = v * Math.sin(angRad);
-
-      const tFlight = (2 * vy) / g;
-      const hMax = (vy ** 2) / (2 * g);
-      const range = vx * tFlight;
-
-      // Generate Data Points
-      const points = [];
-      const steps = 50;
-      for(let i=0; i<=steps; i++) {
-        const t = (tFlight / steps) * i;
-        const x = vx * t;
-        const y = (vy * t) - (0.5 * g * t * t);
-        if(y >= -0.1) points.push({x, y: Math.max(0, y)});
-      }
-
-      // Update Text Stats
-      document.getElementById('hMax').textContent = hMax.toFixed(2) + " m";
-      document.getElementById('rMax').textContent = range.toFixed(2) + " m";
-      document.getElementById('tFly').textContent = tFlight.toFixed(2) + " s";
-
-      // Update Chart.js
-      if(projChart) {
-        projChart.data.datasets[0].data = points;
-        projChart.update();
-      }
-
-      // Update Custom Canvas
-      drawProjectileCanvas(points);
-    }
-
-    function drawProjectileCanvas(points) {
-      const canvas = document.getElementById('trajCanvas');
-      const ctx = canvas.getContext('2d');
-      
-      // Handle DPI
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.scale(dpr, dpr);
-
-      ctx.clearRect(0, 0, rect.width, rect.height);
-      
-      if(points.length === 0) return;
-
-      const maxX = Math.max(...points.map(p => p.x), 10);
-      const maxY = Math.max(...points.map(p => p.y), 10);
-      
-      const padding = 20;
-      const w = rect.width - (padding*2);
-      const h = rect.height - (padding*2);
-
-      ctx.beginPath();
-      ctx.moveTo(padding, rect.height - padding);
-      
-      points.forEach(p => {
-        const x = padding + (p.x / maxX) * w;
-        const y = (rect.height - padding) - (p.y / maxY) * h;
-        ctx.lineTo(x, y);
-      });
-
-      ctx.strokeStyle = '#7c3aed';
-      ctx.lineWidth = 3;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-
-      // Draw "Ball" at peak
-      const peak = points.reduce((prev, current) => (prev.y > current.y) ? prev : current);
-      const px = padding + (peak.x / maxX) * w;
-      const py = (rect.height - padding) - (peak.y / maxY) * h;
-      
-      ctx.beginPath();
-      ctx.arc(px, py, 6, 0, 2 * Math.PI);
-      ctx.fillStyle = '#fff';
-      ctx.fill();
-      ctx.stroke();
-    }
-
-
-    // ==========================================
-    // 3. Circuit Module
-    // ==========================================
-    let circuitInit = false;
-    let electronPhase = 0;
-
-    function initCircuit() {
-      if(circuitInit) return;
-      circuitInit = true;
-      updateCircuit();
-      requestAnimationFrame(animateCircuit);
-    }
-
-    function updateCircuit() {
-      const V = parseFloat(document.getElementById('cvIn').value);
-      const R = parseFloat(document.getElementById('crIn').value);
-      const I = V / R;
-      const P = V * I;
-
-      // Update Controls Text
-      document.getElementById('cvOut').textContent = V.toFixed(1);
-      document.getElementById('crOut').textContent = R.toFixed(0);
-      
-      // Update Circuit Labels
-      document.getElementById('cvLabel').textContent = V.toFixed(1);
-      document.getElementById('crLabel').textContent = R.toFixed(0);
-
-      // Update Math Board
-      document.getElementById('math-v').textContent = V.toFixed(1);
-      document.getElementById('math-r').textContent = R.toFixed(0);
-      document.getElementById('math-i').textContent = I.toFixed(2);
-      
-      document.getElementById('math-v2').textContent = V.toFixed(1);
-      document.getElementById('math-i2').textContent = I.toFixed(2);
-      document.getElementById('math-p').textContent = P.toFixed(1);
-
-      // Bulb Brightness (Simple CSS Filter)
-      const bulb = document.getElementById('bulb');
-      // Max power ref approx 60W for 100% opacity
-      const intensity = Math.min(1, P / 60) + 0.2; 
-      bulb.style.filter = `grayscale(0%) opacity(${intensity}) drop-shadow(0 0 ${P/2}px rgba(255,223,0,0.8))`;
-    }
-
-    function animateCircuit() {
-      const V = parseFloat(document.getElementById('cvIn').value);
-      const R = parseFloat(document.getElementById('crIn').value);
-      const I = V / R;
-
-      // Speed is proportional to Current
-      // Base speed + (Current * Multiplier)
-      const speed = 0.5 + (I * 1.5);
-      electronPhase += speed;
-
-      const dot = document.getElementById('electron');
-      // Define path around the 320x240 box
-      const w = 320; 
-      const h = 240;
-      const totalDist = (w*2) + (h*2);
-      
-      let p = electronPhase % totalDist;
-      let x = 0, y = 0;
-
-      // Logic to follow rectangle border (CW)
-      // Top edge (Left to Right)
-      if (p < w) { x = p; y = 0; }
-      // Right edge (Top to Bottom)
-      else if (p < w + h) { x = w; y = p - w; }
-      // Bottom edge (Right to Left)
-      else if (p < (w*2) + h) { x = w - (p - (w+h)); y = h; }
-      // Left edge (Bottom to Top)
-      else { x = 0; y = h - (p - ((w*2)+h)); }
-
-      // Adjust for centering in the container
-      dot.style.transform = `translate(${x - 8}px, ${y - 8}px)`; // -8 for half dot size
-
-      requestAnimationFrame(animateCircuit);
-    }
-
-    // ==========================================
-    // 4. Chemistry Module
-    // ==========================================
-    const chems = [
-      { id: 'hcl', name: 'HCl', sub: 'Hydrochloric Acid', color: 'bg-red-50 text-red-700 border-red-200 hover:border-red-400' },
-      { id: 'naoh', name: 'NaOH', sub: 'Sodium Hydroxide', color: 'bg-blue-50 text-blue-700 border-blue-200 hover:border-blue-400' },
-      { id: 'agno3', name: 'AgNO₃', sub: 'Silver Nitrate', color: 'bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-400' },
-      { id: 'nacl', name: 'NaCl', sub: 'Sodium Chloride', color: 'bg-white text-slate-500 border-slate-200 hover:border-slate-400' },
-      { id: 'ui', name: 'Indicator', sub: 'Universal (pH)', color: 'bg-amber-50 text-amber-700 border-amber-200 hover:border-amber-400' },
-    ];
-    let beaker = [];
-    let chemInit = false;
-
-    function initChem() {
-      if(chemInit) return;
-      chemInit = true;
-      const shelf = document.getElementById('chemShelf');
-      
-      chems.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = `p-3 rounded-xl border flex flex-col items-start transition hover:scale-[1.02] active:scale-95 text-left shadow-sm ${c.color}`;
-        btn.onclick = () => addToBeaker(c);
-        btn.innerHTML = `
-          <div class="font-bold text-lg leading-none mb-1">${c.name}</div>
-          <div class="text-[10px] uppercase font-bold opacity-80">${c.sub}</div>
-        `;
-        shelf.appendChild(btn);
-      });
-    }
-
-    function addToBeaker(chem) {
-      if(beaker.length >= 2) return;
-      if(beaker.find(x => x.id === chem.id)) return;
-      
-      beaker.push(chem);
-      updateChemUI();
-    }
-
-    function resetChem() {
-      beaker = [];
-      document.getElementById('chemResultCard').classList.add('hidden');
-      updateChemUI();
-    }
-
-    function updateChemUI() {
-      // Update Labels
-      const labels = document.getElementById('chemLabels');
-      labels.innerHTML = '';
-      beaker.forEach(b => {
-        const tag = document.createElement('div');
-        tag.className = "bg-white/90 backdrop-blur border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm text-xs font-bold text-slate-700 animate-fade";
-        tag.innerText = "+ " + b.name;
-        labels.appendChild(tag);
-      });
-
-      // Update Liquid Height
-      const liquid = document.getElementById('chemLiquid');
-      const mixBtn = document.getElementById('mixBtn');
-      
-      // Reset classes
-      liquid.className = "absolute bottom-0 w-full transition-all duration-1000 ease-in-out";
-      
-      if(beaker.length === 0) {
-        liquid.style.height = '0%';
-        liquid.style.backgroundColor = 'transparent';
-        mixBtn.disabled = true;
-      } else if(beaker.length === 1) {
-        liquid.style.height = '30%';
-        liquid.style.backgroundColor = '#e0f2fe'; // Light blue default
-        mixBtn.disabled = true;
-      } else {
-        liquid.style.height = '60%';
-        liquid.style.backgroundColor = '#bae6fd'; // Darker blue default
-        mixBtn.disabled = false;
-      }
-    }
-
-    function mixChem() {
-      if(beaker.length !== 2) return;
-      const mixBtn = document.getElementById('mixBtn');
-      mixBtn.disabled = true;
-
-      const ids = beaker.map(x => x.id).sort().join('+');
-      const liquid = document.getElementById('chemLiquid');
-      const resCard = document.getElementById('chemResultCard');
-      const resTxt = document.getElementById('chemResult');
-
-      let result = {
-        color: '#cbd5e1', // Grey default
-        text: "No significant reaction observed in this simulated environment."
-      };
-
-      // Reaction Rules
-      if(ids === 'hcl+naoh') {
-        result.color = '#f1f5f9'; // Clear/Water
-        result.text = "NEUTRALIZATION REACTION\nEquation: HCl + NaOH → NaCl + H₂O\nObservation: The solution neutralizes. Exothermic (heat is released).";
-      } else if(ids === 'agno3+nacl') {
-        result.color = '#ffffff'; // White
-        result.text = "PRECIPITATION REACTION\nEquation: AgNO₃ + NaCl → AgCl(s)↓ + NaNO₃\nObservation: A white precipitate (Silver Chloride) forms immediately.";
-        liquid.style.backgroundImage = "radial-gradient(#94a3b8 1px, transparent 1px)";
-        liquid.style.backgroundSize = "4px 4px";
-      } else if(ids === 'hcl+ui') {
-        result.color = '#ef4444'; // Red
-        result.text = "ACIDITY TEST\nObservation: Universal Indicator turns RED, indicating a low pH (Strong Acid).";
-      } else if(ids === 'naoh+ui') {
-        result.color = '#7c3aed'; // Purple
-        result.text = "ALKALINITY TEST\nObservation: Universal Indicator turns PURPLE, indicating a high pH (Strong Base).";
-      }
-
-      // Animate
-      liquid.style.backgroundColor = result.color;
-      
-      resTxt.innerText = result.text;
-      resCard.classList.remove('hidden');
-      resCard.classList.add('animate-fade');
-    }
-
-    // Default View
-    showView('tutor');
+    // Default Startup View
+    showView('electro');
 
   </script>
 </body>
+
 </html>
