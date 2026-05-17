@@ -14,6 +14,30 @@ function updateXpDisplays() {
     if (gradeTxt) gradeTxt.innerText = userProfile.grade;
     const profileGrade = document.getElementById('profile-grade-display');
     if (profileGrade) profileGrade.innerText = `Grade ${userProfile.grade} • ${userProfile.subject}`;
+
+    const profileName = document.getElementById('profile-name-display');
+    if (profileName && userProfile.name) profileName.innerText = userProfile.name;
+
+    const headerAvatar = document.getElementById('header-avatar');
+    if (headerAvatar && userProfile.avatar) headerAvatar.src = userProfile.avatar;
+
+    const profileAvatar = document.getElementById('profile-avatar');
+    if (profileAvatar && userProfile.avatar) profileAvatar.src = userProfile.avatar;
+}
+
+function finishStep1() {
+    const nameInput = document.getElementById('ob-name-input');
+    if (!nameInput.value.trim()) {
+        nameInput.classList.add('border-red-500');
+        return;
+    }
+    userProfile.name = nameInput.value.trim();
+    userProfile.avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${userProfile.name}&backgroundColor=1e293b`;
+    
+    document.getElementById('ob-step-1').classList.add('view-hidden');
+    document.getElementById('ob-step-2').classList.remove('view-hidden');
+    document.getElementById('ob-step-2').classList.add('animate-slide-up');
+    document.getElementById('onboard-progress').style.width = '66%';
 }
 
 function selectGrade(grade, btnElement) {
@@ -26,9 +50,9 @@ function selectGrade(grade, btnElement) {
     btnElement.classList.add('border-brand-500', 'bg-brand-900/20');
 
     setTimeout(() => {
-        document.getElementById('ob-step-1').classList.add('view-hidden');
-        document.getElementById('ob-step-2').classList.remove('view-hidden');
-        document.getElementById('ob-step-2').classList.add('animate-slide-up');
+        document.getElementById('ob-step-2').classList.add('view-hidden');
+        document.getElementById('ob-step-3').classList.remove('view-hidden');
+        document.getElementById('ob-step-3').classList.add('animate-slide-up');
         document.getElementById('onboard-progress').style.width = '100%';
     }, 300);
 }

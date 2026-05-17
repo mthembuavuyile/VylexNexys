@@ -36,44 +36,8 @@
         </div>
     </header>
 
-    <main class="max-w-xl mx-auto pt-20 px-6">
-        <!-- SLIDE 1 -->
-        <div id="slide-1" class="animate-slide-up">
-            <h1 class="font-display text-4xl font-extrabold mb-4 text-white">Velocity vs Speed</h1>
-            <p class="text-slate-400 text-lg mb-6 leading-relaxed">
-                <span class="text-white font-bold">Speed</span> is how fast you are travelling. <span
-                    class="text-brand-400 font-bold">Velocity</span> is speed <b>with a direction</b>.
-            </p>
-            <button onclick="nextSlide(2)"
-                class="w-full mt-8 py-4 bg-brand-600 hover:bg-brand-500 text-white rounded-2xl font-bold text-lg transition">Got
-                it</button>
-        </div>
-
-        <!-- SLIDE 2 -->
-        <div id="slide-2" class="view-hidden animate-slide-up">
-            <h1 class="font-display text-3xl font-extrabold mb-4 text-white">The Formula</h1>
-            <div class="math-block text-center text-xl">v = Δx / Δt</div>
-            <button onclick="nextSlide(3)"
-                class="w-full mt-8 py-4 bg-brand-600 hover:bg-brand-500 text-white rounded-2xl font-bold text-lg transition">Let's
-                practice</button>
-        </div>
-
-        <!-- SLIDE 3 -->
-        <div id="slide-3" class="view-hidden animate-slide-up">
-            <div class="mb-6 inline-block px-3 py-1 rounded bg-amber-500/20 text-amber-500 font-bold text-sm uppercase">
-                Challenge</div>
-            <h1 class="font-display text-2xl font-extrabold mb-4 text-white">
-                A taxi travels 200km North in 2 hours. What is its average velocity?
-            </h1>
-            <div class="flex flex-col gap-3 mt-8">
-                <button onclick="handleAnswer(this, false)"
-                    class="w-full text-left p-4 glass-panel border-2 border-slate-700 rounded-2xl text-slate-300">100
-                    km/h</button>
-                <button onclick="handleAnswer(this, true)" id="correct-btn"
-                    class="w-full text-left p-4 glass-panel border-2 border-slate-700 rounded-2xl text-slate-300">100
-                    km/h North</button>
-            </div>
-        </div>
+    <main class="max-w-xl mx-auto pt-20 px-6" id="lesson-container">
+        <!-- Dynamic slides will be injected here by lesson.js -->
     </main>
 
     <!-- Success Overlay -->
