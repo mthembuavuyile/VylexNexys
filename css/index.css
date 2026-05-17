@@ -1,0 +1,473 @@
+/* =========================================
+   V2 SPECIFIC STYLES
+   ========================================= */
+
+/* Hero Overrides */
+#hero-v2 {
+  position: relative;
+  background: linear-gradient(135deg, #051838 0%, #0a3378 50%, #1152a1 100%);
+  min-height: auto; /* Adjust for flow */
+  padding: 120px 20px 40px;
+  text-align: center;
+  color: white;
+  margin-top: var(--nav-height);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-bg-overlay, .hero-particles {
+  /* Inherit from global.css */
+}
+
+/* Badge Muted */
+.hero-badge-muted {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 30px;
+}
+
+.hero-content-v2 {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  width: 100%;
+}
+
+.hero-content-v2 h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin-bottom: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.hero-accent-orange {
+  color: var(--accent); /* Orange */
+}
+
+.hero-sub-v2 {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+.hero-sub-v2 span {
+  display: block;
+}
+.hero-sub-v2 .sub-caps {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.hero-cta-v2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px; /* Space before mockup */
+}
+
+.btn-primary-large {
+  font-size: 1.1rem;
+  padding: 16px 40px;
+  border-radius: 50px;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(232, 73, 29, 0.4);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary-large:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(232, 73, 29, 0.6);
+  background: #f05a28;
+}
+
+.cta-secondary-link {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.3s;
+}
+.cta-secondary-link:hover {
+  color: white;
+}
+
+/* Trust Strip */
+.trust-strip {
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: center;
+  gap: 40px;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+.trust-item i {
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+/* Product Preview Section */
+.product-preview {
+  padding: 0;
+  background: linear-gradient(180deg, #1152a1 0%, var(--bg-alt) 100%);
+  position: relative;
+  margin-top: -1px; /* seamless from hero if needed, but we have trust strip. Wait, spec says real product preview above fold. */
+}
+
+.mockup-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  transform: translateY(-40px); /* Peek into hero */
+  z-index: 5;
+}
+
+.phone-mockup {
+  background: #1e293b;
+  border-radius: 30px;
+  padding: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  max-width: 320px;
+  border: 2px solid #334155;
+  position: relative;
+}
+
+.phone-screen {
+  background: var(--bg-body);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sim-ui-header {
+  background: var(--primary-dark);
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.sim-ui-xp {
+  background: rgba(255,255,255,0.2);
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.sim-ui-xp i { color: gold; }
+
+.sim-ui-content {
+  padding: 20px;
+  flex: 1;
+}
+.sim-ui-question {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+.sim-ui-option {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.sim-ui-progress {
+  height: 6px;
+  background: #e2e8f0;
+  width: 100%;
+}
+.sim-ui-progress-bar {
+  height: 100%;
+  width: 60%;
+  background: var(--accent);
+}
+
+/* Value Context */
+.value-context {
+  padding: 80px 0;
+  background: var(--bg-alt);
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.value-card {
+  background: white;
+  padding: 30px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+
+.value-card h3 {
+  color: var(--primary-dark);
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.value-card p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+/* How It Works */
+.how-it-works {
+  padding: 80px 0;
+  background: white;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 50px;
+  position: relative;
+}
+
+@media(max-width: 768px) {
+  .steps-grid { grid-template-columns: 1fr; }
+  .trust-grid { 
+    display: grid;
+    grid-template-columns: repeat(2, auto); 
+    justify-content: center;
+    gap: 20px 15px; 
+  }
+  .trust-item {
+    font-size: 0.85rem;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .trust-item i {
+    margin-top: 3px;
+  }
+  .phone-mockup { max-width: 280px; }
+  .phone-screen { height: 480px; }
+}
+
+.step-card {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  background: var(--primary-dark);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 auto 20px;
+}
+
+.step-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.step-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* Subjects Preview */
+.subjects-preview {
+  padding: 80px 0;
+  background: var(--bg-alt);
+}
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+.subject-tile {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.subject-tile:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+}
+.subject-tile i {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+.subject-tile h4 {
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+/* Social Proof */
+.social-proof {
+  padding: 80px 0;
+  background: white;
+  text-align: center;
+}
+.proof-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.quote {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--text-main);
+  margin-bottom: 20px;
+}
+.quote-author {
+  font-weight: bold;
+  color: var(--text-light);
+}
+
+/* Final CTA */
+.final-cta {
+  padding: 100px 0;
+  background: var(--primary-dark);
+  color: white;
+  text-align: center;
+}
+.final-cta h2 {
+  color: white;
+  margin-bottom: 20px;
+}
+.final-cta p {
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 40px;
+}
+
+/* =========================================
+   COMING SOON / BETA BADGES
+   ========================================= */
+.badge-coming-soon,
+.badge-beta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 50px;
+  vertical-align: middle;
+  margin-left: 8px;
+  white-space: nowrap;
+  position: relative;
+  top: -1px;
+}
+
+.badge-coming-soon {
+  background: rgba(232, 73, 29, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(232, 73, 29, 0.25);
+}
+
+.badge-beta {
+  background: rgba(70, 130, 180, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(70, 130, 180, 0.25);
+}
+
+/* Coming Soon overlay for trust strip items */
+.trust-item--coming-soon {
+  opacity: 0.6;
+  position: relative;
+}
+
+/* Coming Soon value card variant */
+.value-card--coming-soon {
+  position: relative;
+  border-style: dashed;
+}
+
+/* Hero trust strip (light bg) coming-soon badge */
+.badge-coming-soon-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 2px 7px;
+  border-radius: 50px;
+  background: rgba(232, 73, 29, 0.08);
+  color: var(--accent);
+  border: 1px solid rgba(232, 73, 29, 0.2);
+  margin-left: 6px;
+}
+
+/* Hero stats (dark bg) coming-soon badge */
+.badge-coming-soon-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 2px 7px;
+  border-radius: 50px;
+  background: rgba(232, 73, 29, 0.15);
+  color: #ff9a76;
+  border: 1px solid rgba(232, 73, 29, 0.3);
+  margin-left: 4px;
+}
