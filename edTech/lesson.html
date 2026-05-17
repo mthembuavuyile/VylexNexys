@@ -4,56 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lesson: Average Velocity</title>
+    <title>Lesson — Vylex Nexys EdTech</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-
-    <script src="js/tailwind-config.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/edtech.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 
-<body class="min-h-screen font-sans overscroll-none overflow-x-hidden pb-24">
+<body style="padding-bottom:6rem;">
 
     <!-- Progress Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/90 backdrop-blur border-b border-slate-800">
-        <div class="px-4 h-14 flex items-center justify-between gap-4">
-            <!-- Back to App Root -->
-            <a href="index.html" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0">
-                <i data-feather="x" class="w-4 h-4 text-slate-400"></i>
+    <header class="fixed z-50"
+        style="top:0;left:0;right:0;background:rgba(10,14,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-subtle);">
+        <div class="flex items-center gap-4 px-4" style="height:56px;">
+            <a href="index.html" class="avatar avatar-sm"
+                style="background:var(--bg-elevated);border:1px solid var(--border-default);">
+                <i class="fa-solid fa-xmark" style="font-size:0.75rem;color:var(--text-muted);"></i>
             </a>
-            <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
-                <div id="progress-bar" class="h-full bg-brand-500 w-1/4 transition-all duration-300"></div>
+            <div class="flex-1 progress-track">
+                <div id="progress-bar" class="progress-fill" style="width:25%;"></div>
             </div>
-            <div class="flex items-center gap-1 font-bold text-sm text-brand-400">
-                <i data-feather="heart" class="w-4 h-4 fill-brand-400"></i>
+            <div class="flex items-center gap-1 font-bold text-sm" style="color:var(--brand-400);">
+                <i class="fa-solid fa-heart"></i>
                 <span>3</span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-xl mx-auto pt-20 px-6" id="lesson-container">
-        <!-- Dynamic slides will be injected here by lesson.js -->
+    <!-- Lesson Content -->
+    <main class="mx-auto px-6" style="max-width:36rem;padding-top:5rem;" id="lesson-container">
+        <!-- Slides injected by lesson.js -->
     </main>
 
     <!-- Success Overlay -->
-    <div id="success-overlay"
-        class="fixed inset-0 z-[100] bg-slate-900/95 backdrop-blur-md flex flex-col items-center justify-center p-6 view-hidden opacity-0 transition-opacity duration-300">
-        <h2 class="font-display text-4xl font-extrabold text-white mb-8 text-center">Correct!</h2>
-        <div
-            class="glass-panel border-amber-500/50 bg-amber-500/10 px-8 py-4 rounded-2xl flex items-center justify-center gap-3 mb-10">
-            <span id="xp-award-text" class="font-display font-extrabold text-3xl text-amber-500">+50 XP</span>
+    <div id="success-overlay" class="fixed inset-0 z-50 view-hidden flex flex-col items-center justify-center p-6"
+        style="background:rgba(10,14,26,0.95);backdrop-filter:blur(12px);opacity:0;transition:opacity 0.3s;">
+        <h2 class="font-display text-4xl font-extrabold mb-8 text-center">Correct!</h2>
+        <div class="glass-card-static flex items-center justify-center gap-3 px-8 py-4 mb-10"
+            style="border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08);">
+            <span id="xp-award-text" class="font-display font-extrabold text-3xl" style="color:var(--warning);">+50
+                XP</span>
         </div>
-        <button onclick="finishLesson()"
-            class="w-full max-w-sm py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg">Continue to
-            Dashboard</button>
+        <button onclick="finishLesson()" class="btn w-full"
+            style="max-width:24rem;background:#fff;color:var(--bg-surface);padding:var(--sp-4);font-size:var(--fs-lg);">
+            Continue to Dashboard
+        </button>
     </div>
 
-    <script src="js/data.js"></script>
+    <script src="js/curriculum.js"></script>
+    <script src="js/storage.js"></script>
     <script src="js/lesson.js"></script>
 </body>
 
