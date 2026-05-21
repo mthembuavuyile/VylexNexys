@@ -1,588 +1,603 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Primary SEO -->
-<title>SACite — Free Citation Generator for Harvard, APA, Chicago & OSCOLA</title>
-<meta name="description" content="Generate accurate citations in Harvard, APA, Chicago, and OSCOLA formats. Fast, simple, and designed for South African students.">
+  <!-- Primary SEO -->
+  <title>SACite — Free Citation Generator for Harvard, APA, Chicago & OSCOLA</title>
+  <meta name="description"
+    content="Generate accurate citations in Harvard, APA, Chicago, and OSCOLA formats. Fast, simple, and designed for South African students.">
 
-<!-- Canonical -->
-<link rel="canonical" href="https://vylexnexys.co.za/tools/sacite">
+  <!-- Canonical -->
+  <link rel="canonical" href="https://vylexnexys.co.za/tools/sacite">
 
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
 
-<!-- Styles -->
-<link rel="stylesheet" href="css/sacite.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/sacite.css">
 </head>
+
 <body>
 
-<header class="header">
-  <div class="header-inner">
-    <div class="header-badge">🇿🇦 Built for South African Students</div>
-    <h1>SA <span>Cite</span></h1>
-    <p>Generate accurate references in Harvard, APA, Chicago, OSCOLA & Vancouver — the styles used at South African universities.</p>
-  </div>
-</header>
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-badge">🇿🇦 Built for South African Students</div>
+      <h1>SA <span>Cite</span></h1>
+      <p>Generate accurate references in Harvard, APA, Chicago, OSCOLA & Vancouver — the styles used at South African
+        universities.</p>
+    </div>
+  </header>
 
-<div class="style-strip">
-  <div class="style-strip-inner" id="styleStrip"></div>
-</div>
-
-<main class="main">
-  <div class="style-info" id="styleInfo"></div>
-
-  <div class="source-tabs" id="sourceTabs"></div>
-
-  <div class="card">
-    <div class="card-title"><span class="dot"></span><span id="formTitle">Book Details</span></div>
-    <div id="formBody"></div>
-    <button class="gen-btn" id="genBtn">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
-      Generate Citation
-    </button>
+  <div class="style-strip">
+    <div class="style-strip-inner" id="styleStrip"></div>
   </div>
 
-  <div class="output-card">
-    <div class="output-header">
-      <div class="output-label"><span class="dot"></span> Generated Reference</div>
-      <button class="copy-btn" id="copyBtn">
-        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-        Copy
+  <main class="main">
+    <div class="style-info" id="styleInfo"></div>
+
+    <div class="source-tabs" id="sourceTabs"></div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot"></span><span id="formTitle">Book Details</span></div>
+      <div id="formBody"></div>
+      <button class="gen-btn" id="genBtn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+        </svg>
+        Generate Citation
       </button>
     </div>
-    <div class="output-body empty" id="outputBody">Your citation will appear here…</div>
-  </div>
 
-  <div class="footer-note">
-    <h3>⚠️ Always verify your citations</h3>
-    <p>South African universities often publish their own adapted referencing guides. <strong>Check your institution's library website</strong> (UNISA, Wits, UCT, UP, etc.) for their specific version — punctuation and formatting can differ slightly. This tool follows widely accepted standard rules but cannot account for every institutional variation.</p>
-  </div>
-</main>
+    <div class="output-card">
+      <div class="output-header">
+        <div class="output-label"><span class="dot"></span> Generated Reference</div>
+        <button class="copy-btn" id="copyBtn">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="9" y="9" width="13" height="13" rx="2" />
+            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+          </svg>
+          Copy
+        </button>
+      </div>
+      <div class="output-body empty" id="outputBody">Your citation will appear here…</div>
+    </div>
 
-<footer>SA Cite — Helping South African students reference correctly.</footer>
+    <div class="footer-note">
+      <h3>⚠️ Always verify your citations</h3>
+      <p>South African universities often publish their own adapted referencing guides. <strong>Check your institution's
+          library website</strong> (UNISA, Wits, UCT, UP, etc.) for their specific version — punctuation and formatting
+        can differ slightly. This tool follows widely accepted standard rules but cannot account for every institutional
+        variation.</p>
+    </div>
+  </main>
 
-<script>
-const STYLES = [
-  {
-    id: 'harvard',
-    name: 'Harvard (Author-Date)',
-    abbr: 'HARVARD',
-    icon: '📚',
-    desc: 'Most widely used across South African universities (UNISA, Wits, UCT, UP). Default for humanities, social sciences and business. If your lecturer hasn\'t specified a style, use this.',
-    popular: true
-  },
-  {
-    id: 'apa',
-    name: 'APA 7th Edition',
-    abbr: 'APA 7',
-    icon: '🧠',
-    desc: 'Used in psychology, education, social work and health sciences. Very similar to Harvard — common in many SA departments.'
-  },
-  {
-    id: 'chicago',
-    name: 'Chicago / Turabian',
-    abbr: 'CHICAGO',
-    icon: '🏛️',
-    desc: 'Used in history, theology and some humanities programs. Uses footnote/endnote citations with a separate bibliography.'
-  },
-  {
-    id: 'oscola',
-    name: 'OSCOLA',
-    abbr: 'OSCOLA',
-    icon: '⚖️',
-    desc: 'Oxford Standard for Citation of Legal Authorities. The standard style for all South African law faculties and legal writing.'
-  },
-  {
-    id: 'vancouver',
-    name: 'Vancouver',
-    abbr: 'VANCOUVER',
-    icon: '🏥',
-    desc: 'Used in health sciences, medicine and nursing programs. Numbers citations in the order they appear in the text.'
-  }
-];
+  <footer>SA Cite — Helping South African students reference correctly.</footer>
 
-const SOURCE_TYPES = {
-  book: {
-    label: '📖 Book',
-    fields: [
-      { id: 'authors', type: 'authors', label: 'Author(s)', full: true },
-      { id: 'title', label: 'Book Title', req: true, full: true },
-      { id: 'year', label: 'Year Published', type: 'number', req: true },
-      { id: 'edition', label: 'Edition (e.g., 3rd)' },
-      { id: 'place', label: 'Place of Publication' },
-      { id: 'publisher', label: 'Publisher', req: true },
-    ]
-  },
-  journal: {
-    label: '📄 Journal Article',
-    fields: [
-      { id: 'authors', type: 'authors', label: 'Author(s)', full: true },
-      { id: 'article-title', label: 'Article Title', req: true, full: true },
-      { id: 'journal-name', label: 'Journal Name', req: true, full: true },
-      { id: 'year', label: 'Year Published', type: 'number', req: true },
-      { id: 'volume', label: 'Volume' },
-      { id: 'issue', label: 'Issue Number' },
-      { id: 'pages', label: 'Pages (e.g., 45–67)' },
-      { id: 'doi', label: 'DOI (if available)', full: true },
-    ]
-  },
-  website: {
-    label: '🌐 Website',
-    fields: [
-      { id: 'authors', type: 'authors', label: 'Author(s) or Organisation', full: true },
-      { id: 'page-title', label: 'Page / Article Title', req: true, full: true },
-      { id: 'site-name', label: 'Website Name', req: true },
-      { id: 'year', label: 'Year Published / Updated', type: 'number' },
-      { id: 'url', label: 'URL', req: true, full: true },
-      { id: 'access-date', label: 'Date Accessed', type: 'date', req: true },
-    ]
-  },
-  chapter: {
-    label: '📑 Book Chapter',
-    fields: [
-      { id: 'authors', type: 'authors', label: 'Chapter Author(s)', full: true },
-      { id: 'chapter-title', label: 'Chapter Title', req: true, full: true },
-      { id: 'editors', type: 'authors', label: 'Book Editor(s)', full: true, isEditor: true },
-      { id: 'book-title', label: 'Book Title', req: true, full: true },
-      { id: 'year', label: 'Year Published', type: 'number', req: true },
-      { id: 'pages', label: 'Chapter Pages (e.g., 45–67)' },
-      { id: 'place', label: 'Place of Publication' },
-      { id: 'publisher', label: 'Publisher', req: true },
-    ]
-  },
-  thesis: {
-    label: '🎓 Thesis / Dissertation',
-    fields: [
-      { id: 'authors', type: 'authors', label: 'Author', full: true },
-      { id: 'title', label: 'Thesis Title', req: true, full: true },
-      { id: 'year', label: 'Year', type: 'number', req: true },
-      { id: 'degree', label: 'Degree (e.g., PhD thesis, MA dissertation)' },
-      { id: 'institution', label: 'University / Institution', req: true },
-      { id: 'place', label: 'City' },
-    ]
-  },
-  legal: {
-    label: '⚖️ Legal Case / Act',
-    fields: [
-      { id: 'legal-type', label: 'Source Type', type: 'select', opts: ['Case', 'Legislation / Act', 'Journal Article (Legal)'], full: false },
-      { id: 'case-name', label: 'Case / Act Name', req: true, full: true },
-      { id: 'year', label: 'Year', type: 'number', req: true },
-      { id: 'report', label: 'Law Report / Volume (e.g., 2 SA 45 (CC))', full: true },
-      { id: 'court', label: 'Court (for cases)' },
-      { id: 'act-no', label: 'Act Number (for legislation)' },
-    ]
-  }
-};
+  <script>
+    const STYLES = [
+      {
+        id: 'harvard',
+        name: 'Harvard (Author-Date)',
+        abbr: 'HARVARD',
+        icon: '📚',
+        desc: 'Most widely used across South African universities (UNISA, Wits, UCT, UP). Default for humanities, social sciences and business. If your lecturer hasn\'t specified a style, use this.',
+        popular: true
+      },
+      {
+        id: 'apa',
+        name: 'APA 7th Edition',
+        abbr: 'APA 7',
+        icon: '🧠',
+        desc: 'Used in psychology, education, social work and health sciences. Very similar to Harvard — common in many SA departments.'
+      },
+      {
+        id: 'chicago',
+        name: 'Chicago / Turabian',
+        abbr: 'CHICAGO',
+        icon: '🏛️',
+        desc: 'Used in history, theology and some humanities programs. Uses footnote/endnote citations with a separate bibliography.'
+      },
+      {
+        id: 'oscola',
+        name: 'OSCOLA',
+        abbr: 'OSCOLA',
+        icon: '⚖️',
+        desc: 'Oxford Standard for Citation of Legal Authorities. The standard style for all South African law faculties and legal writing.'
+      },
+      {
+        id: 'vancouver',
+        name: 'Vancouver',
+        abbr: 'VANCOUVER',
+        icon: '🏥',
+        desc: 'Used in health sciences, medicine and nursing programs. Numbers citations in the order they appear in the text.'
+      }
+    ];
 
-// ─── State ───
-let activeStyle = 'harvard';
-let activeSource = 'book';
-let authorsData = [['', '']];
-let editorsData = [['', '']];
+    const SOURCE_TYPES = {
+      book: {
+        label: '📖 Book',
+        fields: [
+          { id: 'authors', type: 'authors', label: 'Author(s)', full: true },
+          { id: 'title', label: 'Book Title', req: true, full: true },
+          { id: 'year', label: 'Year Published', type: 'number', req: true },
+          { id: 'edition', label: 'Edition (e.g., 3rd)' },
+          { id: 'place', label: 'Place of Publication' },
+          { id: 'publisher', label: 'Publisher', req: true },
+        ]
+      },
+      journal: {
+        label: '📄 Journal Article',
+        fields: [
+          { id: 'authors', type: 'authors', label: 'Author(s)', full: true },
+          { id: 'article-title', label: 'Article Title', req: true, full: true },
+          { id: 'journal-name', label: 'Journal Name', req: true, full: true },
+          { id: 'year', label: 'Year Published', type: 'number', req: true },
+          { id: 'volume', label: 'Volume' },
+          { id: 'issue', label: 'Issue Number' },
+          { id: 'pages', label: 'Pages (e.g., 45–67)' },
+          { id: 'doi', label: 'DOI (if available)', full: true },
+        ]
+      },
+      website: {
+        label: '🌐 Website',
+        fields: [
+          { id: 'authors', type: 'authors', label: 'Author(s) or Organisation', full: true },
+          { id: 'page-title', label: 'Page / Article Title', req: true, full: true },
+          { id: 'site-name', label: 'Website Name', req: true },
+          { id: 'year', label: 'Year Published / Updated', type: 'number' },
+          { id: 'url', label: 'URL', req: true, full: true },
+          { id: 'access-date', label: 'Date Accessed', type: 'date', req: true },
+        ]
+      },
+      chapter: {
+        label: '📑 Book Chapter',
+        fields: [
+          { id: 'authors', type: 'authors', label: 'Chapter Author(s)', full: true },
+          { id: 'chapter-title', label: 'Chapter Title', req: true, full: true },
+          { id: 'editors', type: 'authors', label: 'Book Editor(s)', full: true, isEditor: true },
+          { id: 'book-title', label: 'Book Title', req: true, full: true },
+          { id: 'year', label: 'Year Published', type: 'number', req: true },
+          { id: 'pages', label: 'Chapter Pages (e.g., 45–67)' },
+          { id: 'place', label: 'Place of Publication' },
+          { id: 'publisher', label: 'Publisher', req: true },
+        ]
+      },
+      thesis: {
+        label: '🎓 Thesis / Dissertation',
+        fields: [
+          { id: 'authors', type: 'authors', label: 'Author', full: true },
+          { id: 'title', label: 'Thesis Title', req: true, full: true },
+          { id: 'year', label: 'Year', type: 'number', req: true },
+          { id: 'degree', label: 'Degree (e.g., PhD thesis, MA dissertation)' },
+          { id: 'institution', label: 'University / Institution', req: true },
+          { id: 'place', label: 'City' },
+        ]
+      },
+      legal: {
+        label: '⚖️ Legal Case / Act',
+        fields: [
+          { id: 'legal-type', label: 'Source Type', type: 'select', opts: ['Case', 'Legislation / Act', 'Journal Article (Legal)'], full: false },
+          { id: 'case-name', label: 'Case / Act Name', req: true, full: true },
+          { id: 'year', label: 'Year', type: 'number', req: true },
+          { id: 'report', label: 'Law Report / Volume (e.g., 2 SA 45 (CC))', full: true },
+          { id: 'court', label: 'Court (for cases)' },
+          { id: 'act-no', label: 'Act Number (for legislation)' },
+        ]
+      }
+    };
 
-// ─── Init ───
-function init() {
-  buildStyleStrip();
-  buildSourceTabs();
-  renderStyleInfo();
-  renderForm();
-  document.getElementById('genBtn').addEventListener('click', generate);
-  document.getElementById('copyBtn').addEventListener('click', copyResult);
-}
+    // ─── State ───
+    let activeStyle = 'harvard';
+    let activeSource = 'book';
+    let authorsData = [['', '']];
+    let editorsData = [['', '']];
 
-function buildStyleStrip() {
-  const strip = document.getElementById('styleStrip');
-  strip.innerHTML = STYLES.map(s => `
+    // ─── Init ───
+    function init() {
+      buildStyleStrip();
+      buildSourceTabs();
+      renderStyleInfo();
+      renderForm();
+      document.getElementById('genBtn').addEventListener('click', generate);
+      document.getElementById('copyBtn').addEventListener('click', copyResult);
+    }
+
+    function buildStyleStrip() {
+      const strip = document.getElementById('styleStrip');
+      strip.innerHTML = STYLES.map(s => `
     <button class="style-btn ${s.id === activeStyle ? 'active' : ''}" data-style="${s.id}">
       ${s.icon} ${s.name}
       <span class="style-abbr">${s.abbr}${s.popular ? ' ★' : ''}</span>
     </button>
   `).join('');
-  strip.querySelectorAll('.style-btn').forEach(btn => btn.addEventListener('click', () => {
-    activeStyle = btn.dataset.style;
-    strip.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderStyleInfo();
-    clearOutput();
-  }));
-}
+      strip.querySelectorAll('.style-btn').forEach(btn => btn.addEventListener('click', () => {
+        activeStyle = btn.dataset.style;
+        strip.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderStyleInfo();
+        clearOutput();
+      }));
+    }
 
-function buildSourceTabs() {
-  const tabs = document.getElementById('sourceTabs');
-  tabs.innerHTML = Object.entries(SOURCE_TYPES).map(([id, s]) => `
+    function buildSourceTabs() {
+      const tabs = document.getElementById('sourceTabs');
+      tabs.innerHTML = Object.entries(SOURCE_TYPES).map(([id, s]) => `
     <button class="source-tab ${id === activeSource ? 'active' : ''}" data-src="${id}">${s.label}</button>
   `).join('');
-  tabs.querySelectorAll('.source-tab').forEach(btn => btn.addEventListener('click', () => {
-    activeSource = btn.dataset.src;
-    authorsData = [['', '']];
-    editorsData = [['', '']];
-    tabs.querySelectorAll('.source-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderForm();
-    clearOutput();
-  }));
-}
+      tabs.querySelectorAll('.source-tab').forEach(btn => btn.addEventListener('click', () => {
+        activeSource = btn.dataset.src;
+        authorsData = [['', '']];
+        editorsData = [['', '']];
+        tabs.querySelectorAll('.source-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderForm();
+        clearOutput();
+      }));
+    }
 
-function renderStyleInfo() {
-  const s = STYLES.find(x => x.id === activeStyle);
-  document.getElementById('styleInfo').innerHTML = `
+    function renderStyleInfo() {
+      const s = STYLES.find(x => x.id === activeStyle);
+      document.getElementById('styleInfo').innerHTML = `
     <div class="style-info-icon">${s.icon}</div>
     <div><strong>${s.name}${s.popular ? ' — Most Common in SA' : ''}</strong><p>${s.desc}</p></div>
   `;
-}
+    }
 
-function renderForm() {
-  const src = SOURCE_TYPES[activeSource];
-  document.getElementById('formTitle').textContent = src.label.replace(/[^\w\s]/g, '').trim() + ' Reference';
-  const body = document.getElementById('formBody');
-  let html = '<div class="form-grid">';
+    function renderForm() {
+      const src = SOURCE_TYPES[activeSource];
+      document.getElementById('formTitle').textContent = src.label.replace(/[^\w\s]/g, '').trim() + ' Reference';
+      const body = document.getElementById('formBody');
+      let html = '<div class="form-grid">';
 
-  if (activeSource === 'legal' && activeStyle === 'oscola') {
-    html += `<div class="oscola-note field-full"><strong>OSCOLA Legal Citation:</strong> Enter the case or statute details below. OSCOLA uses a specific format — e.g. <em>Carmichele v Minister of Safety</em> 2001 (4) SA 938 (CC).</div>`;
-  }
+      if (activeSource === 'legal' && activeStyle === 'oscola') {
+        html += `<div class="oscola-note field-full"><strong>OSCOLA Legal Citation:</strong> Enter the case or statute details below. OSCOLA uses a specific format — e.g. <em>Carmichele v Minister of Safety</em> 2001 (4) SA 938 (CC).</div>`;
+      }
 
-  src.fields.forEach(f => {
-    if (f.type === 'authors') {
-      const dataKey = f.isEditor ? 'editorsData' : 'authorsData';
-      const currentData = f.isEditor ? editorsData : authorsData;
-      html += `<div class="field authors-wrap ${f.full ? 'field-full' : ''}">
+      src.fields.forEach(f => {
+        if (f.type === 'authors') {
+          const dataKey = f.isEditor ? 'editorsData' : 'authorsData';
+          const currentData = f.isEditor ? editorsData : authorsData;
+          html += `<div class="field authors-wrap ${f.full ? 'field-full' : ''}">
         <label>${f.label}</label>
         <div id="${f.id}-rows">
           ${currentData.map((a, i) => authorRow(f.id, i, a[0], a[1])).join('')}
         </div>
         <button type="button" class="add-author-btn" data-list="${f.id}">+ Add another</button>
       </div>`;
-    } else if (f.type === 'select') {
-      html += `<div class="field ${f.full ? 'field-full' : ''}">
+        } else if (f.type === 'select') {
+          html += `<div class="field ${f.full ? 'field-full' : ''}">
         <label>${f.label}${f.req ? '<span class="req"> *</span>' : ''}</label>
         <select id="${f.id}"><option value="">Select…</option>${f.opts.map(o => `<option>${o}</option>`).join('')}</select>
       </div>`;
-    } else {
-      html += `<div class="field ${f.full ? 'field-full' : ''}">
+        } else {
+          html += `<div class="field ${f.full ? 'field-full' : ''}">
         <label>${f.label}${f.req ? '<span class="req"> *</span>' : ''}</label>
         <input type="${f.type || 'text'}" id="${f.id}" ${f.type === 'number' ? 'min="1000" max="2030"' : ''} ${f.type === 'date' ? `value="${todayISO()}"` : ''}>
         <span class="err-msg" id="${f.id}-err"></span>
       </div>`;
-    }
-  });
+        }
+      });
 
-  html += '</div>';
-  body.innerHTML = html;
+      html += '</div>';
+      body.innerHTML = html;
 
-  // Author row events
-  body.querySelectorAll('.add-author-btn').forEach(btn => {
-    btn.addEventListener('click', () => addAuthorRow(btn.dataset.list));
-  });
-  body.addEventListener('click', e => {
-    if (e.target.closest('.rm-btn')) {
-      const btn = e.target.closest('.rm-btn');
-      const row = btn.closest('.author-row');
-      const listId = btn.dataset.list;
-      const idx = parseInt(btn.dataset.idx);
-      if (listId === 'editors') {
-        if (editorsData.length > 1) { editorsData.splice(idx, 1); renderForm(); }
-      } else {
-        if (authorsData.length > 1) { authorsData.splice(idx, 1); renderForm(); }
-      }
+      // Author row events
+      body.querySelectorAll('.add-author-btn').forEach(btn => {
+        btn.addEventListener('click', () => addAuthorRow(btn.dataset.list));
+      });
+      body.addEventListener('click', e => {
+        if (e.target.closest('.rm-btn')) {
+          const btn = e.target.closest('.rm-btn');
+          const row = btn.closest('.author-row');
+          const listId = btn.dataset.list;
+          const idx = parseInt(btn.dataset.idx);
+          if (listId === 'editors') {
+            if (editorsData.length > 1) { editorsData.splice(idx, 1); renderForm(); }
+          } else {
+            if (authorsData.length > 1) { authorsData.splice(idx, 1); renderForm(); }
+          }
+        }
+      });
+      body.addEventListener('input', e => {
+        const el = e.target;
+        if (el.classList.contains('a-first') || el.classList.contains('a-last')) {
+          const listId = el.dataset.list;
+          const idx = parseInt(el.dataset.idx);
+          const part = el.classList.contains('a-first') ? 0 : 1;
+          const data = listId === 'editors' ? editorsData : authorsData;
+          if (data[idx]) data[idx][part] = el.value;
+        }
+      });
     }
-  });
-  body.addEventListener('input', e => {
-    const el = e.target;
-    if (el.classList.contains('a-first') || el.classList.contains('a-last')) {
-      const listId = el.dataset.list;
-      const idx = parseInt(el.dataset.idx);
-      const part = el.classList.contains('a-first') ? 0 : 1;
-      const data = listId === 'editors' ? editorsData : authorsData;
-      if (data[idx]) data[idx][part] = el.value;
-    }
-  });
-}
 
-function authorRow(listId, idx, first = '', last = '') {
-  const isEditor = listId === 'editors';
-  const showRm = (isEditor ? editorsData : authorsData).length > 1;
-  return `<div class="author-row">
+    function authorRow(listId, idx, first = '', last = '') {
+      const isEditor = listId === 'editors';
+      const showRm = (isEditor ? editorsData : authorsData).length > 1;
+      return `<div class="author-row">
     <input type="text" class="a-first" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" placeholder="First name / Initials" value="${esc(first)}">
     <input type="text" class="a-last" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" placeholder="Last name / Organisation" value="${esc(last)}">
     ${showRm ? `<button class="rm-btn" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" title="Remove">×</button>` : ''}
   </div>`;
-}
-
-function addAuthorRow(listId) {
-  const isEditor = listId === 'editors';
-  if (isEditor) editorsData.push(['', '']);
-  else authorsData.push(['', '']);
-  renderForm();
-}
-
-function esc(s) { return s.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-function todayISO() { return new Date().toISOString().split('T')[0]; }
-
-// ─── Data Collection ───
-function collectData() {
-  const src = SOURCE_TYPES[activeSource];
-  const data = { authors: [...authorsData], editors: [...editorsData] };
-  const errors = [];
-
-  // Sync live input values
-  document.querySelectorAll('.a-first, .a-last').forEach(el => {
-    const listId = el.dataset.list;
-    const idx = parseInt(el.dataset.idx);
-    const part = el.classList.contains('a-first') ? 0 : 1;
-    const d = listId === 'editors' ? data.editors : data.authors;
-    if (d[idx]) d[idx][part] = el.value.trim();
-  });
-
-  src.fields.forEach(f => {
-    if (f.type === 'authors') return;
-    const el = document.getElementById(f.id);
-    if (!el) return;
-    const val = el.value.trim();
-    data[f.id] = val;
-    if (f.req && !val) {
-      errors.push(f.id);
-      el.classList.add('err');
-      const errEl = document.getElementById(f.id + '-err');
-      if (errEl) errEl.textContent = f.label.replace(' *','') + ' is required.';
-    } else {
-      el.classList.remove('err');
-      const errEl = document.getElementById(f.id + '-err');
-      if (errEl) errEl.textContent = '';
     }
-  });
 
-  return { data, errors };
-}
-
-// ─── Formatting Helpers ───
-function authorList(pairs, style, role) {
-  const valid = pairs.filter(p => p[0] || p[1]);
-  if (!valid.length) return '';
-  const n = valid.length;
-
-  if (style === 'harvard') {
-    const fmt = (p, i) => i === 0
-      ? `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join('') : ''}`
-      : `${p[0] ? p[0].split(' ').map(w => w[0] + '.').join('') + ' ' : ''}${p[1] || ''}`;
-    if (n === 1) return fmt(valid[0], 0);
-    if (n <= 3) return valid.map(fmt).join(', ');
-    return fmt(valid[0], 0) + ' et al.';
-  }
-  if (style === 'apa') {
-    const fmt = (p, i) => i === 0
-      ? `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join(' ') : ''}`
-      : `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join(' ') : ''}`;
-    if (n === 1) return fmt(valid[0], 0);
-    const parts = valid.map(fmt);
-    if (n === 2) return parts[0] + ', & ' + parts[1];
-    if (n <= 20) return parts.slice(0, -1).join(', ') + ', & ' + parts[parts.length - 1];
-    return parts.slice(0, 19).join(', ') + ' … ' + fmt(valid[n-1], 1);
-  }
-  if (style === 'chicago') {
-    const fmt0 = p => `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] || ''}`;
-    const fmtN = p => `${p[0] || ''} ${p[1] || ''}`.trim();
-    if (n === 1) return fmt0(valid[0]);
-    if (n <= 10) return [fmt0(valid[0]), ...valid.slice(1).map(fmtN)].join(', and ');
-    return fmt0(valid[0]) + ', et al.';
-  }
-  if (style === 'oscola') {
-    const fmt = p => `${p[0] || ''} ${p[1] || ''}`.trim();
-    if (n === 1) return fmt(valid[0]);
-    return valid.map(fmt).join(' and ');
-  }
-  if (style === 'vancouver') {
-    const fmt = p => `${p[1] || ''} ${p[0] ? p[0].split(' ').map(w => w[0]).join('') : ''}`.trim();
-    if (n <= 6) return valid.map(fmt).join(', ');
-    return valid.slice(0, 6).map(fmt).join(', ') + ' et al';
-  }
-  return valid.map(p => `${p[0] || ''} ${p[1] || ''}`.trim()).join(', ');
-}
-
-function italics(s) { return s ? `<em>${s}</em>` : ''; }
-
-function fmtDate(iso, style) {
-  if (!iso) return '';
-  const d = new Date(iso + 'T00:00:00');
-  const day = d.getDate();
-  const yr = d.getFullYear();
-  const mon = ['January','February','March','April','May','June','July','August','September','October','November','December'][d.getMonth()];
-  const monAbbr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
-  if (style === 'harvard') return `${day} ${mon} ${yr}`;
-  if (style === 'apa') return `${mon} ${day}, ${yr}`;
-  if (style === 'chicago') return `${mon} ${day}, ${yr}`;
-  return `${day} ${mon} ${yr}`;
-}
-
-function doiLink(doi) {
-  if (!doi) return '';
-  const clean = doi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:/i, '');
-  return `https://doi.org/${clean}`;
-}
-
-// ─── Citation Generators ───
-function generate() {
-  const { data, errors } = collectData();
-  if (errors.length) return;
-  const citation = buildCitation(activeStyle, activeSource, data);
-  showOutput(citation);
-}
-
-function buildCitation(style, src, d) {
-  const A = authorList(d.authors, style, 'author');
-  const E = authorList(d.editors, style, 'editor');
-  const yr = d.year || 'n.d.';
-  const place = d.place || '';
-  const pub = d.publisher || '';
-  const ed = d.edition ? (style === 'apa' ? `(${d.edition} ed.)` : `${d.edition} ed.`) : '';
-  const doi = doiLink(d.doi);
-  const vol = d.volume || '';
-  const iss = d.issue || '';
-  const pp = d.pages || '';
-
-  // BOOK
-  if (src === 'book') {
-    const T = d.title || '';
-    if (style === 'harvard')
-      return `${A}${A ? ' ' : ''}${yr}. ${italics(T)}${ed ? '. ' + ed : ''}. ${place ? place + ': ' : ''}${pub}.`;
-    if (style === 'apa')
-      return `${A}${A ? ' ' : ''}(${yr}). ${italics(T)}${ed ? ' ' + ed : ''}. ${pub}.`;
-    if (style === 'chicago')
-      return `${A}${A ? '. ' : ''}${italics(T)}${ed ? ', ' + ed : ''}. ${place ? place + ': ' : ''}${pub}, ${yr}.`;
-    if (style === 'oscola')
-      return `${A}${A ? ', ' : ''}${italics(T)}${ed ? ' (' + d.edition + ' edn, ' : ' ('}${pub} ${yr})`;
-    if (style === 'vancouver')
-      return `${A}${A ? '. ' : ''}${T}${ed ? '. ' + d.edition + ' ed' : ''}. ${place ? place + ': ' : ''}${pub}; ${yr}.`;
-  }
-
-  // JOURNAL
-  if (src === 'journal') {
-    const AT = d['article-title'] || '';
-    const JN = d['journal-name'] || '';
-    if (style === 'harvard')
-      return `${A}${A ? ' ' : ''}${yr}. ${AT}. ${italics(JN)}${vol ? ', ' + vol : ''}${iss ? '(' + iss + ')' : ''}${pp ? ':' + pp : ''}.${doi ? ' doi:' + doi : ''}`;
-    if (style === 'apa')
-      return `${A}${A ? ' ' : ''}(${yr}). ${AT}. ${italics(JN)}${vol ? ', ' + italics(vol) : ''}${iss ? '(' + iss + ')' : ''}${pp ? ', ' + pp : ''}.${doi ? ' https://doi.org/' + d.doi.replace(/^https?:\/\/doi\.org\//i,'').replace(/^doi:/i,'') : ''}`;
-    if (style === 'chicago')
-      return `${A}${A ? '. ' : ''}"${AT}." ${italics(JN)} ${vol}${iss ? ', no. ' + iss : ''} (${yr})${pp ? ': ' + pp : ''}.${doi ? ' ' + doi + '.' : ''}`;
-    if (style === 'oscola')
-      return `${A}${A ? ', ' : ''}'${AT}' (${yr}) ${vol}${iss ? '(' + iss + ')' : ''} ${italics(JN)} ${pp}`;
-    if (style === 'vancouver')
-      return `${A}${A ? '. ' : ''}${AT}. ${JN}. ${yr}${vol ? ';' + vol : ''}${iss ? '(' + iss + ')' : ''}${pp ? ':' + pp : ''}.${doi ? ' doi:' + doi : ''}`;
-  }
-
-  // WEBSITE
-  if (src === 'website') {
-    const PT = d['page-title'] || '';
-    const SN = d['site-name'] || '';
-    const url = d.url || '';
-    const acc = fmtDate(d['access-date'], style);
-    if (style === 'harvard')
-      return `${A || SN}${A || SN ? ' ' : ''}${yr}. ${PT}. ${italics(SN)}. [Online]. Available: ${url} [${acc}].`;
-    if (style === 'apa')
-      return `${A || SN}${A || SN ? ' ' : ''}(${yr}). ${italics(PT)}. ${SN}. Retrieved ${acc}, from ${url}`;
-    if (style === 'chicago')
-      return `${A || SN}${A || SN ? '. ' : ''}"${PT}." ${italics(SN)}, ${yr}. Accessed ${acc}. ${url}.`;
-    if (style === 'oscola')
-      return `${A || SN}${A || SN ? ', ' : ''}'${PT}' (${italics(SN)}) &lt;${url}&gt; accessed ${acc}`;
-    if (style === 'vancouver')
-      return `${A || SN}${A || SN ? '. ' : ''}${PT}. ${SN} [Internet]. ${yr} [cited ${acc}]. Available from: ${url}`;
-  }
-
-  // CHAPTER
-  if (src === 'chapter') {
-    const CT = d['chapter-title'] || '';
-    const BT = d['book-title'] || '';
-    if (style === 'harvard')
-      return `${A}${A ? ' ' : ''}${yr}. ${CT}. In: ${E ? E + ' (ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}.) ' : ''}${italics(BT)}. ${place ? place + ': ' : ''}${pub}${pp ? ', pp. ' + pp : ''}.`;
-    if (style === 'apa')
-      return `${A}${A ? ' ' : ''}(${yr}). ${CT}. In ${E ? E + ' (Ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}.), ' : ''}${italics(BT)} (pp. ${pp || 'xx–xx'}). ${pub}.`;
-    if (style === 'chicago')
-      return `${A}${A ? '. ' : ''}"${CT}." In ${italics(BT)}, edited by ${E || '[Editor]'}${pp ? ', ' + pp : ''}. ${place ? place + ': ' : ''}${pub}, ${yr}.`;
-    if (style === 'oscola')
-      return `${A}${A ? ', ' : ''}'${CT}' in ${E ? E + ' (ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}) ' : ''}${italics(BT)} (${pub} ${yr})${pp ? ' ' + pp : ''}`;
-    if (style === 'vancouver')
-      return `${A}${A ? '. ' : ''}${CT}. In: ${E ? E + ', editor${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}. ' : ''}${BT}. ${place ? place + ': ' : ''}${pub}; ${yr}${pp ? '. p. ' + pp : ''}.`;
-  }
-
-  // THESIS
-  if (src === 'thesis') {
-    const T = d.title || '';
-    const deg = d.degree || 'Thesis';
-    const inst = d.institution || '';
-    if (style === 'harvard')
-      return `${A}${A ? ' ' : ''}${yr}. ${italics(T)}. ${deg}. ${inst}${place ? ', ' + place : ''}.`;
-    if (style === 'apa')
-      return `${A}${A ? ' ' : ''}(${yr}). ${italics(T)} [${deg}, ${inst}].`;
-    if (style === 'chicago')
-      return `${A}${A ? '. ' : ''}${italics(T)}. ${deg}, ${inst}, ${yr}.`;
-    if (style === 'oscola')
-      return `${A}${A ? ', ' : ''}${italics(T)} (${deg}, ${inst} ${yr})`;
-    if (style === 'vancouver')
-      return `${A}${A ? '. ' : ''}${T} [${deg}]. ${place ? place + ': ' : ''}${inst}; ${yr}.`;
-  }
-
-  // LEGAL / OSCOLA specialised
-  if (src === 'legal') {
-    const cn = d['case-name'] || '';
-    const report = d.report || '';
-    const court = d.court || '';
-    const actNo = d['act-no'] || '';
-    const ltype = d['legal-type'] || 'Case';
-
-    if (style === 'oscola') {
-      if (ltype === 'Legislation / Act')
-        return `${italics(cn)}${actNo ? ' ' + actNo : ''} of ${yr}`;
-      return `${italics(cn)} ${yr} ${report}${court ? ' (' + court + ')' : ''}`;
+    function addAuthorRow(listId) {
+      const isEditor = listId === 'editors';
+      if (isEditor) editorsData.push(['', '']);
+      else authorsData.push(['', '']);
+      renderForm();
     }
-    if (style === 'harvard') {
-      if (ltype === 'Legislation / Act')
-        return `${cn}${actNo ? ' No. ' + actNo : ''} of ${yr}.`;
-      return `${cn} ${yr} ${report}${court ? ' (' + court + ')' : ''}.`;
+
+    function esc(s) { return s.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function todayISO() { return new Date().toISOString().split('T')[0]; }
+
+    // ─── Data Collection ───
+    function collectData() {
+      const src = SOURCE_TYPES[activeSource];
+      const data = { authors: [...authorsData], editors: [...editorsData] };
+      const errors = [];
+
+      // Sync live input values
+      document.querySelectorAll('.a-first, .a-last').forEach(el => {
+        const listId = el.dataset.list;
+        const idx = parseInt(el.dataset.idx);
+        const part = el.classList.contains('a-first') ? 0 : 1;
+        const d = listId === 'editors' ? data.editors : data.authors;
+        if (d[idx]) d[idx][part] = el.value.trim();
+      });
+
+      src.fields.forEach(f => {
+        if (f.type === 'authors') return;
+        const el = document.getElementById(f.id);
+        if (!el) return;
+        const val = el.value.trim();
+        data[f.id] = val;
+        if (f.req && !val) {
+          errors.push(f.id);
+          el.classList.add('err');
+          const errEl = document.getElementById(f.id + '-err');
+          if (errEl) errEl.textContent = f.label.replace(' *', '') + ' is required.';
+        } else {
+          el.classList.remove('err');
+          const errEl = document.getElementById(f.id + '-err');
+          if (errEl) errEl.textContent = '';
+        }
+      });
+
+      return { data, errors };
     }
-    // Default for other styles
-    if (ltype === 'Legislation / Act')
-      return `${cn}${actNo ? ' No. ' + actNo : ''} of ${yr}.`;
-    return `${italics(cn)} ${yr} ${report}${court ? ' (' + court + ')' : ''}.`;
-  }
 
-  return '<span style="color:#c0392b">Unable to generate citation — please check your fields.</span>';
-}
+    // ─── Formatting Helpers ───
+    function authorList(pairs, style, role) {
+      const valid = pairs.filter(p => p[0] || p[1]);
+      if (!valid.length) return '';
+      const n = valid.length;
 
-function showOutput(html) {
-  const out = document.getElementById('outputBody');
-  // Clean up spacing
-  const clean = html.replace(/\s{2,}/g, ' ').replace(/\. \./g, '.').replace(/\s\./g, '.').trim();
-  out.innerHTML = clean;
-  out.classList.remove('empty');
-  document.getElementById('copyBtn').disabled = false;
-}
+      if (style === 'harvard') {
+        const fmt = (p, i) => i === 0
+          ? `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join('') : ''}`
+          : `${p[0] ? p[0].split(' ').map(w => w[0] + '.').join('') + ' ' : ''}${p[1] || ''}`;
+        if (n === 1) return fmt(valid[0], 0);
+        if (n <= 3) return valid.map(fmt).join(', ');
+        return fmt(valid[0], 0) + ' et al.';
+      }
+      if (style === 'apa') {
+        const fmt = (p, i) => i === 0
+          ? `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join(' ') : ''}`
+          : `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join(' ') : ''}`;
+        if (n === 1) return fmt(valid[0], 0);
+        const parts = valid.map(fmt);
+        if (n === 2) return parts[0] + ', & ' + parts[1];
+        if (n <= 20) return parts.slice(0, -1).join(', ') + ', & ' + parts[parts.length - 1];
+        return parts.slice(0, 19).join(', ') + ' … ' + fmt(valid[n - 1], 1);
+      }
+      if (style === 'chicago') {
+        const fmt0 = p => `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] || ''}`;
+        const fmtN = p => `${p[0] || ''} ${p[1] || ''}`.trim();
+        if (n === 1) return fmt0(valid[0]);
+        if (n <= 10) return [fmt0(valid[0]), ...valid.slice(1).map(fmtN)].join(', and ');
+        return fmt0(valid[0]) + ', et al.';
+      }
+      if (style === 'oscola') {
+        const fmt = p => `${p[0] || ''} ${p[1] || ''}`.trim();
+        if (n === 1) return fmt(valid[0]);
+        return valid.map(fmt).join(' and ');
+      }
+      if (style === 'vancouver') {
+        const fmt = p => `${p[1] || ''} ${p[0] ? p[0].split(' ').map(w => w[0]).join('') : ''}`.trim();
+        if (n <= 6) return valid.map(fmt).join(', ');
+        return valid.slice(0, 6).map(fmt).join(', ') + ' et al';
+      }
+      return valid.map(p => `${p[0] || ''} ${p[1] || ''}`.trim()).join(', ');
+    }
 
-function clearOutput() {
-  const out = document.getElementById('outputBody');
-  out.innerHTML = 'Your citation will appear here…';
-  out.classList.add('empty');
-}
+    function italics(s) { return s ? `<em>${s}</em>` : ''; }
 
-function copyResult() {
-  const out = document.getElementById('outputBody');
-  const text = out.innerText;
-  if (!text || out.classList.contains('empty')) return;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.classList.add('copied');
-    btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!`;
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`;
-    }, 2000);
-  });
-}
+    function fmtDate(iso, style) {
+      if (!iso) return '';
+      const d = new Date(iso + 'T00:00:00');
+      const day = d.getDate();
+      const yr = d.getFullYear();
+      const mon = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][d.getMonth()];
+      const monAbbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+      if (style === 'harvard') return `${day} ${mon} ${yr}`;
+      if (style === 'apa') return `${mon} ${day}, ${yr}`;
+      if (style === 'chicago') return `${mon} ${day}, ${yr}`;
+      return `${day} ${mon} ${yr}`;
+    }
 
-init();
-</script>
+    function doiLink(doi) {
+      if (!doi) return '';
+      const clean = doi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:/i, '');
+      return `https://doi.org/${clean}`;
+    }
+
+    // ─── Citation Generators ───
+    function generate() {
+      const { data, errors } = collectData();
+      if (errors.length) return;
+      const citation = buildCitation(activeStyle, activeSource, data);
+      showOutput(citation);
+    }
+
+    function buildCitation(style, src, d) {
+      const A = authorList(d.authors, style, 'author');
+      const E = authorList(d.editors, style, 'editor');
+      const yr = d.year || 'n.d.';
+      const place = d.place || '';
+      const pub = d.publisher || '';
+      const ed = d.edition ? (style === 'apa' ? `(${d.edition} ed.)` : `${d.edition} ed.`) : '';
+      const doi = doiLink(d.doi);
+      const vol = d.volume || '';
+      const iss = d.issue || '';
+      const pp = d.pages || '';
+
+      // BOOK
+      if (src === 'book') {
+        const T = d.title || '';
+        if (style === 'harvard')
+          return `${A}${A ? ' ' : ''}${yr}. ${italics(T)}${ed ? '. ' + ed : ''}. ${place ? place + ': ' : ''}${pub}.`;
+        if (style === 'apa')
+          return `${A}${A ? ' ' : ''}(${yr}). ${italics(T)}${ed ? ' ' + ed : ''}. ${pub}.`;
+        if (style === 'chicago')
+          return `${A}${A ? '. ' : ''}${italics(T)}${ed ? ', ' + ed : ''}. ${place ? place + ': ' : ''}${pub}, ${yr}.`;
+        if (style === 'oscola')
+          return `${A}${A ? ', ' : ''}${italics(T)}${ed ? ' (' + d.edition + ' edn, ' : ' ('}${pub} ${yr})`;
+        if (style === 'vancouver')
+          return `${A}${A ? '. ' : ''}${T}${ed ? '. ' + d.edition + ' ed' : ''}. ${place ? place + ': ' : ''}${pub}; ${yr}.`;
+      }
+
+      // JOURNAL
+      if (src === 'journal') {
+        const AT = d['article-title'] || '';
+        const JN = d['journal-name'] || '';
+        if (style === 'harvard')
+          return `${A}${A ? ' ' : ''}${yr}. ${AT}. ${italics(JN)}${vol ? ', ' + vol : ''}${iss ? '(' + iss + ')' : ''}${pp ? ':' + pp : ''}.${doi ? ' doi:' + doi : ''}`;
+        if (style === 'apa')
+          return `${A}${A ? ' ' : ''}(${yr}). ${AT}. ${italics(JN)}${vol ? ', ' + italics(vol) : ''}${iss ? '(' + iss + ')' : ''}${pp ? ', ' + pp : ''}.${doi ? ' https://doi.org/' + d.doi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:/i, '') : ''}`;
+        if (style === 'chicago')
+          return `${A}${A ? '. ' : ''}"${AT}." ${italics(JN)} ${vol}${iss ? ', no. ' + iss : ''} (${yr})${pp ? ': ' + pp : ''}.${doi ? ' ' + doi + '.' : ''}`;
+        if (style === 'oscola')
+          return `${A}${A ? ', ' : ''}'${AT}' (${yr}) ${vol}${iss ? '(' + iss + ')' : ''} ${italics(JN)} ${pp}`;
+        if (style === 'vancouver')
+          return `${A}${A ? '. ' : ''}${AT}. ${JN}. ${yr}${vol ? ';' + vol : ''}${iss ? '(' + iss + ')' : ''}${pp ? ':' + pp : ''}.${doi ? ' doi:' + doi : ''}`;
+      }
+
+      // WEBSITE
+      if (src === 'website') {
+        const PT = d['page-title'] || '';
+        const SN = d['site-name'] || '';
+        const url = d.url || '';
+        const acc = fmtDate(d['access-date'], style);
+        if (style === 'harvard')
+          return `${A || SN}${A || SN ? ' ' : ''}${yr}. ${PT}. ${italics(SN)}. [Online]. Available: ${url} [${acc}].`;
+        if (style === 'apa')
+          return `${A || SN}${A || SN ? ' ' : ''}(${yr}). ${italics(PT)}. ${SN}. Retrieved ${acc}, from ${url}`;
+        if (style === 'chicago')
+          return `${A || SN}${A || SN ? '. ' : ''}"${PT}." ${italics(SN)}, ${yr}. Accessed ${acc}. ${url}.`;
+        if (style === 'oscola')
+          return `${A || SN}${A || SN ? ', ' : ''}'${PT}' (${italics(SN)}) &lt;${url}&gt; accessed ${acc}`;
+        if (style === 'vancouver')
+          return `${A || SN}${A || SN ? '. ' : ''}${PT}. ${SN} [Internet]. ${yr} [cited ${acc}]. Available from: ${url}`;
+      }
+
+      // CHAPTER
+      if (src === 'chapter') {
+        const CT = d['chapter-title'] || '';
+        const BT = d['book-title'] || '';
+        if (style === 'harvard')
+          return `${A}${A ? ' ' : ''}${yr}. ${CT}. In: ${E ? E + ' (ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}.) ' : ''}${italics(BT)}. ${place ? place + ': ' : ''}${pub}${pp ? ', pp. ' + pp : ''}.`;
+        if (style === 'apa')
+          return `${A}${A ? ' ' : ''}(${yr}). ${CT}. In ${E ? E + ' (Ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}.), ' : ''}${italics(BT)} (pp. ${pp || 'xx–xx'}). ${pub}.`;
+        if (style === 'chicago')
+          return `${A}${A ? '. ' : ''}"${CT}." In ${italics(BT)}, edited by ${E || '[Editor]'}${pp ? ', ' + pp : ''}. ${place ? place + ': ' : ''}${pub}, ${yr}.`;
+        if (style === 'oscola')
+          return `${A}${A ? ', ' : ''}'${CT}' in ${E ? E + ' (ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}) ' : ''}${italics(BT)} (${pub} ${yr})${pp ? ' ' + pp : ''}`;
+        if (style === 'vancouver')
+          return `${A}${A ? '. ' : ''}${CT}. In: ${E ? E + ', editor${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}. ' : ''}${BT}. ${place ? place + ': ' : ''}${pub}; ${yr}${pp ? '. p. ' + pp : ''}.`;
+      }
+
+      // THESIS
+      if (src === 'thesis') {
+        const T = d.title || '';
+        const deg = d.degree || 'Thesis';
+        const inst = d.institution || '';
+        if (style === 'harvard')
+          return `${A}${A ? ' ' : ''}${yr}. ${italics(T)}. ${deg}. ${inst}${place ? ', ' + place : ''}.`;
+        if (style === 'apa')
+          return `${A}${A ? ' ' : ''}(${yr}). ${italics(T)} [${deg}, ${inst}].`;
+        if (style === 'chicago')
+          return `${A}${A ? '. ' : ''}${italics(T)}. ${deg}, ${inst}, ${yr}.`;
+        if (style === 'oscola')
+          return `${A}${A ? ', ' : ''}${italics(T)} (${deg}, ${inst} ${yr})`;
+        if (style === 'vancouver')
+          return `${A}${A ? '. ' : ''}${T} [${deg}]. ${place ? place + ': ' : ''}${inst}; ${yr}.`;
+      }
+
+      // LEGAL / OSCOLA specialised
+      if (src === 'legal') {
+        const cn = d['case-name'] || '';
+        const report = d.report || '';
+        const court = d.court || '';
+        const actNo = d['act-no'] || '';
+        const ltype = d['legal-type'] || 'Case';
+
+        if (style === 'oscola') {
+          if (ltype === 'Legislation / Act')
+            return `${italics(cn)}${actNo ? ' ' + actNo : ''} of ${yr}`;
+          return `${italics(cn)} ${yr} ${report}${court ? ' (' + court + ')' : ''}`;
+        }
+        if (style === 'harvard') {
+          if (ltype === 'Legislation / Act')
+            return `${cn}${actNo ? ' No. ' + actNo : ''} of ${yr}.`;
+          return `${cn} ${yr} ${report}${court ? ' (' + court + ')' : ''}.`;
+        }
+        // Default for other styles
+        if (ltype === 'Legislation / Act')
+          return `${cn}${actNo ? ' No. ' + actNo : ''} of ${yr}.`;
+        return `${italics(cn)} ${yr} ${report}${court ? ' (' + court + ')' : ''}.`;
+      }
+
+      return '<span style="color:#c0392b">Unable to generate citation — please check your fields.</span>';
+    }
+
+    function showOutput(html) {
+      const out = document.getElementById('outputBody');
+      // Clean up spacing
+      const clean = html.replace(/\s{2,}/g, ' ').replace(/\. \./g, '.').replace(/\s\./g, '.').trim();
+      out.innerHTML = clean;
+      out.classList.remove('empty');
+      document.getElementById('copyBtn').disabled = false;
+    }
+
+    function clearOutput() {
+      const out = document.getElementById('outputBody');
+      out.innerHTML = 'Your citation will appear here…';
+      out.classList.add('empty');
+    }
+
+    function copyResult() {
+      const out = document.getElementById('outputBody');
+      const text = out.innerText;
+      if (!text || out.classList.contains('empty')) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.classList.add('copied');
+        btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!`;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`;
+        }, 2000);
+      });
+    }
+
+    init();
+  </script>
 </body>
+
 </html>
