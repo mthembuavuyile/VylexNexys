@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,7 +93,8 @@
             gap: 12px;
         }
 
-        #display, #result {
+        #display,
+        #result {
             grid-column: span 5;
             background-color: var(--display-bg);
             color: var(--text-color);
@@ -179,10 +181,24 @@
 
         /* Animations */
         @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60% { content: '...'; }
-            80%, 100% { content: ''; }
+
+            0%,
+            20% {
+                content: '.';
+            }
+
+            40% {
+                content: '..';
+            }
+
+            60% {
+                content: '...';
+            }
+
+            80%,
+            100% {
+                content: '';
+            }
         }
 
         /* Responsive Design */
@@ -201,24 +217,43 @@
                 font-size: 16px;
             }
 
-            #display, #result {
+            #display,
+            #result {
                 font-size: 20px;
             }
         }
 
         /* Error Animation */
         .shake {
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
         }
 
         @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
+
+            10%,
+            90% {
+                transform: translate3d(-1px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(2px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-4px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(4px, 0, 0);
+            }
         }
     </style>
 </head>
+
 <body>
     <header>
         <nav>
@@ -227,10 +262,9 @@
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="courses.html">Courses</a></li>
-                <li><a href="https://avuyilemthembu.co.za/Artificial-Intelligence.html">AI Tools</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="/edTech/index.html">Courses</a></li>
+                <li><a href="ai-aggregator.html">AI Tools</a></li>
+                <li><a href="/contact.html">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -244,25 +278,25 @@
             <button class="operator">%</button>
             <button class="operator">÷</button>
             <button class="operator">√</button>
-            
+
             <button>7</button>
             <button>8</button>
             <button>9</button>
             <button class="operator">×</button>
             <button class="operator">x²</button>
-            
+
             <button>4</button>
             <button>5</button>
             <button>6</button>
             <button class="operator">-</button>
             <button class="operator">π</button>
-            
+
             <button>1</button>
             <button>2</button>
             <button>3</button>
             <button class="operator">+</button>
             <button class="operator">e</button>
-            
+
             <button>0</button>
             <button>.</button>
             <button class="operator">(</button>
@@ -275,13 +309,11 @@
     <footer>
         <nav>
             <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="courses.html">Courses</a>
-            <a href="calculator.html">Calculator</a>
-            <a href="whitepaper.html">Whitepaper</a>
-            <a href="contact.html">Contact</a>
+            <a href="/edTech/">Courses</a>
+            <a href="/contact.html">Contact</a>
         </nav>
-        <p>Copyright &copy; 2024 <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys</a>. All Rights Reserved.</p>
+        <p>Copyright &copy; 2026 <a href="https://mthembuavuyile.github.io/VylexNexys/">Vylex Nexys</a>. All Rights
+            Reserved.</p>
     </footer>
 
     <script>
@@ -355,11 +387,11 @@
                 setTimeout(() => {
                     try {
                         if (!isValidExpression(expression)) throw new Error('Invalid expression');
-                        
+
                         // Use Function instead of eval for better security
                         const calculateFn = new Function('return ' + expression);
                         const calculatedResult = calculateFn();
-                        
+
                         if (isNaN(calculatedResult) || !isFinite(calculatedResult)) {
                             throw new Error('Invalid result');
                         }
@@ -378,7 +410,7 @@
             // Keyboard support
             document.addEventListener('keydown', (event) => {
                 const key = event.key;
-                
+
                 if (event.key === 'Enter') {
                     calculate();
                     event.preventDefault();
@@ -394,4 +426,5 @@
         });
     </script>
 </body>
+
 </html>
