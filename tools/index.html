@@ -41,6 +41,50 @@
 
         <button id="theme-toggle" aria-label="Toggle light/dark theme">🌗</button>
 
+        <!-- Google-Style App Switcher -->
+        <div class="app-switcher-wrapper">
+          <button class="app-switcher-btn" id="appSwitcherTrigger" aria-label="Nexys App Launcher" aria-expanded="false">
+            <i class="fa-solid fa-grip"></i>
+          </button>
+          <div class="app-switcher-dropdown" id="appSwitcherDropdown" aria-hidden="true">
+            <div class="app-switcher-header">Nexys Workspace</div>
+            <div class="app-switcher-grid">
+              <a href="/edTech/index.html" class="app-switcher-item">
+                <div class="app-icon icon-learn"><i class="fa-solid fa-graduation-cap"></i></div>
+                <span>Nexys Learn</span>
+              </a>
+              <a href="/tools/virtual-lab.html" class="app-switcher-item">
+                <div class="app-icon icon-vylab"><i class="fa-solid fa-flask"></i></div>
+                <span>VyLab</span>
+              </a>
+              <a href="/tools/SaCite.html" class="app-switcher-item">
+                <div class="app-icon icon-cite"><i class="fa-solid fa-quote-right"></i></div>
+                <span>Nexys Cite</span>
+              </a>
+              <a href="/tools/notes/nexysnotes.html" class="app-switcher-item">
+                <div class="app-icon icon-notes"><i class="fa-solid fa-book-open"></i></div>
+                <span>Nexys Notes</span>
+              </a>
+              <a href="/tools/apscalculator.html" class="app-switcher-item">
+                <div class="app-icon icon-calc"><i class="fa-solid fa-calculator"></i></div>
+                <span>Nexys Calc</span>
+              </a>
+              <a href="/tools/schedulegenerator.html" class="app-switcher-item">
+                <div class="app-icon icon-schedule"><i class="fa-solid fa-calendar-check"></i></div>
+                <span>Nexys Schedule</span>
+              </a>
+              <a href="/tools/achieva/index.html" class="app-switcher-item">
+                <div class="app-icon icon-achieva"><i class="fa-solid fa-trophy"></i></div>
+                <span>Nexys Achieva</span>
+              </a>
+              <a href="/tools/lexico/index.html" class="app-switcher-item">
+                <div class="app-icon icon-lexico"><i class="fa-solid fa-language"></i></div>
+                <span>Lexico</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
         <!-- Mobile Nav: Burger Button -->
         <button class="burger" id="burger-btn" aria-label="Open navigation menu" aria-expanded="false">
           <i class="fa-solid fa-bars"></i>
@@ -64,49 +108,44 @@
     <div class="mobile-nav-divider"></div>
 
     <div class="mobile-nav-section">
-      <div class="mobile-nav-section-title">Mathematics & Calculators</div>
-      <a href="calculator.html"><span class="nav-icon">🔢</span> Calculator</a>
-      <a href="apscalculator.html"><span class="nav-icon">🎓</span> APS Score Calculator</a>
-      <a href="Math-Function-Visualizer.html"><span class="nav-icon">📈</span> Math Function Visualizer</a>
-      <a href="math-resolver.html"><span class="nav-icon">🧮</span> Math Resolver</a>
-      <a href="sequence-solver.html"><span class="nav-icon">🔁</span> Sequence Solver</a>
-      <a href="trigonometry-solver.html"><span class="nav-icon">📐</span> Trigonometry Solver</a>
+      <div class="mobile-nav-section-title">Curriculum & Science Simulators</div>
+      <a href="/edTech/"><span class="nav-icon">🚀</span> Nexys Learn</a>
+      <a href="virtual-lab.html"><span class="nav-icon">🧪</span> VyLab Simulators</a>
+      <a href="https://vylab.vylexnexys.co.za" target="_blank" rel="noopener"><span class="nav-icon">🔬</span> VyLab Portal</a>
     </div>
 
     <div class="mobile-nav-divider"></div>
 
     <div class="mobile-nav-section">
-      <div class="mobile-nav-section-title">Language & Text</div>
+      <div class="mobile-nav-section-title">Math & Calculation Engines (Nexys Calc)</div>
+      <a href="apscalculator.html"><span class="nav-icon">🎓</span> Nexys Calc: APS Score</a>
+      <a href="Math-Function-Visualizer.html"><span class="nav-icon">📈</span> Nexys Calc: Function Grapher</a>
+      <a href="math-resolver.html"><span class="nav-icon">🧮</span> Nexys Calc: Equation Solver</a>
+      <a href="sequence-solver.html"><span class="nav-icon">🔁</span> Nexys Calc: Sequence Solver</a>
+      <a href="trigonometry-solver.html"><span class="nav-icon">📐</span> Nexys Calc: Trig Solver</a>
+      <a href="calculator.html"><span class="nav-icon">🔢</span> Nexys Calc: Standard</a>
+    </div>
+
+    <div class="mobile-nav-divider"></div>
+
+    <div class="mobile-nav-section">
+      <div class="mobile-nav-section-title">Writing & Language Studio (Nexys Write)</div>
+      <a href="SaCite.html"><span class="nav-icon">📚</span> Nexys Cite</a>
       <a href="lexico/index.html"><span class="nav-icon">📖</span> Lexico Dictionary</a>
-      <a href="advanced-text-analysis.html"><span class="nav-icon">📝</span> Advanced Text Analysis</a>
-      <a href="writing-assistant.html"><span class="nav-icon">✍️</span> Writing Assistant</a>
+      <a href="text-analysis/"><span class="nav-icon">📝</span> Nexys Write: Text Analyzer</a>
+      <a href="writing-assistant/"><span class="nav-icon">✍️</span> Nexys Write: Assistant</a>
     </div>
 
     <div class="mobile-nav-divider"></div>
 
     <div class="mobile-nav-section">
-      <div class="mobile-nav-section-title">Academic & Research</div>
-      <a href="SaCite.html"><span class="nav-icon">📚</span> SACite</a>
+      <div class="mobile-nav-section-title">Study Planner & Productivity</div>
+      <a href="schedulegenerator.html"><span class="nav-icon">📅</span> Nexys Schedule</a>
+      <a href="notes/"><span class="nav-icon">🗒️</span> Nexys Notes</a>
+      <a href="achieva/index.html"><span class="nav-icon">🎯</span> Nexys Achieva</a>
       <a href="studyHub.html"><span class="nav-icon">🏫</span> Study Hub</a>
-      <a href="schedulegenerator.html"><span class="nav-icon">📅</span> Schedule Generator</a>
-    </div>
-
-    <div class="mobile-nav-divider"></div>
-
-    <div class="mobile-nav-section">
-      <div class="mobile-nav-section-title">Productivity</div>
-      <a href="achieva/index.html"><span class="nav-icon">🎯</span> Achieva</a>
-      <a href="notes/"><span class="nav-icon">🗒️</span> NoteMaster</a>
-    </div>
-
-    <div class="mobile-nav-divider"></div>
-
-    <div class="mobile-nav-section">
-      <div class="mobile-nav-section-title">Technology & AI</div>
-      <a href="ai-aggregator.html"><span class="nav-icon">🤖</span> AI Tools Aggregator</a>
-      <a href="/edTech/"><span class="nav-icon">🔬</span> STEM Courses</a>
-      <a href="virtual-lab.html"><span class="nav-icon">🧪</span> Virtual Lab</a>
-      <a href="https://vylab.vylexnexys.co.za" target="_blank" rel="noopener"><span class="nav-icon">🔬</span> VyLab</a>
+      <a href="advanced-search.html"><span class="nav-icon">🔍</span> Nexys Search</a>
+      <a href="ai-aggregator.html"><span class="nav-icon">🤖</span> Nexys AI Aggregator</a>
     </div>
   </nav>
 
@@ -116,34 +155,58 @@
     <!-- Hero Header matching home page style -->
     <section class="section-padding section-alt" style="padding-bottom: 60px;">
       <div class="container text-center">
-        <span class="section-label">Digital Resources</span>
-        <h2 class="section-title">Explore Our Tools Gallery</h2>
+        <span class="section-label">Workspace Tools</span>
+        <h2 class="section-title">Vylex Nexys App Suite</h2>
         <p class="section-subtitle">
-          Whether you're calculating, visualising, budgeting, or learning — we've got comprehensive tools for every
-          educational need.
+          A unified workspace of STEM simulators, academic calculators, and productivity tools designed for students, educators, and researchers.
         </p>
       </div>
     </section>
 
-    <!-- Mathematics Category -->
+    <!-- 1. Curriculum & Lab Simulators (Nexys Core) -->
     <section class="section-padding">
       <div class="container">
-        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Mathematics &
-          Calculators</h3>
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;"><i class="fa-solid fa-graduation-cap" style="color: var(--primary); margin-right: 10px;"></i> Curriculum & Science Simulators</h3>
         <div class="tools-grid">
-          <a href="calculator.html" class="tool-card reveal">
-            <div class="tool-icon icon-blue"><i class="fa-solid fa-calculator"></i></div>
+          <a href="/edTech/" class="tool-card reveal">
+            <div class="tool-icon icon-blue"><i class="fa-solid fa-rocket"></i></div>
             <div class="tool-content">
-              <h4>Calculator</h4>
-              <p>Basic calculator for everyday calculations.</p>
+              <h4>Nexys Learn</h4>
+              <p>Flagship gamified platform. Grade 8-12 CAPS-aligned Math, Physics, and Tech modules.</p>
             </div>
-            <div class="tool-meta">Math &middot; Utility</div>
+            <div class="tool-meta">STEM &middot; Core App</div>
           </a>
 
-          <a href="apscalculator.html" class="tool-card reveal">
-            <div class="tool-icon icon-accent"><i class="fa-solid fa-graduation-cap"></i></div>
+          <a href="virtual-lab.html" class="tool-card reveal">
+            <div class="tool-icon icon-rose"><i class="fa-solid fa-flask"></i></div>
             <div class="tool-content">
-              <h4>APS Score Calculator</h4>
+              <h4>VyLab Simulators</h4>
+              <p>Simulate acid-base titrations, electrical circuits, and physical experiments in an interactive lab.</p>
+            </div>
+            <div class="tool-meta">Science &middot; Simulation</div>
+          </a>
+
+          <a href="https://vylab.vylexnexys.co.za" target="_blank" rel="noopener" class="tool-card reveal">
+            <div class="tool-icon icon-emerald"><i class="fa-solid fa-server"></i></div>
+            <div class="tool-content">
+              <h4>VyLab Portal</h4>
+              <p>Access the advanced virtual laboratory platform for schools lacking physical equipment.</p>
+            </div>
+            <div class="tool-meta">Science &middot; External</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Math & Calculation Engines (Nexys Calc) -->
+    <section class="section-padding section-alt">
+      <div class="container">
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;"><i class="fa-solid fa-calculator" style="color: var(--primary); margin-right: 10px;"></i> Math & Calculation Engines (Nexys Calc)</h3>
+        <div class="tools-grid">
+          <a href="apscalculator.html" class="tool-card reveal">
+            <div class="tool-icon icon-accent"><i class="fa-solid fa-school"></i></div>
+            <div class="tool-content">
+              <h4>Nexys Calc: APS Score</h4>
               <p>Instantly compute your Admission Point Score for South African universities.</p>
             </div>
             <div class="tool-meta">Math &middot; Admissions</div>
@@ -152,8 +215,8 @@
           <a href="Math-Function-Visualizer.html" class="tool-card reveal">
             <div class="tool-icon icon-emerald"><i class="fa-solid fa-chart-line"></i></div>
             <div class="tool-content">
-              <h4>Math Function Visualizer</h4>
-              <p>Interactive graphing tool for plotting and exploring functions.</p>
+              <h4>Nexys Calc: Function Grapher</h4>
+              <p>Interactive charting tool for plotting functions and exploring calculus graphs.</p>
             </div>
             <div class="tool-meta">Math &middot; Graphing</div>
           </a>
@@ -161,8 +224,8 @@
           <a href="math-resolver.html" class="tool-card reveal">
             <div class="tool-icon icon-purple"><i class="fa-solid fa-square-root-variable"></i></div>
             <div class="tool-content">
-              <h4>Math Resolver</h4>
-              <p>Comprehensive mathematical solution suite.</p>
+              <h4>Nexys Calc: Equation Solver</h4>
+              <p>Step-by-step mathematical problem solver and algebra engine.</p>
             </div>
             <div class="tool-meta">Math &middot; Resolver</div>
           </a>
@@ -170,171 +233,134 @@
           <a href="sequence-solver.html" class="tool-card reveal">
             <div class="tool-icon icon-rose"><i class="fa-solid fa-arrow-down-1-9"></i></div>
             <div class="tool-content">
-              <h4>Sequence Solver</h4>
-              <p>Analyse arithmetic and geometric sequences to reveal patterns.</p>
+              <h4>Nexys Calc: Sequence Solver</h4>
+              <p>Analyze arithmetic and geometric sequences to reveal terms and patterns.</p>
             </div>
-            <div class="tool-meta">Math &middot; Sequence</div>
+            <div class="tool-meta">Math &middot; Patterns</div>
           </a>
 
           <a href="trigonometry-solver.html" class="tool-card reveal">
             <div class="tool-icon icon-steel"><i class="fa-solid fa-shapes"></i></div>
             <div class="tool-content">
-              <h4>Trigonometry Solver</h4>
-              <p>Comprehensive trigonometry helper.</p>
+              <h4>Nexys Calc: Trig Solver</h4>
+              <p>Solve angles, side lengths, identities, and trigonometry theorems.</p>
             </div>
-            <div class="tool-meta">Math &middot; Trig</div>
+            <div class="tool-meta">Math &middot; Trigonometry</div>
+          </a>
+
+          <a href="calculator.html" class="tool-card reveal">
+            <div class="tool-icon icon-blue"><i class="fa-solid fa-calculator"></i></div>
+            <div class="tool-content">
+              <h4>Nexys Calc: Standard</h4>
+              <p>Clean, high-performance general calculator for everyday mathematics.</p>
+            </div>
+            <div class="tool-meta">Math &middot; Basic</div>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Language Category -->
-    <section class="section-padding section-alt">
+    <!-- 3. Writing & Language Studio (Nexys Write) -->
+    <section class="section-padding">
       <div class="container">
-        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Language & Text
-          Tools</h3>
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;"><i class="fa-solid fa-pen-nib" style="color: var(--primary); margin-right: 10px;"></i> Writing & Language Studio (Nexys Write)</h3>
         <div class="tools-grid">
+          <a href="SaCite.html" class="tool-card reveal">
+            <div class="tool-icon icon-purple"><i class="fa-solid fa-quote-right"></i></div>
+            <div class="tool-content">
+              <h4>Nexys Cite</h4>
+              <p>Generate precise Harvard, APA, MLA, and Chicago bibliography citations instantly.</p>
+            </div>
+            <div class="tool-meta">Research &middot; Referencing</div>
+          </a>
+
           <a href="lexico/index.html" class="tool-card reveal">
             <div class="tool-icon icon-dark"><i class="fa-solid fa-book-open"></i></div>
             <div class="tool-content">
               <h4>Lexico Dictionary</h4>
-              <p>Definitions, TTS, etymology, and usage examples to level up vocabulary.</p>
+              <p>Definitions, text-to-speech pronunciation, etymology, and vocabulary building.</p>
             </div>
-            <div class="tool-meta">Text &middot; Reference</div>
+            <div class="tool-meta">Text &middot; Vocabulary</div>
           </a>
 
           <a href="text-analysis/" class="tool-card reveal">
             <div class="tool-icon icon-emerald"><i class="fa-solid fa-spell-check"></i></div>
             <div class="tool-content">
-              <h4>Advanced Text Analysis</h4>
-              <p>Word count, reading time, case converter, markdown viewer, and more.</p>
+              <h4>Nexys Write: Text Analyzer</h4>
+              <p>Word count, reading time estimation, character density, and case conversion.</p>
             </div>
-            <div class="tool-meta">Text &middot; Analysis</div>
+            <div class="tool-meta">Text &middot; Statistics</div>
           </a>
 
           <a href="writing-assistant/" class="tool-card reveal">
-            <div class="tool-icon icon-blue"><i class="fa-solid fa-pen-nib"></i></div>
+            <div class="tool-icon icon-blue"><i class="fa-solid fa-keyboard"></i></div>
             <div class="tool-content">
-              <h4>Writing Assistant</h4>
-              <p>Enhance your writing with smart grammar, structure, and style suggestions.</p>
+              <h4>Nexys Write: Assistant</h4>
+              <p>Improve grammar, verify syntax structure, and optimize reading readability scores.</p>
             </div>
-            <div class="tool-meta">Text &middot; Writing</div>
+            <div class="tool-meta">Text &middot; Improvement</div>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Academic Category -->
-    <section class="section-padding">
+    <!-- 4. Study Planner & Productivity (Nexys Workspace) -->
+    <section class="section-padding section-alt">
       <div class="container">
-        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Academic & Research
-          Tools</h3>
+        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;"><i class="fa-solid fa-calendar-check" style="color: var(--primary); margin-right: 10px;"></i> Study Planner & Productivity (Nexys Workspace)</h3>
         <div class="tools-grid">
-          <a href="SaCite.html" class="tool-card reveal">
-            <div class="tool-icon icon-purple"><i class="fa-solid fa-quote-right"></i></div>
-            <div class="tool-content">
-              <h4>SA Cite</h4>
-              <p>Generate APA, MLA, Harvard, and Chicago citations in seconds.</p>
-            </div>
-            <div class="tool-meta">Research &middot; Referencing</div>
-          </a>
-
-          <a href="studyHub.html" class="tool-card reveal">
-            <div class="tool-icon icon-steel"><i class="fa-solid fa-school"></i></div>
-            <div class="tool-content">
-              <h4>Study Hub</h4>
-              <p>Centralised platform for educational resources and digital libraries.</p>
-            </div>
-            <div class="tool-meta">Academic &middot; Resources</div>
-          </a>
-
-          <a href="advanced-search.html" class="tool-card reveal">
-            <div class="tool-icon icon-dark"><i class="fa-solid fa-magnifying-glass"></i></div>
-            <div class="tool-content">
-              <h4>Advanced Search</h4>
-              <p>Google dorking tool for rapid academic resource finding.</p>
-            </div>
-            <div class="tool-meta">Research &middot; Dorking</div>
-          </a>
-
           <a href="schedulegenerator.html" class="tool-card reveal">
             <div class="tool-icon icon-rose"><i class="fa-solid fa-calendar-days"></i></div>
             <div class="tool-content">
-              <h4>Schedule Generator</h4>
-              <p>Create conflict-free timetables with smart optimisation.</p>
+              <h4>Nexys Schedule</h4>
+              <p>Generate optimized, personalized study and exam revision timetables.</p>
             </div>
-            <div class="tool-meta">Academic &middot; Timetable</div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Productivity Category -->
-    <section class="section-padding section-alt">
-      <div class="container">
-        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Productivity &
-          Management</h3>
-        <div class="tools-grid">
-          <a href="achieva/index.html" class="tool-card reveal">
-            <div class="tool-icon icon-accent"><i class="fa-solid fa-bullseye"></i></div>
-            <div class="tool-content">
-              <h4>Achieva</h4>
-              <p>Track goals, academic records, milestones, and long-term progress.</p>
-            </div>
-            <div class="tool-meta">Productivity &middot; Goals</div>
+            <div class="tool-meta">Planning &middot; Optimization</div>
           </a>
 
           <a href="notes/" class="tool-card reveal">
             <div class="tool-icon icon-emerald"><i class="fa-solid fa-note-sticky"></i></div>
             <div class="tool-content">
-              <h4>Notes Hub</h4>
-              <p>Note-taking apps for efficient planning and studying.</p>
+              <h4>Nexys Notes</h4>
+              <p>A workspace notepad for organizing lecture summaries, flashcards, and notes.</p>
             </div>
             <div class="tool-meta">Productivity &middot; Notes</div>
           </a>
-        </div>
-      </div>
-    </section>
 
-    <!-- Tech & AI Category -->
-    <section class="section-padding">
-      <div class="container">
-        <h3 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 2rem;">Technology & AI</h3>
-        <div class="tools-grid">
+          <a href="achieva/index.html" class="tool-card reveal">
+            <div class="tool-icon icon-accent"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="tool-content">
+              <h4>Nexys Achieva</h4>
+              <p>Track academic marks, goals, learning streaks, and milestones.</p>
+            </div>
+            <div class="tool-meta">Productivity &middot; Tracker</div>
+          </a>
+
+          <a href="studyHub.html" class="tool-card reveal">
+            <div class="tool-icon icon-steel"><i class="fa-solid fa-folder-open"></i></div>
+            <div class="tool-content">
+              <h4>Study Hub</h4>
+              <p>Curated digital library links, CAPS past papers, and student resources portal.</p>
+            </div>
+            <div class="tool-meta">Academic &middot; Portal</div>
+          </a>
+
+          <a href="advanced-search.html" class="tool-card reveal">
+            <div class="tool-icon icon-dark"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <div class="tool-content">
+              <h4>Nexys Search</h4>
+              <p>Advanced Academic Google dorking utility to filter educational resources rapidly.</p>
+            </div>
+            <div class="tool-meta">Research &middot; Search</div>
+          </a>
+
           <a href="ai-aggregator.html" class="tool-card reveal">
             <div class="tool-icon icon-purple"><i class="fa-solid fa-robot"></i></div>
             <div class="tool-content">
-              <h4>AI Tools Aggregator</h4>
-              <p>Curated collection of AI-powered utilities for various applications.</p>
+              <h4>Nexys AI Aggregator</h4>
+              <p>Curated list of AI services, prompts, and assistants for academic research.</p>
             </div>
-            <div class="tool-meta">AI &middot; Tools</div>
-          </a>
-
-          <a href="/edTech/" class="tool-card reveal">
-            <div class="tool-icon icon-blue"><i class="fa-solid fa-microscope"></i></div>
-            <div class="tool-content">
-              <h4>STEM Courses</h4>
-              <p>Interactive, project-based learning in Science, Tech, Engineering, and Math.</p>
-            </div>
-            <div class="tool-meta">STEM &middot; Learning</div>
-          </a>
-
-          <a href="virtual-lab.html" class="tool-card reveal">
-            <div class="tool-icon icon-rose"><i class="fa-solid fa-flask"></i></div>
-            <div class="tool-content">
-              <h4>Virtual Lab</h4>
-              <p>Simulate scientific experiments in a safe, interactive digital environment.</p>
-            </div>
-            <div class="tool-meta">Science &middot; Simulation</div>
-          </a>
-
-          <a href="https://vylab.vylexnexys.co.za" target="_blank" rel="noopener" class="tool-card reveal">
-            <div class="tool-icon icon-emerald"><i class="fa-solid fa-vial-virus"></i></div>
-            <div class="tool-content">
-              <h4>VyLab</h4>
-              <p>Advanced virtual laboratory platform for hands-on scientific exploration and experimentation.</p>
-            </div>
-            <div class="tool-meta">Science &middot; Lab</div>
+            <div class="tool-meta">Research &middot; AI Tools</div>
           </a>
         </div>
       </div>
@@ -423,6 +449,38 @@
         if (mobileNav.classList.contains('open')) closeNav();
       }
     });
+
+    // ── Google-Style App Switcher ──
+    const switcherTrigger = document.getElementById('appSwitcherTrigger');
+    const switcherDropdown = document.getElementById('appSwitcherDropdown');
+
+    if (switcherTrigger && switcherDropdown) {
+      switcherTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isExpanded = switcherTrigger.getAttribute('aria-expanded') === 'true';
+        switcherTrigger.setAttribute('aria-expanded', !isExpanded);
+        switcherDropdown.classList.toggle('active');
+        switcherDropdown.setAttribute('aria-hidden', isExpanded);
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!switcherDropdown.contains(e.target) && e.target !== switcherTrigger && !switcherTrigger.contains(e.target)) {
+          switcherTrigger.setAttribute('aria-expanded', 'false');
+          switcherDropdown.classList.remove('active');
+          switcherDropdown.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Close dropdown on pressing Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          switcherTrigger.setAttribute('aria-expanded', 'false');
+          switcherDropdown.classList.remove('active');
+          switcherDropdown.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
 
     // ── Scroll Reveal via IntersectionObserver (matching home page) ──
     const revealEls = document.querySelectorAll('.reveal');
