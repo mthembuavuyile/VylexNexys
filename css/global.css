@@ -91,18 +91,28 @@ h1, h2, h3, h4 {
 }
 
 .section-label {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   color: var(--accent);
-  background: rgba(232, 73, 29, 0.08);
-  border: 1px solid rgba(232, 73, 29, 0.2);
-  padding: 5px 14px;
-  border-radius: 50px;
   margin-bottom: 14px;
 }
+
+.section-label::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  vertical-align: middle;
+  margin-top: -1px;
+}
+
 
 .section-title {
   font-size: clamp(2rem, 4vw, 2.75rem);
@@ -228,6 +238,15 @@ nav {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  gap: 16px;
+}
+
+/* All right-side nav items grouped — pushes cleanly away from logo */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 
 .logo {
@@ -298,12 +317,11 @@ nav {
 /* =========================================
    APP SWITCHER (Google-style Launcher)
    ========================================= */
+/* App switcher no longer needs its own margin-left: auto — .nav-right handles it */
 .app-switcher-wrapper {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: auto;
-  margin-right: 20px;
   z-index: 1050;
 }
 
@@ -1199,7 +1217,14 @@ footer {
     display: block;
   }
 
+  /* Hide the right-side group on mobile — burger takes over */
+  .nav-right {
+    display: none;
+  }
+
+  /* But .nav-links is position:fixed so it escapes .nav-right and still works */
   .nav-links {
+    display: flex;
     position: fixed;
     top: var(--nav-height);
     right: 0;
@@ -1215,6 +1240,7 @@ footer {
     transform: translateX(100%);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: -8px 0 30px rgba(0, 0, 0, 0.1);
+    z-index: 999;
   }
 
   .nav-links a {

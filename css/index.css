@@ -1,119 +1,162 @@
 /* =========================================
-   V2 SPECIFIC STYLES
+   INDEX PAGE — HUMAN-CRAFTED STYLES
+   No glowing dots. No floating pills. No gradient mesh.
    ========================================= */
 
-/* Hero Overrides */
+/* ===================== HERO ===================== */
 #hero-v2 {
   position: relative;
-  background: linear-gradient(135deg, #051838 0%, #0a3378 50%, #1152a1 100%);
-  min-height: auto; /* Adjust for flow */
-  padding: 120px 20px 40px;
-  text-align: center;
+  /* Flat, intentional background — not a generic gradient sweep */
+  background-color: #0c1a2e;
+  background-image:
+    radial-gradient(ellipse 70% 55% at 30% 60%, rgba(232, 73, 29, 0.055) 0%, transparent 65%);
+  padding: 140px 20px 100px;
+  text-align: left;
   color: white;
   margin-top: var(--nav-height);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
-.hero-bg-overlay, .hero-particles {
-  /* Inherit from global.css */
-}
-
-/* Badge Muted */
-.hero-badge-muted {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 12px;
-  border-radius: 50px;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 30px;
+/* Subtle geometric right-panel — structure, not decoration */
+#hero-v2::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 42%;
+  border-left: 1px solid rgba(255,255,255,0.04);
+  pointer-events: none;
 }
 
 .hero-content-v2 {
   position: relative;
   z-index: 1;
-  max-width: 800px;
+  max-width: 680px;
   width: 100%;
 }
 
+/* ===================== KILL THE STATUS DOT ===================== */
+/* The glowing pulsing dot is the #1 AI tell. Gone. */
+.status-dot,
+.status-dot::after {
+  display: none !important;
+}
+
+/* ===================== REPLACE PILL BADGE ===================== */
+/* Hero badge-muted was a frosted-glass floating pill.
+   Now it is a plain editorial eyebrow — left-border only. */
+.hero-badge-muted {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--accent);
+  margin-bottom: 24px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+  /* Strip every pill style */
+  background: none !important;
+  border-radius: 0 !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  gap: 0;
+}
+
 .hero-content-v2 h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2.6rem, 5.5vw, 4rem);
   margin-bottom: 24px;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
 }
 
 .hero-accent-orange {
-  color: var(--accent); /* Orange */
+  color: var(--accent);
 }
 
 .hero-sub-v2 {
-  font-size: 1.15rem;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.8;
-  margin-bottom: 40px;
+  font-size: 1.08rem;
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.85;
+  margin-bottom: 44px;
+  max-width: 520px;
 }
+
 .hero-sub-v2 span {
   display: block;
 }
+
 .hero-sub-v2 .sub-caps {
-  font-size: 0.9rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 8px;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 14px;
   font-weight: 600;
 }
 
 .hero-cta-v2 {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 20px; /* Space before mockup */
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 0;
 }
 
+/* ===================== CTA BUTTON — GROUNDED ===================== */
+/* No pill. No glow shadow cloud. Solid, intentional rectangle. */
 .btn-primary-large {
-  font-size: 1.1rem;
-  padding: 16px 40px;
-  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.975rem;
+  padding: 14px 32px;
+  border-radius: 6px;
   background: var(--accent);
   color: white;
   font-weight: 700;
-  box-shadow: 0 8px 25px rgba(232, 73, 29, 0.4);
-  transition: all 0.3s ease;
   border: none;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  font-family: var(--font-body);
+  letter-spacing: 0.2px;
+  text-decoration: none;
 }
 
 .btn-primary-large:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(232, 73, 29, 0.6);
-  background: #f05a28;
+  background: #c9381a;
+  transform: translateY(-2px);
 }
 
 .cta-secondary-link {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  transition: color 0.3s;
-}
-.cta-secondary-link:hover {
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
 }
 
-/* Trust Strip */
+.cta-secondary-link:hover {
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* ===================== TRUST STRIP ===================== */
 .trust-strip {
   background: var(--bg-white);
   border-bottom: 1px solid var(--border);
-  padding: 24px 0;
+  padding: 22px 0;
   position: relative;
   z-index: 10;
 }
@@ -129,104 +172,113 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 700;
-  color: var(--text-main);
-  font-size: 0.95rem;
-}
-.trust-item i {
-  color: var(--primary);
-  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 0.88rem;
 }
 
-/* Product Preview Section */
+.trust-item i {
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+/* ===================== PRODUCT PREVIEW ===================== */
 .product-preview {
-  padding: 0;
-  background: linear-gradient(180deg, #1152a1 0%, var(--bg-alt) 100%);
-  position: relative;
-  margin-top: -1px; /* seamless from hero if needed, but we have trust strip. Wait, spec says real product preview above fold. */
+  background: #f4f6fa;
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  /* Remove the gradient bleed from hero — clean break */
 }
 
 .mockup-container {
-  max-width: 800px;
+  max-width: 360px;
   margin: 0 auto;
   position: relative;
-  transform: translateY(-40px); /* Peek into hero */
-  z-index: 5;
+  /* No translateY hack that creates layout jank */
+  transform: none;
 }
 
 .phone-mockup {
-  background: #1e293b;
-  border-radius: 30px;
-  padding: 12px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  background: #1a2540;
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.06),
+    0 16px 48px rgba(0,0,0,0.16);
   margin: 0 auto;
-  max-width: 320px;
-  border: 2px solid #334155;
-  position: relative;
+  max-width: 340px;
+  border: 1.5px solid #2a3a5c;
 }
 
 .phone-screen {
-  background: var(--bg-body);
-  border-radius: 20px;
+  background: #ffffff;
+  border-radius: 6px;
   overflow: hidden;
-  position: relative;
-  height: 550px;
+  height: 520px;
   display: flex;
   flex-direction: column;
 }
 
 .sim-ui-header {
-  background: var(--primary-dark);
+  background: #0d47a1;
   color: white;
-  padding: 15px;
+  padding: 14px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.8rem;
-  font-weight: bold;
+  font-weight: 600;
 }
+
+/* XP badge — flat tag, not a pill */
 .sim-ui-xp {
-  background: rgba(255,255,255,0.2);
-  padding: 4px 8px;
-  border-radius: 12px;
+  background: rgba(255,255,255,0.14);
+  padding: 3px 8px;
+  border-radius: 4px;
   display: flex;
   gap: 5px;
   align-items: center;
+  font-size: 0.75rem;
 }
-.sim-ui-xp i { color: gold; }
+
+.sim-ui-xp i { color: #fbbf24; }
 
 .sim-ui-content {
   padding: 20px;
   flex: 1;
 }
+
 .sim-ui-question {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 18px;
   color: var(--text-main);
 }
+
 .sim-ui-option {
-  background: white;
-  border: 1px solid var(--border);
-  padding: 15px;
-  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  border-radius: 6px;
   margin-bottom: 10px;
-  font-size: 0.9rem;
-  box-shadow: var(--shadow-sm);
+  font-size: 0.875rem;
+  color: var(--text-main);
 }
 
 .sim-ui-progress {
-  height: 6px;
+  height: 3px;
   background: #e2e8f0;
   width: 100%;
 }
+
 .sim-ui-progress-bar {
   height: 100%;
-  width: 60%;
   background: var(--accent);
+  width: 80%;
 }
 
-/* Value Context */
+/* ===================== VALUE CARDS ===================== */
 .value-context {
   padding: 80px 0;
   background: var(--bg-alt);
@@ -235,61 +287,58 @@
 .value-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
+  gap: 24px;
   margin-top: 40px;
 }
 
 .value-card {
   background: white;
-  padding: 30px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  padding: 28px;
+  border-radius: 10px;
   border: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 .value-card h3 {
   color: var(--primary-dark);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-bottom: 10px;
 }
 
 .value-card p {
   color: var(--text-light);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
 }
 
-/* How It Works */
+.value-card--coming-soon {
+  border-style: dashed;
+  opacity: 0.78;
+}
+
+/* ===================== HOW IT WORKS ===================== */
 .how-it-works {
-  padding: 80px 0;
+  padding: 96px 0;
   background: white;
 }
 
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  margin-top: 50px;
+  gap: 40px;
   position: relative;
 }
 
-@media(max-width: 768px) {
-  .steps-grid { grid-template-columns: 1fr; }
-  .trust-grid { 
-    display: grid;
-    grid-template-columns: repeat(2, auto); 
-    justify-content: center;
-    gap: 20px 15px; 
-  }
-  .trust-item {
-    font-size: 0.85rem;
-    gap: 8px;
-    align-items: flex-start;
-  }
-  .trust-item i {
-    margin-top: 3px;
-  }
-  .phone-mockup { max-width: 280px; }
-  .phone-screen { height: 480px; }
+/* A clean horizontal connector — structural, not decorative */
+.steps-grid::before {
+  content: '';
+  position: absolute;
+  top: 23px;
+  left: calc(16.66% + 14px);
+  right: calc(16.66% + 14px);
+  height: 1px;
+  background: var(--border);
+  z-index: 0;
 }
 
 .step-card {
@@ -298,176 +347,221 @@
   z-index: 2;
 }
 
+/* Step number — solid square, not a floating circle bubble */
 .step-number {
-  width: 50px;
-  height: 50px;
+  width: 46px;
+  height: 46px;
   background: var(--primary-dark);
   color: white;
-  border-radius: 50%;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 800;
   margin: 0 auto 20px;
+  font-family: var(--font-head);
 }
 
 .step-card h3 {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   margin-bottom: 10px;
+  color: var(--text-main);
 }
 
 .step-card p {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-light);
+  line-height: 1.65;
 }
 
-/* Subjects Preview */
+/* ===================== SUBJECTS ===================== */
 .subjects-preview {
   padding: 80px 0;
   background: var(--bg-alt);
 }
+
 .subject-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
   margin-top: 40px;
 }
+
 .subject-tile {
   background: white;
-  border-radius: var(--radius);
+  border-radius: 10px;
   padding: 20px;
   text-align: center;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s;
+  transition: transform 0.2s, border-color 0.2s;
 }
+
 .subject-tile:hover {
-  transform: translateY(-5px);
-  border-color: var(--primary);
+  transform: translateY(-4px);
+  border-color: rgba(70, 130, 180, 0.3);
 }
+
 .subject-tile i {
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: var(--primary);
-  margin-bottom: 15px;
+  margin-bottom: 14px;
 }
+
 .subject-tile h4 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-main);
 }
 
-/* Social Proof */
+/* ===================== SOCIAL PROOF ===================== */
 .social-proof {
   padding: 80px 0;
-  background: white;
+  background: var(--bg-alt);
   text-align: center;
 }
+
 .proof-container {
   max-width: 600px;
   margin: 0 auto;
 }
+
 .quote {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-style: italic;
   color: var(--text-main);
   margin-bottom: 20px;
-}
-.quote-author {
-  font-weight: bold;
-  color: var(--text-light);
+  line-height: 1.8;
 }
 
-/* Final CTA */
+.quote-author {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+/* ===================== FINAL CTA ===================== */
+/* Flat dark panel — confident, not gradient-swirled */
 .final-cta {
-  padding: 100px 0;
-  background: var(--primary-dark);
+  padding: 96px 0;
+  background: #0c1a2e;
   color: white;
   text-align: center;
-}
-.final-cta h2 {
-  color: white;
-  margin-bottom: 20px;
-}
-.final-cta p {
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 40px;
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
 
-/* =========================================
-   COMING SOON / BETA BADGES
-   ========================================= */
+.final-cta h2 {
+  color: white;
+  margin-bottom: 16px;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.final-cta p {
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 36px;
+  font-size: 1rem;
+}
+
+/* ===================== BADGES — FLAT TAGS ===================== */
+/* Flat rectangular tags, not rounded capsule pills */
 .badge-coming-soon,
 .badge-beta {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.65rem;
+  display: inline-block;
+  font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  padding: 3px 10px;
-  border-radius: 50px;
+  padding: 2px 7px;
+  border-radius: 3px;
   vertical-align: middle;
   margin-left: 8px;
   white-space: nowrap;
-  position: relative;
-  top: -1px;
 }
 
 .badge-coming-soon {
-  background: rgba(232, 73, 29, 0.1);
+  background: rgba(232, 73, 29, 0.08);
   color: var(--accent);
-  border: 1px solid rgba(232, 73, 29, 0.25);
+  border: 1px solid rgba(232, 73, 29, 0.2);
 }
 
 .badge-beta {
-  background: rgba(70, 130, 180, 0.1);
+  background: rgba(70, 130, 180, 0.08);
   color: var(--primary);
-  border: 1px solid rgba(70, 130, 180, 0.25);
+  border: 1px solid rgba(70, 130, 180, 0.2);
 }
 
-/* Coming Soon overlay for trust strip items */
 .trust-item--coming-soon {
-  opacity: 0.6;
-  position: relative;
+  opacity: 0.55;
 }
 
-/* Coming Soon value card variant */
-.value-card--coming-soon {
-  position: relative;
-  border-style: dashed;
-}
-
-/* Hero trust strip (light bg) coming-soon badge */
-.badge-coming-soon-light {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+.badge-coming-soon-light,
+.badge-coming-soon-dark {
+  display: inline-block;
   font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   padding: 2px 7px;
-  border-radius: 50px;
-  background: rgba(232, 73, 29, 0.08);
-  color: var(--accent);
-  border: 1px solid rgba(232, 73, 29, 0.2);
+  border-radius: 3px;
   margin-left: 6px;
 }
 
-/* Hero stats (dark bg) coming-soon badge */
+.badge-coming-soon-light {
+  background: rgba(232, 73, 29, 0.08);
+  color: var(--accent);
+  border: 1px solid rgba(232, 73, 29, 0.2);
+}
+
 .badge-coming-soon-dark {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.55rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  padding: 2px 7px;
-  border-radius: 50px;
-  background: rgba(232, 73, 29, 0.15);
+  background: rgba(232, 73, 29, 0.12);
   color: #ff9a76;
-  border: 1px solid rgba(232, 73, 29, 0.3);
-  margin-left: 4px;
+  border: 1px solid rgba(232, 73, 29, 0.25);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width: 768px) {
+  #hero-v2 {
+    text-align: center;
+    align-items: center;
+    padding: 120px 20px 80px;
+  }
+
+  #hero-v2::after { display: none; }
+
+  .hero-badge-muted {
+    padding-left: 0;
+    border-left: none;
+    border-bottom: 1px solid rgba(232, 73, 29, 0.35);
+    padding-bottom: 6px;
+  }
+
+  .hero-sub-v2 {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta-v2 {
+    justify-content: center;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .steps-grid::before { display: none; }
+
+  .trust-grid {
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    gap: 18px 12px;
+  }
+
+  .trust-item { font-size: 0.82rem; }
+
+  .phone-mockup { max-width: 300px; }
+  .phone-screen { height: 460px; }
 }

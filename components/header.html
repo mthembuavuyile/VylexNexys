@@ -1,6 +1,7 @@
 <header>
   <div class="container">
     <nav>
+      <!-- Logo — always far left -->
       <a href="/index.html" class="logo">
         <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
           <path d="M20 15L50 65L80 15H95L50 90L5 15H20Z" fill="#e8491d" />
@@ -8,54 +9,57 @@
         </svg>
         Vylex<span>Nexys</span>
       </a>
-      <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/edTech/">Courses</a></li>
-        <li><a href="/tools/index.html">Tools</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-      </ul>
-      
-      <!-- Google-Style App Switcher -->
-      <div class="app-switcher-wrapper">
-        <button class="app-switcher-btn" id="appSwitcherTrigger" aria-label="Nexys App Launcher" aria-expanded="false">
-          <i class="fa-solid fa-grip"></i>
-        </button>
-        <div class="app-switcher-dropdown" id="appSwitcherDropdown" aria-hidden="true">
-          <div class="app-switcher-header">Nexys Workspace</div>
-          <div class="app-switcher-grid">
-            <a href="/edTech/index.html" class="app-switcher-item">
-              <div class="app-icon icon-learn"><i class="fa-solid fa-graduation-cap"></i></div>
-              <span>Nexys Learn</span>
-            </a>
-            <a href="/tools/virtual-lab.html" class="app-switcher-item">
-              <div class="app-icon icon-vylab"><i class="fa-solid fa-flask"></i></div>
-              <span>VyLab</span>
-            </a>
-            <a href="/tools/SaCite.html" class="app-switcher-item">
-              <div class="app-icon icon-cite"><i class="fa-solid fa-quote-right"></i></div>
-              <span>Nexys Cite</span>
-            </a>
-            <a href="/tools/notes/nexysnotes.html" class="app-switcher-item">
-              <div class="app-icon icon-notes"><i class="fa-solid fa-book-open"></i></div>
-              <span>Nexys Notes</span>
-            </a>
-            <a href="/tools/apscalculator.html" class="app-switcher-item">
-              <div class="app-icon icon-calc"><i class="fa-solid fa-calculator"></i></div>
-              <span>Nexys Calc</span>
-            </a>
-            <a href="/tools/schedulegenerator.html" class="app-switcher-item">
-              <div class="app-icon icon-schedule"><i class="fa-solid fa-calendar-check"></i></div>
-              <span>Nexys Schedule</span>
-            </a>
-            <a href="/tools/achieva/index.html" class="app-switcher-item">
-              <div class="app-icon icon-achieva"><i class="fa-solid fa-trophy"></i></div>
-              <span>Nexys Achieva</span>
-            </a>
-            <a href="/tools/lexico/index.html" class="app-switcher-item">
-              <div class="app-icon icon-lexico"><i class="fa-solid fa-language"></i></div>
-              <span>Lexico</span>
-            </a>
+
+      <!-- Right-side group: links + app switcher pushed to far right -->
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/edTech/">Courses</a></li>
+          <li><a href="/tools/index.html">Tools</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+
+        <!-- App Switcher -->
+        <div class="app-switcher-wrapper">
+          <button class="app-switcher-btn" id="appSwitcherTrigger" aria-label="Nexys App Launcher" aria-expanded="false">
+            <i class="fa-solid fa-grip"></i>
+          </button>
+          <div class="app-switcher-dropdown" id="appSwitcherDropdown" aria-hidden="true">
+            <div class="app-switcher-header">Nexys Workspace</div>
+            <div class="app-switcher-grid">
+              <a href="/edTech/index.html" class="app-switcher-item">
+                <div class="app-icon icon-learn"><i class="fa-solid fa-graduation-cap"></i></div>
+                <span>Nexys Learn</span>
+              </a>
+              <a href="/tools/virtual-lab.html" class="app-switcher-item">
+                <div class="app-icon icon-vylab"><i class="fa-solid fa-flask"></i></div>
+                <span>VyLab</span>
+              </a>
+              <a href="/tools/SaCite.html" class="app-switcher-item">
+                <div class="app-icon icon-cite"><i class="fa-solid fa-quote-right"></i></div>
+                <span>Nexys Cite</span>
+              </a>
+              <a href="/tools/notes/nexysnotes.html" class="app-switcher-item">
+                <div class="app-icon icon-notes"><i class="fa-solid fa-book-open"></i></div>
+                <span>Nexys Notes</span>
+              </a>
+              <a href="/tools/apscalculator.html" class="app-switcher-item">
+                <div class="app-icon icon-calc"><i class="fa-solid fa-calculator"></i></div>
+                <span>Nexys Calc</span>
+              </a>
+              <a href="/tools/schedulegenerator.html" class="app-switcher-item">
+                <div class="app-icon icon-schedule"><i class="fa-solid fa-calendar-check"></i></div>
+                <span>Nexys Schedule</span>
+              </a>
+              <a href="/tools/achieva/index.html" class="app-switcher-item">
+                <div class="app-icon icon-achieva"><i class="fa-solid fa-trophy"></i></div>
+                <span>Nexys Achieva</span>
+              </a>
+              <a href="/tools/lexico/index.html" class="app-switcher-item">
+                <div class="app-icon icon-lexico"><i class="fa-solid fa-language"></i></div>
+                <span>Lexico</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
