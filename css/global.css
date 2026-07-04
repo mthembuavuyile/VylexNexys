@@ -1217,9 +1217,9 @@ footer {
     display: block;
   }
 
-  /* Hide the right-side group on mobile — burger takes over */
+  /* Keep the right-side group visible on mobile — it contains the App Switcher */
   .nav-right {
-    display: none;
+    display: flex;
   }
 
   /* But .nav-links is position:fixed so it escapes .nav-right and still works */
