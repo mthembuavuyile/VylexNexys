@@ -1,61 +1,107 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Achieva & Help</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #4682b4;
+            --primary-light: #7cb3eb;
+            --primary-dark: #0d47a1;
+            --secondary: #5f9ea0;
+            --accent: #e8491d;
+            --success: #16a34a;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            
+            --bg-layout: #f4f7fb;
+            --bg-card: #ffffff;
+            --border-color: rgba(13, 71, 161, 0.08);
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --text-muted: #94a3b8;
+            
+            --shadow-sm: 0 4px 12px rgba(13, 71, 161, 0.04);
+            --shadow-md: 0 12px 30px -8px rgba(13, 71, 161, 0.08);
+            --radius: 16px;
+            --font-head: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: var(--font-body);
+            background-color: var(--bg-layout);
+            color: var(--text-main);
             margin: 0;
             padding: 0;
-            background-color: #f4f7f6;
-            color: #333;
+            line-height: 1.7;
         }
 
         .container {
-            width: 80%;
+            width: 90%;
             max-width: 900px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #fff;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            margin: 3rem auto;
+            padding: 2.5rem;
+            background-color: var(--bg-card);
+            box-shadow: var(--shadow-md);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
         }
 
         header {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 1.5rem 0;
+            padding: 2.5rem 0;
             text-align: center;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            margin: -2.5rem -2.5rem 2rem -2.5rem;
+            border-bottom: 4px solid var(--secondary);
         }
 
         header h1 {
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            font-weight: 800;
             margin: 0;
-            font-size: 2.2rem;
+            letter-spacing: -0.03em;
         }
+
         header p {
-            margin-top: 0.5rem;
+            margin: 0.5rem 0 0 0;
             font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         h2 {
-            color: #4f46e5;
-            border-bottom: 2px solid #e0e0e0;
+            font-family: var(--font-head);
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 0.5rem;
-            margin-top: 2rem;
+            margin-top: 2.5rem;
+            font-size: 1.6rem;
+            font-weight: 700;
         }
+
         h2:first-of-type {
             margin-top: 0;
         }
 
         h3 {
-            color: #6a4eae;
-            margin-top: 1.5rem;
+            font-family: var(--font-head);
+            color: var(--primary);
+            margin-top: 2rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         p, ul, li {
@@ -63,49 +109,88 @@
         }
 
         ul {
-            list-style-type: disc;
-            padding-left: 20px;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        ul li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 0.9rem;
         }
 
         code, kbd {
-            background-color: #eef1f3;
-            padding: 0.2em 0.4em;
-            margin: 0 0.2em;
-            border-radius: 3px;
-            font-family: 'Courier New', Courier, monospace;
-            color: #d63384; /* Bootstrap-like color for code */
+            background-color: var(--bg-layout);
+            border: 1px solid var(--border-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--accent);
+            font-weight: 600;
         }
 
         .note {
-            background-color: #e9ecef;
-            border-left: 4px solid #7c3aed;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
+            background-color: rgba(70, 130, 180, 0.04);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem;
+            margin: 2rem 0;
+            border-radius: 8px;
         }
+
         .note strong {
-            color: #4f46e5;
+            color: var(--primary-dark);
         }
 
         .back-link {
-            display: inline-block;
-            margin-top: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
             padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             text-decoration: none;
             border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(13, 71, 161, 0.15);
             transition: all 0.3s ease;
         }
+
         .back-link:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(13, 71, 161, 0.25);
+        }
+
+        dt {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--primary-dark);
+            margin-top: 1.5rem;
+        }
+
+        dd {
+            margin-left: 0;
+            padding-left: 1rem;
+            border-left: 2px solid var(--border-color);
+            margin-bottom: 1.5rem;
         }
 
         @media (max-width: 768px) {
             .container {
                 width: 95%;
                 padding: 1.5rem;
+                margin: 1.5rem auto;
             }
             header h1 {
                 font-size: 1.8rem;
@@ -117,170 +202,113 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>Achieva</h1>
-        <p>Smart Academic Planner – About & Help</p>
-    </header>
-
     <div class="container">
-        <a href="./index.html" class="back-link" title="Go back to the Achieva application">← Back to Achieva App</a>
+        <header>
+            <h1>Achieva</h1>
+            <p>Smart Academic Planner – About & Help</p>
+        </header>
+
+        <a href="./index.html" class="back-link" title="Go back to the Achieva application">
+            <i class="fa-solid fa-arrow-left"></i> Back to Achieva App
+        </a>
 
         <h2>Welcome to Achieva!</h2>
         <p>Achieva is your personal Smart Academic Planner, designed to help you organize your studies, track your progress, and achieve your academic goals. It runs entirely in your web browser, meaning your data stays private and on your device.</p>
 
         <h2>Key Features & How to Use</h2>
 
-        <h3>Dashboard Tab</h3>
+        <h3><i class="fa-solid fa-chart-line"></i> Dashboard Tab</h3>
         <p>The Dashboard provides a quick overview of your academic standing:</p>
         <ul>
-            <li><strong>Current GPA:</strong> Your calculated Grade Point Average (based on a 4.0 scale).</li>
+            <li><strong>Current GPA / Grade Average:</strong> Displays your estimated academic performance. Switch grading systems in Settings.</li>
             <li><strong>Credits Enrolled:</strong> Total credits for all subjects you've added.</li>
             <li><strong>Active Tasks:</strong> Number of tasks that are not yet marked as completed.</li>
             <li><strong>Goals Achieved:</strong> Number of goals you've marked as completed.</li>
-            <li><strong>Recent Subjects:</strong> A quick look at your most recently added subjects and their current marks.</li>
+            <li><strong>Focus Study Timer:</strong> A built-in, offline-friendly Pomodoro focus timer with Study (25m), Short Break (5m), and Long Break (15m) cycles to help you study productively.</li>
             <li><strong>Upcoming Due Dates:</strong> Lists upcoming tasks and assessments to help you stay on top of deadlines.</li>
         </ul>
 
-        <h3>Subjects Tab</h3>
+        <h3><i class="fa-solid fa-graduation-cap"></i> Subjects Tab</h3>
         <p>This is where you manage your courses/modules:</p>
         <ul>
-            <li><strong>Adding a Subject:</strong> Click the <kbd>Add Subject</kbd> button. Fill in details like Subject Name, Code, Credits, Instructor, and Semester. Credits are important for GPA calculation.</li>
-            <li><strong>Managing Assessments:</strong>
-                <ul>
-                    <li>For each subject, you can add assessments by clicking <kbd>Add Assessment</kbd>.</li>
-                    <li>Enter the Assessment Name, Type (e.g., Exam, Quiz, Project), Weight (its percentage contribution to the final subject grade), your Score (optional until graded), Max Possible Score, and Due Date (optional).</li>
-                    <li><strong>Important:</strong> The total weight of assessments for a subject ideally should sum to 100% for the most accurate grade tracking. The app will show you the "Total Weight of Entered Assessments."</li>
-                    <li>You can edit or delete assessments using the ✏️ and 🗑️ icons.</li>
-                </ul>
-            </li>
-            <li><strong>Understanding Subject Grades:</strong> The card for each subject displays:
-                <ul>
-                    <li><strong>Current Mark:</strong> Your calculated mark for the subject so far, out of 100%. This is based on the scores and weights of your graded assessments.</li>
-                    <li><strong>Percentage of assessments graded:</strong> Shows how much of the subject's total weight (from entered assessments) has been graded.</li>
-                    <li><strong>Average on graded:</strong> Your average percentage score on the assessments that have been graded.</li>
-                </ul>
-            </li>
-            <li><strong>Deleting a Subject:</strong> Click the <kbd>Delete Subject</kbd> button on a subject card. This will also remove associated tasks and subject-specific goals.</li>
+            <li><strong>Adding a Subject:</strong> Click the <kbd>Add Subject</kbd> button. Fill in details like Subject Name, Code, Credits, Instructor, and Semester. Credits are important for overall GPA calculation.</li>
+            <li><strong>Managing Assessments:</strong> Click <kbd>Add Assessment</kbd> on a course card. Select type (Assignment, Test, Exam, quiz, etc.), weight, and score (if already graded).</li>
+            <li><strong>What-If Grade Simulator:</strong> Click the <kbd><i class="fa-solid fa-sliders"></i> What-If Simulator</kbd> button on a course card. Drag the sliders for ungraded assessments to simulate potential grades and predict your final subject mark instantly!</li>
+            <li><strong>Deleting a Subject:</strong> Click the <kbd>Delete Subject</kbd> button. This cascades to delete associated assessments, goals, and tasks automatically.</li>
         </ul>
 
-        <h3>Schedule Tab</h3>
+        <h3><i class="fa-solid fa-calendar-days"></i> Schedule Tab</h3>
         <p>Manage your general tasks and view all upcoming deadlines:</p>
         <ul>
             <li><strong>Adding a General Task:</strong> Click <kbd>Add General Task</kbd>. Provide a Title, optionally link it to a Subject, set a Due Date, and assign a Priority (Low, Medium, High).</li>
-            <li><strong>Viewing Due Items:</strong> This tab lists both your general tasks and any assessments from the Subjects tab that have a due date.
-                <ul>
-                    <li>Tasks are shown with an orange left border.</li>
-                    <li>Assessments are shown with a blue left border.</li>
-                </ul>
-            </li>
-            <li><strong>Task Completion:</strong> Mark general tasks as complete using the checkbox. Completed items are visually distinct.</li>
-            <li><strong>Overdue Items:</strong> Items past their due date and not completed are highlighted in red.</li>
-            <li><strong>Deleting a Task:</strong> Click the 🗑️ icon on a task card.</li>
+            <li><strong>Unified Timeline:</strong> View tasks (orange border) and assessments (blue border) sorted by deadline.</li>
+            <li><strong>Task Completion:</strong> Check off completed tasks directly from the checklist. Overdue items are highlighted in red automatically.</li>
         </ul>
 
-        <h3>Goals Tab</h3>
+        <h3><i class="fa-solid fa-bullseye"></i> Goals Tab</h3>
         <p>Set and track your academic ambitions:</p>
         <ul>
-            <li><strong>Adding a Goal:</strong> Click <kbd>Add Goal</kbd>.
-                <ul>
-                    <li>Enter a <strong>Goal Title</strong>.</li>
-                    <li>Select a <strong>Goal Type</strong>:
-                        <ul>
-                            <li><code>Overall GPA Target</code>: Aim for a specific GPA.</li>
-                            <li><code>Subject Grade Target</code>: Aim for a specific percentage in a particular subject. You'll need to select the subject.</li>
-                            <li><code>Task Completion</code>: (Progress for this type is manually tracked for now).</li>
-                            <li><code>Personal Development</code>: (Progress for this type is manually tracked for now).</li>
-                        </ul>
-                    </li>
-                    <li>Set a <strong>Target Value</strong> (e.g., "3.5" for GPA, "85" for Subject Grade %).</li>
-                    <li>Optionally, add a <strong>Target Date</strong>.</li>
-                </ul>
-            </li>
-            <li><strong>Tracking Progress:</strong>
-                <ul>
-                    <li>For GPA and Subject Grade goals, a progress bar shows how close you are to your target based on current data.</li>
-                    <li><strong>"What's Needed" for Subject Grade Goals:</strong> If you set a Subject Grade Target, Achieva will display a message indicating what average score you need on remaining assessments for that subject to reach your target grade. This is a powerful tool for planning!</li>
-                </ul>
-            </li>
-            <li><strong>Completing Goals:</strong> Manually mark goals as complete using the <kbd>Mark Complete</kbd> button.</li>
-            <li><strong>Deleting a Goal:</strong> Click the 🗑️ icon on a goal card.</li>
+            <li><strong>Adding a Goal:</strong> Click <kbd>Add Goal</kbd>. Set targets for overall GPA, subject marks, task completion, or personal development.</li>
+            <li><strong>Target Tracking:</strong> Achieva dynamically calculates remaining average marks needed on pending assessments to achieve your targets, warning you in real-time if a target grade becomes mathematically impossible (>100% needed).</li>
         </ul>
 
-        <h3>Report Tab</h3>
+        <h3><i class="fa-solid fa-file-invoice"></i> Report Tab</h3>
         <p>Generate a summary of your academic performance:</p>
         <ul>
-            <li>The report includes your name (from Settings), generation date, overall GPA, total credits, and a detailed breakdown for each subject (including its assessments and current marks).</li>
-            <li>Click <kbd>Print Report</kbd> to get a printable version of this summary.</li>
+            <li>Compiles your academic transcripts. Includes overall performance averages and comprehensive individual subject assessment tables.</li>
+            <li>Click <kbd>Print Report</kbd> to compile a clean, printer-friendly page configuration.</li>
         </ul>
 
-        <h3>Analytics Tab</h3>
-        <p>This section is planned for future enhancements.</p>
+        <h3><i class="fa-solid fa-chart-pie"></i> Analytics Tab</h3>
+        <p>Gain visual insight into your studies with live interactive Chart.js charts:</p>
         <ul>
-            <li>Currently, it shows placeholders for "Grade Distribution" and "Performance Trends."</li>
-            <li>Full functionality will require integrating a charting library and having sufficient data.</li>
+            <li><strong>Subject Performance Profile:</strong> Compare your current subject marks against target grades.</li>
+            <li><strong>Performance Trends:</strong> Observe your average scores progression across semesters.</li>
+            <li><strong>Program Credits Progress:</strong> Visualize credits enrolled/completed relative to your target program credits.</li>
         </ul>
 
-        <h3>Settings (⚙️ Gear Icon)</h3>
-        <p>Customize Achieva to your preferences:</p>
+        <h3><i class="fa-solid fa-gear"></i> Settings & Backups</h3>
+        <p>Customize Achieva and prevent data loss:</p>
         <ul>
-            <li><strong>Your Name (for Reports):</strong> Set the name that will appear on generated reports.</li>
-            <li><strong>Target Total Credits for Program:</strong> Enter the total credits required for your academic program. This is for your reference.</li>
-            <li>Changes are saved when you click <kbd>Save Settings</kbd>.</li>
+            <li><strong>Your Name:</strong> Set the name that will appear on generated academic reports.</li>
+            <li><strong>Target Total Credits:</strong> Enter total credits needed to complete your degree or program.</li>
+            <li><strong>Grading Scale:</strong> Choose between **US GPA (0.0 - 4.0)**, **South African NSC/CAPS Levels (L1 - L7)**, or **Percentages Only (0% - 100%)**.</li>
+            <li><strong>Data Backups:</strong> Click **Export JSON Data** to download your profile as a backup. Use **Import JSON Data** to restore your data on any device or browser.</li>
         </ul>
-
-        <h3>Theme Toggle (🌓/☀️ Icon)</h3>
-        <p>Easily switch between light and dark visual themes for comfortable viewing.</p>
-
 
         <h2>Data Management</h2>
         <div class="note">
             <p><strong>Important:</strong> Achieva stores all your data directly in your web browser's <strong>Local Storage</strong> (under the key <code>academiaTrackData_v2</code>). This means:</p>
             <ul>
-                <li><strong>Your data is private and local:</strong> It is not sent to any server and remains on the device and browser you used to enter it.</li>
-                <li><strong>No cloud sync:</strong> Data entered in one browser (e.g., Chrome on your laptop) will not automatically appear in another browser or on another device (e.g., Safari on your phone).</li>
-                <li><strong>Risk of data loss:</strong> If you clear your browser's cache, cookies, site data, or specifically its Local Storage, <strong>your Achieva data will be permanently deleted.</strong> Be cautious when clearing browser data.</li>
-                <li>Consider manually backing up important information if needed, for example, by regularly printing reports.</li>
+                <li><strong>Your data is private and local:</strong> It is not sent to any cloud server and remains on the device and browser you used.</li>
+                <li><strong>No cloud sync:</strong> Data entered on one device won't automatically sync to another. Use the JSON backup tools to manually transfer profiles between devices.</li>
+                <li><strong>Risk of data loss:</strong> Clearing your browser cache or site data will delete your planner information. **Create regular JSON backups using the Settings panel to safeguard your records!**</li>
             </ul>
         </div>
 
-        <h2>Tips for Best Results</h2>
-        <ul>
-            <li><strong>Keep Information Updated:</strong> Regularly add new subjects, assessments, and update scores as you receive them for the most accurate tracking.</li>
-            <li><strong>Accurate Assessment Weights:</strong> Ensure the weights for assessments within a subject correctly reflect their contribution to the final grade. For full accuracy, weights for all assessments in a subject should ideally sum to 100%.</li>
-            <li><strong>Use the "What's Needed" Feature:</strong> For subject grade goals, pay attention to the "what's needed" messages to understand the performance required in future assessments.</li>
-            <li><strong>Set Realistic Goals:</strong> Use the Goals tab to set achievable targets and monitor your progress towards them.</li>
-        </ul>
-
         <h2>Frequently Asked Questions (FAQ)</h2>
         <dl>
-            <dt><strong>Why is my GPA / Subject Grade calculated this way?</strong></dt>
+            <dt>Why is my GPA / Subject Grade calculated this way?</dt>
             <dd>
-                <p>GPA is calculated based on a standard 4.0 scale, converting your average percentage in graded portions of subjects (weighted by credits) to GPA points. Subject grades are based on the sum of (your score / max score) * weight for each graded assessment.</p>
+                GPA is calculated by assigning standard scale points to the average percentage of graded portions of subjects, weighted by credits. When using CAPS level settings, grades map to South African Level descriptors (e.g. Level 7 is 80-100%).
             </dd>
 
-            <dt><strong>What happens if I clear my browser's cache/data?</strong></dt>
+            <dt>How does the What-If Simulator affect my real data?</dt>
             <dd>
-                <p>As mentioned in "Data Management," clearing your browser's site data or Local Storage will likely delete all your Achieva data. Please be careful.</p>
+                It doesn't! The What-If Simulator only updates estimated grades in a sandbox state inside your browser. Your real grades are never overwritten by simulator settings.
             </dd>
 
-            <dt><strong>Can I use Achieva on multiple devices or browsers and sync my data?</strong></dt>
+            <dt>How does the Pomodoro focus alarm work offline?</dt>
             <dd>
-                <p>No, Achieva currently stores data locally in the browser you use. There is no automatic syncing feature across devices or browsers.</p>
-            </dd>
-
-            <dt><strong>The Analytics tab is empty or shows placeholders. When will it work?</strong></dt>
-            <dd>
-                <p>The Analytics tab is a feature planned for future development. It currently serves as a placeholder for visual charts and trends which require more data and a charting library integration.</p>
-            </dd>
-            <dt><strong>How is the "Current GPA" on the dashboard calculated if not all my subjects are fully graded?</strong></dt>
-            <dd>
-                <p>The "Current GPA" considers the subjects you've added and their credits. For each subject, it uses the <em>average percentage achieved on the parts of the subject that have already been graded</em> to estimate that subject's contribution to your GPA. As more assessments are graded, the GPA will become more representative of your final standing.</p>
+                The Pomodoro timer uses the Web Audio API to synthesize notification sound waves inside the browser, meaning the alarm will function perfectly even without internet access or loaded sound files.
             </dd>
         </dl>
 
-        <p>We hope Achieva helps you succeed in your academic endeavors!</p>
+        <p style="text-align: center; margin-top: 3rem; color: var(--text-light); font-size: 0.9rem;">We hope Achieva helps you succeed in your academic endeavors!</p>
 
-        <a href="./index.html" class="back-link" title="Go back to the Achieva application">← Back to Achieva App</a>
+        <a href="./index.html" class="back-link" style="display: block; text-align: center; margin: 1rem auto 0 auto; width: fit-content;" title="Go back to the Achieva application">
+            <i class="fa-solid fa-arrow-left"></i> Back to Achieva App
+        </a>
     </div>
 </body>
 </html>
