@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:fo="http://www.w3.org/1999/XSL/Format"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://vylexnexys.co.za/</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/index.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/virtual-lab.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/apscalculator.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/text-analysis/</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/SaCite.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/schedulegenerator.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/index.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/notes/nexysnotes.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/achieva/index.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/lexico/index.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/about.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/contact.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/Math-Function-Visualizer.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/math-resolver.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/sequence-solver.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/trigonometry-solver.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/calculator.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/writing-assistant/</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/notes/</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/studyHub.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/advanced-search.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/ai-aggregator.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/achieva/help.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://vylexnexys.co.za/tools/notes/nexitag.html</loc>
+  <lastmod>2026-07-05T11:23:33+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+</urlset>
