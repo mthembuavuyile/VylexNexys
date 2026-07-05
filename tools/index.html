@@ -86,8 +86,11 @@
         </div>
 
         <!-- Mobile Nav: Burger Button -->
-        <button class="burger" id="burger-btn" aria-label="Open navigation menu" aria-expanded="false">
-          <i class="fa-solid fa-bars"></i>
+        <button class="burger" id="burger-btn" aria-label="Open navigation menu" aria-expanded="false"
+          aria-controls="mobile-nav">
+          <span class="burger-line" aria-hidden="true"></span>
+          <span class="burger-line" aria-hidden="true"></span>
+          <span class="burger-line" aria-hidden="true"></span>
         </button>
       </div>
 
@@ -97,55 +100,61 @@
   <!-- ===================== MOBILE NAV OVERLAY & MENU ===================== -->
   <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
 
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
+    <div class="mobile-nav-header">
+      <span>Explore</span>
+      <strong>Vylex Nexys</strong>
+    </div>
+
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Pages</div>
-      <a href="/index.html"><span class="nav-icon">🏠</span> Home</a>
-      <a href="/about.html"><span class="nav-icon">ℹ️</span> About</a>
-      <a href="/contact.html"><span class="nav-icon">✉️</span> Contact</a>
+      <a href="/index.html"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Home</a>
+      <a href="/about.html"><span class="nav-icon"><i class="fa-solid fa-circle-info"></i></span> About</a>
+      <a href="/tools/index.html" aria-current="page"><span class="nav-icon"><i class="fa-solid fa-toolbox"></i></span> Tools</a>
+      <a href="/contact.html"><span class="nav-icon"><i class="fa-solid fa-envelope"></i></span> Contact</a>
     </div>
 
     <div class="mobile-nav-divider"></div>
 
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Curriculum & Science Simulators</div>
-      <a href="/edTech/"><span class="nav-icon">🚀</span> Nexys Learn</a>
-      <a href="virtual-lab.html"><span class="nav-icon">🧪</span> VyLab Simulators</a>
-      <a href="https://vylab.vylexnexys.co.za" target="_blank" rel="noopener"><span class="nav-icon">🔬</span> VyLab Portal</a>
+      <a href="/edTech/"><span class="nav-icon"><i class="fa-solid fa-graduation-cap"></i></span> Nexys Learn</a>
+      <a href="virtual-lab.html"><span class="nav-icon"><i class="fa-solid fa-flask"></i></span> VyLab Simulators</a>
+      <a href="https://vylab.vylexnexys.co.za" target="_blank" rel="noopener"><span class="nav-icon"><i class="fa-solid fa-microscope"></i></span> VyLab Portal</a>
     </div>
 
     <div class="mobile-nav-divider"></div>
 
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Math & Calculation Engines (Nexys Calc)</div>
-      <a href="apscalculator.html"><span class="nav-icon">🎓</span> Nexys Calc: APS Score</a>
-      <a href="Math-Function-Visualizer.html"><span class="nav-icon">📈</span> Nexys Calc: Function Grapher</a>
-      <a href="math-resolver.html"><span class="nav-icon">🧮</span> Nexys Calc: Equation Solver</a>
-      <a href="sequence-solver.html"><span class="nav-icon">🔁</span> Nexys Calc: Sequence Solver</a>
-      <a href="trigonometry-solver.html"><span class="nav-icon">📐</span> Nexys Calc: Trig Solver</a>
-      <a href="calculator.html"><span class="nav-icon">🔢</span> Nexys Calc: Standard</a>
+      <a href="apscalculator.html"><span class="nav-icon"><i class="fa-solid fa-school"></i></span> Nexys Calc: APS Score</a>
+      <a href="Math-Function-Visualizer.html"><span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Nexys Calc: Function Grapher</a>
+      <a href="math-resolver.html"><span class="nav-icon"><i class="fa-solid fa-square-root-variable"></i></span> Nexys Calc: Equation Solver</a>
+      <a href="sequence-solver.html"><span class="nav-icon"><i class="fa-solid fa-arrow-down-1-9"></i></span> Nexys Calc: Sequence Solver</a>
+      <a href="trigonometry-solver.html"><span class="nav-icon"><i class="fa-solid fa-shapes"></i></span> Nexys Calc: Trig Solver</a>
+      <a href="calculator.html"><span class="nav-icon"><i class="fa-solid fa-calculator"></i></span> Nexys Calc: Standard</a>
     </div>
 
     <div class="mobile-nav-divider"></div>
 
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Writing & Language Studio (Nexys Write)</div>
-      <a href="SaCite.html"><span class="nav-icon">📚</span> Nexys Cite</a>
-      <a href="lexico/index.html"><span class="nav-icon">📖</span> Lexico Dictionary</a>
-      <a href="text-analysis/"><span class="nav-icon">📝</span> Nexys Write: Text Analyzer</a>
-      <a href="writing-assistant/"><span class="nav-icon">✍️</span> Nexys Write: Assistant</a>
+      <a href="SaCite.html"><span class="nav-icon"><i class="fa-solid fa-quote-right"></i></span> Nexys Cite</a>
+      <a href="lexico/index.html"><span class="nav-icon"><i class="fa-solid fa-book-open"></i></span> Lexico Dictionary</a>
+      <a href="text-analysis/"><span class="nav-icon"><i class="fa-solid fa-spell-check"></i></span> Nexys Write: Text Analyzer</a>
+      <a href="writing-assistant/"><span class="nav-icon"><i class="fa-solid fa-keyboard"></i></span> Nexys Write: Assistant</a>
     </div>
 
     <div class="mobile-nav-divider"></div>
 
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Study Planner & Productivity</div>
-      <a href="schedulegenerator.html"><span class="nav-icon">📅</span> Nexys Schedule</a>
-      <a href="notes/"><span class="nav-icon">🗒️</span> Nexys Notes</a>
-      <a href="achieva/index.html"><span class="nav-icon">🎯</span> Nexys Achieva</a>
-      <a href="studyHub.html"><span class="nav-icon">🏫</span> Study Hub</a>
-      <a href="advanced-search.html"><span class="nav-icon">🔍</span> Nexys Search</a>
-      <a href="ai-aggregator.html"><span class="nav-icon">🤖</span> Nexys AI Aggregator</a>
+      <a href="schedulegenerator.html"><span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span> Nexys Schedule</a>
+      <a href="notes/"><span class="nav-icon"><i class="fa-solid fa-note-sticky"></i></span> Nexys Notes</a>
+      <a href="achieva/index.html"><span class="nav-icon"><i class="fa-solid fa-bullseye"></i></span> Nexys Achieva</a>
+      <a href="studyHub.html"><span class="nav-icon"><i class="fa-solid fa-folder-open"></i></span> Study Hub</a>
+      <a href="advanced-search.html"><span class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span> Nexys Search</a>
+      <a href="ai-aggregator.html"><span class="nav-icon"><i class="fa-solid fa-robot"></i></span> Nexys AI Aggregator</a>
     </div>
   </nav>
 
@@ -421,14 +430,24 @@
     function openNav() {
       mobileNav.classList.add('open');
       navOverlay.classList.add('open');
+      burgerBtn.classList.add('open');
       burgerBtn.setAttribute('aria-expanded', 'true');
+      burgerBtn.setAttribute('aria-label', 'Close navigation menu');
+      mobileNav.setAttribute('aria-hidden', 'false');
+      navOverlay.setAttribute('aria-hidden', 'false');
+      body.classList.add('nav-open');
       body.style.overflow = 'hidden';
     }
 
     function closeNav() {
       mobileNav.classList.remove('open');
       navOverlay.classList.remove('open');
+      burgerBtn.classList.remove('open');
       burgerBtn.setAttribute('aria-expanded', 'false');
+      burgerBtn.setAttribute('aria-label', 'Open navigation menu');
+      mobileNav.setAttribute('aria-hidden', 'true');
+      navOverlay.setAttribute('aria-hidden', 'true');
+      body.classList.remove('nav-open');
       body.style.overflow = '';
     }
 
