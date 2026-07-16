@@ -74,7 +74,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof initSequenceSolver === 'function') initSequenceSolver();
     if (typeof initTrigCalculator === 'function') initTrigCalculator();
     
-    switchMode('grapher');
+    let initialMode = 'grapher';
+    const hash = window.location.hash.substring(1);
+    if (hash && MODE_META[hash]) {
+        initialMode = hash;
+    }
+    switchMode(initialMode);
     if (typeof resizeCanvas === 'function') resizeCanvas();
     if (typeof updateTriangleStats === 'function') updateTriangleStats();
+});
+
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.substring(1);
+    if (hash && MODE_META[hash]) {
+        switchMode(hash);
+    }
 });

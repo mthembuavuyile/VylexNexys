@@ -17,10 +17,11 @@
         <main class="editor-main">
             <header class="editor-header">
                 <div class="header-left">
-                    <div class="logo">
+                    <a href="/tools/index.html" class="logo" style="text-decoration: none; display: flex; align-items: center; gap: 8px; color: inherit; opacity: 1; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                        <i class="fas fa-arrow-left" style="font-size: 0.85rem; opacity: 0.7;"></i>
                         <i class="fas fa-pen-nib"></i>
                         <span>Nexys Write</span>
-                    </div>
+                    </a>
                     <button class="action-btn" id="saveBtn" title="Save to Local Storage"><i class="fas fa-save"></i> Save</button>
                     <button class="action-btn" id="exportPdfBtn" title="Export as PDF"><i class="fas fa-file-pdf"></i> PDF</button>
                 </div>

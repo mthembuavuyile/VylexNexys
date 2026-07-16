@@ -1293,8 +1293,11 @@
         <!-- Sidebar Navigation (Desktop) -->
         <aside class="sidebar">
             <div class="sidebar-brand">
-                <i class="fa-solid fa-trophy brand-icon"></i>
-                <h2>Achieva</h2>
+                <a href="/tools/index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit; opacity: 1; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    <i class="fa-solid fa-arrow-left" style="font-size: 0.9rem; opacity: 0.7;"></i>
+                    <i class="fa-solid fa-trophy brand-icon" style="margin: 0; color: var(--primary);"></i>
+                    <h2>Achieva</h2>
+                </a>
             </div>
             <nav class="sidebar-nav">
                 <button class="nav-item active" onclick="switchTab(event, 'dashboard')">
@@ -1334,8 +1337,11 @@
             <!-- Topbar (Controls & Branding on mobile) -->
             <header class="topbar">
                 <div class="topbar-brand">
-                    <i class="fa-solid fa-trophy brand-icon" style="color:var(--primary)"></i>
-                    <h2>Achieva</h2>
+                    <a href="/tools/index.html" style="display: flex; align-items: center; gap: 0.4rem; text-decoration: none; color: inherit; font-size: 0.95rem;">
+                        <i class="fa-solid fa-arrow-left" style="font-size: 0.8rem; opacity: 0.7;"></i>
+                        <i class="fa-solid fa-trophy brand-icon" style="margin: 0; color: var(--primary); font-size: 1rem;"></i>
+                        <h2>Achieva</h2>
+                    </a>
                 </div>
                 <h1 class="page-title" id="pageTitle">Dashboard</h1>
                 <div class="topbar-actions">
