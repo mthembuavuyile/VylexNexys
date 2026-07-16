@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Nexys Calc | Unified Math & Calculation Suite</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --surface: #ffffff;
+            --background: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: #0f172a;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.03), 0 2px 8px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        .sidebar-icon {
+            transition: stroke 0.3s ease;
+        }
+
+        .group:hover .sidebar-icon {
+            stroke: #7c3aed;
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #7c3aed, #4f46e5);
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade {
+            animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        #mainCanvas {
+            touch-action: none;
+            cursor: grab;
+            border-radius: 1.5rem;
+            display: block;
+        }
+
+        #mainCanvas.dragging {
+            cursor: grabbing;
+        }
+
+        #mainCanvas.vertex-hover {
+            cursor: pointer;
+        }
+
+        .toolbtn {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.55);
+            color: white;
+            backdrop-filter: blur(8px);
+            transition: background 0.15s ease;
+        }
+
+        .toolbtn:hover {
+            background: rgba(124, 58, 237, 0.85);
+        }
+    </style>
+</head>
+
+<body class="h-screen flex overflow-hidden text-slate-800 selection:bg-violet-100 selection:text-violet-900">
+
+    <!-- SIDEBAR -->
+    <aside class="w-72 hidden md:flex flex-col bg-white border-r border-slate-200 z-20 shadow-xl shadow-slate-200/50">
+        <div class="p-6">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-violet-200">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg tracking-tight text-slate-900 leading-none">VYLEX</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Math Lab</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="px-4 space-y-2 flex-1 overflow-y-auto">
+            <div class="px-3 mb-4 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Workspace</div>
+
+            <button
+                class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700 nav-btn"
+                onclick="switchMode('grapher')" id="nav-grapher">
+                <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18"></path>
+                    <path d="M18.7 8 12 14.7 8.7 11.4 4 16"></path>
+                </svg>
+                Function Grapher
+            </button>
+
+            <button
+                class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700 nav-btn"
+                onclick="switchMode('triangle')" id="nav-triangle">
+                <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3 3 20h18L12 3z"></path>
+                </svg>
+                Triangle Explorer
+            </button>
+
+            <button
+                class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700 nav-btn"
+                onclick="switchMode('equation')" id="nav-equation">
+                <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                    <path d="M9 9h6v6H9z"></path>
+                </svg>
+                Equation Solver
+            </button>
+
+            <button
+                class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700 nav-btn"
+                onclick="switchMode('sequence')" id="nav-sequence">
+                <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                Sequence Solver
+            </button>
+
+            <button
+                class="w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 group text-slate-600 hover:bg-slate-50 hover:text-violet-700 nav-btn"
+                onclick="switchMode('trig')" id="nav-trig">
+                <svg class="sidebar-icon w-5 h-5 text-slate-400 group-hover:text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 21h18"></path><path d="M21 21 3 3l18 18z"></path><path d="M10 21V10l3-3"></path>
+                </svg>
+                Trig Calculator
+            </button>
+        </nav>
+
+        <div class="p-4 m-4 rounded-2xl bg-slate-50 border border-slate-100 shadow-inner">
+            <div class="flex items-center gap-3">
+                <div class="relative flex h-2.5 w-2.5">
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </div>
+                <div>
+                    <div class="text-xs font-bold text-slate-700">Canvas Engine Online</div>
+                    <div class="text-[10px] text-slate-400 font-mono">Shared Workspace v1.0</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 overflow-y-auto relative scroll-smooth bg-slate-50">
+
+        <div class="md:hidden glass border-b p-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+                <div class="font-bold text-slate-900 tracking-tight">VYLEX</div>
+            </div>
+            <select
+                class="bg-white border border-slate-200 rounded-lg py-1.5 px-3 text-sm font-medium outline-none focus:ring-2 focus:ring-violet-500 shadow-sm"
+                onchange="switchMode(this.value)" id="mobileModeSelect">
+                <option value="grapher">Function Grapher</option>
+                <option value="triangle">Triangle Explorer</option>
+                <option value="equation">Equation Solver</option>
+                <option value="sequence">Sequence Solver</option>
+                <option value="trig">Trig Calculator</option>
+            </select>
+        </div>
+
+        <section class="p-4 md:p-8 max-w-7xl mx-auto animate-fade">
+            <header class="mb-8">
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight" id="modeTitle">Function Grapher</h1>
+                <div class="flex items-center gap-2 mt-2 text-slate-500 text-sm font-medium">
+                    <span id="modeDesc">Plot up to three functions on one live coordinate plane.</span>
+                </div>
+            </header>
+
+            <div class="grid lg:grid-cols-12 gap-6">
+
+                <!-- SHARED CANVAS -->
+                <div id="canvas-container" class="lg:col-span-8">
+                    <div class="card h-[280px] sm:h-[400px] md:h-[560px] relative bg-white p-2 overflow-hidden shadow-lg">
+                        <canvas id="mainCanvas" class="w-full h-full"></canvas>
+
+                        <div class="absolute top-5 right-5 z-10 flex flex-col gap-2">
+                            <button class="toolbtn" onclick="zoomBy(1.25)" title="Zoom in">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round">
+                                    <path d="M12 5v14M5 12h14" />
+                                </svg>
+                            </button>
+                            <button class="toolbtn" onclick="zoomBy(0.8)" title="Zoom out">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round">
+                                    <path d="M5 12h14" />
+                                </svg>
+                            </button>
+                            <button class="toolbtn" onclick="resetView()" title="Reset view">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 12a9 9 0 1 1 3 6.7" />
+                                    <path d="M3 21v-6h6" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div
+                            class="absolute top-5 left-5 z-10 flex items-center gap-2 bg-slate-900/60 backdrop-blur-md px-3 py-1.5 rounded-full text-white text-xs font-bold tracking-wide">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Drag to pan · Scroll
+                            to zoom
+                        </div>
+
+                        <div class="absolute bottom-5 left-5 z-10 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-600 border border-slate-200 shadow-sm"
+                            id="coordReadout">
+                            x = 0.00, y = 0.00
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIDE PANELS -->
+                <div id="panels-container" class="lg:col-span-4 space-y-6">
+
+                    <!-- GRAPHER PANEL -->
+                    <div id="panel-grapher" class="space-y-6">
+                        <div class="card p-6 border-t-4 border-t-violet-600">
+                            <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2 text-lg">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" class="text-violet-600">
+                                    <path d="M3 3v18h18" />
+                                    <path d="M18.7 8 12 14.7 8.7 11.4 4 16" />
+                                </svg>
+                                Functions
+                            </h3>
+                            <div class="space-y-4">
+
+                                <div>
+                                    <div class="flex items-center gap-3">
+                                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                                            <input type="checkbox" id="toggle0" checked class="sr-only peer"
+                                                onchange="onSlotToggle(0)">
+                                            <div
+                                                class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-violet-600">
+                                            </div>
+                                        </label>
+                                        <span class="w-3 h-3 rounded-full shrink-0" style="background:#7c3aed"></span>
+                                        <input id="expr0" type="text" value="x^2" oninput="onExprChange(0)"
+                                            class="flex-1 min-w-0 p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-mono outline-none focus:ring-2 focus:ring-violet-500 focus:bg-white transition">
+                                    </div>
+                                    <div class="text-[11px] text-rose-500 font-medium mt-1 pl-12 hidden" id="error0">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex items-center gap-3">
+                                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                                            <input type="checkbox" id="toggle1" class="sr-only peer"
+                                                onchange="onSlotToggle(1)">
+                                            <div
+                                                class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-sky-500">
+                                            </div>
+                                        </label>
+                                        <span class="w-3 h-3 rounded-full shrink-0" style="background:#0ea5e9"></span>
+                                        <input id="expr1" type="text" value="sin(x)" oninput="onExprChange(1)"
+                                            class="flex-1 min-w-0 p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-mono outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition">
+                                    </div>
+                                    <div class="text-[11px] text-rose-500 font-medium mt-1 pl-12 hidden" id="error1">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex items-center gap-3">
+                                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                                            <input type="checkbox" id="toggle2" class="sr-only peer"
+                                                onchange="onSlotToggle(2)">
+                                            <div
+                                                class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500">
+                                            </div>
+                                        </label>
+                                        <span class="w-3 h-3 rounded-full shrink-0" style="background:#10b981"></span>
+                                        <input id="expr2" type="text" value="0.5x - 1" oninput="onExprChange(2)"
+                                            class="flex-1 min-w-0 p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-mono outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                                    </div>
+                                    <div class="text-[11px] text-rose-500 font-medium mt-1 pl-12 hidden" id="error2">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <p class="text-[11px] text-slate-400 mt-5 leading-relaxed">Supports + − × ÷ ^ ( ), sin cos
+                                tan sqrt log ln abs exp, and constants pi, e. Try <span
+                                    class="font-mono text-slate-500">2x^2 - 3sin(x)</span>.</p>
+                        </div>
+                    </div>
+
+                    <!-- TRIANGLE PANEL -->
+                    <div id="panel-triangle" class="space-y-6 hidden">
+                        <div class="card p-6 border-t-4 border-t-violet-600">
+                            <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2 text-lg">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" class="text-violet-600">
+                                    <path d="M12 3 3 20h18L12 3z" />
+                                </svg>
+                                Triangle Controls
+                            </h3>
+                            <div
+                                class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200 mb-4">
+                                <span class="text-sm font-semibold text-slate-700">Snap to 0.5 grid</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="snapToggle" class="sr-only peer">
+                                    <div
+                                        class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600">
+                                    </div>
+                                </label>
+                            </div>
+                            <button onclick="resetTriangle()"
+                                class="w-full px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition shadow-sm text-sm">
+                                Reset Triangle
+                            </button>
+                            <p class="text-[11px] text-slate-400 mt-4 leading-relaxed">Drag any vertex (A, B, C) to
+                                reshape the triangle. Side lengths, angles, and classification update live.</p>
+                        </div>
+
+                        <div
+                            class="card bg-slate-900 text-white p-6 shadow-2xl border-slate-800 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-3xl"></div>
+
+                            <div
+                                class="flex items-center justify-between mb-5 border-b border-slate-700 pb-3 relative z-10">
+                                <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Live
+                                    Geometry</span>
+                                <div id="triWarning"
+                                    class="text-[10px] font-bold text-rose-400 uppercase tracking-wide hidden">Collinear
+                                    points</div>
+                            </div>
+
+                            <div class="flex gap-2 mb-5 relative z-10" id="classBadges">
+                                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-800 text-slate-300"
+                                    id="badgeSide">—</span>
+                                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-800 text-slate-300"
+                                    id="badgeAngle">—</span>
+                            </div>
+
+                            <div class="space-y-4 font-mono text-sm relative z-10">
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 text-center">
+                                        <div class="text-[9px] text-violet-400 font-bold mb-1">SIDE a (BC)</div>
+                                        <div id="sideA" class="text-white font-bold">0.00</div>
+                                    </div>
+                                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 text-center">
+                                        <div class="text-[9px] text-violet-400 font-bold mb-1">SIDE b (CA)</div>
+                                        <div id="sideB" class="text-white font-bold">0.00</div>
+                                    </div>
+                                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 text-center">
+                                        <div class="text-[9px] text-violet-400 font-bold mb-1">SIDE c (AB)</div>
+                                        <div id="sideC" class="text-white font-bold">0.00</div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 text-center">
+                                        <div class="text-[9px] text-sky-400 font-bold mb-1">ANGLE A</div>
+                                        <div id="angA" class="text-white font-bold">0.0°</div>
+                                    </div>
+                                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 text-center">
+                                        <div class="text-[9px] text-sky-400 font-bold mb-1">ANGLE B</div>
+                                        <div id="angB" class="text-white font-bold">0.0°</div>
+                                    </div>
+                                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 text-center">
+                                        <div class="text-[9px] text-sky-400 font-bold mb-1">ANGLE C</div>
+                                        <div id="angC" class="text-white font-bold">0.0°</div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/50 flex items-center justify-between">
+                                    <span class="text-[10px] text-emerald-400 font-bold tracking-wider">PERIMETER</span>
+                                    <span id="perim" class="text-emerald-400 font-bold text-lg">0.00</span>
+                                </div>
+                                <div
+                                    class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/50 flex items-center justify-between">
+                                    <span class="text-[10px] text-amber-400 font-bold tracking-wider">AREA</span>
+                                    <span id="area" class="text-amber-400 font-bold text-lg">0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EQUATION SOLVER PANEL -->
+                    <div id="panel-equation" class="space-y-6 hidden">
+                        <div class="card p-6 border-t-4 border-t-blue-500">
+                            <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2 text-lg">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" class="text-blue-500">
+                                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                    <path d="M9 9h6v6H9z"></path>
+                                </svg>
+                                Equation Solver
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Expression</label>
+                                    <input id="eq-expression" type="text" placeholder="e.g., 2x^2 + 5x, or simplify(3x + 2x)"
+                                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                    <button id="btn-evaluate" class="w-full py-2.5 rounded-xl bg-blue-500 text-white font-semibold text-sm hover:bg-blue-600 transition shadow-sm">Evaluate</button>
+                                    <button id="btn-simplify" class="w-full py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition shadow-sm">Simplify</button>
+                                    <button id="btn-derive" class="w-full py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition shadow-sm">Derive (x)</button>
+                                </div>
+                                
+                                <div id="eq-result-container" class="mt-4 hidden animate-fade">
+                                    <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Result</div>
+                                    <div id="eq-result" class="p-4 bg-slate-900 text-emerald-400 font-mono text-sm rounded-xl shadow-inner border border-slate-800 overflow-x-auto whitespace-nowrap"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SEQUENCE SOLVER PANEL -->
+                    <div id="panel-sequence" class="space-y-6 hidden">
+                        <div class="card p-6 border-t-4 border-t-rose-500">
+                            <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2 text-lg">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" class="text-rose-500">
+                                    <line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                </svg>
+                                Sequence Analysis
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sequence (comma separated)</label>
+                                    <input id="seq-input" type="text" placeholder="e.g., 2, 4, 6, 8"
+                                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition">
+                                </div>
+                                <button id="btn-analyze-seq" class="w-full py-3 rounded-xl bg-rose-500 text-white font-semibold text-sm hover:bg-rose-600 transition shadow-sm">Analyze Pattern</button>
+                                
+                                <div id="seq-result-container" class="mt-4 hidden animate-fade">
+                                    <div id="seq-analysis-output" class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-6 border-t-4 border-t-amber-500">
+                            <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2 text-lg">
+                                Sigma (∑) Solver
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Formula (use 'k')</label>
+                                    <input id="sigma-expr" type="text" placeholder="e.g., 2*k - 1"
+                                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Start (k=)</label>
+                                        <input id="sigma-start" type="number" value="1"
+                                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">End</label>
+                                        <input id="sigma-end" type="number" value="10"
+                                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition">
+                                    </div>
+                                </div>
+                                <button id="btn-solve-sigma" class="w-full py-3 rounded-xl bg-amber-500 text-white font-semibold text-sm hover:bg-amber-600 transition shadow-sm">Evaluate Sigma</button>
+                                
+                                <div id="sigma-result-container" class="mt-4 hidden animate-fade">
+                                    <div id="sigma-result" class="p-4 bg-slate-900 text-white font-mono text-sm rounded-xl shadow-inner border border-slate-800 text-center"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TRIGONOMETRY PANEL -->
+                    <div id="panel-trig" class="space-y-6 hidden">
+                        <div class="card p-6 border-t-4 border-t-emerald-500">
+                            <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2 text-lg">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" class="text-emerald-500">
+                                    <path d="M3 21h18"></path><path d="M21 21 3 3l18 18z"></path><path d="M10 21V10l3-3"></path>
+                                </svg>
+                                Right Triangle Solver
+                            </h3>
+                            <p class="text-[11px] text-slate-400 mb-4 leading-relaxed">Enter two values to calculate the rest. Angle at N is 90°.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Side MN (Adj)</label>
+                                        <input id="trig-side-mn" type="number" placeholder="12"
+                                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-mono outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Side NP (Opp)</label>
+                                        <input id="trig-side-np" type="number" placeholder="5"
+                                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-mono outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hypotenuse MP</label>
+                                    <input id="trig-side-mp" type="number" placeholder="13"
+                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-mono outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                                </div>
+                                <button id="btn-solve-tri" class="w-full py-3 rounded-xl bg-emerald-500 text-white font-semibold text-sm hover:bg-emerald-600 transition shadow-sm">Solve Triangle</button>
+                                
+                                <div id="tri-result-container" class="mt-4 hidden animate-fade">
+                                    <div id="tri-result" class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm grid grid-cols-2 gap-4"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-6 border-t-4 border-t-cyan-500">
+                            <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2 text-lg">
+                                Quadrant Analyzer
+                            </h3>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <input id="trig-angle" type="number" placeholder="Angle (degrees)"
+                                    class="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition">
+                                <button id="btn-check-quad" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-cyan-500 text-white font-semibold text-sm hover:bg-cyan-600 transition shadow-sm">Analyze</button>
+                            </div>
+                            <div id="quad-result" class="mt-4 p-4 bg-slate-900 text-white font-mono text-sm rounded-xl shadow-inner border border-slate-800 hidden animate-fade"></div>
+                        </div>
+
+                        <div class="card p-6 border-t-4 border-t-indigo-500">
+                            <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2 text-lg">
+                                Special Angles Lookup
+                            </h3>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <select id="trig-special-angle" class="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                                    <option value="0">0°</option>
+                                    <option value="30">30°</option>
+                                    <option value="45">45°</option>
+                                    <option value="60">60°</option>
+                                    <option value="90">90°</option>
+                                    <option value="180">180°</option>
+                                    <option value="270">270°</option>
+                                    <option value="360">360°</option>
+                                </select>
+                                <button id="btn-lookup-angle" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-500 text-white font-semibold text-sm hover:bg-indigo-600 transition shadow-sm">Lookup</button>
+                            </div>
+                            <div id="special-angle-result" class="mt-4 p-4 bg-slate-900 text-white font-mono text-lg rounded-xl shadow-inner border border-slate-800 hidden animate-fade"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/engine.js"></script>
+    <script src="js/grapher.js"></script>
+    <script src="js/triangle.js"></script>
+    <script src="js/equation.js"></script>
+    <script src="js/sequence.js"></script>
+    <script src="js/trigonometry.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

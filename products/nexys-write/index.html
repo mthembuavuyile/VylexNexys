@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexys Write</title>
+    <meta name="description" content="A premium, distraction-free writing environment integrated with powerful text analysis, readability scoring, dictionary lookup, and text-to-speech tools.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Writing Area -->
+        <main class="editor-main">
+            <header class="editor-header">
+                <div class="header-left">
+                    <div class="logo">
+                        <i class="fas fa-pen-nib"></i>
+                        <span>Nexys Write</span>
+                    </div>
+                    <button class="action-btn" id="saveBtn" title="Save to Local Storage"><i class="fas fa-save"></i> Save</button>
+                    <button class="action-btn" id="exportPdfBtn" title="Export as PDF"><i class="fas fa-file-pdf"></i> PDF</button>
+                </div>
+                <div class="header-right">
+                    <div class="quick-stats" id="quickStats">0 words, 0 characters</div>
+                    <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode"><i class="fas fa-sun"></i></button>
+                    <button class="action-btn sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
+                        <i class="fas fa-columns"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" id="boldBtn" title="Bold"><i class="fas fa-bold"></i></button>
+                    <button class="toolbar-btn" id="italicBtn" title="Italic"><i class="fas fa-italic"></i></button>
+                    <button class="toolbar-btn" id="underlineBtn" title="Underline"><i class="fas fa-underline"></i></button>
+                    <button class="toolbar-btn" id="strikeBtn" title="Strikethrough"><i class="fas fa-strikethrough"></i></button>
+                </div>
+                <div class="toolbar-separator"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" id="alignLeftBtn" title="Align Left"><i class="fas fa-align-left"></i></button>
+                    <button class="toolbar-btn" id="alignCenterBtn" title="Align Center"><i class="fas fa-align-center"></i></button>
+                    <button class="toolbar-btn" id="alignRightBtn" title="Align Right"><i class="fas fa-align-right"></i></button>
+                </div>
+                <div class="toolbar-separator"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" id="listBtn" title="Bullet List"><i class="fas fa-list-ul"></i></button>
+                    <button class="toolbar-btn" id="numberListBtn" title="Numbered List"><i class="fas fa-list-ol"></i></button>
+                </div>
+                <div class="toolbar-separator"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" id="linkBtn" title="Insert Link"><i class="fas fa-link"></i></button>
+                    <button class="toolbar-btn" id="clearFormatBtn" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
+                    <button class="toolbar-btn active" id="pastePlainBtn" title="Paste as Plain Text (Toggle)"><i class="fas fa-clipboard"></i></button>
+                </div>
+                <div class="toolbar-separator"></div>
+                <div class="toolbar-group">
+                    <select class="toolbar-select" id="fontFamily">
+                        <option value="inherit">Font Family</option>
+                        <option value="Inter">Inter (Sans)</option>
+                        <option value="Georgia">Georgia (Serif)</option>
+                        <option value="JetBrains Mono">Mono (Code)</option>
+                    </select>
+                </div>
+                <div class="toolbar-separator"></div>
+                <div class="toolbar-group speech-controls">
+                    <button class="toolbar-btn" id="btn-read-aloud" title="Read Aloud">
+                        <i class="fas fa-volume-up"></i> <span id="read-aloud-text">Read</span>
+                    </button>
+                    <button class="toolbar-btn" id="btn-voice-settings" title="Voice Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="tab-bar" id="tabBar">
+                <button class="tab-add" id="addTabBtn" title="New note (Ctrl+Shift+N)">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+
+            <div class="editor-container">
+                <div id="editor" contenteditable="true" spellcheck="true" placeholder="Start writing here... (Double click any word for definition)"></div>
+            </div>
+
+            <div class="alert" id="alertMessage"></div>
+        </main>
+
+        <!-- Sidebar for Tools & Analysis -->
+        <aside class="tools-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Analysis & Tools</h3>
+                <button class="close-sidebar-btn" id="closeSidebarBtn"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="sidebar-nav">
+                <button class="sidebar-tab active" data-target="stats-panel">Stats</button>
+                <button class="sidebar-tab" data-target="tools-panel">Tools</button>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- Stats Panel -->
+                <div class="panel active" id="stats-panel">
+                    <div class="stat-card">
+                        <h4>Readability</h4>
+                        <div class="stat-row">
+                            <span>Score</span>
+                            <span id="readability-score" class="highlight">N/A</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Time to read</span>
+                            <span id="reading-time">0s</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h4>Structure</h4>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <span class="stat-val" id="word-count">0</span>
+                                <span class="stat-lbl">Words</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-val" id="char-count">0</span>
+                                <span class="stat-lbl">Chars</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-val" id="sentence-count">0</span>
+                                <span class="stat-lbl">Sentences</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-val" id="paragraph-count">0</span>
+                                <span class="stat-lbl">Paragraphs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h4>Vocabulary</h4>
+                        <div class="stat-row">
+                            <span>Unique Words</span>
+                            <span id="unique-word-count">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Variety</span>
+                            <span id="vocab-variety-score">0%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Avg Word Len</span>
+                            <span id="avg-word-length">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Avg Sentence Len</span>
+                            <span id="avg-sentence-length">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools Panel -->
+                <div class="panel" id="tools-panel">
+                    <div class="tool-group">
+                        <h4>Find & Replace</h4>
+                        <input type="text" id="findInput" class="tool-input" placeholder="Find...">
+                        <input type="text" id="replaceInput" class="tool-input" placeholder="Replace with...">
+                        <div class="tool-actions">
+                            <label class="checkbox-label"><input type="checkbox" id="caseSensitive"> Case sensitive</label>
+                            <button class="tool-btn primary" id="applyReplaceBtn">Replace All</button>
+                        </div>
+                    </div>
+
+                    <div class="tool-group">
+                        <h4>Case Converter</h4>
+                        <div class="btn-grid">
+                            <button class="tool-btn" id="btn-uppercase">UPPERCASE</button>
+                            <button class="tool-btn" id="btn-lowercase">lowercase</button>
+                            <button class="tool-btn" id="btn-titlecase">Title Case</button>
+                            <button class="tool-btn" id="btn-sentencecase">Sentence case</button>
+                        </div>
+                    </div>
+
+                    <div class="tool-group">
+                        <h4>Text Cleaner</h4>
+                        <div class="btn-grid">
+                            <button class="tool-btn" onclick="cleanText('extraSpaces')">Remove Extra Spaces</button>
+                            <button class="tool-btn" onclick="cleanText('emptyLines')">Remove Empty Lines</button>
+                            <button class="tool-btn" onclick="cleanText('html')">Strip HTML</button>
+                            <button class="tool-btn" onclick="cleanText('punctuation')">Strip Punctuation</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Definition Modal -->
+    <div id="definition-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="modal-close-btn" class="modal-close-btn" title="Close">&times;</button>
+            <h2 id="modal-word">Word</h2>
+            <div id="modal-body">
+                <div class="loader"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Selection Modal -->
+    <div id="voice-modal-overlay" class="modal-overlay hidden">
+        <div id="voice-modal-content" class="modal-content">
+            <div class="modal-header">
+                <h2>Select a Voice</h2>
+                <button id="voice-modal-close" class="modal-close-btn" title="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="current-voice-indicator">Current: <span id="current-voice" class="highlight">Loading...</span></div>
+                <div id="voice-list" class="voice-list">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">✓ Success</div>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Modules -->
+    <script src="js/speech.js"></script>
+    <script src="js/dictionary.js"></script>
+    <script src="js/analysis.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

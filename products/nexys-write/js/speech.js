@@ -2,20 +2,21 @@
 // speech.js - Speech Synthesis Service
 // ============================================================================
 
-// State for Speech Synthesis
 const SPEECH_STATE = {
     voices: [],
     selectedVoice: null
 };
 
-/**
- * Initializes the Speech Synthesis API and loads available voices.
- */
 function initializeSpeech() {
+    const btnReadAloud = document.getElementById('btn-read-aloud');
+    const btnVoiceSettings = document.getElementById('btn-voice-settings');
+    const currentVoiceSpan = document.getElementById('current-voice');
+    
     if (!('speechSynthesis' in window)) {
         console.warn("Speech Synthesis not supported.");
-        [DOM.btnReadAloud, DOM.btnVoiceSettings].forEach(btn => btn.disabled = true);
-        DOM.currentVoiceSpan.textContent = "Not supported";
+        if(btnReadAloud) btnReadAloud.disabled = true;
+        if(btnVoiceSettings) btnVoiceSettings.disabled = true;
+        if(currentVoiceSpan) currentVoiceSpan.textContent = "Not supported";
         return;
     }
 
@@ -32,25 +33,36 @@ function initializeSpeech() {
     } else {
         speechSynthesis.onvoiceschanged = loadVoices;
     }
+
+    // Events
+    if(btnReadAloud) btnReadAloud.addEventListener('click', toggleReadAloud);
+    if(btnVoiceSettings) {
+        btnVoiceSettings.addEventListener('click', () => {
+            const overlay = document.getElementById('voice-modal-overlay');
+            if(overlay) toggleModal(overlay, true);
+        });
+    }
+
+    const voiceList = document.getElementById('voice-list');
+    if(voiceList) {
+        voiceList.addEventListener('click', handleVoiceSelection);
+    }
 }
 
-/**
- * Populates the voice selection list in the modal.
- */
 function populateVoiceList() {
-    DOM.voiceList.innerHTML = '';
+    const voiceList = document.getElementById('voice-list');
+    if(!voiceList) return;
+    
+    voiceList.innerHTML = '';
     SPEECH_STATE.voices.forEach(voice => {
         const voiceItem = document.createElement('div');
         voiceItem.className = 'voice-item';
         voiceItem.dataset.name = voice.name;
         voiceItem.innerHTML = `${voice.name} <span class="voice-item-lang">(${voice.lang})</span>`;
-        DOM.voiceList.appendChild(voiceItem);
+        voiceList.appendChild(voiceItem);
     });
 }
 
-/**
- * Sets a default voice, preferring common high-quality English voices.
- */
 function setDefaultVoice() {
     const preferredVoices = [
         'Google UK English Female', 'Microsoft Zira - English (United States)', 'Google US English', 
@@ -62,59 +74,62 @@ function setDefaultVoice() {
     updateSelectedVoiceUI();
 }
 
-/**
- * Handles the user clicking on a voice in the selection modal.
- * @param {Event} e The click event.
- */
 function handleVoiceSelection(e) {
     const clickedItem = e.target.closest('.voice-item');
     if (!clickedItem) return;
 
     SPEECH_STATE.selectedVoice = SPEECH_STATE.voices.find(voice => voice.name === clickedItem.dataset.name);
     updateSelectedVoiceUI();
-    toggleModal(DOM.voiceModalOverlay, false); // Uses shared helper from app.js
+    
+    const overlay = document.getElementById('voice-modal-overlay');
+    if(overlay) toggleModal(overlay, false);
 }
 
-/**
- * Updates the UI to reflect the currently selected voice.
- */
 function updateSelectedVoiceUI() {
+    const currentVoiceSpan = document.getElementById('current-voice');
+    const voiceList = document.getElementById('voice-list');
+    
     if (!SPEECH_STATE.selectedVoice) {
-        DOM.currentVoiceSpan.textContent = "No Voice";
+        if(currentVoiceSpan) currentVoiceSpan.textContent = "No Voice";
         return;
     }
-    DOM.currentVoiceSpan.textContent = SPEECH_STATE.selectedVoice.name;
-    DOM.voiceList.querySelectorAll('.voice-item').forEach(item => {
-        item.classList.toggle('active', item.dataset.name === SPEECH_STATE.selectedVoice.name);
-    });
+    
+    if(currentVoiceSpan) currentVoiceSpan.textContent = SPEECH_STATE.selectedVoice.name;
+    
+    if(voiceList) {
+        voiceList.querySelectorAll('.voice-item').forEach(item => {
+            item.classList.toggle('active', item.dataset.name === SPEECH_STATE.selectedVoice.name);
+        });
+    }
 }
 
-/**
- * Toggles the text-to-speech function on or off.
- */
 function toggleReadAloud() {
+    const btnReadAloud = document.getElementById('btn-read-aloud');
+    const readAloudText = document.getElementById('read-aloud-text');
+    const editor = document.getElementById('editor');
+    
     if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
         return;
     }
 
-    const text = DOM.textInput.value.trim();
+    const text = editor ? editor.innerText.trim() : '';
     if (!text || !SPEECH_STATE.selectedVoice) return;
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.voice = SPEECH_STATE.selectedVoice;
     utterance.onstart = () => {
-        DOM.readAloudText.textContent = 'Stop Reading';
-        DOM.btnReadAloud.classList.add('active');
+        if(readAloudText) readAloudText.textContent = 'Stop';
+        if(btnReadAloud) btnReadAloud.classList.add('active');
     };
     utterance.onend = () => {
-        DOM.readAloudText.textContent = 'Read Aloud';
-        DOM.btnReadAloud.classList.remove('active');
+        if(readAloudText) readAloudText.textContent = 'Read';
+        if(btnReadAloud) btnReadAloud.classList.remove('active');
     };
     utterance.onerror = (e) => {
         console.error("SpeechSynthesisUtterance.onerror", e);
-        DOM.readAloudText.textContent = 'Read Aloud';
-        DOM.btnReadAloud.classList.remove('active');
+        if(readAloudText) readAloudText.textContent = 'Read';
+        if(btnReadAloud) btnReadAloud.classList.remove('active');
     };
 
     speechSynthesis.speak(utterance);

@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#2563eb" />
 
     <title>Lexico | Vylex Nexys Language Intelligence</title>
-    <meta name="description" content="Lexico by Vylex Nexys offers intelligent language tools including definitions, synonyms, pronunciation, etymology, and text-to-speech for smarter learning." />
-    
+    <meta name="description"
+        content="Lexico by Vylex Nexys offers intelligent language tools including definitions, synonyms, pronunciation, etymology, and text-to-speech for smarter learning." />
+
     <link rel="icon" href="https://vylexnexys.co.za/favicon.ico" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
     <header>
         <div class="header-content">
@@ -22,7 +25,7 @@
             <nav id="nav">
                 <a href="/index.html"><i class="fas fa-home"></i> Home</a>
                 <a href="/tools/index.html"><i class="fas fa-toolbox"></i> Tools</a>
-                <a href="../text-analysis/"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <a href="/nexys-write/"><i class="fas fa-chart-bar"></i> Analytics</a>
             </nav>
             <div class="hamburger" id="hamburger">
                 <span></span><span></span><span></span>
@@ -74,13 +77,13 @@
 
             <div id="resultsContainer" class="results-container hidden">
                 <div id="wordHeader" class="word-header glass-card"></div>
-                
+
                 <div class="sections-grid">
                     <div class="section glass-card">
                         <h3><i class="fas fa-quote-left"></i> Definitions & Examples</h3>
                         <ul id="definitionList" class="definition-list"></ul>
                     </div>
-                    
+
                     <div class="side-sections">
                         <div class="section glass-card mb-4">
                             <h3><i class="fas fa-link"></i> Synonyms</h3>
@@ -92,7 +95,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="section glass-card mt-6">
                     <h3><i class="fas fa-feather-alt"></i> Etymology</h3>
                     <div id="etymologyContent" class="etymology-content"></div>
@@ -102,20 +105,24 @@
 
         <div id="tts-content" class="content-section hidden">
             <h2 class="section-title"><i class="fas fa-volume-up"></i> Synthesizer</h2>
-            
+
             <textarea id="ttsText" placeholder="Enter text to speak..." class="tts-textarea"></textarea>
 
             <div class="tts-controls">
                 <div class="control-group">
                     <label for="voiceSelect"><i class="fas fa-user"></i> Voice</label>
-                    <select id="voiceSelect" class="select"><option value="">Loading voices...</option></select>
+                    <select id="voiceSelect" class="select">
+                        <option value="">Loading voices...</option>
+                    </select>
                 </div>
                 <div class="control-group">
-                    <label for="speechRate"><i class="fas fa-tachometer-alt"></i> Speed: <span id="rateValue">1.0</span></label>
+                    <label for="speechRate"><i class="fas fa-tachometer-alt"></i> Speed: <span
+                            id="rateValue">1.0</span></label>
                     <input type="range" id="speechRate" class="slider" min="0.5" max="2" step="0.1" value="1">
                 </div>
                 <div class="control-group">
-                    <label for="speechPitch"><i class="fas fa-wave-square"></i> Pitch: <span id="pitchValue">1.0</span></label>
+                    <label for="speechPitch"><i class="fas fa-wave-square"></i> Pitch: <span
+                            id="pitchValue">1.0</span></label>
                     <input type="range" id="speechPitch" class="slider" min="0.5" max="2" step="0.1" value="1">
                 </div>
                 <div class="control-group">
@@ -141,7 +148,8 @@
             <button class="close-modal"><i class="fas fa-times"></i></button>
             <h3 class="modal-title"><i class="fas fa-history"></i> Search History</h3>
             <ul id="modalHistoryList" class="modal-history-list"></ul>
-            <button id="clearHistoryBtn" class="btn danger w-full mt-4"><i class="fas fa-trash"></i> Clear History</button>
+            <button id="clearHistoryBtn" class="btn danger w-full mt-4"><i class="fas fa-trash"></i> Clear
+                History</button>
         </div>
     </div>
 
@@ -153,4 +161,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>

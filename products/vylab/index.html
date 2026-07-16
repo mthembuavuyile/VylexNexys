@@ -1,0 +1,3522 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VyLab | Your Pocket Science Laboratory</title>
+  <meta name="description" content="Run real experiments from home using interactive simulators. Explore Chemistry and Physics without the need for expensive equipment. Aligned to the South African CAPS curriculum." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome & Chart.js & Three.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ==========================================
+       DESIGN SYSTEM & VARIABLES (Dark Cosmic Theme)
+       ========================================== */
+    :root {
+      --bg-darkest: #030712;
+      --bg-dark: #0b0f19;
+      --bg-card: #111827;
+      --bg-card-hover: #1f2937;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      
+      --primary: #8b5cf6; /* Violet */
+      --primary-dark: #7c3aed;
+      --primary-glow: rgba(139, 92, 246, 0.35);
+      
+      --secondary: #3b82f6; /* Blue */
+      --secondary-glow: rgba(59, 130, 246, 0.3);
+      
+      --accent: #f43f5e; /* Rose */
+      --accent-glow: rgba(244, 63, 94, 0.35);
+      
+      --success: #10b981; /* Emerald */
+      --success-glow: rgba(16, 185, 129, 0.3);
+
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dark: #6b7280;
+
+      --font-head: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ==========================================
+       RESET & BASE STYLES
+       ========================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-darkest);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    /* Modern Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-darkest);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-card-hover);
+      border-radius: 10px;
+      border: 2px solid var(--bg-darkest);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* ==========================================
+       REUSABLE LAYOUTS & COMPONENTS
+       ========================================== */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 24px;
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid transparent;
+      outline: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border-color: var(--border-color);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent) 0%, #e11d48 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-accent:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(244, 63, 94, 0.5);
+    }
+
+    .glass-card {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+
+    .glass-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .text-gradient-primary {
+      background: linear-gradient(to right, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-gradient-rose {
+      background: linear-gradient(to right, #fb7185, #f43f5e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-padding {
+      padding: 90px 0;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 15px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 55px auto;
+    }
+
+    /* ==========================================
+       1. LANDING PAGE VIEW STYLING
+       ========================================== */
+    #landing-view {
+      display: block;
+    }
+
+    /* Navigation Bar */
+    .landing-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(3, 7, 18, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .landing-nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+
+    .brand-logo i {
+      color: var(--primary);
+      text-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      font-family: var(--font-head);
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-main);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Guest Sandbox Banner Notice */
+    .banner-notice {
+      background: linear-gradient(90deg, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 20px;
+    }
+
+    .banner-notice i {
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .banner-notice a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .banner-notice a:hover {
+      color: var(--primary);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      padding: 120px 0 90px 0;
+      background: radial-gradient(circle at 50% -20%, rgba(139, 92, 246, 0.25) 0%, transparent 60%);
+      overflow: hidden;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 25px;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero-description {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .hero-ctas {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .hero-ctas .sub-cta-info {
+      width: 100%;
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      font-style: italic;
+    }
+
+    /* Grid background effect */
+    .hero-grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* STEM Modules Cards */
+    .modules-grid {
+      display: grid;
+      grid-template-cols: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .module-card {
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .module-card.chemistry::before {
+      background: var(--accent);
+    }
+
+    .module-card.tutor::before {
+      background: var(--success);
+    }
+
+    .module-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .module-card.chemistry .module-icon {
+      background: rgba(244, 63, 94, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+    }
+
+    .module-card.tutor .module-icon {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .module-title {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .module-description {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+      min-height: 72px;
+    }
+
+    .module-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #fff;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .module-card:hover .module-link {
+      color: var(--primary);
+    }
+
+    .module-card.chemistry:hover .module-link {
+      color: var(--accent);
+    }
+
+    .module-card.tutor:hover .module-link {
+      color: var(--success);
+    }
+
+    /* CAPS Syllabus Curriculum Timeline */
+    .caps-section {
+      background: linear-gradient(180deg, var(--bg-darkest) 0%, var(--bg-dark) 50%, var(--bg-darkest) 100%);
+    }
+
+    .caps-partner-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+      opacity: 0.8;
+    }
+
+    .partner-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 6px 16px;
+      border-radius: 99px;
+      color: var(--text-muted);
+    }
+
+    .grades-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .grade-card {
+      padding: 40px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .grade-card.grade11 {
+      border-left-color: var(--secondary);
+    }
+
+    .grade-card.grade12 {
+      border-left-color: var(--accent);
+    }
+
+    .grade-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .grade-meta h3 {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .grade-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .grade-badge {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 99px;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: var(--primary);
+    }
+
+    .grade-card.grade11 .grade-badge {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      color: var(--secondary);
+    }
+
+    .grade-card.grade12 .grade-badge {
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+      color: var(--accent);
+    }
+
+    .grade-body-grid {
+      display: grid;
+      grid-template-cols: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .grade-body-grid {
+        grid-template-cols: 1fr;
+      }
+    }
+
+    .topic-list-container {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 25px;
+    }
+
+    .topic-list-container h4 {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topic-list-container h4 i {
+      color: var(--primary);
+    }
+
+    .grade-card.grade11 .topic-list-container h4 i {
+      color: var(--secondary);
+    }
+
+    .grade-card.grade12 .topic-list-container h4 i {
+      color: var(--accent);
+    }
+
+    .topic-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .topic-list li {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topic-list li::before {
+      content: '•';
+      color: var(--text-dark);
+      font-size: 1.2rem;
+    }
+
+    .practicals-footer {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .practicals-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .practicals-title i {
+      color: #fbbf24;
+      font-size: 1.2rem;
+    }
+
+    .practicals-title span {
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-left: 5px;
+    }
+
+    .practicals-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .practical-btn {
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+    }
+
+    /* School Integrations / Pricing Section */
+    .pricing-grid {
+      display: grid;
+      grid-template-cols: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      padding: 45px 40px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+    }
+
+    .pricing-card.premium {
+      border-color: var(--primary);
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.15);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 99px;
+    }
+
+    .pricing-header h3 {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .pricing-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+
+    .price-value {
+      font-family: var(--font-head);
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+    }
+
+    .price-value span {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .price-features {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 40px;
+      flex-grow: 1;
+    }
+
+    .price-features li {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .price-features li i {
+      color: var(--success);
+      font-size: 1rem;
+    }
+
+    /* Landing Footer */
+    .landing-footer {
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border-color);
+      padding: 80px 0 40px 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-cols: 2fr 1fr 1fr;
+      gap: 50px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-cols: 1fr;
+      }
+    }
+
+    .footer-brand p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 15px;
+      max-width: 400px;
+      line-height: 1.7;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-color);
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+    }
+
+    .footer-built-by a {
+      color: var(--text-muted);
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .footer-built-by a:hover {
+      color: var(--primary);
+    }
+
+
+    /* ==========================================
+       2. SIMULATOR WORKSPACE STYLING (Immersive View)
+       ========================================== */
+    #simulator-view {
+      display: none;
+      height: 100vh;
+      width: 100vw;
+      background-color: var(--bg-darkest);
+      color: var(--text-main);
+    }
+
+    .workspace-layout {
+      display: flex;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Workspace Sidebar */
+    .workspace-sidebar {
+      width: 280px;
+      background: var(--bg-dark);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      flex-shrink: 0;
+      transition: var(--transition);
+      z-index: 50;
+    }
+
+    .sidebar-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .sidebar-header .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-header .tag-sandbox {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar-nav {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-section-title {
+      font-family: var(--font-head);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 10px 12px 6px 12px;
+    }
+
+    .sidebar-nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-radius: 12px;
+      background: transparent;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .sidebar-nav-btn i {
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+      color: var(--text-dark);
+      transition: var(--transition);
+    }
+
+    .sidebar-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+    }
+
+    .sidebar-nav-btn.active {
+      background: rgba(139, 92, 246, 0.08);
+      color: #fff;
+      box-shadow: inset 0 0 10px rgba(139, 92, 246, 0.05);
+    }
+
+    .sidebar-nav-btn.active i {
+      color: var(--primary);
+      text-shadow: 0 0 10px var(--primary-glow);
+    }
+
+    .sidebar-nav-btn.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 25%;
+      height: 50%;
+      width: 3px;
+      background-color: var(--primary);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .sidebar-actions {
+      padding: 20px 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-actions .btn {
+      padding: 10px 18px;
+      font-size: 0.85rem;
+      width: 100%;
+    }
+
+    .sidebar-status {
+      padding: 12px 20px;
+      background: rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: var(--text-dark);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success-glow);
+      animation: pulse-glow 2s infinite;
+    }
+
+    /* Workspace Content Area */
+    .workspace-main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-darkest);
+    }
+
+    .workspace-topbar {
+      height: 70px;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      flex-shrink: 0;
+    }
+
+    .topbar-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar-title i {
+      color: var(--primary);
+    }
+
+    /* Embedded Notice in Simulator Topbar */
+    .topbar-notice {
+      font-size: 0.8rem;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 6px 14px;
+      border-radius: 6px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topbar-notice a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .workspace-body {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 30px;
+      position: relative;
+    }
+
+    .sim-section {
+      display: none;
+      animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      height: 100%;
+    }
+
+    .sim-section.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ==========================================
+       3. SPECIFIC SIMULATOR WORKSPACES & CONTROLS
+       ========================================== */
+    .sim-grid {
+      display: grid;
+      grid-template-cols: 7fr 4fr;
+      gap: 30px;
+      align-items: stretch;
+      min-height: 0;
+      flex-grow: 1;
+    }
+
+    @media (max-width: 1024px) {
+      .sim-grid {
+        grid-template-cols: 1fr;
+      }
+    }
+
+    .viewer-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .viewer-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.15);
+    }
+
+    .viewer-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
+    }
+
+    .viewer-canvas-container {
+      flex-grow: 1;
+      position: relative;
+      background: #090d16;
+      min-height: 380px;
+    }
+
+    .controls-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .controls-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 5px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .control-value {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--primary);
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* Range inputs styling */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary-glow);
+      transition: var(--transition);
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      background: #a78bfa;
+    }
+
+    /* 3D Electrodynamics Visualizer */
+    #electroCanvas {
+      width: 100%;
+      height: 100%;
+      outline: none;
+    }
+
+    .electro-oscilloscope {
+      height: 180px;
+      background: #05070d;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-top: 15px;
+      padding: 10px;
+      position: relative;
+    }
+
+    /* Projectile Radar Canvas */
+    #trajCanvas {
+      width: 100%;
+      height: 100%;
+      background: #02050b;
+    }
+
+    .projectile-telemetry-row {
+      display: grid;
+      grid-template-cols: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .telemetry-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 15px;
+      text-align: center;
+    }
+
+    .telemetry-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+    }
+
+    .telemetry-value {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    /* Circuit Board Schematic (Interactive HTML5 Canvas/SVG style) */
+    .circuit-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: #070911;
+    }
+
+    .circuit-svg {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+    }
+
+    .wire-line {
+      stroke: #1f2937;
+      stroke-width: 6;
+      stroke-linecap: round;
+      fill: none;
+    }
+
+    .wire-glow {
+      stroke: var(--primary);
+      stroke-width: 6;
+      stroke-linecap: round;
+      fill: none;
+      opacity: 0.15;
+      transition: var(--transition);
+    }
+
+    .electron-dot {
+      fill: #facc15;
+      filter: drop-shadow(0 0 4px #eab308);
+    }
+
+    .circuit-component {
+      fill: #111827;
+      stroke: #4b5563;
+      stroke-width: 3;
+    }
+
+    .light-bulb-glow {
+      fill: #eab308;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    /* Chemistry Titration Visuals */
+    .titration-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 30px;
+      background: #080b12;
+      position: relative;
+    }
+
+    .burette-stand {
+      width: 6px;
+      height: 90%;
+      background: #374151;
+      position: absolute;
+      left: calc(50% - 33px);
+      bottom: 20px;
+      border-radius: 3px;
+      z-index: 1;
+    }
+
+    .burette-base {
+      width: 120px;
+      height: 12px;
+      background: #1f2937;
+      border-radius: 4px;
+      position: absolute;
+      left: calc(50% - 90px);
+      bottom: 20px;
+      z-index: 1;
+    }
+
+    .burette-tube {
+      width: 18px;
+      height: 240px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 2px 2px 4px 4px;
+      position: absolute;
+      left: calc(50% - 9px);
+      top: 40px;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .burette-liquid {
+      width: 100%;
+      height: 100%;
+      background: rgba(59, 130, 246, 0.25);
+      position: absolute;
+      bottom: 0;
+      transition: height 0.3s ease;
+    }
+
+    .stopcock-valve {
+      width: 24px;
+      height: 12px;
+      background: #4b5563;
+      border-radius: 2px;
+      position: absolute;
+      left: calc(50% - 12px);
+      top: 280px;
+      z-index: 3;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .burette-nozzle {
+      width: 4px;
+      height: 25px;
+      background: rgba(255, 255, 255, 0.3);
+      position: absolute;
+      left: calc(50% - 2px);
+      top: 292px;
+      z-index: 2;
+    }
+
+    .chem-drop {
+      width: 6px;
+      height: 10px;
+      background: #60a5fa;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      position: absolute;
+      left: calc(50% - 3px);
+      top: 310px;
+      opacity: 0;
+      z-index: 5;
+    }
+
+    @keyframes drop-fall {
+      0% {
+        top: 310px;
+        opacity: 1;
+        transform: scale(1);
+      }
+      80% {
+        top: 395px;
+        opacity: 1;
+        transform: scale(1.1);
+      }
+      100% {
+        top: 405px;
+        opacity: 0;
+        transform: scale(0.5);
+      }
+    }
+
+    .anim-drop {
+      animation: drop-fall 0.35s linear forwards;
+    }
+
+    .flask-beaker {
+      width: 90px;
+      height: 110px;
+      position: absolute;
+      left: calc(50% - 45px);
+      bottom: 32px;
+      z-index: 2;
+    }
+
+    .flask-neck {
+      width: 24px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 2px solid rgba(255, 255, 255, 0.2);
+      border-right: 2px solid rgba(255, 255, 255, 0.2);
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .flask-body {
+      width: 90px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px 12px 50px 50px / 12px 12px 50px 50px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(2px);
+    }
+
+    .flask-liquid {
+      width: 100%;
+      height: 40%;
+      background: rgba(255, 255, 255, 0.05);
+      position: absolute;
+      bottom: 0;
+      transition: height 0.3s ease, background-color 0.8s ease;
+    }
+
+    .ph-meter-probe {
+      width: 8px;
+      height: 70px;
+      background: #1f2937;
+      border: 1px solid rgba(255,255,255,0.1);
+      position: absolute;
+      left: calc(50% - 4px);
+      bottom: 85px;
+      z-index: 3;
+      border-radius: 4px;
+    }
+
+    .ph-meter-wire {
+      width: 2px;
+      height: 80px;
+      border-left: 2px dashed rgba(255,255,255,0.15);
+      position: absolute;
+      left: calc(50% - 1px);
+      bottom: 155px;
+      z-index: 2;
+    }
+
+    /* AI Syllabus Tutor Chat Interface */
+    .tutor-layout {
+      display: grid;
+      grid-template-cols: 3fr 1fr;
+      gap: 20px;
+      height: calc(100vh - 130px);
+      min-height: 450px;
+    }
+
+    @media (max-width: 900px) {
+      .tutor-layout {
+        grid-template-cols: 1fr;
+      }
+      .tutor-sidebar {
+        display: none;
+      }
+    }
+
+    .chat-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .chat-msg {
+      display: flex;
+      gap: 16px;
+      animation: fade-in-up 0.4s ease forwards;
+    }
+
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .chat-avatar.ai {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+    }
+
+    .chat-avatar.user {
+      background: #374151;
+      color: #fff;
+    }
+
+    .chat-bubble {
+      flex-grow: 1;
+      max-width: calc(100% - 52px);
+    }
+
+    .chat-bubble-header {
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .chat-bubble-text {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .chat-bubble-text code {
+      font-family: var(--font-mono);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fb7185;
+      font-size: 0.85rem;
+    }
+
+    .chat-bubble-text ul {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding-left: 20px;
+    }
+
+    .chat-bubble-text li {
+      list-style-type: disc;
+      margin-bottom: 6px;
+    }
+
+    .chat-input-area {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    .chat-input-form {
+      display: flex;
+      gap: 12px;
+      position: relative;
+    }
+
+    .chat-input {
+      flex-grow: 1;
+      background: var(--bg-darkest);
+      border: 1px solid var(--border-color);
+      border-radius: 99px;
+      padding: 14px 24px;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .chat-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.15);
+    }
+
+    .chat-send-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .chat-send-btn:hover {
+      background: var(--primary-dark);
+      transform: scale(1.05);
+    }
+
+    .tutor-sidebar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .tutor-sidebar-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .topic-pill {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .topic-pill:hover {
+      background: rgba(139, 92, 246, 0.04);
+      border-color: rgba(139, 92, 246, 0.25);
+    }
+
+    .topic-pill-subject {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .topic-pill.chem .topic-pill-subject {
+      color: var(--accent);
+    }
+
+    .topic-pill-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+
+    /* ==========================================
+       4. SCREEN SWITCHERS & LOADING OVERLAYS
+       ========================================== */
+    .transition-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-darkest);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .spinner-ring {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(139, 92, 246, 0.1);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .loading-text {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 0.05em;
+      color: var(--text-main);
+      animation: pulse 1.5s ease infinite;
+    }
+
+    /* Keyframes */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 6px var(--success-glow); }
+      50% { box-shadow: 0 0 14px rgba(16, 185, 129, 0.7); }
+    }
+
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+    /* ==========================================
+       5. RESPONSIVE DESIGN TWEAKS
+       ========================================== */
+    @media (max-width: 900px) {
+      .landing-nav .nav-links {
+        display: none;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      
+      .hero-section {
+        padding: 80px 0 60px 0;
+      }
+      
+      .grade-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .practicals-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOADING / TRANSITION OVERLAY -->
+  <div class="transition-overlay" id="loading-overlay">
+    <div class="spinner-ring"></div>
+    <div class="loading-text" id="loading-text">LAUNCHING VYLAB PLATFORM...</div>
+  </div>
+
+  <!-- =========================================================================
+       VIEW 1: PRODUCT LANDING PAGE
+       ========================================================================= -->
+  <div id="landing-view">
+    
+    <!-- Navigation -->
+    <nav class="landing-nav">
+      <div class="container">
+        <a href="#" class="brand-logo">
+          <i class="fa-solid fa-flask"></i> VyLab
+        </a>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#curriculum">CAPS Curriculum</a></li>
+          <li><a href="#schools">Schools</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="btn btn-secondary" onclick="window.open('https://vylab.vylexnexys.co.za', '_blank')">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Real Platform Portal
+          </button>
+          <button class="btn btn-primary" onclick="launchSandbox('electro')">Launch Simulator</button>
+          <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Banner Notice -->
+    <div class="container">
+      <div class="banner-notice">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>
+          <strong>Notice:</strong> This web environment hosts the <strong>VyLab Guest Simulator Sandbox</strong> (prototype). For full teacher dashboards, class analytics, and SBA practical sheets, go to the <a href="https://vylab.vylexnexys.co.za" target="_blank" rel="noopener">Official VyLab Production Platform</a>.
+        </span>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-grid-overlay"></div>
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fa-solid fa-circle-play"></i> South Africa's Premier EdTech Suite
+          </div>
+          <h1 class="hero-title">
+            Your Pocket <span class="text-gradient-primary">Science Laboratory</span>
+          </h1>
+          <p class="hero-description">
+            Run real experiments from home using interactive simulators. Explore Chemistry and Physics without the need for expensive equipment. Perfectly aligned to the South African CAPS curriculum.
+          </p>
+          <div class="hero-ctas">
+            <button class="btn btn-primary" style="padding: 16px 36px;" onclick="launchSandbox('electro')">
+              <i class="fa-solid fa-flask-vial"></i> Launch guest sandbox
+            </button>
+            <button class="btn btn-secondary" style="padding: 16px 36px;" onclick="window.open('https://vylab.vylexnexys.co.za', '_blank')">
+              <i class="fa-solid fa-school"></i> Visit Official Portal
+            </button>
+            <div class="sub-cta-info">No account registration required — start experimenting instantly as a guest sandbox user.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEM Modules Overview -->
+    <section class="section-padding" id="features">
+      <div class="container">
+        <h2 class="section-title">Powerful STEM Modules</h2>
+        <p class="section-subtitle">Explore our diverse range of interactive science tools designed precisely for high school learners.</p>
+        
+        <div class="modules-grid">
+          <!-- Chemistry -->
+          <div class="glass-card module-card chemistry">
+            <div class="module-icon"><i class="fa-solid fa-vial"></i></div>
+            <h3 class="module-title">Chemistry</h3>
+            <p class="module-description">Run pH indicating titrations, mix inorganic chemicals and observe precipitate formation in real-time visual simulations.</p>
+            <div class="module-link" onclick="launchSandbox('titration')">Open Chemistry Sandbox <i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+          <!-- Physics -->
+          <div class="glass-card module-card">
+            <div class="module-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h3 class="module-title">Physics</h3>
+            <p class="module-description">Adjust voltages and resistance in Ohm's law circuits, or configure velocity and gravity in our 2D projectile kinematics labs.</p>
+            <div class="module-link" onclick="launchSandbox('electro')">Open Physics Sandbox <i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+          <!-- AI Syllabus Tutor -->
+          <div class="glass-card module-card tutor">
+            <div class="module-icon"><i class="fa-solid fa-robot"></i></div>
+            <h3 class="module-title">AI Syllabus Tutor</h3>
+            <p class="module-description">Stuck on a concept? Chat with our AI tutor trained specifically on the CAPS physical science guidelines to guide your learning.</p>
+            <div class="module-link" onclick="launchSandbox('tutor')">Start Chatting with AI <i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAPS Syllabus Curriculum -->
+    <section class="section-padding caps-section" id="curriculum">
+      <div class="container">
+        <h2 class="section-title">Aligned with the CAPS Syllabus</h2>
+        <p class="section-subtitle">A structured three-year Physical Sciences journey. From fundamental Grade 10 measurements to complex Grade 12 systems, we map every topic and provide guided instructions on turning your desk into a lab using smart tech.</p>
+
+        <!-- Partner Integration Banner -->
+        <div class="caps-partner-row">
+          <span style="color: var(--text-dark); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Compatible with leading scientific tools:</span>
+          <div class="partner-tag">Phyphox Phone App</div>
+          <span style="color: var(--text-dark);">/</span>
+          <div class="partner-tag">Tracker Video Analysis</div>
+          <span style="color: var(--text-dark);">/</span>
+          <div class="partner-tag">PhET Interactive Simulators</div>
+        </div>
+
+        <!-- Grade-by-Grade Cards -->
+        <div class="grades-timeline">
+          
+          <!-- Grade 10 -->
+          <div class="glass-card grade-card">
+            <div class="grade-header">
+              <div class="grade-meta">
+                <h3>Grade 10</h3>
+                <p class="grade-subtitle">The Foundation — Transitioning to formal rules of Science</p>
+              </div>
+              <div class="grade-badge">Grade 10 Foundation</div>
+            </div>
+            
+            <div class="grade-body-grid">
+              <div class="topic-list-container">
+                <h4><i class="fa-solid fa-chart-line"></i> Physics Topics</h4>
+                <ul class="topic-list">
+                  <li>Vectors & Scalars (1D direction & magnitude)</li>
+                  <li>Motion in One Dimension (Kinematics)</li>
+                  <li>Mechanical Energy (Conservation of ME)</li>
+                  <li>Waves, Sound, & Light (transverse & longitudinal)</li>
+                  <li>Electricity & Magnetism (electrostatics & DC)</li>
+                </ul>
+              </div>
+              <div class="topic-list-container">
+                <h4><i class="fa-solid fa-atom"></i> Chemistry Topics</h4>
+                <ul class="topic-list">
+                  <li>Matter & Materials (phase change curves)</li>
+                  <li>Atom & Periodic Table (isotopes & configuration)</li>
+                  <li>Chemical Bonding (covalent, ionic, metallic)</li>
+                  <li>Reactions in Aqueous Solutions</li>
+                  <li>Quantitative Aspects (intro to the "mole")</li>
+                  <li>The Hydrosphere (water cycle & purification)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="practicals-footer">
+              <div class="practicals-title">
+                <i class="fa-solid fa-flask"></i> Tech & Guided Practicals:
+                <span>Phase curves, 1D kinematics in Tracker, PhET circuits, wave frequencies via Phyphox mic.</span>
+              </div>
+              <div class="practicals-actions">
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('projectile')"><i class="fa-solid fa-video"></i> Tracker Video</button>
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('circuit')"><i class="fa-solid fa-circle-nodes"></i> PhET Labs</button>
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('tutor')"><i class="fa-solid fa-microphone"></i> Phyphox Mic</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grade 11 -->
+          <div class="glass-card grade-card grade11">
+            <div class="grade-header">
+              <div class="grade-meta">
+                <h3>Grade 11</h3>
+                <p class="grade-subtitle">Deepening Concepts — Invisible forces, fields, and 2D mechanics</p>
+              </div>
+              <div class="grade-badge">Grade 11 Intermediary</div>
+            </div>
+            
+            <div class="grade-body-grid">
+              <div class="topic-list-container">
+                <h4><i class="fa-solid fa-calculator"></i> Physics Topics</h4>
+                <ul class="topic-list">
+                  <li>Vectors in 2D (horizontal & vertical components)</li>
+                  <li>Newton's Laws & Universal Gravitation</li>
+                  <li>Geometrical Optics (Refraction, Snell's law)</li>
+                  <li>Electrostatics (Coulomb's law & fields)</li>
+                  <li>Electromagnetism (Faraday's induction law)</li>
+                  <li>Electric Circuits (Internal resistance & Ohm's law)</li>
+                </ul>
+              </div>
+              <div class="topic-list-container">
+                <h4><i class="fa-solid fa-flask-vial"></i> Chemistry Topics</h4>
+                <ul class="topic-list">
+                  <li>Atomic Combinations (VSEPR & intermolecular forces)</li>
+                  <li>Ideal Gases (Boyle's, Charles's, Gay-Lussac's)</li>
+                  <li>Quantitative Chem (limiting reagents & concentration)</li>
+                  <li>Acids & Bases (neutralisation titrations)</li>
+                  <li>The Lithosphere (mining & mineral processing)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="practicals-footer">
+              <div class="practicals-title">
+                <i class="fa-solid fa-flask"></i> Tech & Guided Practicals:
+                <span>Newton's 2nd law via Phyphox, Boyle syringe vs PhET, evaporation logs, glass block refraction.</span>
+              </div>
+              <div class="practicals-actions">
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('projectile')"><i class="fa-solid fa-car"></i> Newton's Laws</button>
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('circuit')"><i class="fa-solid fa-plug"></i> Ohm's Law Sim</button>
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('tutor')"><i class="fa-solid fa-laser-blast"></i> Snell's Laser</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grade 12 -->
+          <div class="glass-card grade-card grade12">
+            <div class="grade-header">
+              <div class="grade-meta">
+                <h3>Grade 12</h3>
+                <p class="grade-subtitle">Matric Focus — Application & Synthesis (Dynamic systems, organic molecules, and exam prep)</p>
+              </div>
+              <div class="grade-badge">Grade 12 Matric Focus</div>
+            </div>
+            
+            <div class="grade-body-grid">
+              <div class="topic-list-container">
+                <h4><i class="fa-solid fa-wave-square"></i> Physics Topics</h4>
+                <ul class="topic-list">
+                  <li>Momentum & Impulse (collisions on a track)</li>
+                  <li>Vertical Projectile Motion (free-fall graphs)</li>
+                  <li>Work, Energy, & Power (Work-Energy theorem)</li>
+                  <li>Doppler Effect (moving sirens pitch shifts)</li>
+                  <li>Electrodynamics (AC/DC generators & motors)</li>
+                  <li>Optical Phenomena (Photoelectric effect particle proof)</li>
+                </ul>
+              </div>
+              <div class="topic-list-container">
+                <h4><i class="fa-solid fa-dna"></i> Chemistry Topics</h4>
+                <ul class="topic-list">
+                  <li>Organic Chemistry (naming, properties, reactions)</li>
+                  <li>Rates of Reaction (collision theory in action)</li>
+                  <li>Chemical Equilibrium (Le Chatelier's principle)</li>
+                  <li>Acids & Bases (advanced titrations & pH)</li>
+                  <li>Electrochemical Cells (galvanic & electrolytic)</li>
+                  <li>Fertiliser Industry (Haber, Ostwald, Contact)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="practicals-footer">
+              <div class="practicals-title">
+                <i class="fa-solid fa-flask"></i> Tech & Guided Practicals:
+                <span>Momentum cart Tracker, reaction rates cross method, esterification, Doppler soft-ball.</span>
+              </div>
+              <div class="practicals-actions">
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('tutor')"><i class="fa-solid fa-vial-circle-check"></i> Organic Ester</button>
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('titration')"><i class="fa-solid fa-chart-area"></i> Titration Curves</button>
+                <button class="btn btn-secondary practical-btn" onclick="launchSandbox('electro')"><i class="fa-solid fa-rotate"></i> Electrodynamics</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- School Integration / Access -->
+    <section class="section-padding" id="schools">
+      <div class="container">
+        <h2 class="section-title">Flexible Access for Schools & Learners</h2>
+        <p class="section-subtitle">No sign-up is required for individual learners. For schools needing deep integration, we provide custom workspace solutions.</p>
+
+        <div class="pricing-grid">
+          <!-- Individual -->
+          <div class="glass-card pricing-card">
+            <div class="pricing-header">
+              <h3>Individual Student</h3>
+              <p class="pricing-desc">Perfect for home learning, homework help, and matric exam prep.</p>
+            </div>
+            <div class="price-value">R0 <span>/ forever</span></div>
+            <ul class="price-features">
+              <li><i class="fa-solid fa-check"></i> 100% Free Instant Guest Access</li>
+              <li><i class="fa-solid fa-check"></i> All Physics & Chemistry Labs included</li>
+              <li><i class="fa-solid fa-check"></i> AI Syllabus Tutor & AI Sandbox</li>
+            </ul>
+            <button class="btn btn-primary" onclick="launchSandbox('electro')">Start Experimenting</button>
+          </div>
+
+          <!-- School Program -->
+          <div class="glass-card pricing-card premium">
+            <span class="pricing-badge">School Pilot</span>
+            <div class="pricing-header">
+              <h3>For Schools & Teachers</h3>
+              <p class="pricing-desc">Unified dashboard for teachers to manage practical work and student marks.</p>
+            </div>
+            <div class="price-value">Contact Us <span>/ request pilot</span></div>
+            <ul class="price-features">
+              <li><i class="fa-solid fa-check"></i> Custom teacher dashboards & class analytics</li>
+              <li><i class="fa-solid fa-check"></i> Downloadable SBA-aligned practical sheets</li>
+              <li><i class="fa-solid fa-check"></i> Unified Vylex Nexys digital workspace integration</li>
+            </ul>
+            <button class="btn btn-accent" onclick="window.open('/contact.html', '_self')">Contact Vylex Nexys</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="#" class="brand-logo">
+              <i class="fa-solid fa-flask"></i> VyLab
+            </a>
+            <p>South Africa's premier CAPS-aligned virtual science laboratory. Learn Physics and Chemistry through interactive, frictionless simulations.</p>
+          </div>
+          <div>
+            <h4 class="footer-col-title">EdTech Workspace</h4>
+            <ul class="footer-links">
+              <li><a href="https://vylexnexys.co.za" target="_blank" rel="noopener">Vylex Nexys</a></li>
+              <li style="color: var(--text-dark); font-size: 0.85rem;">A unified digital environment engineered to streamline independent study, optimize academic research, and structure daily learning workflows.</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-col-title">Quick Links</h4>
+            <ul class="footer-links">
+              <li><a href="#features">Features</a></li>
+              <li><a href="#curriculum">CAPS Curriculum</a></li>
+              <li><a href="#schools">Launch Simulators</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div>© 2026 VyLab. All rights reserved.</div>
+          <div class="footer-built-by">
+            Built by <a href="https://vylexnexys.co.za" target="_blank" rel="noopener">Vylex Nexys</a> under <a href="#" target="_blank">Vylex</a> (Technology Partner)
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- =========================================================================
+       VIEW 2: IMMERSIVE SIMULATOR WORKSPACE
+       ========================================================================= -->
+  <div id="simulator-view">
+    <div class="workspace-layout">
+      
+      <!-- Sidebar -->
+      <aside class="workspace-sidebar">
+        
+        <div class="sidebar-header">
+          <div class="logo-row">
+            <span class="brand-logo" style="font-size: 1.3rem;"><i class="fa-solid fa-flask"></i> VyLab</span>
+            <span class="tag-sandbox">Sandbox</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section-title">Physics Modules</div>
+          
+          <button class="sidebar-nav-btn active" onclick="switchSim('electro')" id="nav-electro">
+            <i class="fa-solid fa-rotate"></i> Electrodynamics (3D)
+          </button>
+          
+          <button class="sidebar-nav-btn" onclick="switchSim('projectile')" id="nav-projectile">
+            <i class="fa-solid fa-crosshairs"></i> Projectile Motion
+          </button>
+          
+          <button class="sidebar-nav-btn" onclick="switchSim('circuit')" id="nav-circuit">
+            <i class="fa-solid fa-plug"></i> Circuit Laboratory
+          </button>
+
+          <div class="nav-section-title" style="margin-top: 15px;">Chemistry Modules</div>
+          
+          <button class="sidebar-nav-btn" onclick="switchSim('titration')" id="nav-titration">
+            <i class="fa-solid fa-chart-area"></i> Chemical Titration
+          </button>
+
+          <div class="nav-section-title" style="margin-top: 15px;">Study Support</div>
+          
+          <button class="sidebar-nav-btn" onclick="switchSim('tutor')" id="nav-tutor">
+            <i class="fa-solid fa-robot"></i> AI Syllabus Tutor
+          </button>
+        </nav>
+
+        <div class="sidebar-actions">
+          <button class="btn btn-secondary" onclick="exitSimulator()">
+            <i class="fa-solid fa-house"></i> Back to Home
+          </button>
+          <button class="btn btn-primary" onclick="window.open('https://vylab.vylexnexys.co.za', '_blank')">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Real Portal
+          </button>
+        </div>
+
+        <div class="sidebar-status">
+          <div class="status-dot"></div>
+          <div>Systems Online (Engine v3.5)</div>
+        </div>
+
+      </aside>
+
+      <!-- Main Workspace Panel -->
+      <main class="workspace-main">
+        
+        <!-- Top Navigation Bar -->
+        <header class="workspace-topbar">
+          <div class="topbar-title" id="current-sim-title">
+            <i class="fa-solid fa-rotate"></i> Electrodynamics (3D)
+          </div>
+          
+          <div class="topbar-notice">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Guest sandbox demo. Get practical sheets & class codes on the <a href="https://vylab.vylexnexys.co.za" target="_blank" rel="noopener">VyLab Production Portal</a>.</span>
+          </div>
+
+          <div class="topbar-actions">
+            <!-- Quick indicators or buttons -->
+            <button class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.85rem;" onclick="exitSimulator()">
+              <i class="fa-solid fa-house"></i> Home
+            </button>
+          </div>
+        </header>
+
+        <!-- Dynamic Body Workspace -->
+        <div class="workspace-body">
+          
+          <!-- SIM SECTION: ELECTRODYNAMICS -->
+          <section id="sim-electro" class="sim-section active">
+            <div class="sim-grid">
+              
+              <!-- 3D Viewer -->
+              <div class="viewer-card">
+                <div class="viewer-header">
+                  <div class="viewer-title"><i class="fa-solid fa-cube"></i> Real-time 3D Render (Three.js)</div>
+                  <div>
+                    <select id="electroMode" onchange="resetElectro()" style="background: var(--bg-darkest); border: 1px solid var(--border-color); color:#fff; border-radius:4px; padding:4px 8px; font-size:0.8rem; cursor:pointer; outline:none;">
+                      <option value="dc_motor">DC Motor (Split-Ring Commutator)</option>
+                      <option value="ac_generator">AC Generator (Slip Rings)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="viewer-canvas-container" id="electroCanvasContainer">
+                  <!-- Three.js Canvas -->
+                </div>
+              </div>
+
+              <!-- Controls & Live Data -->
+              <div class="controls-card">
+                <h3 class="controls-title"><i class="fa-solid fa-sliders"></i> Simulator Controls</h3>
+                
+                <div class="control-group">
+                  <label class="control-label">
+                    <span id="electroSliderLabel">Applied Voltage (V)</span>
+                    <span class="control-value" id="electroSliderOut">12</span>
+                  </label>
+                  <input id="electroSlider" type="range" min="0" max="24" value="12" />
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">
+                    <span>Magnetic Field Strength (B)</span>
+                    <span class="control-value"><span id="bFieldOut">1.5</span> Tesla</span>
+                  </label>
+                  <input id="bFieldSlider" type="range" min="0.2" max="4.0" step="0.1" value="1.5" />
+                </div>
+
+                <!-- Oscilloscope output -->
+                <div class="control-group" style="flex-grow:1; display:flex; flex-direction:column; justify-content:flex-end;">
+                  <div class="control-label" style="margin-bottom: 5px;">
+                    <span>EMF / Oscilloscope Telemetry</span>
+                  </div>
+                  <div class="electro-oscilloscope">
+                    <canvas id="electroChartCanvas" style="width: 100%; height: 100%;"></canvas>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          <!-- SIM SECTION: PROJECTILE MOTION -->
+          <section id="sim-projectile" class="sim-section">
+            <div class="sim-grid">
+              
+              <!-- Radar Field Tracker -->
+              <div class="viewer-card">
+                <div class="viewer-header">
+                  <div class="viewer-title"><i class="fa-solid fa-radar"></i> Radar Trajectory Plot</div>
+                  <div style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono)">Live Plotting</div>
+                </div>
+                <div class="viewer-canvas-container" style="min-height: 250px; flex-grow:1;">
+                  <canvas id="trajCanvas"></canvas>
+                </div>
+                <!-- Telemetry Cards -->
+                <div class="projectile-telemetry-row" style="padding: 15px; border-top: 1px solid var(--border-color); background: rgba(0,0,0,0.15)">
+                  <div class="telemetry-card">
+                    <div class="telemetry-label">Max Altitude</div>
+                    <div class="telemetry-value" id="hMax">0.0 m</div>
+                  </div>
+                  <div class="telemetry-card">
+                    <div class="telemetry-label">Horizontal Range</div>
+                    <div class="telemetry-value" id="rMax">0.0 m</div>
+                  </div>
+                  <div class="telemetry-card">
+                    <div class="telemetry-label">Time of Flight</div>
+                    <div class="telemetry-value" id="tFly">0.0 s</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Controls -->
+              <div class="controls-card">
+                <h3 class="controls-title"><i class="fa-solid fa-sliders"></i> Kinematics Parameters</h3>
+                
+                <div class="control-group">
+                  <label class="control-label">
+                    <span>Initial Velocity (v₀)</span>
+                    <span class="control-value"><span id="vOut">50</span> m/s</span>
+                  </label>
+                  <input id="vIn" type="range" min="10" max="120" value="50" oninput="updateProjectile()" />
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">
+                    <span>Launch Angle (θ)</span>
+                    <span class="control-value"><span id="aOut">45</span>°</span>
+                  </label>
+                  <input id="aIn" type="range" min="10" max="85" value="45" oninput="updateProjectile()" />
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">
+                    <span>Mass (m)</span>
+                    <span class="control-value"><span id="mOut">10</span> kg</span>
+                  </label>
+                  <input id="mIn" type="range" min="1" max="100" value="10" oninput="updateProjectile()" />
+                </div>
+
+                <div class="control-group" style="flex-direction:row; justify-content:space-between; align-items:center; background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: var(--radius-sm); border:1px solid var(--border-color)">
+                  <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);">Air Resistance (Drag)</span>
+                  <label style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+                    <input type="checkbox" id="dragIn" onchange="updateProjectile()" style="opacity:0; width:0; height:0; display:none;" />
+                    <span id="dragSlider" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#374151; border-radius:34px; transition:0.4s;"></span>
+                  </label>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label"><span>Gravity Context (g)</span></label>
+                  <select id="gIn" onchange="updateProjectile()" style="width:100%; background: var(--bg-darkest); border: 1px solid var(--border-color); color:#fff; border-radius:8px; padding:10px 14px; font-family:var(--font-body); font-size:0.9rem; cursor:pointer; outline:none; transition:var(--transition)">
+                    <option value="9.8">Earth (9.8 m/s²)</option>
+                    <option value="1.62">Moon (1.62 m/s²)</option>
+                    <option value="3.72">Mars (3.72 m/s²)</option>
+                  </select>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          <!-- SIM SECTION: CIRCUIT LABORATORY -->
+          <section id="sim-circuit" class="sim-section">
+            <div class="sim-grid">
+              
+              <!-- Circuit Board -->
+              <div class="viewer-card">
+                <div class="viewer-header">
+                  <div class="viewer-title"><i class="fa-solid fa-microchip"></i> Circuit Schematic View</div>
+                  <div style="font-size:0.8rem; color:var(--text-muted);">DC Direct Current</div>
+                </div>
+                <div class="viewer-canvas-container" style="display:flex; align-items:center; justify-content:center;">
+                  <div class="circuit-container">
+                    <svg viewBox="0 0 400 300" class="circuit-svg">
+                      <!-- Grid guidelines for high-tech look -->
+                      <defs>
+                        <pattern id="circuit-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill="url(#circuit-grid)" />
+
+                      <!-- Wire Paths -->
+                      <path d="M 50,50 L 350,50 L 350,250 L 50,250 Z" class="wire-line"/>
+                      <path d="M 50,50 L 350,50 L 350,250 L 50,250 Z" class="wire-glow" id="wire-glow-effect"/>
+
+                      <!-- Battery representation -->
+                      <g transform="translate(30, 110)">
+                        <rect width="40" height="80" rx="8" fill="#1e293b" stroke="#4b5563" stroke-width="3"/>
+                        <rect x="10" y="-8" width="20" height="8" rx="2" fill="#ef4444" stroke="#4b5563" stroke-width="2"/>
+                        <text x="20" y="32" fill="#ef4444" font-family="Outfit" font-weight="800" font-size="20" text-anchor="middle" alignment-baseline="middle">+</text>
+                        <text x="20" y="62" fill="#3b82f6" font-family="Outfit" font-weight="800" font-size="24" text-anchor="middle" alignment-baseline="middle">-</text>
+                      </g>
+
+                      <!-- Light Bulb / Load representation -->
+                      <g transform="translate(315, 110)">
+                        <circle cx="35" cy="40" r="30" fill="#1e293b" stroke="#4b5563" stroke-width="3" />
+                        <circle cx="35" cy="40" r="30" class="light-bulb-glow" id="bulb-glow" />
+                        <!-- Filament -->
+                        <path d="M 25,50 L 30,35 L 40,35 L 45,50" fill="none" stroke="#6b7280" stroke-width="2"/>
+                        <text x="35" y="40" fill="#ffffff" font-size="28" text-anchor="middle" alignment-baseline="middle" style="opacity:0.9">💡</text>
+                      </g>
+
+                      <!-- Digital Multimeter (Meter) -->
+                      <g transform="translate(145, 20)">
+                        <rect width="110" height="60" rx="6" fill="#0f172a" stroke="#d97706" stroke-width="3" />
+                        <!-- Meter Display screen -->
+                        <rect x="10" y="10" width="90" height="28" rx="4" fill="#020617"/>
+                        <text x="55" y="27" id="meter-display" fill="#fbbf24" font-family="JetBrains Mono" font-size="13" font-weight="700" text-anchor="middle">I = 0.90A</text>
+                        <text x="55" y="50" fill="#6b7280" font-family="Outfit" font-size="9" font-weight="700" text-anchor="middle">LIVE MEASUREMENT</text>
+                      </g>
+
+                      <!-- Floating Electrons (Animated via JS) -->
+                      <circle cx="50" cy="50" r="8" class="electron-dot" id="electron-part-1"/>
+                      <circle cx="200" cy="50" r="8" class="electron-dot" id="electron-part-2"/>
+                      <circle cx="350" cy="150" r="8" class="electron-dot" id="electron-part-3"/>
+                      <circle cx="200" cy="250" r="8" class="electron-dot" id="electron-part-4"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Controls & Calculations -->
+              <div class="controls-card">
+                <h3 class="controls-title"><i class="fa-solid fa-sliders"></i> Electrical Parameters</h3>
+                
+                <div class="control-group">
+                  <label class="control-label">
+                    <span>Voltage Source (V)</span>
+                    <span class="control-value" style="color: #fbbf24; background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2);"><span id="cvOut">9.0</span> V</span>
+                  </label>
+                  <input id="cvIn" type="range" min="1" max="24" step="0.5" value="9" oninput="updateCircuit()" />
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">
+                    <span>Resistive Load (R)</span>
+                    <span class="control-value" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.2);"><span id="crOut">10</span> Ω</span>
+                  </label>
+                  <input id="crIn" type="range" min="1" max="80" value="10" oninput="updateCircuit()" />
+                </div>
+
+                <!-- Digital Readings -->
+                <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.85rem; margin-top:15px; display:flex; flex-direction:column; gap:12px;">
+                  <div style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:8px; font-weight:700; color:var(--text-muted)">Live Formula Dashboard</div>
+                  <div>
+                    <span style="color:#f59e0b">Current (I = V/R):</span>
+                    <div style="background:rgba(0,0,0,0.3); border-radius:4px; padding:6px 12px; margin-top:4px; color:#fff; display:flex; justify-content:space-between;">
+                      <span>I = <span id="math-v">9.0</span>V / <span id="math-r">10</span>Ω</span>
+                      <strong style="color:#fbbf24" id="math-i">0.90 A</strong>
+                    </div>
+                  </div>
+                  <div>
+                    <span style="color:#10b981">Power (P = V * I):</span>
+                    <div style="background:rgba(0,0,0,0.3); border-radius:4px; padding:6px 12px; margin-top:4px; color:#fff; display:flex; justify-content:space-between;">
+                      <span>P = <span id="math-v2">9.0</span>V * <span id="math-i2">0.90</span>A</span>
+                      <strong style="color:#10b981" id="math-p">8.1 W</strong>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          <!-- SIM SECTION: CHEMICAL TITRATION -->
+          <section id="sim-titration" class="sim-section">
+            <div class="sim-grid">
+              
+              <!-- Titration Stand -->
+              <div class="viewer-card">
+                <div class="viewer-header">
+                  <div class="viewer-title"><i class="fa-solid fa-flask-vial"></i> Acid-Base Experimentation Setup</div>
+                  <div id="ph-meter-box" style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; background:#991b1b; color:#fff; padding:4px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(153, 27, 27, 0.4)">
+                    pH: <span id="phValueOut">1.00</span>
+                  </div>
+                </div>
+                <div class="viewer-canvas-container" style="flex-grow:1;">
+                  <div class="titration-container">
+                    <!-- Burette stand -->
+                    <div class="burette-base"></div>
+                    <div class="burette-stand"></div>
+
+                    <!-- Burette tube with graduation lines -->
+                    <div class="burette-tube">
+                      <div class="burette-liquid" id="buretteLiquid" style="height: 100%"></div>
+                    </div>
+                    
+                    <!-- Valve control -->
+                    <div class="stopcock-valve" id="stopcock-valve" onclick="toggleTitrateFlow()"></div>
+                    <div class="burette-nozzle"></div>
+
+                    <!-- Droplet -->
+                    <div class="chem-drop" id="chem-drop"></div>
+
+                    <!-- pH Probe wires -->
+                    <div class="ph-meter-wire"></div>
+                    <div class="ph-meter-probe"></div>
+
+                    <!-- Erlenmeyer Flask -->
+                    <div class="flask-beaker">
+                      <div class="flask-neck"></div>
+                      <div class="flask-body">
+                        <div class="flask-liquid" id="flaskLiquid"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Controls & Graph -->
+              <div class="controls-card">
+                <h3 class="controls-title"><i class="fa-solid fa-flask"></i> Titration Controller</h3>
+                
+                <div class="control-group" style="font-size:0.85rem; color:var(--text-muted); background:rgba(0,0,0,0.15); border:1px solid var(--border-color); padding:12px; border-radius:var(--radius-sm)">
+                  <strong>HCl (Strong Acid) vs NaOH (Strong Base)</strong>
+                  <div style="margin-top:6px; font-size:0.8rem; line-height:1.4">
+                    Beaker: 50 mL of 0.1 M HCl.<br>
+                    Burette: 0.1 M NaOH. Indicator: Phenolphthalein.
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">
+                    <span>NaOH Vol Added (mL)</span>
+                    <span class="control-value" style="color: var(--accent); background: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.2);"><span id="volOut">0.0</span> mL</span>
+                  </label>
+                  <input id="volIn" type="range" min="0" max="100" step="0.5" value="0" oninput="updateTitration()" />
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                  <button class="btn btn-secondary" onclick="resetTitration()" style="flex:1; padding:8px 12px; font-size:0.8rem;">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Lab
+                  </button>
+                  <button class="btn btn-accent" id="auto-flow-btn" onclick="toggleTitrateFlow()" style="flex:1; padding:8px 12px; font-size:0.8rem;">
+                    <i class="fa-solid fa-play"></i> Start Drip
+                  </button>
+                </div>
+
+                <!-- Live Curve graph -->
+                <div class="control-group" style="flex-grow:1; display:flex; flex-direction:column; justify-content:flex-end;">
+                  <div class="control-label" style="margin-bottom: 5px;">
+                    <span>pH Equivalence curve</span>
+                  </div>
+                  <div class="electro-oscilloscope" style="height:150px">
+                    <canvas id="titrationChartCanvas" style="width: 100%; height: 100%;"></canvas>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          <!-- SIM SECTION: AI TUTOR -->
+          <section id="sim-tutor" class="sim-section">
+            <div class="tutor-layout">
+              
+              <!-- Chat Room -->
+              <div class="chat-container">
+                <div class="chat-messages" id="chatLog">
+                  <!-- Messages Injected here -->
+                </div>
+
+                <div class="chat-input-area">
+                  <form class="chat-input-form" onsubmit="sendChat(event)">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Ask about Faraday's Law, titration titration curves, or stoichiometry..." autocomplete="off" />
+                    <button type="submit" id="chatSendBtn" class="chat-send-btn">
+                      <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Suggested Subjects -->
+              <aside class="tutor-sidebar">
+                <div class="tutor-sidebar-title">Syllabus Guidance</div>
+                
+                <div class="topic-pill" onclick="prefillTopic('Faraday\'s Law of Electromagnetic Induction')">
+                  <div class="topic-pill-subject">Physics (Gr11/12)</div>
+                  <div class="topic-pill-title">Faraday's Law</div>
+                </div>
+
+                <div class="topic-pill chem" onclick="prefillTopic('Acid-Base Neutralisation Titrations')">
+                  <div class="topic-pill-subject">Chemistry (Gr11/12)</div>
+                  <div class="topic-pill-title">Titration Curves</div>
+                </div>
+
+                <div class="topic-pill" onclick="prefillTopic('Projectile Kinematics with Air Drag')">
+                  <div class="topic-pill-subject">Physics (Gr10/12)</div>
+                  <div class="topic-pill-title">Projectile Motion</div>
+                </div>
+
+                <div class="topic-pill chem" onclick="prefillTopic('Organic Chemistry naming and esterification')">
+                  <div class="topic-pill-subject">Chemistry (Gr12)</div>
+                  <div class="topic-pill-title">Organic Esters</div>
+                </div>
+              </aside>
+
+            </div>
+          </section>
+
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // VIEW SWITCHER ENGINE
+    // ==========================================
+    function launchSandbox(initialSim) {
+      const loader = document.getElementById('loading-overlay');
+      const loaderText = document.getElementById('loading-text');
+      
+      loaderText.innerText = "INITIALIZING SIMULATOR WORKSPACE...";
+      loader.style.display = 'flex';
+      
+      setTimeout(() => {
+        document.getElementById('landing-view').style.display = 'none';
+        document.getElementById('simulator-view').style.display = 'block';
+        
+        switchSim(initialSim);
+        
+        // Let workspace animations run after rendering
+        setTimeout(() => {
+          loader.style.display = 'none';
+        }, 300);
+      }, 700);
+    }
+
+    function exitSimulator() {
+      const loader = document.getElementById('loading-overlay');
+      const loaderText = document.getElementById('loading-text');
+      
+      loaderText.innerText = "SAVING WORKSPACE AND RETURNING...";
+      loader.style.display = 'flex';
+      
+      // Stop titration auto-drip if running
+      if (titFlowInterval) {
+        clearInterval(titFlowInterval);
+        titFlowInterval = null;
+        document.getElementById('auto-flow-btn').innerHTML = '<i class="fa-solid fa-play"></i> Start Drip';
+      }
+      
+      setTimeout(() => {
+        document.getElementById('simulator-view').style.display = 'none';
+        document.getElementById('landing-view').style.display = 'block';
+        
+        setTimeout(() => {
+          loader.style.display = 'none';
+        }, 200);
+      }, 600);
+    }
+
+    function switchSim(simId) {
+      // Deactivate all sections & tabs
+      document.querySelectorAll('.sim-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.sidebar-nav-btn').forEach(el => el.classList.remove('active'));
+      
+      // Activate selected section
+      const targetSection = document.getElementById(`sim-${simId}`);
+      if (targetSection) targetSection.classList.add('active');
+      
+      const targetTab = document.getElementById(`nav-${simId}`);
+      if (targetTab) targetTab.classList.add('active');
+
+      // Update Top Navigation Title
+      const titleEl = document.getElementById('current-sim-title');
+      const titles = {
+        'electro': '<i class="fa-solid fa-rotate"></i> Electrodynamics (3D)',
+        'projectile': '<i class="fa-solid fa-crosshairs"></i> Projectile Motion Radar',
+        'circuit': '<i class="fa-solid fa-plug"></i> DC Circuit Laboratory',
+        'titration': '<i class="fa-solid fa-flask-vial"></i> Acid-Base Chemical Titration',
+        'tutor': '<i class="fa-solid fa-robot"></i> AI Syllabus Assistant'
+      };
+      if (titleEl && titles[simId]) {
+        titleEl.innerHTML = titles[simId];
+      }
+
+      // Re-trigger Canvas initializations
+      if (simId === 'electro') initElectro();
+      if (simId === 'projectile') initProjectile();
+      if (simId === 'circuit') initCircuit();
+      if (simId === 'titration') initTitration();
+    }
+
+
+    // =========================================================================
+    // 1. 3D ELECTRODYNAMICS SIMULATOR (THREE.JS)
+    // =========================================================================
+    let electroInit = false;
+    let electroScene, electroCamera, electroRenderer, electroCoil, electroShaft;
+    let electroChart = null;
+    let electroChartData = [];
+    let chargesGroup;
+    let chargeSpheres = [];
+
+    function initElectro() {
+      if (electroInit) return;
+      electroInit = true;
+
+      const container = document.getElementById('electroCanvasContainer');
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      // Scene
+      electroScene = new THREE.Scene();
+      electroScene.background = new THREE.Color('#090d16');
+
+      // Camera
+      electroCamera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
+      electroCamera.position.set(4, 5, 8);
+      electroCamera.lookAt(0, 0, 0);
+
+      // Renderer
+      electroRenderer = new THREE.WebGLRenderer({ antialias: true });
+      electroRenderer.setSize(w, h);
+      electroRenderer.shadowMap.enabled = true;
+      container.appendChild(electroRenderer.domElement);
+
+      // Light
+      const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+      electroScene.add(ambient);
+
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      dirLight.position.set(5, 12, 6);
+      dirLight.castShadow = true;
+      electroScene.add(dirLight);
+
+      // Magnet N
+      const magnetNGeo = new THREE.BoxGeometry(1.6, 1.8, 3);
+      const magnetNMat = new THREE.MeshPhongMaterial({ color: 0xef4444, shininess: 80 });
+      const magnetN = new THREE.Mesh(magnetNGeo, magnetNMat);
+      magnetN.position.set(-2.8, 0, 0);
+      electroScene.add(magnetN);
+
+      // Magnet S
+      const magnetSGeo = new THREE.BoxGeometry(1.6, 1.8, 3);
+      const magnetSMat = new THREE.MeshPhongMaterial({ color: 0x3b82f6, shininess: 80 });
+      const magnetS = new THREE.Mesh(magnetSGeo, magnetSMat);
+      magnetS.position.set(2.8, 0, 0);
+      electroScene.add(magnetS);
+
+      // Shaft
+      const shaftGeo = new THREE.CylinderGeometry(0.08, 0.08, 6.2, 16);
+      const shaftMat = new THREE.MeshPhongMaterial({ color: 0x6b7280 });
+      electroShaft = new THREE.Mesh(shaftGeo, shaftMat);
+      electroShaft.rotation.x = Math.PI / 2;
+      electroScene.add(electroShaft);
+
+      // Commutator / Slip Rings Group
+      const ringsGroup = new THREE.Group();
+      const ringGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.3, 16);
+      const ringMat = new THREE.MeshPhongMaterial({ color: 0xd97706, metalness: 0.9 });
+      const ring1 = new THREE.Mesh(ringGeo, ringMat);
+      ring1.position.z = 1.8;
+      ring1.rotation.x = Math.PI / 2;
+      ringsGroup.add(ring1);
+      
+      const ring2 = new THREE.Mesh(ringGeo, ringMat);
+      ring2.position.z = 2.2;
+      ring2.rotation.x = Math.PI / 2;
+      ringsGroup.add(ring2);
+      electroShaft.add(ringsGroup);
+
+      // Copper Wire Coil
+      electroCoil = new THREE.Group();
+      const wireMat = new THREE.MeshPhongMaterial({ color: 0xf59e0b, shininess: 120 });
+      
+      // Wire Cylinders
+      const sideWireGeo = new THREE.CylinderGeometry(0.06, 0.06, 3, 16);
+      const frontWireGeo = new THREE.CylinderGeometry(0.06, 0.06, 2, 16);
+
+      const wireL = new THREE.Mesh(sideWireGeo, wireMat);
+      wireL.position.x = -1.0;
+      electroCoil.add(wireL);
+
+      const wireR = new THREE.Mesh(sideWireGeo, wireMat);
+      wireR.position.x = 1.0;
+      electroCoil.add(wireR);
+
+      const wireFront = new THREE.Mesh(frontWireGeo, wireMat);
+      wireFront.position.z = 1.5;
+      wireFront.rotation.z = Math.PI / 2;
+      electroCoil.add(wireFront);
+
+      const wireBack = new THREE.Mesh(frontWireGeo, wireMat);
+      wireBack.position.z = -1.5;
+      wireBack.rotation.z = Math.PI / 2;
+      electroCoil.add(wireBack);
+
+      electroScene.add(electroCoil);
+
+      // Flowing Charges (little glowing yellow spheres along the coil path)
+      chargesGroup = new THREE.Group();
+      const chargeGeo = new THREE.SphereGeometry(0.06, 8, 8);
+      const chargeMat = new THREE.MeshBasicMaterial({ color: 0xfffbeb });
+      
+      // Generate charge coordinates in rectangular path
+      for (let i = 0; i < 16; i++) {
+        const sphere = new THREE.Mesh(chargeGeo, chargeMat);
+        chargesGroup.add(sphere);
+        chargeSpheres.push(sphere);
+      }
+      electroCoil.add(chargesGroup);
+
+      // Resize Listener
+      window.addEventListener('resize', () => {
+        if (!document.getElementById('sim-electro').classList.contains('active')) return;
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        electroCamera.aspect = w / h;
+        electroCamera.updateProjectionMatrix();
+        electroRenderer.setSize(w, h);
+      });
+
+      // Chart.js Oscilloscope
+      const ctx = document.getElementById('electroChartCanvas').getContext('2d');
+      electroChartData = Array(100).fill(0);
+      electroChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array.from({ length: 100 }, (_, i) => i),
+          datasets: [{
+            data: electroChartData,
+            borderColor: '#8b5cf6',
+            borderWidth: 2,
+            pointRadius: 0,
+            fill: false,
+            tension: 0.15
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { display: false },
+            y: { min: -35, max: 35, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b7280' } }
+          }
+        }
+      });
+
+      // Reset values first
+      resetElectro();
+
+      // Start animation loop
+      requestAnimationFrame(animateElectro);
+    }
+
+    function resetElectro() {
+      electroChartData = Array(100).fill(0);
+      const mode = document.getElementById('electroMode').value;
+      if (mode === 'dc_motor') {
+        document.getElementById('electroSliderLabel').textContent = "Applied Voltage (V)";
+        document.getElementById('electroSlider').max = "24";
+        document.getElementById('electroSlider').value = "12";
+      } else {
+        document.getElementById('electroSliderLabel').textContent = "Crank Rotational Speed (RPM)";
+        document.getElementById('electroSlider').max = "100";
+        document.getElementById('electroSlider').value = "40";
+      }
+    }
+
+    let chargeProgress = 0;
+
+    function animateElectro() {
+      if (!document.getElementById('sim-electro').classList.contains('active')) {
+        requestAnimationFrame(animateElectro);
+        return;
+      }
+
+      const mode = document.getElementById('electroMode').value;
+      const inputVal = parseFloat(document.getElementById('electroSlider').value);
+      const B = parseFloat(document.getElementById('bFieldSlider').value);
+
+      document.getElementById('electroSliderOut').textContent = inputVal.toFixed(0);
+      document.getElementById('bFieldOut').textContent = B.toFixed(1);
+
+      let speed = 0;
+      let emf = 0;
+
+      if (mode === 'dc_motor') {
+        // Rotational speed of DC motor proportional to V and field B
+        speed = (inputVal * B) * 0.003;
+      } else {
+        // Crank Speed of AC generator
+        speed = inputVal * 0.001;
+      }
+
+      // Rotate motor/generator elements
+      if (electroCoil && electroShaft) {
+        electroCoil.rotation.z += speed;
+        electroShaft.rotation.y = electroCoil.rotation.z; // Rotate commutator alignment
+        
+        if (mode === 'ac_generator') {
+          // AC emf is sinusoid
+          emf = Math.sin(electroCoil.rotation.z) * inputVal * B * 0.35;
+        } else {
+          // DC emf is rectified ripple
+          emf = inputVal * (0.9 + 0.1 * Math.abs(Math.cos(electroCoil.rotation.z * 2)));
+        }
+      }
+
+      // Animate flowing charge particles along the wires
+      chargeProgress += speed * 5;
+      const numCharges = chargeSpheres.length;
+      
+      // Wire path configuration
+      const pathLength = 10; // total length around loop: 2*(side) + 2*(front) = 2*3 + 2*2 = 10
+      for (let i = 0; i < numCharges; i++) {
+        // Spaced out position along wire path loop
+        const t = ((chargeProgress + (i / numCharges) * pathLength) % pathLength);
+        const sphere = chargeSpheres[i];
+        
+        let x = 0, z = 0;
+        if (t < 3) {
+          x = -1.0;
+          z = -1.5 + t;
+        } else if (t < 5) {
+          x = -1.0 + (t - 3);
+          z = 1.5;
+        } else if (t < 8) {
+          x = 1.0;
+          z = 1.5 - (t - 5);
+        } else {
+          x = 1.0 - (t - 8);
+          z = -1.5;
+        }
+        
+        // Shift position if velocity is zero
+        if (inputVal === 0) {
+          sphere.visible = false;
+        } else {
+          sphere.visible = true;
+          sphere.position.set(x, 0, z);
+        }
+      }
+
+      // Update telemetry array
+      electroChartData.push(emf);
+      if (electroChartData.length > 100) electroChartData.shift();
+
+      if (electroChart) {
+        electroChart.data.datasets[0].data = electroChartData;
+        
+        // Dynamically style lines based on generator/motor
+        if (mode === 'dc_motor') {
+          electroChart.data.datasets[0].borderColor = '#fbbf24'; // Yellow for dc
+        } else {
+          electroChart.data.datasets[0].borderColor = '#8b5cf6'; // Violet for ac
+        }
+        electroChart.update();
+      }
+
+      electroRenderer.render(electroScene, electroCamera);
+      requestAnimationFrame(animateElectro);
+    }
+
+
+    // =========================================================================
+    // 2. PROJECTILE MOTION RADAR SIMULATOR
+    // =========================================================================
+    let projInit = false;
+    let trajectoryPoints = [];
+
+    function initProjectile() {
+      if (projInit) return;
+      projInit = true;
+      
+      // Simple toggle styling for custom drag switch
+      const dragSlider = document.getElementById('dragSlider');
+      const dragCheckbox = document.getElementById('dragIn');
+      dragSlider.onclick = function() {
+        dragCheckbox.checked = !dragCheckbox.checked;
+        if (dragCheckbox.checked) {
+          dragSlider.style.backgroundColor = '#8b5cf6';
+          dragSlider.style.boxShadow = '0 0 10px rgba(139, 92, 246, 0.5)';
+        } else {
+          dragSlider.style.backgroundColor = '#374151';
+          dragSlider.style.boxShadow = 'none';
+        }
+        updateProjectile();
+      };
+      
+      updateProjectile();
+    }
+
+    function updateProjectile() {
+      const v0 = parseFloat(document.getElementById('vIn').value);
+      const angle = parseFloat(document.getElementById('aIn').value);
+      const mass = parseFloat(document.getElementById('mIn').value);
+      const g = parseFloat(document.getElementById('gIn').value);
+      const hasDrag = document.getElementById('dragIn').checked;
+
+      document.getElementById('vOut').textContent = v0;
+      document.getElementById('aOut').textContent = angle;
+      document.getElementById('mOut').textContent = mass;
+
+      // Kinematics calculations
+      const rad = angle * Math.PI / 180;
+      let vx = v0 * Math.cos(rad);
+      let vy = v0 * Math.sin(rad);
+      let x = 0;
+      let y = 0;
+      let t = 0;
+      const dt = 0.04;
+      
+      trajectoryPoints = [{x: 0, y: 0}];
+      
+      const dragCoeff = hasDrag ? 0.015 : 0;
+      let hMax = 0;
+
+      // Step physics Euler integration
+      while (y >= 0 && t < 100) {
+        t += dt;
+        const speed = Math.sqrt(vx * vx + vy * vy);
+        const dragAcc = (dragCoeff / mass) * speed * speed;
+        const dragAccX = -dragAcc * (vx / speed) || 0;
+        const dragAccY = -dragAcc * (vy / speed) || 0;
+
+        vx += dragAccX * dt;
+        vy += (dragAccY - g) * dt;
+
+        x += vx * dt;
+        y += vy * dt;
+
+        if (y > hMax) hMax = y;
+        if (y >= 0) {
+          trajectoryPoints.push({ x: x, y: y });
+        }
+      }
+
+      // Set telemetry labels
+      document.getElementById('hMax').textContent = hMax.toFixed(1) + " m";
+      document.getElementById('rMax').textContent = x.toFixed(1) + " m";
+      document.getElementById('tFly').textContent = t.toFixed(1) + " s";
+
+      drawProjectileRadar();
+    }
+
+    function drawProjectileRadar() {
+      const canvas = document.getElementById('trajCanvas');
+      const ctx = canvas.getContext('2d');
+      if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      // Radar styling
+      const width = rect.width;
+      const height = rect.height;
+
+      // Draw radar grid lines
+      ctx.strokeStyle = 'rgba(59, 130, 246, 0.08)';
+      ctx.lineWidth = 1;
+      
+      // Horizontal grid lines
+      for (let y = 20; y < height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+      // Vertical grid lines
+      for (let x = 20; x < width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+
+      // Draw Radar concentric circles
+      ctx.strokeStyle = 'rgba(59, 130, 246, 0.05)';
+      ctx.beginPath();
+      ctx.arc(0, height, width * 0.35, 1.5 * Math.PI, 2 * Math.PI);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(0, height, width * 0.7, 1.5 * Math.PI, 2 * Math.PI);
+      ctx.stroke();
+
+      if (trajectoryPoints.length === 0) return;
+
+      // Map physics coordinates to canvas coordinates
+      const padding = 35;
+      const graphWidth = width - padding * 2;
+      const graphHeight = height - padding * 2;
+
+      const maxX = Math.max(...trajectoryPoints.map(p => p.x), 20);
+      const maxY = Math.max(...trajectoryPoints.map(p => p.y), 20);
+
+      // Draw path line
+      ctx.beginPath();
+      ctx.moveTo(padding, height - padding);
+
+      trajectoryPoints.forEach(p => {
+        const cx = padding + (p.x / maxX) * graphWidth;
+        const cy = (height - padding) - (p.y / maxY) * graphHeight;
+        ctx.lineTo(cx, cy);
+      });
+
+      // Path glow
+      ctx.shadowColor = 'rgba(59, 130, 246, 0.5)';
+      ctx.shadowBlur = 10;
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      
+      // Reset shadows
+      ctx.shadowBlur = 0;
+
+      // Draw launching launcher node
+      ctx.fillStyle = '#1e293b';
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(padding, height - padding, 10, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+
+      // Draw projectile landing node
+      const lastPoint = trajectoryPoints[trajectoryPoints.length - 1];
+      const lx = padding + (lastPoint.x / maxX) * graphWidth;
+      const ly = (height - padding) - (lastPoint.y / maxY) * graphHeight;
+
+      ctx.shadowColor = 'rgba(244, 63, 94, 0.8)';
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = '#f43f5e';
+      ctx.beginPath();
+      ctx.arc(lx, ly, 6, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+
+    // =========================================================================
+    // 3. DC CIRCUIT LABORATORY SIMULATOR
+    // =========================================================================
+    let circuitInit = false;
+    let electronPositions = [0, 0.25, 0.5, 0.75]; // path phase normalized 0.0 to 1.0
+
+    function initCircuit() {
+      if (circuitInit) return;
+      circuitInit = true;
+      
+      updateCircuit();
+      requestAnimationFrame(animateCircuit);
+    }
+
+    function updateCircuit() {
+      const V = parseFloat(document.getElementById('cvIn').value);
+      const R = parseFloat(document.getElementById('crIn').value);
+      const I = V / R;
+      const P = V * I;
+
+      document.getElementById('cvOut').textContent = V.toFixed(1);
+      document.getElementById('crOut').textContent = R.toFixed(0);
+
+      // Mathematical readouts
+      document.getElementById('math-v').textContent = V.toFixed(1);
+      document.getElementById('math-r').textContent = R.toFixed(0);
+      document.getElementById('math-i').textContent = I.toFixed(2) + " A";
+      
+      document.getElementById('math-v2').textContent = V.toFixed(1);
+      document.getElementById('math-i2').textContent = I.toFixed(2);
+      document.getElementById('math-p').textContent = P.toFixed(1) + " W";
+
+      // Digital display meter
+      document.getElementById('meter-display').textContent = `I = ${I.toFixed(2)}A`;
+
+      // Glow wire & bulb effects
+      const bulbGlow = document.getElementById('bulb-glow');
+      const wireGlow = document.getElementById('wire-glow-effect');
+      
+      // Scale glow brightness
+      const intensity = Math.min(1.0, P / 45); // Max out visual glow at 45W
+      bulbGlow.style.opacity = intensity;
+      wireGlow.style.opacity = intensity * 0.8;
+    }
+
+    function animateCircuit() {
+      if (!document.getElementById('sim-circuit').classList.contains('active')) {
+        requestAnimationFrame(animateCircuit);
+        return;
+      }
+
+      const V = parseFloat(document.getElementById('cvIn').value);
+      const R = parseFloat(document.getElementById('crIn').value);
+      const I = V / R;
+
+      // Speed of electrons proportional to current
+      const speed = I * 0.005;
+
+      // Loop over path: Top line (y=50, x=50->350), Right line (x=350, y=50->250), Bottom line (y=250, x=350->50), Left line (x=50, y=250->50)
+      // Wire dimensions
+      const xStart = 50, xEnd = 350;
+      const yStart = 50, yEnd = 250;
+      const wireWidth = xEnd - xStart; // 300
+      const wireHeight = yEnd - yStart; // 200
+      const perimeter = wireWidth * 2 + wireHeight * 2; // 1000
+
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`electron-part-${i}`);
+        if (!dot) continue;
+
+        electronPositions[i-1] = (electronPositions[i-1] + speed) % 1.0;
+        const d = electronPositions[i-1] * perimeter;
+
+        let cx = 0, cy = 0;
+        if (d < wireWidth) {
+          cx = xStart + d;
+          cy = yStart;
+        } else if (d < wireWidth + wireHeight) {
+          cx = xEnd;
+          cy = yStart + (d - wireWidth);
+        } else if (d < wireWidth * 2 + wireHeight) {
+          cx = xEnd - (d - (wireWidth + wireHeight));
+          cy = yEnd;
+        } else {
+          cx = xStart;
+          cy = yEnd - (d - (wireWidth * 2 + wireHeight));
+        }
+
+        dot.setAttribute('cx', cx);
+        dot.setAttribute('cy', cy);
+      }
+
+      requestAnimationFrame(animateCircuit);
+    }
+
+
+    // =========================================================================
+    // 4. CHEMICAL TITRATION SIMULATOR
+    // =========================================================================
+    let titInit = false;
+    let titChart = null;
+    let titrationDataPoints = [];
+    let titFlowInterval = null;
+
+    function initTitration() {
+      if (titInit) return;
+      titInit = true;
+
+      // Chart.js pH titration curve
+      const ctx = document.getElementById('titrationChartCanvas').getContext('2d');
+      titChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'pH level',
+            data: [],
+            borderColor: '#f43f5e',
+            backgroundColor: 'rgba(244,63,94,0.06)',
+            borderWidth: 2,
+            pointRadius: 0,
+            fill: true,
+            tension: 0.35
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { title: { display: true, text: 'Added NaOH (mL)', color: '#6b7280' }, ticks: { color: '#6b7280' }, grid: { color: 'rgba(255,255,255,0.03)' } },
+            y: { min: 0, max: 14, title: { display: true, text: 'pH', color: '#6b7280' }, ticks: { color: '#6b7280' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          }
+        }
+      });
+
+      updateTitration();
+    }
+
+    function resetTitration() {
+      document.getElementById('volIn').value = 0;
+      
+      if (titFlowInterval) {
+        clearInterval(titFlowInterval);
+        titFlowInterval = null;
+        document.getElementById('auto-flow-btn').innerHTML = '<i class="fa-solid fa-play"></i> Start Drip';
+      }
+      
+      updateTitration();
+    }
+
+    function toggleTitrateFlow() {
+      const valve = document.getElementById('stopcock-valve');
+      
+      if (titFlowInterval) {
+        clearInterval(titFlowInterval);
+        titFlowInterval = null;
+        valve.style.transform = "rotate(0deg)";
+        document.getElementById('auto-flow-btn').innerHTML = '<i class="fa-solid fa-play"></i> Start Drip';
+      } else {
+        valve.style.transform = "rotate(90deg)";
+        document.getElementById('auto-flow-btn').innerHTML = '<i class="fa-solid fa-pause"></i> Stop Drip';
+        
+        titFlowInterval = setInterval(() => {
+          const input = document.getElementById('volIn');
+          let currentVal = parseFloat(input.value);
+          if (currentVal < 100) {
+            currentVal += 0.5;
+            input.value = currentVal;
+            updateTitration();
+            triggerDroplet();
+          } else {
+            // End of titration range
+            clearInterval(titFlowInterval);
+            titFlowInterval = null;
+            valve.style.transform = "rotate(0deg)";
+            document.getElementById('auto-flow-btn').innerHTML = '<i class="fa-solid fa-play"></i> Start Drip';
+          }
+        }, 120);
+      }
+    }
+
+    function triggerDroplet() {
+      const drop = document.getElementById('chem-drop');
+      drop.classList.remove('anim-drop');
+      // trigger reflow
+      void drop.offsetWidth;
+      drop.classList.add('anim-drop');
+    }
+
+    function updateTitration() {
+      const vol = parseFloat(document.getElementById('volIn').value);
+      document.getElementById('volOut').textContent = vol.toFixed(1);
+
+      // Acid-Base calculations: Strong Acid (HCl) vs Strong Base (NaOH)
+      // Standard values: 50 mL of 0.1 M HCl titrated with 0.1 M NaOH
+      const vAcid = 50.0;
+      const mAcid = 0.1;
+      const mBase = 0.1;
+
+      const molesAcid = vAcid * mAcid;
+      const molesBase = vol * mBase;
+      const totalVolume = vAcid + vol;
+
+      let pH = 7.0;
+
+      if (molesAcid > molesBase) {
+        // Excess hydrogen ions
+        const excessH = (molesAcid - molesBase) / totalVolume;
+        pH = -Math.log10(excessH);
+      } else if (molesBase > molesAcid) {
+        // Excess hydroxide ions
+        const excessOH = (molesBase - molesAcid) / totalVolume;
+        const pOH = -Math.log10(excessOH);
+        pH = 14.0 - pOH;
+      } else {
+        // Neutral equivalence point
+        pH = 7.0;
+      }
+
+      document.getElementById('phValueOut').textContent = pH.toFixed(2);
+      
+      // Update red alert bg for equivalence state
+      const phBox = document.getElementById('ph-meter-box');
+      if (pH > 6.5 && pH < 7.5) {
+        phBox.style.background = '#047857'; // emerald-700 for neutral
+      } else if (pH >= 7.5) {
+        phBox.style.background = '#b91c1c'; // red-700
+      } else {
+        phBox.style.background = '#4f46e5'; // indigo-600
+      }
+
+      // Visual updates (indicator colors)
+      // Phenolphthalein turns pink at pH >= 8.2
+      const flaskLiquid = document.getElementById('flaskLiquid');
+      if (pH < 8.2) {
+        flaskLiquid.style.backgroundColor = 'rgba(255, 255, 255, 0.08)'; // Clear
+      } else if (pH < 9.5) {
+        // Faint light pink transition
+        flaskLiquid.style.backgroundColor = 'rgba(244, 63, 94, 0.3)';
+      } else {
+        // Intense magenta/pink
+        flaskLiquid.style.backgroundColor = 'rgba(244, 63, 94, 0.7)';
+      }
+
+      // Scale height of flask liquid based on vol added
+      flaskLiquid.style.height = `${40 + (vol * 0.35)}%`;
+
+      // Drain base from burette
+      document.getElementById('buretteLiquid').style.height = `${100 - vol}%`;
+
+      // Update titration chart data
+      generateCurveData(vol);
+    }
+
+    function generateCurveData(volLimit) {
+      const vAcid = 50.0;
+      const mAcid = 0.1;
+      const mBase = 0.1;
+      const labels = [];
+      const values = [];
+
+      for (let v = 0; v <= volLimit; v += 1) {
+        labels.push(v);
+        let phVal = 7.0;
+        const molesAc = vAcid * mAcid;
+        const molesBa = v * mBase;
+        const totalV = vAcid + v;
+
+        if (molesAc > molesBa) {
+          phVal = -Math.log10((molesAc - molesBa) / totalV);
+        } else if (molesBa > molesAc) {
+          phVal = 14.0 - (-Math.log10((molesBa - molesAc) / totalV));
+        }
+        values.push(phVal);
+      }
+
+      if (titChart) {
+        titChart.data.labels = labels;
+        titChart.data.datasets[0].data = values;
+        titChart.update();
+      }
+    }
+
+
+    // =========================================================================
+    // 5. AI SYLLABUS TUTOR CHAT BOT (CAPS ALIGNED)
+    // =========================================================================
+    const chatLog = document.getElementById('chatLog');
+    const chatInput = document.getElementById('chatInput');
+    const chatBtn = document.getElementById('chatSendBtn');
+
+    function renderMessage(role, text) {
+      const isUser = role === 'user';
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'chat-msg';
+
+      const avatar = isUser
+        ? '<div class="chat-avatar user">U</div>'
+        : '<div class="chat-avatar ai"><i class="fa-solid fa-robot"></i></div>';
+
+      const name = isUser ? 'You (Learner)' : 'VyLab CAPS Assistant';
+
+      // Basic Markdown parser for code and lists
+      let htmlText = escapeHTML(text)
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\n\* (.*?)(?=\n|$)/g, '<li>$1</li>');
+        
+      if (htmlText.includes('<li>')) {
+        // Wrap lists inside ul tags
+        htmlText = htmlText.replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>');
+      }
+
+      msgDiv.innerHTML = `
+        ${avatar}
+        <div class="chat-bubble">
+          <div class="chat-bubble-header">${name}</div>
+          <div class="chat-bubble-text">${htmlText}</div>
+        </div>
+      `;
+
+      chatLog.appendChild(msgDiv);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+
+    function prefillTopic(topic) {
+      chatInput.value = `Can you explain ${topic} in detail?`;
+      chatInput.focus();
+    }
+
+    async function sendChat(event) {
+      event.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      renderMessage('user', text);
+      chatInput.value = '';
+      chatBtn.disabled = true;
+
+      // Simulate typing speed delay
+      await new Promise(r => setTimeout(r, 700));
+
+      const query = text.toLowerCase();
+      let response = "I'm trained specifically on South African high school Physical Sciences guidelines. Could you specify a topic related to Grade 10, 11, or 12 science?";
+
+      if (query.includes('faraday') || query.includes('electromagnetism') || query.includes('induct')) {
+        response = "Faraday's Law of Electromagnetic Induction states that the magnitude of the induced electromotive force (emf) is directly proportional to the rate of change of magnetic flux linkage.\n\n* Formula: `emf = -N * (ΔΦ / Δt)`\n* N = Number of turns in the coil.\n* ΔΦ/Δt = Rate of change of magnetic flux.\n* Check out the AC Generator mode in the Electrodynamics module to see how rotational movement induces an alternating emf wave.";
+      } else if (query.includes('titration') || query.includes('acid') || query.includes('neutralis')) {
+        response = "Acid-Base Neutralisation Titrations involve adding a known concentration of acid/base (titrant) to an unknown concentration to reach the equivalence point (where moles of H₃O⁺ = moles of OH⁻).\n\n* For a Strong Acid + Strong Base titration (like HCl + NaOH), the equivalence point pH is exactly 7.0.\n* Phenolphthalein is a common indicator used in this range; it is clear in acidic solutions and turns a distinct pink color above pH 8.2.\n* Use the Chemical Titration module to perform a virtual experiment and plot the live pH curve.";
+      } else if (query.includes('projectile') || query.includes('drag') || query.includes('kinematics')) {
+        response = "Projectile motion describes objects moving in a 2D trajectory. In the CAPS curriculum, we look at equations of motion under uniform gravitational acceleration.\n\n* Without drag: Horizontally, velocity remains constant (`vx = v0 * cos(θ)`). Vertically, acceleration is constant (`g = 9.8 m/s²`).\n* With drag (air resistance): Drag opposes the velocity vector, reducing both the range and maximum height. The trajectory curve becomes asymmetrical.\n* Run experiments in the Projectile Motion module to compare flight logs under Earth, Mars, or Moon gravity.";
+      } else if (query.includes('ester') || query.includes('organic') || query.includes('esterification')) {
+        response = "Esterification is a condensation reaction where a carboxylic acid and an alcohol react in the presence of an acid catalyst (usually concentrated sulfuric acid) to form an ester and water.\n\n* General word equation: `Carboxylic Acid + Alcohol ⇌ Ester + Water`\n* Esters are characterised by sweet, fruity smells and are used as food flavorings or perfumes.\n* Grade 12 students are expected to name esters using IUPAC nomenclature (e.g., ethyl ethanoate).";
+      }
+
+      renderMessage('ai', response);
+      chatBtn.disabled = false;
+    }
+
+    // Default Greeting
+    renderMessage('ai', "Hello! I am your VyLab Syllabus Assistant. Ask me any question on Grade 10-12 Physics or Chemistry CAPS topics, or select a suggested topic on the right.");
+
+    // Auto-launch default simulation on loading (just sets state variables)
+    // The visual three.js etc will trigger when views are activated
+  </script>
+</body>
+
+</html>
