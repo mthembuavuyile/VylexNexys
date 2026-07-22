@@ -6,17 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary SEO -->
-  <title>SACite — Free Citation Generator for Harvard, APA, Chicago & OSCOLA</title>
+  <title>SACite — Free Academic Citation Generator | Vylex Nexys</title>
   <meta name="description"
-    content="Generate accurate citations in Harvard, APA, Chicago, and OSCOLA formats. Fast, simple, and designed for South African students.">
+    content="Generate accurate citations in Harvard, APA, Chicago, OSCOLA, and Vancouver formats. Fast, simple, and tailored for South African students and universities.">
 
   <!-- Canonical -->
-  <link rel="canonical" href="https://vylexnexys.co.za/tools/sacite">
+  <link rel="canonical" href="https://vylexnexys.co.za/tools/SaCite.html">
 
-  <!-- Fonts -->
+  <!-- Icons & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
 
   <!-- Styles -->
@@ -25,43 +27,63 @@
 
 <body>
 
-  <header class="header">
-    <div class="header-inner">
-      <div class="header-badge">🇿🇦 Built for South African Students</div>
-      <h1>SA <span>Cite</span></h1>
-      <p>Generate accurate references in Harvard, APA, Chicago, OSCOLA & Vancouver — the styles used at South African
-        universities.</p>
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="app-header-inner">
+      <a href="/tools/index.html" class="nav-brand">
+        <span class="brand-icon"><i class="fa-solid fa-quote-right"></i></span>
+        <span>Vylex Nexys <span>SACite</span></span>
+      </a>
+      <div class="nav-actions">
+        <a href="/tools/index.html" class="btn-back">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to Tools</span>
+        </a>
+      </div>
     </div>
   </header>
 
-  <div class="style-strip">
+  <!-- Hero Banner -->
+  <section class="hero-header">
+    <div class="hero-inner">
+      <div class="header-badge">
+        <i class="fa-solid fa-flag"></i> South African Academic Standard
+      </div>
+      <h1>Academic <span>Citation Generator</span></h1>
+      <p>Generate accurate references in Harvard, APA, Chicago, OSCOLA & Vancouver — formatted for UNISA, Wits, UCT, UP and all SA universities.</p>
+    </div>
+  </section>
+
+  <!-- Style Strip Selector -->
+  <div class="style-strip-section">
     <div class="style-strip-inner" id="styleStrip"></div>
   </div>
 
+  <!-- Main Container -->
   <main class="main">
     <div class="style-info" id="styleInfo"></div>
 
     <div class="source-tabs" id="sourceTabs"></div>
 
     <div class="card">
-      <div class="card-title"><span class="dot"></span><span id="formTitle">Book Details</span></div>
+      <div class="card-title">
+        <span class="dot"></span>
+        <span id="formTitle">Book Details</span>
+      </div>
       <div id="formBody"></div>
       <button class="gen-btn" id="genBtn">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path d="M12 5v14M5 12h14" stroke-linecap="round" />
-        </svg>
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
         Generate Citation
       </button>
     </div>
 
     <div class="output-card">
       <div class="output-header">
-        <div class="output-label"><span class="dot"></span> Generated Reference</div>
+        <div class="output-label">
+          <span class="dot"></span> Generated Reference
+        </div>
         <button class="copy-btn" id="copyBtn">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <rect x="9" y="9" width="13" height="13" rx="2" />
-            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
-          </svg>
+          <i class="fa-regular fa-copy"></i>
           Copy
         </button>
       </div>
@@ -69,15 +91,14 @@
     </div>
 
     <div class="footer-note">
-      <h3>⚠️ Always verify your citations</h3>
-      <p>South African universities often publish their own adapted referencing guides. <strong>Check your institution's
-          library website</strong> (UNISA, Wits, UCT, UP, etc.) for their specific version — punctuation and formatting
-        can differ slightly. This tool follows widely accepted standard rules but cannot account for every institutional
-        variation.</p>
+      <h3><i class="fa-solid fa-triangle-exclamation"></i> Always verify your citations</h3>
+      <p>South African universities often publish institutional referencing guides. <strong>Check your institution's library website</strong> (UNISA, Wits, UCT, UP, Stellenbosch, UJ, NWU, etc.) for their specific guidelines — punctuation and formatting can differ slightly. This tool follows standard accepted referencing rules.</p>
     </div>
   </main>
 
-  <footer>SA Cite — Helping South African students reference correctly.</footer>
+  <footer class="app-footer">
+    <p>SACite by <a href="/">Vylex Nexys</a> — Helping South African students reference with accuracy.</p>
+  </footer>
 
   <script>
     const STYLES = [
@@ -212,7 +233,7 @@
       const strip = document.getElementById('styleStrip');
       strip.innerHTML = STYLES.map(s => `
     <button class="style-btn ${s.id === activeStyle ? 'active' : ''}" data-style="${s.id}">
-      ${s.icon} ${s.name}
+      <span>${s.icon} ${s.name}</span>
       <span class="style-abbr">${s.abbr}${s.popular ? ' ★' : ''}</span>
     </button>
   `).join('');
@@ -245,7 +266,7 @@
       const s = STYLES.find(x => x.id === activeStyle);
       document.getElementById('styleInfo').innerHTML = `
     <div class="style-info-icon">${s.icon}</div>
-    <div><strong>${s.name}${s.popular ? ' — Most Common in SA' : ''}</strong><p>${s.desc}</p></div>
+    <div><strong>${s.name}${s.popular ? ' — Most Common in South Africa' : ''}</strong><p>${s.desc}</p></div>
   `;
     }
 
@@ -268,7 +289,7 @@
         <div id="${f.id}-rows">
           ${currentData.map((a, i) => authorRow(f.id, i, a[0], a[1])).join('')}
         </div>
-        <button type="button" class="add-author-btn" data-list="${f.id}">+ Add another</button>
+        <button type="button" class="add-author-btn" data-list="${f.id}"><i class="fa-solid fa-plus"></i> Add Author</button>
       </div>`;
         } else if (f.type === 'select') {
           html += `<div class="field ${f.full ? 'field-full' : ''}">
@@ -294,7 +315,6 @@
       body.addEventListener('click', e => {
         if (e.target.closest('.rm-btn')) {
           const btn = e.target.closest('.rm-btn');
-          const row = btn.closest('.author-row');
           const listId = btn.dataset.list;
           const idx = parseInt(btn.dataset.idx);
           if (listId === 'editors') {
@@ -322,7 +342,7 @@
       return `<div class="author-row">
     <input type="text" class="a-first" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" placeholder="First name / Initials" value="${esc(first)}">
     <input type="text" class="a-last" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" placeholder="Last name / Organisation" value="${esc(last)}">
-    ${showRm ? `<button class="rm-btn" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" title="Remove">×</button>` : ''}
+    ${showRm ? `<button class="rm-btn" data-list="${isEditor ? 'editors' : 'authors'}" data-idx="${idx}" title="Remove"><i class="fa-solid fa-xmark"></i></button>` : ''}
   </div>`;
     }
 
@@ -374,46 +394,61 @@
 
     // ─── Formatting Helpers ───
     function authorList(pairs, style, role) {
-      const valid = pairs.filter(p => p[0] || p[1]);
+      const valid = pairs.filter(p => (p[0] || '').trim() || (p[1] || '').trim());
       if (!valid.length) return '';
       const n = valid.length;
 
+      const initials = name => name ? name.trim().split(/\s+/).map(w => w[0].toUpperCase() + '.').join('') : '';
+      const initialsNoDot = name => name ? name.trim().split(/\s+/).map(w => w[0].toUpperCase()).join('') : '';
+
       if (style === 'harvard') {
-        const fmt = (p, i) => i === 0
-          ? `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join('') : ''}`
-          : `${p[0] ? p[0].split(' ').map(w => w[0] + '.').join('') + ' ' : ''}${p[1] || ''}`;
-        if (n === 1) return fmt(valid[0], 0);
-        if (n <= 3) return valid.map(fmt).join(', ');
-        return fmt(valid[0], 0) + ' et al.';
+        const fmt = p => {
+          const last = (p[1] || '').trim();
+          const first = (p[0] || '').trim();
+          return `${last}${last && first ? ', ' : ''}${initials(first)}`;
+        };
+        if (n === 1) return fmt(valid[0]);
+        if (n === 2) return `${fmt(valid[0])} & ${fmt(valid[1])}`;
+        if (n === 3) return `${fmt(valid[0])}, ${fmt(valid[1])} & ${fmt(valid[2])}`;
+        return `${fmt(valid[0])} et al.`;
       }
+
       if (style === 'apa') {
-        const fmt = (p, i) => i === 0
-          ? `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join(' ') : ''}`
-          : `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] ? p[0].split(' ').map(w => w[0] + '.').join(' ') : ''}`;
-        if (n === 1) return fmt(valid[0], 0);
+        const fmt = p => {
+          const last = (p[1] || '').trim();
+          const first = (p[0] || '').trim();
+          const inits = first ? first.trim().split(/\s+/).map(w => w[0].toUpperCase() + '.').join(' ') : '';
+          return `${last}${last && inits ? ', ' : ''}${inits}`;
+        };
+        if (n === 1) return fmt(valid[0]);
         const parts = valid.map(fmt);
-        if (n === 2) return parts[0] + ', & ' + parts[1];
+        if (n === 2) return `${parts[0]}, & ${parts[1]}`;
         if (n <= 20) return parts.slice(0, -1).join(', ') + ', & ' + parts[parts.length - 1];
-        return parts.slice(0, 19).join(', ') + ' … ' + fmt(valid[n - 1], 1);
+        return parts.slice(0, 19).join(', ') + ' … ' + fmt(valid[n - 1]);
       }
+
       if (style === 'chicago') {
-        const fmt0 = p => `${p[1] || ''}${p[1] && p[0] ? ', ' : ''}${p[0] || ''}`;
-        const fmtN = p => `${p[0] || ''} ${p[1] || ''}`.trim();
+        const fmt0 = p => `${(p[1] || '').trim()}${(p[1] && p[0]) ? ', ' : ''}${(p[0] || '').trim()}`;
+        const fmtN = p => `${(p[0] || '').trim()} ${(p[1] || '').trim()}`.trim();
         if (n === 1) return fmt0(valid[0]);
         if (n <= 10) return [fmt0(valid[0]), ...valid.slice(1).map(fmtN)].join(', and ');
         return fmt0(valid[0]) + ', et al.';
       }
+
       if (style === 'oscola') {
-        const fmt = p => `${p[0] || ''} ${p[1] || ''}`.trim();
+        const fmt = p => `${(p[0] || '').trim()} ${(p[1] || '').trim()}`.trim();
         if (n === 1) return fmt(valid[0]);
-        return valid.map(fmt).join(' and ');
+        if (n === 2) return `${fmt(valid[0])} and ${fmt(valid[1])}`;
+        return `${fmt(valid[0])} and others`;
       }
+
       if (style === 'vancouver') {
-        const fmt = p => `${p[1] || ''} ${p[0] ? p[0].split(' ').map(w => w[0]).join('') : ''}`.trim();
+        const fmt = p => `${(p[1] || '').trim()} ${initialsNoDot(p[0] || '')}`.trim();
         if (n <= 6) return valid.map(fmt).join(', ');
         return valid.slice(0, 6).map(fmt).join(', ') + ' et al';
       }
-      return valid.map(p => `${p[0] || ''} ${p[1] || ''}`.trim()).join(', ');
+
+      return valid.map(p => `${(p[0] || '').trim()} ${(p[1] || '').trim()}`.trim()).join(', ');
     }
 
     function italics(s) { return s ? `<em>${s}</em>` : ''; }
@@ -424,7 +459,6 @@
       const day = d.getDate();
       const yr = d.getFullYear();
       const mon = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][d.getMonth()];
-      const monAbbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
       if (style === 'harvard') return `${day} ${mon} ${yr}`;
       if (style === 'apa') return `${mon} ${day}, ${yr}`;
       if (style === 'chicago') return `${mon} ${day}, ${yr}`;
@@ -511,15 +545,15 @@
         const CT = d['chapter-title'] || '';
         const BT = d['book-title'] || '';
         if (style === 'harvard')
-          return `${A}${A ? ' ' : ''}${yr}. ${CT}. In: ${E ? E + ' (ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}.) ' : ''}${italics(BT)}. ${place ? place + ': ' : ''}${pub}${pp ? ', pp. ' + pp : ''}.`;
+          return `${A}${A ? ' ' : ''}${yr}. ${CT}. In: ${E ? E + ' (ed' + (editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : "") + '.) ' : ''}${italics(BT)}. ${place ? place + ': ' : ''}${pub}${pp ? ', pp. ' + pp : ''}.`;
         if (style === 'apa')
-          return `${A}${A ? ' ' : ''}(${yr}). ${CT}. In ${E ? E + ' (Ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}.), ' : ''}${italics(BT)} (pp. ${pp || 'xx–xx'}). ${pub}.`;
+          return `${A}${A ? ' ' : ''}(${yr}). ${CT}. In ${E ? E + ' (Ed' + (editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : "") + '.), ' : ''}${italics(BT)} (pp. ${pp || 'xx–xx'}). ${pub}.`;
         if (style === 'chicago')
           return `${A}${A ? '. ' : ''}"${CT}." In ${italics(BT)}, edited by ${E || '[Editor]'}${pp ? ', ' + pp : ''}. ${place ? place + ': ' : ''}${pub}, ${yr}.`;
         if (style === 'oscola')
-          return `${A}${A ? ', ' : ''}'${CT}' in ${E ? E + ' (ed${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}) ' : ''}${italics(BT)} (${pub} ${yr})${pp ? ' ' + pp : ''}`;
+          return `${A}${A ? ', ' : ''}'${CT}' in ${E ? E + ' (ed' + (editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : "") + ') ' : ''}${italics(BT)} (${pub} ${yr})${pp ? ' ' + pp : ''}`;
         if (style === 'vancouver')
-          return `${A}${A ? '. ' : ''}${CT}. In: ${E ? E + ', editor${editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : ""}. ' : ''}${BT}. ${place ? place + ': ' : ''}${pub}; ${yr}${pp ? '. p. ' + pp : ''}.`;
+          return `${A}${A ? '. ' : ''}${CT}. In: ${E ? E + ', editor' + (editorsData.filter(p=>p[0]||p[1]).length > 1 ? "s" : "") + '. ' : ''}${BT}. ${place ? place + ': ' : ''}${pub}; ${yr}${pp ? '. p. ' + pp : ''}.`;
       }
 
       // THESIS
@@ -563,12 +597,11 @@
         return `${italics(cn)} ${yr} ${report}${court ? ' (' + court + ')' : ''}.`;
       }
 
-      return '<span style="color:#c0392b">Unable to generate citation — please check your fields.</span>';
+      return '<span style="color: var(--danger)">Unable to generate citation — please check your fields.</span>';
     }
 
     function showOutput(html) {
       const out = document.getElementById('outputBody');
-      // Clean up spacing
       const clean = html.replace(/\s{2,}/g, ' ').replace(/\. \./g, '.').replace(/\s\./g, '.').trim();
       out.innerHTML = clean;
       out.classList.remove('empty');
@@ -588,10 +621,10 @@
       navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById('copyBtn');
         btn.classList.add('copied');
-        btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!`;
+        btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
         setTimeout(() => {
           btn.classList.remove('copied');
-          btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`;
+          btn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy`;
         }, 2000);
       });
     }
