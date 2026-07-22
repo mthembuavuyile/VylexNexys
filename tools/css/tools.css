@@ -677,3 +677,137 @@ body.dark .category-count {
     padding: 22px 18px;
   }
 }
+
+/* ── Suite Card & Sublinks ── */
+.tool-card-suite {
+  grid-column: span 2;
+}
+
+@media (max-width: 850px) {
+  .tool-card-suite {
+    grid-column: span 1;
+  }
+}
+
+.tool-card-header-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 16px;
+}
+
+.tool-card-header-link:hover .tool-content h4 {
+  color: var(--accent);
+}
+
+.tool-header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.tool-badge-suite {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(13, 71, 161, 0.08);
+  color: var(--primary);
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid rgba(13, 71, 161, 0.16);
+  white-space: nowrap;
+}
+
+.tool-sublinks-wrapper {
+  margin-top: auto;
+  padding-top: 14px;
+  margin-bottom: 16px;
+  border-top: 1px dashed var(--border);
+}
+
+.tool-sublinks-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tool-sublinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sublink-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  background: var(--bg-alt);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.22s ease;
+}
+
+.sublink-pill i {
+  font-size: 0.82rem;
+  color: var(--primary);
+  transition: color 0.22s ease;
+}
+
+.sublink-pill:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(13, 71, 161, 0.18);
+}
+
+.sublink-pill:hover i {
+  color: #ffffff;
+}
+
+/* Dark mode overrides for suite card */
+body.dark .tool-badge-suite {
+  background: rgba(64, 196, 255, 0.12);
+  color: #40c4ff;
+  border-color: rgba(64, 196, 255, 0.25);
+}
+
+body.dark .tool-sublinks-wrapper {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .sublink-pill {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .sublink-pill i {
+  color: #64b5f6;
+}
+
+body.dark .sublink-pill:hover {
+  background: #1976d2;
+  color: #ffffff;
+  border-color: #1976d2;
+}
+
+body.dark .sublink-pill:hover i {
+  color: #ffffff;
+}

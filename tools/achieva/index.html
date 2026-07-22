@@ -13,1279 +13,10 @@
         rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/achieva.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --primary: #4682b4;
-            --primary-light: #7cb3eb;
-            --primary-dark: #0d47a1;
-            --secondary: #5f9ea0;
-            --accent: #e8491d;
-            --accent-light: #f38262;
-            --success: #16a34a;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-
-            --bg-layout: #f4f7fb;
-            --bg-card: #ffffff;
-            --border-color: rgba(13, 71, 161, 0.08);
-            --text-main: #1e293b;
-            --text-light: #64748b;
-            --text-muted: #94a3b8;
-
-            --shadow-sm: 0 4px 12px rgba(13, 71, 161, 0.04);
-            --shadow-md: 0 12px 30px -8px rgba(13, 71, 161, 0.08);
-            --shadow-lg: 0 20px 40px -12px rgba(13, 71, 161, 0.12);
-            --radius-sm: 8px;
-            --radius: 16px;
-            --radius-lg: 24px;
-
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --sidebar-width: 280px;
-            --font-head: 'Outfit', sans-serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        .dark-theme {
-            --bg-layout: #0b0f19;
-            --bg-card: #1e293b;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --text-main: #cbd5e1;
-            --text-light: #94a3b8;
-            --text-muted: #64748b;
-
-            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 12px 30px -8px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
-
-            --primary: #7cb3eb;
-            --primary-light: #a9d4ff;
-            --primary-dark: #4682b4;
-            --bg-card-glass: rgba(30, 41, 59, 0.7);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background-color: var(--bg-layout);
-            color: var(--text-main);
-            min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* --- Layout Structure --- */
-        .app-layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* --- Desktop Sidebar --- */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--bg-card);
-            border-right: 1px solid var(--border-color);
-            padding: 2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 100;
-            transition: var(--transition);
-        }
-
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 3rem;
-            color: var(--primary-dark);
-        }
-
-        .dark-theme .sidebar-brand {
-            color: var(--primary);
-        }
-
-        .brand-icon {
-            font-size: 1.75rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .sidebar-brand h2 {
-            font-family: var(--font-head);
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-        }
-
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            flex: 1;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.85rem 1.25rem;
-            border: none;
-            background: none;
-            color: var(--text-light);
-            font-family: var(--font-body);
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            text-align: left;
-            transition: var(--transition);
-        }
-
-        .nav-item i {
-            font-size: 1.15rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        .nav-item.active {
-            color: white;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.2);
-        }
-
-        .nav-item:hover:not(.active) {
-            color: var(--primary-dark);
-            background-color: rgba(70, 130, 180, 0.08);
-            transform: translateX(4px);
-        }
-
-        .dark-theme .nav-item:hover:not(.active) {
-            color: var(--primary-light);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .sidebar-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            gap: 0.5rem;
-        }
-
-        .icon-btn {
-            background: rgba(70, 130, 180, 0.08);
-            border: 1px solid transparent;
-            color: var(--text-light);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        .dark-theme .icon-btn {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .icon-btn:hover {
-            color: var(--primary-dark);
-            background-color: rgba(70, 130, 180, 0.15);
-            transform: scale(1.05);
-            border-color: rgba(70, 130, 180, 0.2);
-        }
-
-        .dark-theme .icon-btn:hover {
-            color: var(--primary-light);
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* --- Main Content Area --- */
-        .main-wrapper {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* --- Topbar & Mobile Header --- */
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            background: transparent;
-        }
-
-        .topbar-brand {
-            display: none;
-            /* Only visible on mobile */
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .topbar-brand h2 {
-            font-family: var(--font-head);
-            font-size: 1.25rem;
-            font-weight: 800;
-        }
-
-        .page-title {
-            font-family: var(--font-head);
-            font-size: 2.25rem;
-            font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: -0.03em;
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        /* --- Navigation Tabs (Mobile Only Bottom Nav) --- */
-        .bottom-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: var(--bg-card);
-            border-top: 1px solid var(--border-color);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
-            z-index: 999;
-            height: 70px;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0 0.5rem;
-        }
-
-        .bottom-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            background: none;
-            color: var(--text-light);
-            cursor: pointer;
-            flex: 1;
-            height: 100%;
-            gap: 0.25rem;
-            font-family: var(--font-body);
-            font-size: 0.7rem;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .bottom-nav-item i {
-            font-size: 1.25rem;
-        }
-
-        .bottom-nav-item.active {
-            color: var(--primary-dark);
-        }
-
-        .dark-theme .bottom-nav-item.active {
-            color: var(--primary-light);
-        }
-
-        /* --- Scrollable Content Body --- */
-        .content-body {
-            flex: 1;
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* --- Cards & UI Elements --- */
-        .card {
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 1.75rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-
-        .card h3 {
-            font-family: var(--font-head);
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .card h3 i {
-            color: var(--primary);
-        }
-
-        /* --- Dashboard Grid & Stats --- */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-item {
-            background: linear-gradient(135deg, var(--bg-card), var(--bg-layout));
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .stat-item:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .stat-number {
-            font-family: var(--font-head);
-            font-size: 2.25rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-theme .stat-number {
-            background: linear-gradient(135deg, var(--primary-light), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-light);
-            margin-top: 0.5rem;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 3fr 2fr;
-            gap: 1.5rem;
-        }
-
-        .dashboard-col {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* --- Buttons --- */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.65rem 1.25rem;
-            border-radius: var(--radius-sm);
-            font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid transparent;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            box-shadow: 0 4px 15px rgba(70, 130, 180, 0.25);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(70, 130, 180, 0.35);
-        }
-
-        .btn-secondary {
-            background-color: var(--bg-layout);
-            border-color: var(--border-color);
-            color: var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(70, 130, 180, 0.08);
-            border-color: var(--primary-light);
-        }
-
-        .btn-danger {
-            background-color: rgba(239, 68, 68, 0.08);
-            border-color: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
-        }
-
-        .btn-danger:hover {
-            background-color: var(--danger);
-            color: white;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-        }
-
-        .btn-sm {
-            padding: 0.4rem 0.85rem;
-            font-size: 0.8rem;
-            border-radius: var(--radius-sm);
-        }
-
-        .btn-icon {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            color: var(--text-light);
-            padding: 0.35rem;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            width: 32px;
-            height: 32px;
-        }
-
-        .btn-icon:hover {
-            background-color: rgba(70, 130, 180, 0.1);
-            color: var(--primary-dark);
-        }
-
-        .dark-theme .btn-icon:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-            color: var(--primary-light);
-        }
-
-        .btn-icon.btn-danger-icon:hover {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        /* --- Modals & Forms --- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 2rem;
-            width: 90%;
-            max-width: 520px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border-color);
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-header h2 {
-            font-family: var(--font-head);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .close-btn:hover {
-            background-color: rgba(70, 130, 180, 0.1);
-            color: var(--text-main);
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-main);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-layout);
-            border-radius: var(--radius-sm);
-            font-family: var(--font-body);
-            font-size: 0.95rem;
-            color: var(--text-main);
-            transition: var(--transition);
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            background-color: var(--bg-card);
-            box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.15);
-        }
-
-        /* --- Subject Grid, Cards, and Assessments --- */
-        .subject-card {
-            border-left: 4px solid var(--primary);
-        }
-
-        .subject-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1rem;
-        }
-
-        .subject-info h4 {
-            font-family: var(--font-head);
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
-        }
-
-        .subject-code {
-            color: var(--primary-dark);
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background-color: rgba(70, 130, 180, 0.1);
-            padding: 2px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 0.5rem;
-        }
-
-        .dark-theme .subject-code {
-            color: var(--primary-light);
-            background-color: rgba(255, 255, 255, 0.06);
-        }
-
-        .subject-meta {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .subject-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-
-        .subject-grade {
-            text-align: right;
-        }
-
-        .grade-number {
-            font-family: var(--font-head);
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-        }
-
-        .dark-theme .grade-number {
-            color: var(--primary-light);
-        }
-
-        .grade-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            color: var(--text-light);
-        }
-
-        .grade-label-small {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.1rem;
-        }
-
-        .assessments-section {
-            margin-top: 1.5rem;
-        }
-
-        .assessments-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .assessments-header h4 {
-            font-family: var(--font-head);
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .assessment-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .assessment-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.85rem 1rem;
-            background-color: var(--bg-layout);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-        }
-
-        .assessment-item:hover {
-            border-color: var(--primary-light);
-            transform: translateX(2px);
-        }
-
-        .assessment-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-            flex: 1;
-        }
-
-        .assessment-name {
-            font-weight: 700;
-            color: var(--text-main);
-            font-size: 0.95rem;
-        }
-
-        .assessment-details {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .assessment-details span {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .assessment-score {
-            text-align: right;
-            min-width: 100px;
-            margin-right: 1rem;
-        }
-
-        .score-value {
-            font-weight: 700;
-            color: var(--text-main);
-            font-size: 0.95rem;
-        }
-
-        .score-weight {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .subject-actions {
-            margin-top: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--border-color);
-            padding-top: 1rem;
-        }
-
-        /* --- What-if Grade Simulator Drawer --- */
-        .simulator-drawer {
-            background-color: rgba(70, 130, 180, 0.04);
-            border: 1px dashed var(--primary-light);
-            border-radius: var(--radius-sm);
-            padding: 1.25rem;
-            margin-top: 1.5rem;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        .dark-theme .simulator-drawer {
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .simulator-drawer h5 {
-            font-family: var(--font-head);
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 0.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .dark-theme .simulator-drawer h5 {
-            color: var(--primary-light);
-        }
-
-        .simulator-intro {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-bottom: 1rem;
-        }
-
-        .simulator-sliders-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-            margin-bottom: 1rem;
-        }
-
-        .simulator-slider-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-        }
-
-        .slider-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .slider-name {
-            color: var(--text-main);
-        }
-
-        .slider-value {
-            color: var(--primary-dark);
-            font-weight: 700;
-        }
-
-        .dark-theme .slider-value {
-            color: var(--primary-light);
-        }
-
-        .sim-slider {
-            width: 100%;
-            height: 6px;
-            background: var(--border-color);
-            outline: none;
-            border-radius: 3px;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
-
-        .sim-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-            transition: var(--transition);
-        }
-
-        .sim-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
-        }
-
-        .simulator-summary {
-            display: flex;
-            gap: 1.5rem;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius-sm);
-        }
-
-        .simulated-badge {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .simulated-badge span {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-light);
-            text-transform: uppercase;
-        }
-
-        .simulated-badge strong {
-            font-size: 1.1rem;
-            color: var(--accent);
-            font-weight: 800;
-        }
-
-        /* --- Due Dates / Schedule Items --- */
-        .due-item-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-        }
-
-        .due-item {
-            border-left: 4px solid var(--primary);
-            position: relative;
-            padding: 1.25rem;
-        }
-
-        .due-item.task-item {
-            border-left-color: var(--accent);
-        }
-
-        .due-item.assessment-item {
-            border-left-color: var(--primary);
-        }
-
-        .due-item.completed {
-            opacity: 0.65;
-            border-left-color: var(--success);
-        }
-
-        .due-item.overdue {
-            border-left-color: var(--danger);
-        }
-
-        .due-item h4 {
-            font-family: var(--font-head);
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-main);
-            padding-right: 2rem;
-        }
-
-        .due-item p {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-bottom: 0.25rem;
-        }
-
-        .due-item p strong {
-            color: var(--text-main);
-        }
-
-        .due-item small {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .due-item-checkbox {
-            position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        /* --- Academic Goals --- */
-        .goal-card {
-            border-left: 4px solid var(--warning);
-        }
-
-        .goal-card.completed {
-            border-left-color: var(--success);
-            opacity: 0.7;
-        }
-
-        .goal-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .goal-info {
-            flex: 1;
-        }
-
-        .goal-title {
-            font-family: var(--font-head);
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-        }
-
-        .goal-meta {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.25rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .goal-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-
-        .goal-meta strong {
-            color: var(--primary-dark);
-        }
-
-        .dark-theme .goal-meta strong {
-            color: var(--primary-light);
-        }
-
-        .goal-progress {
-            margin-top: 0.75rem;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background-color: var(--border-color);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 0.25rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 3px;
-            transition: width 0.4s ease;
-        }
-
-        .progress-text {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-light);
-        }
-
-        .goal-status-message {
-            font-size: 0.85rem;
-            color: var(--primary-dark);
-            background-color: rgba(70, 130, 180, 0.08);
-            border-left: 3px solid var(--primary);
-            padding: 0.65rem 0.85rem;
-            border-radius: var(--radius-sm);
-            margin-top: 0.75rem;
-        }
-
-        .dark-theme .goal-status-message {
-            color: var(--primary-light);
-            background-color: rgba(255, 255, 255, 0.04);
-            border-left-color: var(--primary-light);
-        }
-
-        .goal-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            align-items: flex-end;
-            margin-left: 1.5rem;
-        }
-
-        /* --- Pomodoro Focus Timer UI --- */
-        .pomodoro-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .pomodoro-timer-circle {
-            position: relative;
-            width: 160px;
-            height: 160px;
-            margin-bottom: 1.5rem;
-        }
-
-        .timer-svg {
-            width: 100%;
-            height: 100%;
-            transform: rotate(-90deg);
-        }
-
-        .timer-bg {
-            fill: none;
-            stroke: var(--border-color);
-            stroke-width: 6;
-        }
-
-        .timer-progress {
-            fill: none;
-            stroke: var(--primary);
-            stroke-width: 6;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 1s linear;
-        }
-
-        .timer-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: var(--font-head);
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
-        .pomodoro-controls {
-            display: flex;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .pomodoro-modes {
-            display: flex;
-            gap: 0.5rem;
-            background-color: var(--bg-layout);
-            padding: 4px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-mode {
-            background: none;
-            border: none;
-            padding: 0.35rem 0.75rem;
-            font-family: var(--font-body);
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-light);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-mode.active {
-            background-color: var(--bg-card);
-            color: var(--primary-dark);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .dark-theme .btn-mode.active {
-            color: var(--primary-light);
-        }
-
-        /* --- Analytics tab charts layout --- */
-        .chart-container {
-            position: relative;
-            height: 280px;
-            width: 100%;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3.5rem 1.5rem;
-            color: var(--text-light);
-            background-color: rgba(70, 130, 180, 0.03);
-            border: 1px dashed var(--border-color);
-            border-radius: var(--radius);
-        }
-
-        .empty-state-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            opacity: 0.8;
-        }
-
-        /* --- Print & Print Layout --- */
-        @media print {
-
-            .sidebar,
-            .bottom-nav,
-            .topbar .topbar-actions,
-            .subject-actions,
-            .btn,
-            .btn-icon,
-            .simulator-drawer {
-                display: none !important;
-            }
-
-            .main-wrapper {
-                margin-left: 0 !important;
-                padding: 0 !important;
-            }
-
-            body {
-                background: white !important;
-                color: black !important;
-            }
-
-            .card {
-                box-shadow: none !important;
-                border: 1px solid #ccc !important;
-                page-break-inside: avoid;
-            }
-        }
-
-        /* --- Responsive Styles --- */
-        @media (max-width: 1024px) {
-            :root {
-                --sidebar-width: 240px;
-            }
-
-            .page-title {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-                /* Hide desktop sidebar */
-            }
-
-            .bottom-nav {
-                display: flex;
-                /* Show bottom tab-bar */
-            }
-
-            .main-wrapper {
-                margin-left: 0;
-                padding: 1.5rem;
-                padding-bottom: 90px;
-                /* Space for bottom nav */
-            }
-
-            .topbar-brand {
-                display: flex;
-                /* Show branding in topbar */
-            }
-
-            .topbar .page-title {
-                display: none;
-                /* Hide page title to save space, relies on active bottom tab */
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-                width: 95%;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -1300,30 +31,33 @@
                 </a>
             </div>
             <nav class="sidebar-nav">
-                <button class="nav-item active" onclick="switchTab(event, 'dashboard')">
+                <button class="nav-item active" data-tab="dashboard">
                     <i class="fa-solid fa-chart-line"></i> Dashboard
                 </button>
-                <button class="nav-item" onclick="switchTab(event, 'subjects')">
+                <button class="nav-item" data-tab="subjects">
                     <i class="fa-solid fa-graduation-cap"></i> Subjects
                 </button>
-                <button class="nav-item" onclick="switchTab(event, 'schedule')">
+                <button class="nav-item" data-tab="schedule">
                     <i class="fa-solid fa-calendar-days"></i> Schedule
                 </button>
-                <button class="nav-item" onclick="switchTab(event, 'goals')">
+                <button class="nav-item" data-tab="goals">
                     <i class="fa-solid fa-bullseye"></i> Goals
                 </button>
-                <button class="nav-item" onclick="switchTab(event, 'report')">
+                <button class="nav-item" data-tab="report">
                     <i class="fa-solid fa-file-invoice"></i> Report
                 </button>
-                <button class="nav-item" onclick="switchTab(event, 'analytics')">
+                <button class="nav-item" data-tab="analytics">
                     <i class="fa-solid fa-chart-pie"></i> Analytics
+                </button>
+                <button class="nav-item" data-tab="pomodoro">
+                    <i class="fa-solid fa-clock"></i> Focus Timer
                 </button>
             </nav>
             <div class="sidebar-footer">
-                <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                <button class="icon-btn theme-toggle" title="Toggle Theme">
                     <i class="fa-solid fa-moon"></i>
                 </button>
-                <button class="icon-btn" onclick="openSettingsModal()" title="Settings">
+                <button class="icon-btn" data-action="open-settings-modal" title="Settings">
                     <i class="fa-solid fa-gear"></i>
                 </button>
                 <a href="help.html" class="icon-btn" title="Help / Documentation">
@@ -1345,14 +79,13 @@
                 </div>
                 <h1 class="page-title" id="pageTitle">Dashboard</h1>
                 <div class="topbar-actions">
-                    <!-- Backup options directly in header for desktop utility -->
-                    <button class="btn btn-secondary btn-sm" onclick="exportData()" title="Backup Academic Data">
+                    <button class="btn btn-secondary btn-sm" data-action="export-data" title="Backup Academic Data">
                         <i class="fa-solid fa-download"></i> Backup
                     </button>
-                    <button class="icon-btn theme-toggle-top" onclick="toggleTheme()" title="Toggle Theme">
+                    <button class="icon-btn theme-toggle-top" title="Toggle Theme">
                         <i class="fa-solid fa-moon"></i>
                     </button>
-                    <button class="icon-btn" onclick="openSettingsModal()" title="Settings">
+                    <button class="icon-btn" data-action="open-settings-modal" title="Settings">
                         <i class="fa-solid fa-gear"></i>
                     </button>
                 </div>
@@ -1407,17 +140,17 @@
                                         <div class="timer-text" id="timerDisplay">25:00</div>
                                     </div>
                                     <div class="pomodoro-controls">
-                                        <button class="btn btn-primary" id="timerPlayBtn" onclick="toggleTimer()">
+                                        <button class="btn btn-primary" id="timerPlayBtn">
                                             <i class="fa-solid fa-play"></i> Start
                                         </button>
-                                        <button class="btn btn-secondary" onclick="resetTimer()">
+                                        <button class="btn btn-secondary" id="timerResetBtn">
                                             <i class="fa-solid fa-arrow-rotate-left"></i> Reset
                                         </button>
                                     </div>
                                     <div class="pomodoro-modes">
-                                        <button class="btn-mode active" onclick="setTimerMode('study')">Study</button>
-                                        <button class="btn-mode" onclick="setTimerMode('short')">Short Break</button>
-                                        <button class="btn-mode" onclick="setTimerMode('long')">Long Break</button>
+                                        <button class="btn-mode active">Study</button>
+                                        <button class="btn-mode">Short Break</button>
+                                        <button class="btn-mode">Long Break</button>
                                     </div>
                                 </div>
                             </div>
@@ -1437,10 +170,9 @@
 
                 <!-- Subjects Tab -->
                 <div id="subjects" class="tab-content">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                         <h2>My Subjects</h2>
-                        <button class="btn btn-primary" onclick="openSubjectModal()">
+                        <button class="btn btn-primary" data-action="open-subject-modal">
                             <i class="fa-solid fa-plus"></i> Add Subject
                         </button>
                     </div>
@@ -1452,17 +184,91 @@
                     </div>
                 </div>
 
-                <!-- Schedule Tab -->
+                <!-- Schedule Tab (Absorbed & Enhanced Schedule Generator) -->
                 <div id="schedule" class="tab-content">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2>My Schedule</h2>
-                        <button class="btn btn-primary" onclick="openTaskModal()">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2>Study Schedule & Generator</h2>
+                        <button class="btn btn-primary" data-action="open-task-modal">
                             <i class="fa-solid fa-plus"></i> Add General Task
                         </button>
                     </div>
-                    <p style="margin-bottom: 1.5rem; color: var(--text-light);">This includes general tasks and
-                        assessment due dates.</p>
+
+                    <!-- Smart Study Schedule Generator Card -->
+                    <div class="schedule-generator-card">
+                        <h3 style="font-family:var(--font-head); font-size:1.3rem; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem; color:var(--primary-dark);">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Smart Weekly Study Timetable Generator
+                        </h3>
+                        <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:1.25rem;">
+                            Automatically allocate customized study blocks for your registered Achieva subjects based on priority, upcoming assessment deadlines, and your preferred study hours.
+                        </p>
+
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem; margin-bottom:1.25rem;">
+                            <!-- Days Selection -->
+                            <div>
+                                <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Study Days</label>
+                                <div class="schedule-days-selector">
+                                    <label class="day-checkbox-label"><input type="checkbox" value="Mon" checked><span>Mon</span></label>
+                                    <label class="day-checkbox-label"><input type="checkbox" value="Tue" checked><span>Tue</span></label>
+                                    <label class="day-checkbox-label"><input type="checkbox" value="Wed" checked><span>Wed</span></label>
+                                    <label class="day-checkbox-label"><input type="checkbox" value="Thu" checked><span>Thu</span></label>
+                                    <label class="day-checkbox-label"><input type="checkbox" value="Fri" checked><span>Fri</span></label>
+                                    <label class="day-checkbox-label"><input type="checkbox" value="Sat"><span>Sat</span></label>
+                                    <label class="day-checkbox-label"><input type="checkbox" value="Sun"><span>Sun</span></label>
+                                </div>
+                            </div>
+
+                            <!-- Time Range -->
+                            <div>
+                                <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Daily Study Window</label>
+                                <div style="display:flex; gap:0.5rem;">
+                                    <input type="time" id="schedStartTime" class="form-control" value="09:00">
+                                    <span style="align-self:center; font-weight:700;">to</span>
+                                    <input type="time" id="schedEndTime" class="form-control" value="17:00">
+                                </div>
+                            </div>
+
+                            <!-- Durations -->
+                            <div>
+                                <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Session & Break Length</label>
+                                <div style="display:flex; gap:0.5rem;">
+                                    <select id="schedStudyDuration" class="form-control">
+                                        <option value="25">25m Study</option>
+                                        <option value="30">30m Study</option>
+                                        <option value="45" selected>45m Study</option>
+                                        <option value="60">60m Study</option>
+                                    </select>
+                                    <select id="schedBreakDuration" class="form-control">
+                                        <option value="5">5m Break</option>
+                                        <option value="10">10m Break</option>
+                                        <option value="15" selected>15m Break</option>
+                                        <option value="20">20m Break</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Strategy -->
+                            <div>
+                                <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Focus Strategy</label>
+                                <select id="schedStrategy" class="form-control">
+                                    <option value="priority" selected>Priority & Goal Weighted</option>
+                                    <option value="deadline">Assessment Deadline Urgent</option>
+                                    <option value="balanced">Equal Balance Distribution</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" id="btnGenerateSchedule" style="width:100%;">
+                            <i class="fa-solid fa-arrows-rotate"></i> Generate Smart Study Timetable
+                        </button>
+                    </div>
+
+                    <!-- Timetable Container -->
+                    <div id="smartTimetableContainer" style="margin-bottom:2.5rem;"></div>
+
+                    <!-- Deadlines & Tasks Section -->
+                    <h3 style="font-family:var(--font-head); font-size:1.3rem; margin-bottom:1rem;">
+                        <i class="fa-solid fa-list-check"></i> Pending Tasks & Assessment Deadlines
+                    </h3>
                     <div id="scheduleList" class="due-item-list">
                         <div class="empty-state">
                             <div class="empty-state-icon">📅</div>
@@ -1473,10 +279,9 @@
 
                 <!-- Goals Tab -->
                 <div id="goals" class="tab-content">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                         <h2>Academic Goals</h2>
-                        <button class="btn btn-primary" onclick="openGoalModal()">
+                        <button class="btn btn-primary" data-action="open-goal-modal">
                             <i class="fa-solid fa-plus"></i> Add Goal
                         </button>
                     </div>
@@ -1490,10 +295,9 @@
 
                 <!-- Report Tab -->
                 <div id="report" class="tab-content">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                         <h2>Academic Report</h2>
-                        <button class="btn btn-primary" onclick="printReport()">
+                        <button class="btn btn-primary" data-action="print-report">
                             <i class="fa-solid fa-print"></i> Print Report
                         </button>
                     </div>
@@ -1507,8 +311,7 @@
 
                 <!-- Analytics Tab -->
                 <div id="analytics" class="tab-content">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                         <h2>Performance Analytics</h2>
                     </div>
                     <div class="dashboard-grid">
@@ -1532,33 +335,133 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Dedicated Focus Timer (Pomodoro) Tab -->
+                <div id="pomodoro" class="tab-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h2>Pomodoro Focus Timer</h2>
+                            <p style="color: var(--text-light); font-size: 0.9rem;">Boost your concentration with structured study blocks, interval breaks, and audio chime alerts.</p>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" id="pomodoroSoundTestBtn" title="Test Session Complete Sound Chime">
+                            <i class="fa-solid fa-volume-high"></i> Test Sound
+                        </button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+                        <!-- Main Timer Workspace Card -->
+                        <div class="card" style="text-align: center; padding: 2rem;">
+                            <!-- Task Focus Selector -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light);">
+                                    <i class="fa-solid fa-crosshair" style="color: var(--primary);"></i> Current Focus Subject / Task
+                                </label>
+                                <select id="pomodoroSubjectSelect" class="form-control" style="max-width: 320px; margin: 0 auto; font-weight: 600;">
+                                    <option value="">General Focus Session</option>
+                                </select>
+                            </div>
+
+                            <!-- Circular Timer Display -->
+                            <div class="pomodoro-container" style="max-width: 300px; margin: 0 auto;">
+                                <div class="pomodoro-timer-circle" style="width: 200px; height: 200px;">
+                                    <svg class="timer-svg" viewBox="0 0 100 100">
+                                        <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                                        <circle class="timer-progress" cx="50" cy="50" r="45"
+                                            id="mainTimerProgressCircle" stroke-dasharray="282.7" stroke-dashoffset="0">
+                                        </circle>
+                                    </svg>
+                                    <div class="timer-text" id="mainTimerDisplay" style="font-size: 2.5rem;">25:00</div>
+                                </div>
+
+                                <div class="pomodoro-controls" style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem;">
+                                    <button class="btn btn-primary btn-lg" id="mainTimerPlayBtn" style="padding: 0.75rem 2rem; font-size: 1rem;">
+                                        <i class="fa-solid fa-play"></i> Start Session
+                                    </button>
+                                    <button class="btn btn-secondary" id="mainTimerResetBtn">
+                                        <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+                                    </button>
+                                </div>
+
+                                <div class="pomodoro-modes" style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                                    <button class="btn-mode active" data-mode="study">25m Study</button>
+                                    <button class="btn-mode" data-mode="deep">50m Deep Work</button>
+                                    <button class="btn-mode" data-mode="short">5m Break</button>
+                                    <button class="btn-mode" data-mode="long">15m Break</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Focus Guide & Session Stats Card -->
+                        <div class="card">
+                            <h3 style="margin-bottom: 1.25rem; font-family: var(--font-head);"><i class="fa-solid fa-brain" style="color: var(--accent);"></i> Focus Productivity Guide</h3>
+                            <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem; font-size: 0.9rem;">
+                                <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                                    <div style="background: rgba(16, 185, 129, 0.12); color: var(--success); padding: 8px; border-radius: 8px; font-weight: 700;">1</div>
+                                    <div>
+                                        <strong>Select a single subject or task</strong>
+                                        <p style="margin: 0; color: var(--text-light); font-size: 0.82rem;">Eliminate distractions, close irrelevant tabs, and focus on one topic.</p>
+                                    </div>
+                                </li>
+                                <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                                    <div style="background: rgba(59, 130, 246, 0.12); color: var(--primary); padding: 8px; border-radius: 8px; font-weight: 700;">2</div>
+                                    <div>
+                                        <strong>Work with high concentration</strong>
+                                        <p style="margin: 0; color: var(--text-light); font-size: 0.82rem;">Give full attention until the session chime sounds automatically.</p>
+                                    </div>
+                                </li>
+                                <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                                    <div style="background: rgba(245, 158, 11, 0.12); color: var(--warning); padding: 8px; border-radius: 8px; font-weight: 700;">3</div>
+                                    <div>
+                                        <strong>Take 5–15 minute restorative breaks</strong>
+                                        <p style="margin: 0; color: var(--text-light); font-size: 0.82rem;">Stand up, stretch, hydrate, and rest your eyes before starting again.</p>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--border-color); display: flex; justify-content: space-around; text-align: center;">
+                                <div>
+                                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);" id="pomodoroCompletedCount">0</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; font-weight: 700;">Sessions Completed</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);" id="pomodoroTotalMinutes">0m</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; font-weight: 700;">Focus Time Logged</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
 
             <!-- Bottom Mobile Tab Bar -->
             <nav class="bottom-nav">
-                <button class="bottom-nav-item active" onclick="switchTab(event, 'dashboard')">
+                <button class="bottom-nav-item active" data-tab="dashboard">
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Dashboard</span>
                 </button>
-                <button class="bottom-nav-item" onclick="switchTab(event, 'subjects')">
+                <button class="bottom-nav-item" data-tab="subjects">
                     <i class="fa-solid fa-graduation-cap"></i>
                     <span>Subjects</span>
                 </button>
-                <button class="bottom-nav-item" onclick="switchTab(event, 'schedule')">
+                <button class="bottom-nav-item" data-tab="schedule">
                     <i class="fa-solid fa-calendar-days"></i>
                     <span>Schedule</span>
                 </button>
-                <button class="bottom-nav-item" onclick="switchTab(event, 'goals')">
+                <button class="bottom-nav-item" data-tab="goals">
                     <i class="fa-solid fa-bullseye"></i>
                     <span>Goals</span>
                 </button>
-                <button class="bottom-nav-item" onclick="switchTab(event, 'report')">
+                <button class="bottom-nav-item" data-tab="report">
                     <i class="fa-solid fa-file-invoice"></i>
                     <span>Report</span>
                 </button>
-                <button class="bottom-nav-item" onclick="switchTab(event, 'analytics')">
+                <button class="bottom-nav-item" data-tab="analytics">
                     <i class="fa-solid fa-chart-pie"></i>
                     <span>Analytics</span>
+                </button>
+                <button class="bottom-nav-item" data-tab="pomodoro">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Focus Timer</span>
                 </button>
             </nav>
         </div>
@@ -1570,7 +473,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add Subject</h2>
-                <button class="close-btn" onclick="closeModal('subjectModal')">&times;</button>
+                <button class="close-btn" onclick="document.getElementById('subjectModal').style.display='none'">&times;</button>
             </div>
             <form id="subjectForm">
                 <div class="form-group">
@@ -1595,7 +498,7 @@
                     <input type="text" id="subjectSemester" class="form-control" placeholder="e.g., Term 1 2026">
                 </div>
                 <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('subjectModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('subjectModal').style.display='none'">Cancel</button>
                     <button type="submit" class="btn btn-primary">Add Subject</button>
                 </div>
             </form>
@@ -1607,7 +510,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add Assessment</h2>
-                <button class="close-btn" onclick="closeModal('assessmentModal')">&times;</button>
+                <button class="close-btn" onclick="document.getElementById('assessmentModal').style.display='none'">&times;</button>
             </div>
             <form id="assessmentForm">
                 <input type="hidden" id="assessmentSubjectId">
@@ -1653,8 +556,7 @@
                     <input type="date" id="assessmentDueDate" class="form-control">
                 </div>
                 <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-secondary"
-                        onclick="closeModal('assessmentModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('assessmentModal').style.display='none'">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Assessment</button>
                 </div>
             </form>
@@ -1666,7 +568,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add General Task</h2>
-                <button class="close-btn" onclick="closeModal('taskModal')">&times;</button>
+                <button class="close-btn" onclick="document.getElementById('taskModal').style.display='none'">&times;</button>
             </div>
             <form id="taskForm">
                 <div class="form-group">
@@ -1693,7 +595,7 @@
                     </select>
                 </div>
                 <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('taskModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('taskModal').style.display='none'">Cancel</button>
                     <button type="submit" class="btn btn-primary">Add Task</button>
                 </div>
             </form>
@@ -1705,7 +607,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add Goal</h2>
-                <button class="close-btn" onclick="closeModal('goalModal')">&times;</button>
+                <button class="close-btn" onclick="document.getElementById('goalModal').style.display='none'">&times;</button>
             </div>
             <form id="goalForm">
                 <div class="form-group">
@@ -1715,7 +617,7 @@
                 </div>
                 <div class="form-group">
                     <label for="goalType">Goal Type</label>
-                    <select id="goalType" class="form-control" required onchange="toggleGoalSubjectSelect(this.value)">
+                    <select id="goalType" class="form-control" required>
                         <option value="">Select Type</option>
                         <option value="GPA">Overall Score/GPA Target</option>
                         <option value="SubjectGrade">Subject Grade Target</option>
@@ -1737,7 +639,7 @@
                     <input type="date" id="goalDeadline" class="form-control">
                 </div>
                 <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('goalModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('goalModal').style.display='none'">Cancel</button>
                     <button type="submit" class="btn btn-primary">Add Goal</button>
                 </div>
             </form>
@@ -1749,7 +651,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Settings & Backups</h2>
-                <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
+                <button class="close-btn" onclick="document.getElementById('settingsModal').style.display='none'">&times;</button>
             </div>
             <form id="settingsForm">
                 <div class="form-group">
@@ -1773,1447 +675,28 @@
                     <label style="display:block; margin-bottom:0.75rem; font-weight:600; font-size:0.9rem;">Data
                         Management Backup</label>
                     <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="exportData()">
+                        <button type="button" class="btn btn-secondary btn-sm" data-action="export-data">
                             <i class="fa-solid fa-download"></i> Export JSON Data
                         </button>
                         <button type="button" class="btn btn-secondary btn-sm"
                             onclick="document.getElementById('importFile').click()">
                             <i class="fa-solid fa-upload"></i> Import JSON Data
                         </button>
-                        <input type="file" id="importFile" style="display:none;" accept=".json"
-                            onchange="importData(event)">
+                        <input type="file" id="importFile" style="display:none;" accept=".json">
                     </div>
                     <small style="color:var(--text-light); display:block; margin-top:0.5rem;">Importing files will
                         overwrite your current planner data.</small>
                 </div>
                 <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-                    <button type="button" class="btn btn-secondary"
-                        onclick="closeModal('settingsModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('settingsModal').style.display='none'">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Settings</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Application Script -->
-    <script>
-        // Application State
-        let appData = {
-            subjects: [],
-            tasks: [],
-            goals: [],
-            settings: {
-                theme: 'light',
-                studentName: "My Academic Journey",
-                totalCreditsRequired: 120,
-                gradingScale: 'US_GPA'
-            }
-        };
-
-        // --- Data Storage and Sync ---
-        function loadData() {
-            const saved = localStorage.getItem('academiaTrackData_v2');
-            if (saved) {
-                try {
-                    const parsedData = JSON.parse(saved);
-                    appData = {
-                        ...appData,
-                        ...parsedData,
-                        settings: {
-                            ...appData.settings,
-                            ...(parsedData.settings || {})
-                        }
-                    };
-                } catch (e) {
-                    console.error('Could not load saved data:', e);
-                }
-            }
-            applyTheme();
-            refreshAllData();
-        }
-
-        function saveData() {
-            try {
-                localStorage.setItem('academiaTrackData_v2', JSON.stringify(appData));
-            } catch (e) {
-                console.error('Could not save data:', e);
-                alert('Error saving data. LocalStorage might be full or unavailable.');
-            }
-        }
-
-        function refreshAllData() {
-            renderSubjects();
-            renderSchedule();
-            renderGoals();
-            updateDashboard();
-            generateReportOnTab();
-
-            // Re-render charts if the analytics tab is active
-            if (document.getElementById('analytics').classList.contains('active')) {
-                renderAnalyticsCharts();
-            }
-        }
-
-        function saveAndRefresh() {
-            saveData();
-            refreshAllData();
-        }
-
-        // --- Themes ---
-        function applyTheme() {
-            const isDark = appData.settings.theme === 'dark';
-            document.body.classList.toggle('dark-theme', isDark);
-
-            const moonIconHTML = '<i class="fa-solid fa-moon"></i>';
-            const sunIconHTML = '<i class="fa-solid fa-sun"></i>';
-
-            document.querySelector('.theme-toggle').innerHTML = isDark ? sunIconHTML : moonIconHTML;
-            document.querySelector('.theme-toggle-top').innerHTML = isDark ? sunIconHTML : moonIconHTML;
-        }
-
-        function toggleTheme() {
-            appData.settings.theme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
-            applyTheme();
-            saveData();
-
-            // Re-render analytics charts to adjust text colors
-            if (document.getElementById('analytics').classList.contains('active')) {
-                renderAnalyticsCharts();
-            }
-        }
-
-        // --- Navigation ---
-        function switchTab(event, tabName) {
-            document.querySelectorAll('.nav-item').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.bottom-nav-item').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-            // Highlight triggers in both sidebar and bottom navigation
-            const triggers = document.querySelectorAll(`[onclick*="'${tabName}'"]`);
-            triggers.forEach(t => t.classList.add('active'));
-
-            document.getElementById(tabName).classList.add('active');
-
-            // Update Top Header Title
-            const tabTitles = {
-                dashboard: 'Academic Cockpit',
-                subjects: 'Subject Manager',
-                schedule: 'Daily Schedule',
-                goals: 'Academic Targets',
-                report: 'Academic Performance Report',
-                analytics: 'Performance Analytics'
-            };
-            document.getElementById('pageTitle').textContent = tabTitles[tabName] || 'Achieva';
-
-            if (tabName === 'report') generateReportOnTab();
-            if (tabName === 'analytics') renderAnalyticsCharts();
-        }
-
-        // --- Modals ---
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-        }
-
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
-
-        function openSubjectModal() {
-            document.getElementById('subjectForm').reset();
-            openModal('subjectModal');
-        }
-
-        function openAssessmentModal(subjectId, assessmentIdToEdit = null) {
-            document.getElementById('assessmentForm').reset();
-            document.getElementById('assessmentSubjectId').value = subjectId;
-            document.getElementById('editingAssessmentId').value = assessmentIdToEdit || '';
-
-            const headerEl = document.querySelector('#assessmentModal .modal-header h2');
-
-            if (assessmentIdToEdit) {
-                const subject = appData.subjects.find(s => s.id === subjectId);
-                const assessment = subject.assessments.find(a => a.id === assessmentIdToEdit);
-                if (assessment) {
-                    document.getElementById('assessmentName').value = assessment.name;
-                    document.getElementById('assessmentType').value = assessment.type;
-                    document.getElementById('assessmentWeight').value = assessment.weight;
-                    document.getElementById('assessmentScore').value = assessment.score !== null ? assessment.score : '';
-                    document.getElementById('assessmentMaxScore').value = assessment.maxScore;
-                    document.getElementById('assessmentDueDate').value = assessment.dueDate || '';
-                    headerEl.textContent = 'Edit Assessment';
-                }
-            } else {
-                headerEl.textContent = 'Add Assessment';
-            }
-            openModal('assessmentModal');
-        }
-
-        function openTaskModal() {
-            document.getElementById('taskForm').reset();
-            const select = document.getElementById('taskSubject');
-            select.innerHTML = '<option value="">General Task</option>';
-            appData.subjects.forEach(subject => {
-                const option = document.createElement('option');
-                option.value = subject.id;
-                option.textContent = subject.name;
-                select.appendChild(option);
-            });
-            openModal('taskModal');
-        }
-
-        function toggleGoalSubjectSelect(goalType) {
-            const subjectGroup = document.getElementById('goalSubjectGroup');
-            const subjectSelect = document.getElementById('goalSubjectId');
-            if (goalType === 'SubjectGrade') {
-                subjectGroup.style.display = 'block';
-                subjectSelect.innerHTML = '<option value="">Select Subject</option>';
-                appData.subjects.forEach(subject => {
-                    const option = document.createElement('option');
-                    option.value = subject.id;
-                    option.textContent = `${subject.name} (${subject.code || 'No Code'})`;
-                    subjectSelect.appendChild(option);
-                });
-                subjectSelect.required = true;
-            } else {
-                subjectGroup.style.display = 'none';
-                subjectSelect.required = false;
-            }
-        }
-
-        function openGoalModal() {
-            document.getElementById('goalForm').reset();
-            toggleGoalSubjectSelect('');
-            openModal('goalModal');
-        }
-
-        function openSettingsModal() {
-            document.getElementById('settingsStudentName').value = appData.settings.studentName;
-            document.getElementById('settingsTotalCredits').value = appData.settings.totalCreditsRequired;
-            document.getElementById('settingsGradingScale').value = appData.settings.gradingScale || 'US_GPA';
-            openModal('settingsModal');
-        }
-
-        // --- Forms Submit Handling ---
-        document.getElementById('subjectForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const subject = {
-                id: 'subj_' + Date.now(),
-                name: document.getElementById('subjectName').value.trim(),
-                code: document.getElementById('subjectCode').value.trim(),
-                credits: parseFloat(document.getElementById('subjectCredits').value),
-                instructor: document.getElementById('subjectInstructor').value.trim(),
-                semester: document.getElementById('subjectSemester').value.trim(),
-                assessments: [],
-                createdAt: new Date().toISOString()
-            };
-            appData.subjects.push(subject);
-            saveAndRefresh();
-            closeModal('subjectModal');
-        });
-
-        document.getElementById('assessmentForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const subjectId = document.getElementById('assessmentSubjectId').value;
-            const editingAssessmentId = document.getElementById('editingAssessmentId').value;
-            const subject = appData.subjects.find(s => s.id === subjectId);
-
-            if (subject) {
-                const assessmentData = {
-                    name: document.getElementById('assessmentName').value.trim(),
-                    type: document.getElementById('assessmentType').value,
-                    weight: parseFloat(document.getElementById('assessmentWeight').value),
-                    score: document.getElementById('assessmentScore').value.trim() !== '' ? parseFloat(document.getElementById('assessmentScore').value) : null,
-                    maxScore: parseFloat(document.getElementById('assessmentMaxScore').value),
-                    dueDate: document.getElementById('assessmentDueDate').value || null,
-                };
-
-                if (assessmentData.maxScore <= 0) {
-                    alert("Max Score must be greater than 0.");
-                    return;
-                }
-                if (assessmentData.score !== null && assessmentData.score > assessmentData.maxScore) {
-                    alert("Your score cannot be greater than the Max Possible Score.");
-                    return;
-                }
-
-                if (editingAssessmentId) {
-                    const assessmentIndex = subject.assessments.findIndex(a => a.id === editingAssessmentId);
-                    if (assessmentIndex > -1) {
-                        subject.assessments[assessmentIndex] = { ...subject.assessments[assessmentIndex], ...assessmentData };
-                    }
-                } else {
-                    const newAssessment = {
-                        id: 'asm_' + Date.now(),
-                        ...assessmentData,
-                        createdAt: new Date().toISOString()
-                    };
-                    subject.assessments.push(newAssessment);
-                }
-
-                // Clear active simulation values for this subject
-                delete activeSimulations[subjectId];
-
-                saveAndRefresh();
-                closeModal('assessmentModal');
-            }
-        });
-
-        document.getElementById('taskForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const task = {
-                id: 'task_' + Date.now(),
-                title: document.getElementById('taskTitle').value.trim(),
-                subjectId: document.getElementById('taskSubject').value || null,
-                dueDate: document.getElementById('taskDueDate').value || null,
-                priority: document.getElementById('taskPriority').value,
-                completed: false,
-                createdAt: new Date().toISOString()
-            };
-            appData.tasks.push(task);
-            saveAndRefresh();
-            closeModal('taskModal');
-        });
-
-        document.getElementById('goalForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const goalType = document.getElementById('goalType').value;
-            const goal = {
-                id: 'goal_' + Date.now(),
-                title: document.getElementById('goalTitle').value.trim(),
-                type: goalType,
-                subjectId: goalType === 'SubjectGrade' ? document.getElementById('goalSubjectId').value : null,
-                target: document.getElementById('goalTarget').value.trim(),
-                deadline: document.getElementById('goalDeadline').value || null,
-                completed: false,
-                createdAt: new Date().toISOString()
-            };
-            if (goalType === 'SubjectGrade' && !goal.subjectId) {
-                alert("Please select a subject for the goal.");
-                return;
-            }
-            appData.goals.push(goal);
-            saveAndRefresh();
-            closeModal('goalModal');
-        });
-
-        document.getElementById('settingsForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            appData.settings.studentName = document.getElementById('settingsStudentName').value.trim() || 'My Academic Journey';
-            appData.settings.totalCreditsRequired = parseInt(document.getElementById('settingsTotalCredits').value) || 120;
-            appData.settings.gradingScale = document.getElementById('settingsGradingScale').value;
-            saveAndRefresh();
-            closeModal('settingsModal');
-        });
-
-        // --- Render Views Functions ---
-        function renderSubjects() {
-            const container = document.getElementById('subjectsList');
-            if (appData.subjects.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📚</div>
-                        <p>No subjects added yet. Click "Add Subject" to begin tracking your academics.</p>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = appData.subjects.map(subject => {
-                const gradeInfo = calculateSubjectGrade(subject);
-                let gradeDisplayHTML = '';
-
-                if (gradeInfo.currentContributionToFinal !== null) {
-                    const gradeVal = gradeInfo.weightedAverageOfGraded;
-                    gradeDisplayHTML = `
-                        <div class="grade-number">${formatGradeDisplay(gradeVal)}</div>
-                        <div class="grade-label">Weighted Average</div>
-                        <div class="grade-label-small">(${gradeInfo.totalWeightAchieved.toFixed(1)}% of syllabus graded)</div>
-                        <div class="grade-label-small">Final contribution: ${gradeInfo.currentContributionToFinal.toFixed(1)}%</div>
-                    `;
-                } else {
-                    gradeDisplayHTML = `<div class="grade-number">N/A</div><div class="grade-label">No assessments scored</div>`;
-                }
-
-                // Check if simulation drawer should remain open
-                const isSimOpen = activeSimulations[subject.id] !== undefined;
-
-                return `
-                    <div class="card subject-card" id="subject-${subject.id}">
-                        <div class="subject-header">
-                            <div class="subject-info">
-                                <span class="subject-code">${subject.code || 'No Code'}</span>
-                                <h4>${subject.name}</h4>
-                                <div class="subject-meta">
-                                    <span><i class="fa-solid fa-graduation-cap"></i> ${subject.credits} Credits</span>
-                                    ${subject.instructor ? `<span><i class="fa-solid fa-user-tie"></i> ${subject.instructor}</span>` : ''}
-                                    ${subject.semester ? `<span><i class="fa-solid fa-clock"></i> ${subject.semester}</span>` : ''}
-                                </div>
-                            </div>
-                            <div class="subject-grade">${gradeDisplayHTML}</div>
-                        </div>
-                        
-                        <div class="assessments-section">
-                            <div class="assessments-header">
-                                <h4>Assessments Portfolio</h4>
-                                <button class="btn btn-primary btn-sm" onclick="openAssessmentModal('${subject.id}')">
-                                    <i class="fa-solid fa-plus"></i> Add Assessment
-                                </button>
-                            </div>
-                            <div class="assessment-list">
-                                ${subject.assessments.length === 0 ?
-                        '<p class="empty-state" style="padding:1.5rem; font-size:0.85rem;"><i class="fa-solid fa-circle-info"></i> No assessments added yet for this subject.</p>' :
-                        subject.assessments.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).map(asm => `
-                                        <div class="assessment-item">
-                                            <div class="assessment-info">
-                                                <span class="assessment-name">${asm.name}</span>
-                                                <div class="assessment-details">
-                                                    <span><i class="fa-solid fa-tags"></i> ${asm.type}</span>
-                                                    <span><i class="fa-solid fa-weight-hanging"></i> Weight: ${asm.weight}%</span>
-                                                    <span><i class="fa-solid fa-bullseye"></i> Max: ${asm.maxScore}</span>
-                                                    ${asm.dueDate ? `<span><i class="fa-solid fa-calendar-day"></i> Due: ${formatDate(asm.dueDate)}</span>` : ''}
-                                                </div>
-                                            </div>
-                                            <div class="assessment-score">
-                                                ${asm.score !== null ?
-                                `<span class="score-value">${asm.score}/${asm.maxScore} (${((asm.score / asm.maxScore) * 100).toFixed(1)}%)</span>
-                                                     <div class="score-weight">Contrib: ${((asm.score / asm.maxScore) * asm.weight).toFixed(1)}%</div>` :
-                                '<span class="score-value" style="color:var(--warning);"><i class="fa-solid fa-spinner fa-spin"></i> Pending</span>'
-                            }
-                                            </div>
-                                            <div style="display:flex; gap:0.25rem;">
-                                                <button class="btn-icon" title="Edit Assessment" onclick="openAssessmentModal('${subject.id}', '${asm.id}')">
-                                                    <i class="fa-solid fa-pen"></i>
-                                                </button>
-                                                <button class="btn-icon btn-danger-icon" title="Delete Assessment" onclick="deleteAssessment('${subject.id}', '${asm.id}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    `).join('')
-                    }
-                            </div>
-                            ${subject.assessments.length > 0 ? `
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.75rem; font-size:0.8rem; font-weight:600; color:var(--text-light);">
-                                    <span>Total Syllabus Defined: ${subject.assessments.reduce((sum, a) => sum + a.weight, 0).toFixed(1)}%</span>
-                                    <button class="btn btn-secondary btn-sm" style="padding: 0.25rem 0.65rem;" onclick="toggleSimulator('${subject.id}')">
-                                        <i class="fa-solid fa-sliders"></i> What-If Simulator
-                                    </button>
-                                </div>` : ''
-                    }
-                        </div>
-
-                        <!-- What-if simulation drawer -->
-                        <div class="simulator-drawer" id="simulator-${subject.id}" style="display: ${isSimOpen ? 'block' : 'none'};">
-                            <h5><i class="fa-solid fa-sliders"></i> What-If Grade Simulator</h5>
-                            <p class="simulator-intro">Simulate expected marks on ungraded assessments to forecast final subject marks.</p>
-                            <div class="simulator-sliders-list" id="simulator-sliders-${subject.id}"></div>
-                            <div class="simulator-summary">
-                                <div class="simulated-badge">
-                                    <span>Simulated Contribution</span>
-                                    <strong id="simulated-mark-${subject.id}">--%</strong>
-                                </div>
-                                <div class="simulated-badge">
-                                    <span>Simulated Mark / Level</span>
-                                    <strong id="simulated-gpa-${subject.id}">--</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="subject-actions">
-                            <span class="grade-label-small">Created: ${formatDate(subject.createdAt)}</span>
-                            <button class="btn btn-danger btn-sm" onclick="deleteSubject('${subject.id}')">
-                                <i class="fa-solid fa-trash"></i> Delete Subject
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Restore slider values if any were open
-            Object.keys(activeSimulations).forEach(subjId => {
-                renderSimulatorSliders(subjId);
-                updateSimulationResult(subjId);
-            });
-        }
-
-        function renderSchedule() {
-            const container = document.getElementById('scheduleList');
-            let allDueItems = [];
-
-            appData.tasks.forEach(task => {
-                if (task.dueDate) {
-                    allDueItems.push({
-                        id: task.id, type: 'Task', title: task.title, dueDate: task.dueDate, completed: task.completed,
-                        subjectName: task.subjectId ? (appData.subjects.find(s => s.id === task.subjectId)?.name || 'General') : 'General',
-                        details: `Priority: <span class="priority-${task.priority.toLowerCase()}" style="font-weight:700; color:var(--${task.priority === 'High' ? 'danger' : task.priority === 'Medium' ? 'warning' : 'success'});">${task.priority}</span>`,
-                        itemClass: 'task-item'
-                    });
-                }
-            });
-
-            appData.subjects.forEach(subject => {
-                subject.assessments.forEach(asm => {
-                    if (asm.dueDate) {
-                        allDueItems.push({
-                            id: asm.id, type: 'Assessment', title: asm.name, dueDate: asm.dueDate, completed: asm.score !== null,
-                            subjectName: subject.name,
-                            details: `Type: ${asm.type} • Weight: ${asm.weight}%`,
-                            itemClass: 'assessment-item'
-                        });
-                    }
-                });
-            });
-
-            allDueItems.sort((a, b) => {
-                if (a.completed !== b.completed) return a.completed ? 1 : -1;
-                return new Date(a.dueDate) - new Date(b.dueDate);
-            });
-
-            if (allDueItems.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state" style="grid-column: 1 / -1;">
-                        <div class="empty-state-icon">📅</div>
-                        <p>No tasks or assessment due dates with deadlines.</p>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = allDueItems.map(item => {
-                const isOverdue = new Date(item.dueDate) < new Date() && !item.completed;
-                return `
-                    <div class="card due-item ${item.itemClass} ${item.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}">
-                        <h4>
-                            ${item.title} 
-                            ${item.type === 'Task' ?
-                        `<input type="checkbox" class="due-item-checkbox" onchange="toggleTask('${item.id}')" ${item.completed ? 'checked' : ''}>` :
-                        (item.completed ? '<i class="fa-solid fa-circle-check" style="color:var(--success); float:right; margin-top:2px;"></i>' : '<i class="fa-solid fa-clock" style="color:var(--primary); float:right; margin-top:2px;"></i>')
-                    }
-                        </h4>
-                        <p><strong>Due Date:</strong> ${formatDate(item.dueDate)} ${isOverdue ? '<span style="color:var(--danger); font-weight:700;">(Overdue)</span>' : ''}</p>
-                        <p><strong>Subject:</strong> ${item.subjectName}</p>
-                        <p><small>${item.details}</small></p>
-                        ${item.type === 'Task' ? `
-                            <button class="btn-icon btn-danger-icon" style="position:absolute; bottom:0.85rem; right:0.85rem;" title="Delete Task" onclick="deleteTask('${item.id}')">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>` : ''
-                    }
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderGoals() {
-            const container = document.getElementById('goalsList');
-            if (appData.goals.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🎯</div>
-                        <p>No academic goals set. Add targets to monitor your semester progress.</p>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = appData.goals.sort((a, b) => a.completed - b.completed || new Date(a.createdAt) - new Date(b.createdAt)).map(goal => {
-                let progress = calculateGoalProgress(goal);
-                let statusMessage = '';
-
-                if (goal.type === 'SubjectGrade' && goal.subjectId) {
-                    const subject = appData.subjects.find(s => s.id === goal.subjectId);
-                    if (subject) {
-                        const targetGrade = parseFloat(goal.target);
-                        if (!isNaN(targetGrade)) {
-                            const neededInfo = calculateWhatsNeeded(subject, targetGrade);
-                            statusMessage = `<p class="goal-status-message">${neededInfo.message}</p>`;
-                        }
-                    } else {
-                        statusMessage = `<p class="goal-status-message">Associated subject was deleted.</p>`;
-                    }
-                }
-
-                return `
-                    <div class="card goal-card ${goal.completed ? 'completed' : ''}">
-                        <div class="goal-content">
-                            <div class="goal-info">
-                                <h4 class="goal-title">${goal.title}</h4>
-                                <div class="goal-meta">
-                                    <span><strong>Type:</strong> ${goal.type === 'GPA' ? 'GPA Target' : goal.type === 'SubjectGrade' ? 'Subject Grade Target' : goal.type === 'TaskCompletion' ? 'Task Completion' : 'Personal Target'}</span>
-                                    <span><strong>Target:</strong> ${goal.target}${goal.type === 'SubjectGrade' ? '%' : goal.type === 'GPA' ? '' : ''}</span>
-                                    ${goal.subjectId && appData.subjects.find(s => s.id === goal.subjectId) ? `<span><strong>Subject:</strong> ${appData.subjects.find(s => s.id === goal.subjectId).name}</span>` : ''}
-                                    ${goal.deadline ? `<span><strong>Deadline:</strong> ${formatDate(goal.deadline)}</span>` : ''}
-                                </div>
-                                ${statusMessage}
-                                ${goal.type !== 'SubjectGrade' || !statusMessage ? `
-                                    <div class="goal-progress">
-                                        <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
-                                        <span class="progress-text">${progress.toFixed(0)}% Completed</span>
-                                    </div>` : ''
-                    }
-                            </div>
-                            <div class="goal-actions">
-                                <button class="btn btn-sm ${goal.completed ? 'btn-secondary' : 'btn-primary'}" onclick="toggleGoal('${goal.id}')">
-                                    <i class="fa-solid ${goal.completed ? 'fa-arrow-rotate-left' : 'fa-check'}"></i> ${goal.completed ? 'Reopen' : 'Done'}
-                                </button>
-                                <button class="btn-icon btn-danger-icon" onclick="deleteGoal('${goal.id}')" title="Delete Goal">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // --- What-If Grade Simulator Logic ---
-        let activeSimulations = {};
-
-        function toggleSimulator(subjectId) {
-            const drawer = document.getElementById(`simulator-${subjectId}`);
-            if (activeSimulations[subjectId] !== undefined) {
-                drawer.style.display = 'none';
-                delete activeSimulations[subjectId];
-            } else {
-                drawer.style.display = 'block';
-                const subject = appData.subjects.find(s => s.id === subjectId);
-                if (!subject) return;
-
-                activeSimulations[subjectId] = {};
-                subject.assessments.forEach(asm => {
-                    if (asm.score === null) {
-                        activeSimulations[subjectId][asm.id] = 75; // Default mock simulation score
-                    }
-                });
-
-                renderSimulatorSliders(subjectId);
-                updateSimulationResult(subjectId);
-            }
-        }
-
-        function renderSimulatorSliders(subjectId) {
-            const subject = appData.subjects.find(s => s.id === subjectId);
-            const container = document.getElementById(`simulator-sliders-${subjectId}`);
-            if (!subject || !container) return;
-
-            const pendingAssessments = subject.assessments.filter(a => a.score === null);
-            if (pendingAssessments.length === 0) {
-                container.innerHTML = `<p class="simulator-intro" style="color:var(--success); font-weight:600;"><i class="fa-solid fa-circle-check"></i> All assessments are already graded!</p>`;
-                return;
-            }
-
-            container.innerHTML = pendingAssessments.map(asm => {
-                const currentSimVal = activeSimulations[subjectId][asm.id] !== undefined ? activeSimulations[subjectId][asm.id] : 75;
-                return `
-                    <div class="simulator-slider-item">
-                        <div class="slider-info">
-                            <span class="slider-name">${asm.name} <small>(Weight: ${asm.weight}%)</small></span>
-                            <span class="slider-value" id="sim-val-${subjectId}-${asm.id}">${currentSimVal}%</span>
-                        </div>
-                        <input type="range" class="sim-slider" min="0" max="100" value="${currentSimVal}" 
-                               oninput="onSliderSimChange('${subjectId}', '${asm.id}', this.value)">
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function onSliderSimChange(subjectId, assessmentId, value) {
-            activeSimulations[subjectId][assessmentId] = parseFloat(value);
-            document.getElementById(`sim-val-${subjectId}-${assessmentId}`).textContent = `${value}%`;
-            updateSimulationResult(subjectId);
-        }
-
-        function updateSimulationResult(subjectId) {
-            const subject = appData.subjects.find(s => s.id === subjectId);
-            if (!subject) return;
-
-            let totalAchievedScoreContribution = 0;
-            let totalWeight = 0;
-
-            subject.assessments.forEach(asm => {
-                if (asm.score !== null) {
-                    totalAchievedScoreContribution += (asm.score / asm.maxScore) * asm.weight;
-                    totalWeight += asm.weight;
-                } else if (activeSimulations[subjectId] && activeSimulations[subjectId][asm.id] !== undefined) {
-                    const simScore = activeSimulations[subjectId][asm.id];
-                    totalAchievedScoreContribution += (simScore / 100) * asm.weight;
-                    totalWeight += asm.weight;
-                }
-            });
-
-            const markEl = document.getElementById(`simulated-mark-${subjectId}`);
-            const gpaEl = document.getElementById(`simulated-gpa-${subjectId}`);
-
-            if (markEl) {
-                markEl.textContent = `${totalAchievedScoreContribution.toFixed(1)}%`;
-            }
-
-            if (gpaEl) {
-                const avgPercentage = totalWeight > 0 ? (totalAchievedScoreContribution / totalWeight) * 100 : 0;
-                gpaEl.textContent = formatGradeDisplay(avgPercentage);
-            }
-        }
-
-        // --- Dashboard Content Updates ---
-        function updateDashboard() {
-            const performance = calculateOverallPerformance();
-            const overallGpaEl = document.getElementById('overallGPA');
-            const gpaLabelEl = document.querySelector('.stats-grid .stat-item:nth-child(1) .stat-label');
-
-            if (performance !== null) {
-                const scale = appData.settings.gradingScale || 'US_GPA';
-                if (scale === 'US_GPA') {
-                    overallGpaEl.textContent = gradeToGPA(performance).toFixed(2);
-                    gpaLabelEl.textContent = 'Current GPA';
-                } else if (scale === 'SA_CAPS') {
-                    overallGpaEl.textContent = getCAPSLevelShort(performance);
-                    gpaLabelEl.textContent = `Overall Level (${performance.toFixed(1)}%)`;
-                } else {
-                    overallGpaEl.textContent = `${performance.toFixed(1)}%`;
-                    gpaLabelEl.textContent = 'Overall Average';
-                }
-            } else {
-                overallGpaEl.textContent = 'N/A';
-                gpaLabelEl.textContent = 'Overall GPA';
-            }
-
-            document.getElementById('creditsEnrolled').textContent = appData.subjects.reduce((sum, s) => sum + (s.credits || 0), 0);
-            document.getElementById('activeTasks').textContent = appData.tasks.filter(t => !t.completed).length;
-            document.getElementById('completedGoals').textContent = appData.goals.filter(g => g.completed).length;
-
-            updateRecentSubjectsList();
-            updateUpcomingDueDatesList();
-        }
-
-        function updateRecentSubjectsList() {
-            const container = document.getElementById('recentSubjectsList');
-            const recentSubjects = [...appData.subjects].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
-
-            if (recentSubjects.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state" style="padding:1.5rem;">
-                        <div class="empty-state-icon">📚</div>
-                        <p>No subjects added yet.</p>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = recentSubjects.map(subject => {
-                const gradeInfo = calculateSubjectGrade(subject);
-                const avgVal = gradeInfo.weightedAverageOfGraded;
-                return `
-                    <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <span style="font-weight:700; color:var(--text-main);">${subject.name}</span>
-                            <div style="font-size:0.75rem; color:var(--text-light);">${subject.code || 'No Code'} • ${gradeInfo.totalWeightAchieved.toFixed(1)}% graded</div>
-                        </div>
-                        <span style="font-weight:800; color: var(--primary-dark); font-size:1.1rem;">
-                            ${avgVal !== null ? formatGradeDisplay(avgVal) : 'N/A'}
-                        </span>
-                    </div>`;
-            }).join('');
-        }
-
-        function updateUpcomingDueDatesList() {
-            const container = document.getElementById('upcomingDueDatesList');
-            let upcomingItems = [];
-
-            appData.tasks.filter(t => !t.completed && t.dueDate).forEach(task => {
-                upcomingItems.push({ type: 'Task', title: task.title, dueDate: task.dueDate });
-            });
-
-            appData.subjects.forEach(s => {
-                s.assessments.filter(a => a.score === null && a.dueDate).forEach(asm => {
-                    upcomingItems.push({ type: 'Assessment', title: asm.name, dueDate: asm.dueDate, subject: s.name });
-                });
-            });
-
-            upcomingItems.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-            const displayItems = upcomingItems.slice(0, 4);
-
-            if (displayItems.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state" style="padding:2.5rem 1rem;">
-                        <div class="empty-state-icon">📅</div>
-                        <p>No upcoming tasks or due dates.</p>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = displayItems.map(item => `
-                 <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
-                    <div style="max-width:70%;">
-                        <div style="font-weight:700; color:var(--text-main); font-size:0.9rem; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item.title}</div>
-                        <small style="color: var(--text-light);">${item.type}${item.subject ? ' • ' + item.subject : ''}</small>
-                    </div>
-                    <span style="font-size:0.8rem; font-weight:700; color: var(--accent); background-color:rgba(232,73,29,0.06); padding:2px 8px; border-radius:4px;">
-                        ${formatDate(item.dueDate)}
-                    </span>
-                </div>
-            `).join('');
-        }
-
-        // --- Academic Performance Metrics Calculations ---
-        function calculateSubjectGrade(subject) {
-            if (!subject || !subject.assessments) return { currentContributionToFinal: null, totalWeightAchieved: 0, weightedAverageOfGraded: null };
-
-            let totalAchievedScoreContribution = 0;
-            let totalWeightOfGradedAssessments = 0;
-
-            subject.assessments.forEach(assessment => {
-                if (assessment.score !== null && typeof assessment.score === 'number' && assessment.maxScore > 0 && assessment.weight > 0) {
-                    totalAchievedScoreContribution += (assessment.score / assessment.maxScore) * assessment.weight;
-                    totalWeightOfGradedAssessments += assessment.weight;
-                }
-            });
-
-            const weightedAverageOfGraded = totalWeightOfGradedAssessments > 0 ? (totalAchievedScoreContribution / totalWeightOfGradedAssessments) * 100 : null;
-
-            return {
-                currentContributionToFinal: subject.assessments.length > 0 ? totalAchievedScoreContribution : null,
-                totalWeightAchieved: totalWeightOfGradedAssessments,
-                weightedAverageOfGraded: weightedAverageOfGraded
-            };
-        }
-
-        function calculateOverallPerformance() {
-            let totalWeightedPercent = 0;
-            let totalCredits = 0;
-
-            appData.subjects.forEach(subject => {
-                const gradeInfo = calculateSubjectGrade(subject);
-                if (gradeInfo.weightedAverageOfGraded !== null && subject.credits > 0) {
-                    totalWeightedPercent += gradeInfo.weightedAverageOfGraded * subject.credits;
-                    totalCredits += subject.credits;
-                }
-            });
-
-            return totalCredits > 0 ? totalWeightedPercent / totalCredits : null;
-        }
-
-        // US standard 4-point GPA translation
-        function gradeToGPA(percentage) {
-            if (percentage === null || isNaN(percentage)) return 0;
-            if (percentage >= 93) return 4.0;
-            if (percentage >= 90) return 3.7;
-            if (percentage >= 87) return 3.3;
-            if (percentage >= 83) return 3.0;
-            if (percentage >= 80) return 2.7;
-            if (percentage >= 77) return 2.3;
-            if (percentage >= 73) return 2.0;
-            if (percentage >= 70) return 1.7;
-            if (percentage >= 67) return 1.3;
-            if (percentage >= 60) return 1.0;
-            return 0.0;
-        }
-
-        function getCAPSLevelShort(percentage) {
-            if (percentage === null || isNaN(percentage)) return 'N/A';
-            if (percentage >= 80) return 'L7';
-            if (percentage >= 70) return 'L6';
-            if (percentage >= 60) return 'L5';
-            if (percentage >= 50) return 'L4';
-            if (percentage >= 40) return 'L3';
-            if (percentage >= 30) return 'L2';
-            return 'L1';
-        }
-
-        function getCAPSLevelFull(percentage) {
-            if (percentage === null || isNaN(percentage)) return 'N/A';
-            if (percentage >= 80) return 'Level 7 (Outstanding Achievement, 80-100%)';
-            if (percentage >= 70) return 'Level 6 (Meritorious Achievement, 70-79%)';
-            if (percentage >= 60) return 'Level 5 (Substantial Achievement, 60-69%)';
-            if (percentage >= 50) return 'Level 4 (Adequate Achievement, 50-59%)';
-            if (percentage >= 40) return 'Level 3 (Moderate Achievement, 40-49%)';
-            if (percentage >= 30) return 'Level 2 (Elementary Achievement, 30-39%)';
-            return 'Level 1 (Not Achieved, 0-29%)';
-        }
-
-        function formatGradeDisplay(percentage) {
-            if (percentage === null || isNaN(percentage)) return 'N/A';
-            const scale = appData.settings.gradingScale || 'US_GPA';
-
-            if (scale === 'US_GPA') {
-                return `${gradeToGPA(percentage).toFixed(2)} GPA`;
-            } else if (scale === 'SA_CAPS') {
-                return `${getCAPSLevelShort(percentage)} (${percentage.toFixed(0)}%)`;
-            } else {
-                return `${percentage.toFixed(1)}%`;
-            }
-        }
-
-        function calculateWhatsNeeded(subject, targetFinalGrade) {
-            const gradeInfo = calculateSubjectGrade(subject);
-            const currentContribution = gradeInfo.currentContributionToFinal || 0;
-            const weightAchieved = gradeInfo.totalWeightAchieved || 0;
-            const assumedTotalModuleWeight = 100;
-            const remainingWeight = assumedTotalModuleWeight - weightAchieved;
-
-            if (currentContribution >= targetFinalGrade && weightAchieved >= assumedTotalModuleWeight) {
-                return { achievable: true, message: `<i class="fa-solid fa-circle-check" style="color:var(--success)"></i> Target of ${targetFinalGrade}% achieved! Final Mark: ${currentContribution.toFixed(1)}%.`, currentMark: currentContribution };
-            }
-            if (currentContribution >= targetFinalGrade && weightAchieved < assumedTotalModuleWeight) {
-                return { achievable: true, message: `<i class="fa-solid fa-circle-check" style="color:var(--success)"></i> Target of ${targetFinalGrade}% already secured with ${currentContribution.toFixed(1)}% from graded works.`, currentMark: currentContribution };
-            }
-
-            if (remainingWeight <= 0) {
-                return {
-                    achievable: currentContribution >= targetFinalGrade,
-                    message: currentContribution >= targetFinalGrade ?
-                        `<i class="fa-solid fa-circle-check" style="color:var(--success)"></i> Target achieved! Final Mark: ${currentContribution.toFixed(1)}%` :
-                        `<i class="fa-solid fa-circle-xmark" style="color:var(--danger)"></i> Target of ${targetFinalGrade}% missed. Final: ${currentContribution.toFixed(1)}%.`,
-                    currentMark: currentContribution
-                };
-            }
-
-            const scorePointsNeededFromRemainingWeight = targetFinalGrade - currentContribution;
-
-            if (scorePointsNeededFromRemainingWeight <= 0) {
-                return {
-                    achievable: true,
-                    message: `<i class="fa-solid fa-circle-check" style="color:var(--success)"></i> Target of ${targetFinalGrade}% achieved (currently at ${currentContribution.toFixed(1)}%)!`,
-                    currentMark: currentContribution
-                };
-            }
-
-            const averagePercentageNeededOnRemaining = (scorePointsNeededFromRemainingWeight / remainingWeight) * 100;
-
-            if (averagePercentageNeededOnRemaining > 100) {
-                return {
-                    achievable: false,
-                    message: `<i class="fa-solid fa-triangle-exclamation" style="color:var(--danger)"></i> Unachievable: Needs <strong>${averagePercentageNeededOnRemaining.toFixed(1)}%</strong> average on remaining assessments to hit target.`,
-                    currentMark: currentContribution
-                };
-            } else {
-                return {
-                    achievable: true,
-                    message: `<i class="fa-solid fa-circle-info" style="color:var(--primary)"></i> Needs an average of <strong>${averagePercentageNeededOnRemaining.toFixed(1)}%</strong> on remaining assessments to achieve ${targetFinalGrade}%.`,
-                    currentMark: currentContribution
-                };
-            }
-        }
-
-        function calculateGoalProgress(goal) {
-            if (goal.completed) return 100;
-            if (goal.type === 'GPA') {
-                const currentGPA = calculateOverallPerformance();
-                const targetGPA = parseFloat(goal.target);
-                if (currentGPA === null || isNaN(targetGPA) || targetGPA === 0) return 0;
-
-                const scale = appData.settings.gradingScale || 'US_GPA';
-                if (scale === 'US_GPA') {
-                    const currentGPANum = gradeToGPA(currentGPA);
-                    return Math.min((currentGPANum / targetGPA) * 100, 100);
-                } else {
-                    return Math.min((currentGPA / targetGPA) * 100, 100);
-                }
-            } else if (goal.type === 'SubjectGrade' && goal.subjectId) {
-                const subject = appData.subjects.find(s => s.id === goal.subjectId);
-                if (subject) {
-                    const gradeInfo = calculateSubjectGrade(subject);
-                    const currentMark = gradeInfo.currentContributionToFinal || 0;
-                    const targetMark = parseFloat(goal.target);
-                    return targetMark > 0 ? Math.min((currentMark / targetMark) * 100, 100) : 0;
-                }
-            } else if (goal.type === 'TaskCompletion') {
-                const targetTasks = parseInt(goal.target) || 1;
-                const completedTasks = appData.tasks.filter(t => t.completed).length;
-                return Math.min((completedTasks / targetTasks) * 100, 100);
-            }
-            return 0;
-        }
-
-        // --- Delete Records Functions ---
-        function deleteSubject(subjectId) {
-            if (confirm('Are you sure you want to delete this subject and all its assessments? This cannot be undone.')) {
-                appData.subjects = appData.subjects.filter(s => s.id !== subjectId);
-                appData.tasks = appData.tasks.filter(t => t.subjectId !== subjectId);
-                appData.goals = appData.goals.filter(g => !(g.type === 'SubjectGrade' && g.subjectId === subjectId));
-
-                // Clear active simulation state
-                delete activeSimulations[subjectId];
-
-                saveAndRefresh();
-            }
-        }
-
-        function deleteAssessment(subjectId, assessmentId) {
-            const subject = appData.subjects.find(s => s.id === subjectId);
-            if (subject && confirm('Delete this assessment?')) {
-                subject.assessments = subject.assessments.filter(a => a.id !== assessmentId);
-
-                // Clear simulation state as assessment count changed
-                delete activeSimulations[subjectId];
-
-                saveAndRefresh();
-            }
-        }
-
-        function deleteTask(taskId) {
-            if (confirm('Delete this task?')) {
-                appData.tasks = appData.tasks.filter(t => t.id !== taskId);
-                saveAndRefresh();
-            }
-        }
-
-        function deleteGoal(goalId) {
-            if (confirm('Delete this goal?')) {
-                appData.goals = appData.goals.filter(g => g.id !== goalId);
-                saveAndRefresh();
-            }
-        }
-
-        // --- Toggle Completion states ---
-        function toggleTask(taskId) {
-            const task = appData.tasks.find(t => t.id === taskId);
-            if (task) task.completed = !task.completed;
-            saveAndRefresh();
-        }
-
-        function toggleGoal(goalId) {
-            const goal = appData.goals.find(g => g.id === goalId);
-            if (goal) goal.completed = !goal.completed;
-            saveAndRefresh();
-        }
-
-        // --- Pomodoro Study Focus Timer Logic ---
-        let timerInterval = null;
-        let timerSeconds = 25 * 60;
-        let timerDuration = 25 * 60;
-        let timerMode = 'study';
-        let timerRunning = false;
-
-        function playAlarmSound() {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-                // 3 quick notification tones
-                for (let i = 0; i < 3; i++) {
-                    const startTime = audioCtx.currentTime + i * 0.35;
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(880, startTime);
-
-                    gain.gain.setValueAtTime(0, startTime);
-                    gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
-                    gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.25);
-
-                    osc.start(startTime);
-                    osc.stop(startTime + 0.3);
-                }
-            } catch (e) {
-                console.error('AudioContext error:', e);
-            }
-        }
-
-        function toggleTimer() {
-            const playBtn = document.getElementById('timerPlayBtn');
-            if (timerRunning) {
-                clearInterval(timerInterval);
-                timerRunning = false;
-                playBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start';
-            } else {
-                timerRunning = true;
-                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
-                timerInterval = setInterval(() => {
-                    timerSeconds--;
-                    updateTimerDisplay();
-
-                    if (timerSeconds <= 0) {
-                        clearInterval(timerInterval);
-                        timerRunning = false;
-                        playAlarmSound();
-                        alert(`Timer Finished! Mode: ${timerMode.toUpperCase()} complete.`);
-
-                        // Switch modes automatically
-                        if (timerMode === 'study') {
-                            setTimerMode('short');
-                        } else {
-                            setTimerMode('study');
-                        }
-                    }
-                }, 1000);
-            }
-        }
-
-        function resetTimer() {
-            clearInterval(timerInterval);
-            timerRunning = false;
-            timerSeconds = timerDuration;
-            updateTimerDisplay();
-            document.getElementById('timerPlayBtn').innerHTML = '<i class="fa-solid fa-play"></i> Start';
-        }
-
-        function setTimerMode(mode) {
-            timerMode = mode;
-
-            document.querySelectorAll('.pomodoro-modes .btn-mode').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            if (mode === 'study') {
-                timerDuration = 25 * 60;
-                document.querySelector('.pomodoro-modes button:nth-child(1)').classList.add('active');
-            } else if (mode === 'short') {
-                timerDuration = 5 * 60;
-                document.querySelector('.pomodoro-modes button:nth-child(2)').classList.add('active');
-            } else if (mode === 'long') {
-                timerDuration = 15 * 60;
-                document.querySelector('.pomodoro-modes button:nth-child(3)').classList.add('active');
-            }
-
-            resetTimer();
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timerSeconds / 60);
-            const seconds = timerSeconds % 60;
-            document.getElementById('timerDisplay').textContent =
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-            const progressCircle = document.getElementById('timerProgressCircle');
-            if (progressCircle) {
-                const radius = progressCircle.r.baseVal.value;
-                const circumference = 2 * Math.PI * radius;
-                const progressFraction = timerSeconds / timerDuration;
-                const offset = circumference * (1 - progressFraction);
-                progressCircle.style.strokeDashoffset = offset;
-            }
-        }
-
-        // --- Academic Report Generation ---
-        function generateReportOnTab() {
-            const reportContainer = document.getElementById('reportContentContainer');
-            if (!reportContainer) return;
-
-            let html = `<div id="actualReportContent" style="padding:1rem;">`;
-            html += `<h2 style="text-align:center; font-family:var(--font-head); margin-bottom:0.25rem;">Academic Report Profile</h2>`;
-            html += `<p style="text-align:center; color:var(--text-light); margin-bottom:1.5rem;">Vylex Nexys • Smart Planner Analytics</p>`;
-
-            html += `<div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; background-color:var(--bg-layout); padding:1.25rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); margin-bottom:2rem;">`;
-            html += `<div><strong>Student Name:</strong> ${appData.settings.studentName}</div>`;
-            html += `<div><strong>Date Compiled:</strong> ${new Date().toLocaleDateString()}</div>`;
-
-            const performance = calculateOverallPerformance();
-            const scale = appData.settings.gradingScale || 'US_GPA';
-            let summaryGrade = 'N/A';
-            if (performance !== null) {
-                if (scale === 'US_GPA') {
-                    summaryGrade = `${gradeToGPA(performance).toFixed(2)} GPA (${performance.toFixed(1)}%)`;
-                } else if (scale === 'SA_CAPS') {
-                    summaryGrade = `${getCAPSLevelFull(performance)}`;
-                } else {
-                    summaryGrade = `${performance.toFixed(1)}%`;
-                }
-            }
-
-            html += `<div><strong>Performance Summary:</strong> ${summaryGrade}</div>`;
-            html += `</div>`;
-
-            html += `<h3 style="font-family:var(--font-head); margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.5rem;"><i class="fa-solid fa-graduation-cap"></i> Subject Performance Analysis</h3>`;
-
-            if (appData.subjects.length === 0) {
-                html += `<p class="empty-state">No academic subjects configured to compile this report.</p>`;
-            } else {
-                appData.subjects.forEach(subject => {
-                    const gradeInfo = calculateSubjectGrade(subject);
-                    const hasGrades = gradeInfo.weightedAverageOfGraded !== null;
-
-                    html += `<div style="border:1px solid var(--border-color); padding:1.25rem; border-radius:var(--radius-sm); margin-bottom:1.25rem; background-color:var(--bg-card);">`;
-                    html += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; flex-wrap:wrap;">`;
-                    html += `<h4 style="font-family:var(--font-head);">${subject.name} (${subject.code || 'N/A'})</h4>`;
-                    html += `<span style="font-weight:800; color:var(--primary-dark);">${hasGrades ? formatGradeDisplay(gradeInfo.weightedAverageOfGraded) : 'N/A'}</span>`;
-                    html += `</div>`;
-
-                    html += `<div style="font-size:0.8rem; color:var(--text-light); margin-bottom:0.75rem;">Credits: ${subject.credits} • Graded syllabus: ${gradeInfo.totalWeightAchieved.toFixed(1)}%</div>`;
-
-                    if (subject.assessments.length > 0) {
-                        html += `<table style="width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:0.5rem;">`;
-                        html += `<thead><tr style="border-bottom:1px solid var(--border-color); text-align:left; color:var(--text-light);"><th style="padding:0.4rem;">Assessment</th><th style="padding:0.4rem;">Type</th><th style="padding:0.4rem;">Weight</th><th style="padding:0.4rem;">Score</th><th style="padding:0.4rem; text-align:right;">Contribution</th></tr></thead>`;
-                        html += `<tbody>`;
-                        subject.assessments.forEach(asm => {
-                            const contribVal = (asm.score !== null) ? ((asm.score / asm.maxScore) * asm.weight) : 0;
-                            html += `<tr style="border-bottom:1px solid var(--border-color); opacity:${asm.score === null ? '0.5' : '1'};">`;
-                            html += `<td style="padding:0.4rem; font-weight:700;">${asm.name}</td>`;
-                            html += `<td style="padding:0.4rem;">${asm.type}</td>`;
-                            html += `<td style="padding:0.4rem;">${asm.weight}%</td>`;
-                            html += `<td style="padding:0.4rem;">${asm.score !== null ? `${asm.score}/${asm.maxScore}` : 'Pending'}</td>`;
-                            html += `<td style="padding:0.4rem; text-align:right; font-weight:700;">${asm.score !== null ? `${contribVal.toFixed(1)}%` : '--'}</td>`;
-                            html += `</tr>`;
-                        });
-                        html += `</tbody></table>`;
-                    } else {
-                        html += `<p style="font-size:0.8rem; color:var(--text-light);"><i class="fa-solid fa-circle-info"></i> No assessments entered for this subject.</p>`;
-                    }
-                    html += `</div>`;
-                });
-            }
-            html += `</div>`;
-            reportContainer.innerHTML = html;
-        }
-
-        function printReport() {
-            generateReportOnTab();
-            window.print();
-        }
-
-        // --- Live Charts Rendering with Chart.js ---
-        let gradeChart = null;
-        let trendsChart = null;
-        let creditsChart = null;
-
-        function renderAnalyticsCharts() {
-            const isDark = document.body.classList.contains('dark-theme');
-            const textColor = isDark ? '#94a3b8' : '#64748b';
-            const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(13, 71, 161, 0.04)';
-
-            // 1. Grade Profile Chart
-            const gradeCanvas = document.getElementById('gradeChartCanvas');
-            if (gradeCanvas) {
-                if (gradeChart) gradeChart.destroy();
-
-                if (appData.subjects.length === 0) {
-                    renderChartEmptyState(gradeCanvas.parentNode, '📊', 'Add subjects & scores to plot analytics.');
-                } else {
-                    clearChartEmptyState(gradeCanvas.parentNode, gradeCanvas);
-                    const subjectLabels = appData.subjects.map(s => s.name);
-                    const subjectAverages = appData.subjects.map(s => {
-                        const gradeInfo = calculateSubjectGrade(s);
-                        return gradeInfo.weightedAverageOfGraded !== null ? gradeInfo.weightedAverageOfGraded : 0;
-                    });
-
-                    const targets = appData.subjects.map(s => {
-                        const goal = appData.goals.find(g => g.type === 'SubjectGrade' && g.subjectId === s.id);
-                        return goal ? parseFloat(goal.target) : null;
-                    });
-
-                    const ctx = gradeCanvas.getContext('2d');
-                    gradeChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: subjectLabels,
-                            datasets: [
-                                {
-                                    label: 'Current Mark (%)',
-                                    data: subjectAverages,
-                                    backgroundColor: 'rgba(70, 130, 180, 0.65)',
-                                    borderColor: '#4682b4',
-                                    borderWidth: 1.5,
-                                    borderRadius: 6
-                                },
-                                {
-                                    label: 'Target Mark (%)',
-                                    data: targets.map(t => t === null ? 0 : t),
-                                    type: 'line',
-                                    borderColor: '#e8491d',
-                                    borderDash: [5, 5],
-                                    fill: false,
-                                    pointBackgroundColor: '#e8491d',
-                                    borderWidth: 2
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { labels: { color: textColor, font: { family: 'Plus Jakarta Sans', weight: '600' } } }
-                            },
-                            scales: {
-                                x: { grid: { color: gridColor }, ticks: { color: textColor } },
-                                y: { min: 0, max: 100, grid: { color: gridColor }, ticks: { color: textColor } }
-                            }
-                        }
-                    });
-                }
-            }
-
-            // 2. Trend Performance Chart
-            const trendsCanvas = document.getElementById('trendsChartCanvas');
-            if (trendsCanvas) {
-                if (trendsChart) trendsChart.destroy();
-
-                const semData = {};
-                appData.subjects.forEach(subject => {
-                    const sem = subject.semester || 'Other';
-                    const gradeInfo = calculateSubjectGrade(subject);
-                    if (gradeInfo.weightedAverageOfGraded !== null) {
-                        if (!semData[sem]) semData[sem] = { sum: 0, count: 0 };
-                        semData[sem].sum += gradeInfo.weightedAverageOfGraded;
-                        semData[sem].count++;
-                    }
-                });
-
-                const semesters = Object.keys(semData);
-                if (semesters.length === 0) {
-                    renderChartEmptyState(trendsCanvas.parentNode, '📈', 'Add semester variables to view trends.');
-                } else {
-                    clearChartEmptyState(trendsCanvas.parentNode, trendsCanvas);
-                    const averages = semesters.map(s => semData[s].sum / semData[s].count);
-
-                    const ctx = trendsCanvas.getContext('2d');
-                    trendsChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: semesters,
-                            datasets: [{
-                                label: 'Semester Average (%)',
-                                data: averages,
-                                borderColor: '#5f9ea0',
-                                backgroundColor: 'rgba(95, 158, 160, 0.15)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.25,
-                                pointBackgroundColor: '#5f9ea0',
-                                pointHoverRadius: 6
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { labels: { color: textColor, font: { family: 'Plus Jakarta Sans', weight: '600' } } }
-                            },
-                            scales: {
-                                x: { grid: { color: gridColor }, ticks: { color: textColor } },
-                                y: { min: 0, max: 100, grid: { color: gridColor }, ticks: { color: textColor } }
-                            }
-                        }
-                    });
-                }
-            }
-
-            // 3. Credits Progress Chart
-            const creditsCanvas = document.getElementById('creditsChartCanvas');
-            if (creditsCanvas) {
-                if (creditsChart) creditsChart.destroy();
-
-                const enrolled = appData.subjects.reduce((sum, s) => sum + (s.credits || 0), 0);
-                const targetTotal = appData.settings.totalCreditsRequired || 120;
-                const remaining = Math.max(targetTotal - enrolled, 0);
-
-                clearChartEmptyState(creditsCanvas.parentNode, creditsCanvas);
-
-                const ctx = creditsCanvas.getContext('2d');
-                creditsChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Enrolled Credits', 'Remaining Credits Goal'],
-                        datasets: [{
-                            data: [enrolled, remaining],
-                            backgroundColor: ['#4682b4', isDark ? '#334155' : '#e2e8f0'],
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom', labels: { color: textColor, font: { family: 'Plus Jakarta Sans', weight: '600' } } }
-                        },
-                        cutout: '75%'
-                    }
-                });
-            }
-        }
-
-        function renderChartEmptyState(parentNode, icon, text) {
-            const canvas = parentNode.querySelector('canvas');
-            if (canvas) canvas.style.display = 'none';
-
-            let placeholder = parentNode.querySelector('.empty-state-placeholder');
-            if (!placeholder) {
-                placeholder = document.createElement('div');
-                placeholder.className = 'empty-state-placeholder empty-state';
-                parentNode.appendChild(placeholder);
-            }
-            placeholder.innerHTML = `<div class="empty-state-icon">${icon}</div><p>${text}</p>`;
-            placeholder.style.display = 'block';
-        }
-
-        function clearChartEmptyState(parentNode, canvas) {
-            if (canvas) canvas.style.display = 'block';
-            const placeholder = parentNode.querySelector('.empty-state-placeholder');
-            if (placeholder) placeholder.style.display = 'none';
-        }
-
-        // --- Data Import & Export ---
-        function exportData() {
-            try {
-                const rawJson = JSON.stringify(appData, null, 2);
-                const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(rawJson);
-                const linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', `achieva_academic_backup_${new Date().toISOString().slice(0, 10)}.json`);
-                document.body.appendChild(linkElement);
-                linkElement.click();
-                linkElement.remove();
-            } catch (e) {
-                alert('Export failed: ' + e.message);
-            }
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                try {
-                    const parsed = JSON.parse(e.target.result);
-                    if (parsed && (parsed.subjects || parsed.tasks || parsed.goals)) {
-                        appData = {
-                            subjects: parsed.subjects || [],
-                            tasks: parsed.tasks || [],
-                            goals: parsed.goals || [],
-                            settings: {
-                                theme: parsed.settings?.theme || 'light',
-                                studentName: parsed.settings?.studentName || 'My Academic Journey',
-                                totalCreditsRequired: parsed.settings?.totalCreditsRequired || 120,
-                                gradingScale: parsed.settings?.gradingScale || 'US_GPA'
-                            }
-                        };
-                        saveAndRefresh();
-                        alert('Planner data successfully imported!');
-                        closeModal('settingsModal');
-                    } else {
-                        alert('Failed to parse: Invalid planner JSON schema.');
-                    }
-                } catch (err) {
-                    alert('Error reading backup file: ' + err.message);
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        // --- Helper Formatting Utilities ---
-        function formatDate(dateString) {
-            if (!dateString) return 'N/A';
-            const date = new Date(dateString + 'T00:00:00');
-            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-        }
-
-        // --- Application Initialisation ---
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-
-            // Handle clicking outside of modal overlay to dismiss it
-            window.addEventListener('click', (e) => {
-                if (e.target.classList.contains('modal')) {
-                    closeModal(e.target.id);
-                }
-            });
-
-            // Set initial timer values
-            updateTimerDisplay();
-        });
-    </script>
+    <!-- Application Script (ES Module Entry) -->
+    <script type="module" src="js/app.js"></script>
 </body>
 
 </html>
