@@ -29,7 +29,11 @@ import {
     openTaskModal,
     openGoalModal,
     openSettingsModal,
-    toggleGoalSubjectSelect
+    toggleGoalSubjectSelect,
+    switchScheduleSubTab,
+    toggleQuickAddMenu,
+    closeQuickAddMenu,
+    openMoreNavModal
 } from './ui.js';
 
 export function refreshAllData() {
@@ -176,6 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.classList.contains('modal')) {
             closeModal(e.target.id);
         }
+        if (!e.target.closest('.quick-add-wrapper')) {
+            closeQuickAddMenu();
+        }
     });
 
     // Theme toggle buttons
@@ -188,6 +195,14 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => {
             const tab = btn.getAttribute('data-tab');
             if (tab) switchTab(tab);
+        });
+    });
+
+    // Schedule Sub-tab segment triggers
+    document.querySelectorAll('[data-sched-tab]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const subTab = btn.getAttribute('data-sched-tab');
+            if (subTab) switchScheduleSubTab(subTab);
         });
     });
 
@@ -267,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const task = {
                 id: 'task_' + Date.now(),
                 title: document.getElementById('taskTitle').value.trim(),
+                category: document.getElementById('taskCategory')?.value || 'General',
                 subjectId: document.getElementById('taskSubject').value || null,
                 dueDate: document.getElementById('taskDueDate').value || null,
                 priority: document.getElementById('taskPriority').value,
@@ -342,11 +358,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const dayKey = btn.getAttribute('data-day-key');
         const slotId = btn.getAttribute('data-slot-id');
 
-        if (action === 'open-subject-modal') openSubjectModal();
-        else if (action === 'open-task-modal') openTaskModal();
-        else if (action === 'open-goal-modal') openGoalModal();
-        else if (action === 'open-settings-modal') openSettingsModal();
-        else if (action === 'print-report') printReport();
+        if (action === 'open-subject-modal') {
+            closeQuickAddMenu();
+            openSubjectModal();
+        } else if (action === 'open-task-modal') {
+            closeQuickAddMenu();
+            openTaskModal();
+        } else if (action === 'open-goal-modal') {
+            closeQuickAddMenu();
+            openGoalModal();
+        } else if (action === 'open-settings-modal') {
+            closeModal('moreNavModal');
+            openSettingsModal();
+        } else if (action === 'open-more-nav') {
+            openMoreNavModal();
+        } else if (action === 'more-nav-navigate') {
+            const targetTab = btn.getAttribute('data-tab');
+            if (targetTab) switchTab(targetTab);
+            closeModal('moreNavModal');
+        } else if (action === 'toggle-quick-add') {
+            toggleQuickAddMenu();
+        } else if (action === 'open-assessment-modal-direct') {
+            closeQuickAddMenu();
+            if (appData.subjects.length > 0) {
+                openAssessmentModal(appData.subjects[0].id);
+            } else {
+                alert("Please add a subject first before creating an assessment deadline.");
+                openSubjectModal();
+            }
+        } else if (action === 'print-report') printReport();
         else if (action === 'export-data') exportData();
         else if (action === 'add-assessment') openAssessmentModal(subjectId);
         else if (action === 'edit-assessment') openAssessmentModal(subjectId, assessmentId);

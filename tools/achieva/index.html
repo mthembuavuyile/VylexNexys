@@ -95,6 +95,22 @@
             <main class="content-body">
                 <!-- Dashboard Tab -->
                 <div id="dashboard" class="tab-content active">
+                    <!-- Quick Tool Navigation Chips -->
+                    <div class="dashboard-quick-tools">
+                        <button class="quick-tool-chip" data-tab="schedule">
+                            <i class="fa-solid fa-list-check" style="color:var(--primary);"></i> <span>My Tasks</span>
+                        </button>
+                        <button class="quick-tool-chip" data-tab="goals">
+                            <i class="fa-solid fa-bullseye" style="color:var(--accent);"></i> <span>Goals</span>
+                        </button>
+                        <button class="quick-tool-chip" data-tab="report">
+                            <i class="fa-solid fa-file-invoice" style="color:var(--success);"></i> <span>Report</span>
+                        </button>
+                        <button class="quick-tool-chip" data-tab="analytics">
+                            <i class="fa-solid fa-chart-pie" style="color:var(--warning);"></i> <span>Analytics</span>
+                        </button>
+                    </div>
+
                     <div class="stats-grid">
                         <div class="stat-item">
                             <div class="stat-number" id="overallGPA">0.00</div>
@@ -184,96 +200,132 @@
                     </div>
                 </div>
 
-                <!-- Schedule Tab (Absorbed & Enhanced Schedule Generator) -->
+                <!-- Schedule Tab -->
                 <div id="schedule" class="tab-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2>Study Schedule & Generator</h2>
-                        <button class="btn btn-primary" data-action="open-task-modal">
-                            <i class="fa-solid fa-plus"></i> Add General Task
+                    <div class="schedule-header">
+                        <h2>Study Schedule & Tasks</h2>
+                        <div class="quick-add-wrapper">
+                            <button class="btn btn-primary btn-quick-add" id="quickAddBtn" data-action="toggle-quick-add">
+                                <i class="fa-solid fa-plus"></i> <span>Add</span> <i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i>
+                            </button>
+                            <div class="quick-add-menu" id="quickAddMenu">
+                                <button class="quick-add-item" data-action="open-task-modal">
+                                    <i class="fa-solid fa-list-check" style="color:var(--primary);"></i>
+                                    <div>
+                                        <strong>General Task</strong>
+                                        <small>Study task or general to-do</small>
+                                    </div>
+                                </button>
+                                <button class="quick-add-item" data-action="open-assessment-modal-direct">
+                                    <i class="fa-solid fa-pen-ruler" style="color:var(--accent);"></i>
+                                    <div>
+                                        <strong>Assessment / Exam</strong>
+                                        <small>Upcoming test or assignment</small>
+                                    </div>
+                                </button>
+                                <button class="quick-add-item" data-action="open-goal-modal">
+                                    <i class="fa-solid fa-bullseye" style="color:var(--success);"></i>
+                                    <div>
+                                        <strong>Academic Goal</strong>
+                                        <small>GPA or grade target</small>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-Tab Segment Switcher -->
+                    <div class="schedule-segment-tabs">
+                        <button class="segment-tab active" data-sched-tab="tasks">
+                            <i class="fa-solid fa-list-check"></i> Tasks & Deadlines
+                        </button>
+                        <button class="segment-tab" data-sched-tab="timetable">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Timetable Generator
                         </button>
                     </div>
 
-                    <!-- Smart Study Schedule Generator Card -->
-                    <div class="schedule-generator-card">
-                        <h3 style="font-family:var(--font-head); font-size:1.3rem; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem; color:var(--primary-dark);">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> Smart Weekly Study Timetable Generator
-                        </h3>
-                        <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:1.25rem;">
-                            Automatically allocate customized study blocks for your registered Achieva subjects based on priority, upcoming assessment deadlines, and your preferred study hours.
-                        </p>
-
-                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem; margin-bottom:1.25rem;">
-                            <!-- Days Selection -->
-                            <div>
-                                <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Study Days</label>
-                                <div class="schedule-days-selector">
-                                    <label class="day-checkbox-label"><input type="checkbox" value="Mon" checked><span>Mon</span></label>
-                                    <label class="day-checkbox-label"><input type="checkbox" value="Tue" checked><span>Tue</span></label>
-                                    <label class="day-checkbox-label"><input type="checkbox" value="Wed" checked><span>Wed</span></label>
-                                    <label class="day-checkbox-label"><input type="checkbox" value="Thu" checked><span>Thu</span></label>
-                                    <label class="day-checkbox-label"><input type="checkbox" value="Fri" checked><span>Fri</span></label>
-                                    <label class="day-checkbox-label"><input type="checkbox" value="Sat"><span>Sat</span></label>
-                                    <label class="day-checkbox-label"><input type="checkbox" value="Sun"><span>Sun</span></label>
-                                </div>
-                            </div>
-
-                            <!-- Time Range -->
-                            <div>
-                                <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Daily Study Window</label>
-                                <div style="display:flex; gap:0.5rem;">
-                                    <input type="time" id="schedStartTime" class="form-control" value="09:00">
-                                    <span style="align-self:center; font-weight:700;">to</span>
-                                    <input type="time" id="schedEndTime" class="form-control" value="17:00">
-                                </div>
-                            </div>
-
-                            <!-- Durations -->
-                            <div>
-                                <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Session & Break Length</label>
-                                <div style="display:flex; gap:0.5rem;">
-                                    <select id="schedStudyDuration" class="form-control">
-                                        <option value="25">25m Study</option>
-                                        <option value="30">30m Study</option>
-                                        <option value="45" selected>45m Study</option>
-                                        <option value="60">60m Study</option>
-                                    </select>
-                                    <select id="schedBreakDuration" class="form-control">
-                                        <option value="5">5m Break</option>
-                                        <option value="10">10m Break</option>
-                                        <option value="15" selected>15m Break</option>
-                                        <option value="20">20m Break</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Strategy -->
-                            <div>
-                                <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Focus Strategy</label>
-                                <select id="schedStrategy" class="form-control">
-                                    <option value="priority" selected>Priority & Goal Weighted</option>
-                                    <option value="deadline">Assessment Deadline Urgent</option>
-                                    <option value="balanced">Equal Balance Distribution</option>
-                                </select>
+                    <!-- Sub-tab 1: Tasks & Assessment Deadlines -->
+                    <div id="scheduleTasksSection" class="sched-section active">
+                        <div id="scheduleList" class="due-item-list">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📅</div>
+                                <p>No tasks or assessment due dates.</p>
                             </div>
                         </div>
-
-                        <button class="btn btn-primary" id="btnGenerateSchedule" style="width:100%;">
-                            <i class="fa-solid fa-arrows-rotate"></i> Generate Smart Study Timetable
-                        </button>
                     </div>
 
-                    <!-- Timetable Container -->
-                    <div id="smartTimetableContainer" style="margin-bottom:2.5rem;"></div>
+                    <!-- Sub-tab 2: Timetable Generator & Grid -->
+                    <div id="scheduleTimetableSection" class="sched-section" style="display:none;">
+                        <div class="schedule-generator-card">
+                            <h3 style="font-family:var(--font-head); font-size:1.3rem; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem; color:var(--primary-dark);">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Smart Weekly Study Timetable Generator
+                            </h3>
+                            <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:1.25rem;">
+                                Automatically allocate customized study blocks for your registered Achieva subjects based on priority, upcoming assessment deadlines, and your preferred study hours.
+                            </p>
 
-                    <!-- Deadlines & Tasks Section -->
-                    <h3 style="font-family:var(--font-head); font-size:1.3rem; margin-bottom:1rem;">
-                        <i class="fa-solid fa-list-check"></i> Pending Tasks & Assessment Deadlines
-                    </h3>
-                    <div id="scheduleList" class="due-item-list">
-                        <div class="empty-state">
-                            <div class="empty-state-icon">📅</div>
-                            <p>No tasks or assessment due dates.</p>
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem; margin-bottom:1.25rem;">
+                                <!-- Days Selection -->
+                                <div>
+                                    <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Study Days</label>
+                                    <div class="schedule-days-selector">
+                                        <label class="day-checkbox-label"><input type="checkbox" value="Mon" checked><span>Mon</span></label>
+                                        <label class="day-checkbox-label"><input type="checkbox" value="Tue" checked><span>Tue</span></label>
+                                        <label class="day-checkbox-label"><input type="checkbox" value="Wed" checked><span>Wed</span></label>
+                                        <label class="day-checkbox-label"><input type="checkbox" value="Thu" checked><span>Thu</span></label>
+                                        <label class="day-checkbox-label"><input type="checkbox" value="Fri" checked><span>Fri</span></label>
+                                        <label class="day-checkbox-label"><input type="checkbox" value="Sat"><span>Sat</span></label>
+                                        <label class="day-checkbox-label"><input type="checkbox" value="Sun"><span>Sun</span></label>
+                                    </div>
+                                </div>
+
+                                <!-- Time Range -->
+                                <div>
+                                    <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Daily Study Window</label>
+                                    <div style="display:flex; gap:0.5rem;">
+                                        <input type="time" id="schedStartTime" class="form-control" value="09:00">
+                                        <span style="align-self:center; font-weight:700;">to</span>
+                                        <input type="time" id="schedEndTime" class="form-control" value="17:00">
+                                    </div>
+                                </div>
+
+                                <!-- Durations -->
+                                <div>
+                                    <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Session & Break Length</label>
+                                    <div style="display:flex; gap:0.5rem;">
+                                        <select id="schedStudyDuration" class="form-control">
+                                            <option value="25">25m Study</option>
+                                            <option value="30">30m Study</option>
+                                            <option value="45" selected>45m Study</option>
+                                            <option value="60">60m Study</option>
+                                        </select>
+                                        <select id="schedBreakDuration" class="form-control">
+                                            <option value="5">5m Break</option>
+                                            <option value="10">10m Break</option>
+                                            <option value="15" selected>15m Break</option>
+                                            <option value="20">20m Break</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Strategy -->
+                                <div>
+                                    <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Focus Strategy</label>
+                                    <select id="schedStrategy" class="form-control">
+                                        <option value="priority" selected>Priority & Goal Weighted</option>
+                                        <option value="deadline">Assessment Deadline Urgent</option>
+                                        <option value="balanced">Equal Balance Distribution</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" id="btnGenerateSchedule" style="width:100%;">
+                                <i class="fa-solid fa-arrows-rotate"></i> Generate Smart Study Timetable
+                            </button>
                         </div>
+
+                        <!-- Timetable Container -->
+                        <div id="smartTimetableContainer" style="margin-bottom:2.5rem;"></div>
                     </div>
                 </div>
 
@@ -433,7 +485,7 @@
                 </div>
             </main>
 
-            <!-- Bottom Mobile Tab Bar -->
+            <!-- Bottom Mobile Tab Bar (Streamlined 5-Item Navigation) -->
             <nav class="bottom-nav">
                 <button class="bottom-nav-item active" data-tab="dashboard">
                     <i class="fa-solid fa-chart-line"></i>
@@ -447,27 +499,66 @@
                     <i class="fa-solid fa-calendar-days"></i>
                     <span>Schedule</span>
                 </button>
-                <button class="bottom-nav-item" data-tab="goals">
-                    <i class="fa-solid fa-bullseye"></i>
-                    <span>Goals</span>
-                </button>
-                <button class="bottom-nav-item" data-tab="report">
-                    <i class="fa-solid fa-file-invoice"></i>
-                    <span>Report</span>
-                </button>
-                <button class="bottom-nav-item" data-tab="analytics">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>Analytics</span>
-                </button>
                 <button class="bottom-nav-item" data-tab="pomodoro">
                     <i class="fa-solid fa-clock"></i>
-                    <span>Focus Timer</span>
+                    <span>Focus</span>
+                </button>
+                <button class="bottom-nav-item" data-action="open-more-nav">
+                    <i class="fa-solid fa-ellipsis"></i>
+                    <span>More</span>
                 </button>
             </nav>
         </div>
     </div>
 
     <!-- Modals -->
+    <!-- Mobile More Navigation Modal Sheet -->
+    <div id="moreNavModal" class="modal bottom-sheet-modal">
+        <div class="modal-content bottom-sheet-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-compass" style="color:var(--primary);"></i> More Tools & Modules</h2>
+                <button class="close-btn" onclick="document.getElementById('moreNavModal').style.display='none'">&times;</button>
+            </div>
+            <div class="more-nav-grid">
+                <button class="more-nav-card" data-action="more-nav-navigate" data-tab="goals">
+                    <div class="more-nav-icon" style="background: rgba(232, 73, 29, 0.12); color: var(--accent);">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div class="more-nav-info">
+                        <strong>Academic Targets</strong>
+                        <small>Set & track grade goals</small>
+                    </div>
+                </button>
+                <button class="more-nav-card" data-action="more-nav-navigate" data-tab="report">
+                    <div class="more-nav-icon" style="background: rgba(70, 130, 180, 0.12); color: var(--primary);">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </div>
+                    <div class="more-nav-info">
+                        <strong>Performance Report</strong>
+                        <small>Generate academic summary</small>
+                    </div>
+                </button>
+                <button class="more-nav-card" data-action="more-nav-navigate" data-tab="analytics">
+                    <div class="more-nav-icon" style="background: rgba(22, 163, 74, 0.12); color: var(--success);">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <div class="more-nav-info">
+                        <strong>Analytics Charts</strong>
+                        <small>GPA & subject breakdowns</small>
+                    </div>
+                </button>
+                <button class="more-nav-card" data-action="open-settings-modal">
+                    <div class="more-nav-icon" style="background: rgba(148, 163, 184, 0.15); color: var(--text-main);">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <div class="more-nav-info">
+                        <strong>Settings & Backups</strong>
+                        <small>Grading scale & data JSON</small>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
     <!-- Add Subject Modal -->
     <div id="subjectModal" class="modal">
         <div class="modal-content">
@@ -563,11 +654,11 @@
         </div>
     </div>
 
-    <!-- Add General Task Modal -->
+    <!-- Add Task Modal -->
     <div id="taskModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Add General Task</h2>
+                <h2>Add Task</h2>
                 <button class="close-btn" onclick="document.getElementById('taskModal').style.display='none'">&times;</button>
             </div>
             <form id="taskForm">
@@ -575,6 +666,15 @@
                     <label for="taskTitle">Task Title</label>
                     <input type="text" id="taskTitle" class="form-control"
                         placeholder="e.g., Read Chapter 3, Revise biology formulas" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskCategory">Task Category</label>
+                    <select id="taskCategory" class="form-control">
+                        <option value="General" selected>General To-Do</option>
+                        <option value="Assignment">Assignment / Project</option>
+                        <option value="Exam Prep">Exam / Test Prep</option>
+                        <option value="Revision">Study Revision</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="taskSubject">Related Subject (optional)</label>

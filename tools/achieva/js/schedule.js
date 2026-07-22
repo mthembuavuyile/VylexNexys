@@ -263,21 +263,29 @@ export function renderSchedule() {
     let allDueItems = [];
 
     appData.tasks.forEach(task => {
-        if (task.dueDate) {
-            allDueItems.push({
-                id: task.id, type: 'Task', title: task.title, dueDate: task.dueDate, completed: task.completed,
-                subjectName: task.subjectId ? (appData.subjects.find(s => s.id === task.subjectId)?.name || 'General') : 'General',
-                details: `Priority: <span class="priority-${task.priority.toLowerCase()}" style="font-weight:700; color:var(--${task.priority === 'High' ? 'danger' : task.priority === 'Medium' ? 'warning' : 'success'});">${task.priority}</span>`,
-                itemClass: 'task-item'
-            });
-        }
+        allDueItems.push({
+            id: task.id,
+            type: 'Task',
+            title: task.title,
+            dueDate: task.dueDate || null,
+            completed: task.completed,
+            category: task.category || 'General',
+            subjectName: task.subjectId ? (appData.subjects.find(s => s.id === task.subjectId)?.name || 'General') : 'General',
+            details: `<span style="display:inline-block; font-size:0.75rem; background:rgba(70,130,180,0.1); color:var(--primary-dark); padding:2px 8px; border-radius:12px; margin-right:6px; font-weight:700;">${task.category || 'General'}</span> Priority: <span class="priority-${task.priority.toLowerCase()}" style="font-weight:700; color:var(--${task.priority === 'High' ? 'danger' : task.priority === 'Medium' ? 'warning' : 'success'});">${task.priority}</span>`,
+            itemClass: 'task-item'
+        });
     });
 
     appData.subjects.forEach(subject => {
         subject.assessments.forEach(asm => {
             if (asm.dueDate) {
                 allDueItems.push({
-                    id: asm.id, type: 'Assessment', title: asm.name, dueDate: asm.dueDate, completed: asm.score !== null,
+                    id: asm.id,
+                    type: 'Assessment',
+                    title: asm.name,
+                    dueDate: asm.dueDate,
+                    completed: asm.score !== null,
+                    category: 'Assessment',
                     subjectName: subject.name,
                     details: `Type: ${asm.type} • Weight: ${asm.weight}%`,
                     itemClass: 'assessment-item'
@@ -288,6 +296,8 @@ export function renderSchedule() {
 
     allDueItems.sort((a, b) => {
         if (a.completed !== b.completed) return a.completed ? 1 : -1;
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
         return new Date(a.dueDate) - new Date(b.dueDate);
     });
 
@@ -295,13 +305,13 @@ export function renderSchedule() {
         container.innerHTML = `
             <div class="empty-state" style="grid-column: 1 / -1;">
                 <div class="empty-state-icon">📅</div>
-                <p>No tasks or assessment due dates with deadlines.</p>
+                <p>No tasks or assessment due dates yet.</p>
             </div>`;
         return;
     }
 
     container.innerHTML = allDueItems.map(item => {
-        const isOverdue = new Date(item.dueDate) < new Date() && !item.completed;
+        const isOverdue = item.dueDate && new Date(item.dueDate) < new Date() && !item.completed;
         return `
             <div class="card due-item ${item.itemClass} ${item.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}">
                 <h4>
@@ -311,7 +321,7 @@ export function renderSchedule() {
                 (item.completed ? '<i class="fa-solid fa-circle-check" style="color:var(--success); float:right; margin-top:2px;"></i>' : '<i class="fa-solid fa-clock" style="color:var(--primary); float:right; margin-top:2px;"></i>')
             }
                 </h4>
-                <p><strong>Due Date:</strong> ${formatDate(item.dueDate)} ${isOverdue ? '<span style="color:var(--danger); font-weight:700;">(Overdue)</span>' : ''}</p>
+                <p><strong>Due Date:</strong> ${item.dueDate ? formatDate(item.dueDate) : '<span style="color:var(--text-light);">No deadline</span>'} ${isOverdue ? '<span style="color:var(--danger); font-weight:700;">(Overdue)</span>' : ''}</p>
                 <p><strong>Subject:</strong> ${item.subjectName}</p>
                 <p><small>${item.details}</small></p>
                 ${item.type === 'Task' ? `

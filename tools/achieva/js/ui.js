@@ -164,3 +164,35 @@ export function openSettingsModal() {
 
     openModal('settingsModal');
 }
+
+export function switchScheduleSubTab(subTabName) {
+    document.querySelectorAll('.segment-tab').forEach(tab => tab.classList.remove('active'));
+    const activeBtn = document.querySelector(`[data-sched-tab="${subTabName}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    const tasksSec = document.getElementById('scheduleTasksSection');
+    const timetableSec = document.getElementById('scheduleTimetableSection');
+
+    if (subTabName === 'tasks') {
+        if (tasksSec) tasksSec.style.display = 'block';
+        if (timetableSec) timetableSec.style.display = 'none';
+    } else {
+        if (tasksSec) tasksSec.style.display = 'none';
+        if (timetableSec) timetableSec.style.display = 'block';
+    }
+}
+
+export function toggleQuickAddMenu() {
+    const menu = document.getElementById('quickAddMenu');
+    if (menu) menu.classList.toggle('active');
+}
+
+export function closeQuickAddMenu() {
+    const menu = document.getElementById('quickAddMenu');
+    if (menu) menu.classList.remove('active');
+}
+
+export function openMoreNavModal() {
+    openModal('moreNavModal');
+}
+
