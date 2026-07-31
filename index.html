@@ -79,39 +79,32 @@
 
     <!-- ===================== HERO ===================== -->
     <section id="hero-v2" aria-label="Welcome to Vylex Nexys">
-
-        <div class="container hero-content-v2">
-            <div class="hero-badge-muted" role="note">
-                100% Free &bull; Web-Based Student Tools
-            </div>
-
-            <h1>Free Web Tools for <span class="hero-accent-orange">South African Students.</span></h1>
-
+        <div class="container hero-content-v2 text-center">
+            <span class="hero-eyebrow">South African Academic Ecosystem</span>
+            <h1>Study. Plan. Succeed.</h1>
             <p class="hero-sub-v2">
-                <span>Calculate your university APS score, write and edit essays with Nexys Write, generate academic citations, organize your study schedule, and run science simulations.</span>
-                <span class="sub-caps">APS CALCULATOR &bull; NEXYS WRITE &bull; CITATION GENERATOR &bull; ACHIEVA &bull; VYLAB</span>
+                Free CAPS-aligned science simulators, university admission calculators, essay writing tools, and study planners built for high school and university students.
             </p>
 
-            <div class="hero-cta-v2" role="group" aria-label="Primary actions">
-                <a href="tools/" class="btn-primary-large">
-                    <i class="fa-solid fa-toolbox" aria-hidden="true"></i> Explore All Tools
+            <div class="hero-cta-v2">
+                <a href="#ecosystem" class="btn-hero-primary">
+                    Explore Products <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                 </a>
-                <a href="#featured-tools" class="cta-secondary-link">
-                    or view tools gallery &darr;
+                <a href="tools/apscalculator.html" class="btn-hero-secondary">
+                    Calculate APS Score
                 </a>
             </div>
         </div>
     </section>
 
     <!-- ===================== TRUST STRIP ===================== -->
-    <section class="trust-strip" aria-label="Key Benefits">
+    <section class="trust-strip" aria-label="Core Pillars">
         <div class="container">
             <div class="trust-grid">
-                <div class="trust-item"><i class="fa-solid fa-graduation-cap"></i> APS Calculator</div>
-                <div class="trust-item"><i class="fa-solid fa-pen-nib"></i> Nexys Write</div>
-                <div class="trust-item"><i class="fa-solid fa-quote-right"></i> Citation Generator</div>
-                <div class="trust-item"><i class="fa-solid fa-calculator"></i> STEM Calculators</div>
-                <div class="trust-item"><i class="fa-solid fa-flask"></i> Science Simulators</div>
+                <div class="trust-item"><i class="fa-solid fa-calculator"></i> Nexys Calc (APS & Math)</div>
+                <div class="trust-item"><i class="fa-solid fa-flask"></i> VyLab (CAPS Simulators)</div>
+                <div class="trust-item"><i class="fa-solid fa-pen-nib"></i> Nexys Write & Citation Engine</div>
+                <div class="trust-item"><i class="fa-solid fa-trophy"></i> Achieva (Target Tracker)</div>
             </div>
         </div>
     </section>
@@ -145,6 +138,47 @@
                         <h3><i class="fa-solid fa-graduation-cap" style="color:var(--primary); margin-right:8px;"></i> SA University Requirements</h3>
                         <p>Check how your Matric points line up against admission criteria for major South African universities like Wits, UCT, and UP.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SOLUTIONS BY GOAL ===================== -->
+    <section id="solutions" class="section-padding section-alt" aria-labelledby="solutions-heading">
+        <div class="container">
+            <div class="text-center reveal" style="margin-bottom: 3rem;">
+                <span class="section-label">Solutions By Goal</span>
+                <h2 class="section-title" id="solutions-heading">Designed for Every Academic Milestone</h2>
+                <p class="section-subtitle">Find the right digital suite to accelerate your learning, research, and university planning.</p>
+            </div>
+
+            <div class="solutions-grid reveal">
+                <div class="solution-card">
+                    <div class="solution-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3>University Admissions</h3>
+                    <p>Calculate your Matric APS points, compare qualification thresholds for top SA universities, and verify course eligibility.</p>
+                    <a href="tools/apscalculator.html" class="solution-link">Check Admission Status <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="solution-card">
+                    <div class="solution-icon"><i class="fa-solid fa-flask"></i></div>
+                    <h3>STEM & Science Mastery</h3>
+                    <p>Interact with CAPS physics wave mechanics, electric circuits, and chemistry simulations in an intuitive virtual lab environment.</p>
+                    <a href="products/vylab/index.html" class="solution-link">Explore Virtual Labs <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="solution-card">
+                    <div class="solution-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                    <h3>Research & Referencing</h3>
+                    <p>Write assignments in a distraction-free studio, analyze essay readability, and instantly build APA, MLA, and Harvard citations.</p>
+                    <a href="products/nexys-write/index.html" class="solution-link">Open Writing Studio <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="solution-card">
+                    <div class="solution-icon"><i class="fa-solid fa-trophy"></i></div>
+                    <h3>Academic Strategy</h3>
+                    <p>Track subject marks, monitor goal feasibility, and generate automated study timetables tailored to your exam schedule.</p>
+                    <a href="tools/achieva/index.html" class="solution-link">Launch Target Tracker <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -405,14 +439,13 @@
                 <p class="section-subtitle">A specialized workspace combining STEM solvers, simulation sandboxes, and student utilities.</p>
             </div>
 
-            <div class="grid-3 reveal" role="list">
+            <div class="grid-4 reveal" role="list">
                 <article class="feature-card" role="listitem">
                     <div class="icon-box icon-steel" aria-hidden="true"><i class="fa-solid fa-calculator"></i></div>
                     <h3>Nexys Calc</h3>
-                    <p>Compute your APS admission scores, plot math graphs, solve algebraic sequences, and calculate formulas step-by-step.</p>
-                    <div style="margin-top: 1.5rem;">
-                        <a href="products/nexys-calc/index.html" class="btn btn-outline">Open Calculators <i class="fa-solid fa-arrow-right"
-                                aria-hidden="true"></i></a>
+                    <p>Calculate your Matric APS score, plot math functions, and solve STEM equations step-by-step.</p>
+                    <div class="card-btn-wrapper">
+                        <a href="products/nexys-calc/index.html" class="btn-card-action">Launch Calculators <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
@@ -420,20 +453,27 @@
                     <div class="feature-card__badge">Science Sandbox</div>
                     <div class="icon-box icon-dark" aria-hidden="true"><i class="fa-solid fa-flask"></i></div>
                     <h3>VyLab Simulators</h3>
-                    <p>Run interactive physics and chemistry experiments directly in your web browser. Perfect for visualizing CAPS science practicals.</p>
-                    <div style="margin-top: 1.5rem;">
-                        <a href="products/vylab/index.html" class="btn btn-secondary">Open Simulators <i class="fa-solid fa-arrow-right"
-                                aria-hidden="true"></i></a>
+                    <p>Run interactive physics & chemistry experiments directly in your web browser. CAPS curriculum aligned.</p>
+                    <div class="card-btn-wrapper">
+                        <a href="products/vylab/index.html" class="btn-card-action btn-card-primary">Launch Simulators <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
                 <article class="feature-card" role="listitem">
                     <div class="icon-box icon-accent" aria-hidden="true"><i class="fa-solid fa-pen-nib"></i></div>
                     <h3>Nexys Write</h3>
-                    <p>A premium, distraction-free writing environment integrated with text analysis, readability stats, and custom revision schedules.</p>
-                    <div style="margin-top: 1.5rem;">
-                        <a href="products/nexys-write/index.html" class="btn btn-outline">Open Writing Studio <i
-                                class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                    <p>Distraction-free essay studio with built-in readability stats and auto-formatting citation engine (SaCite).</p>
+                    <div class="card-btn-wrapper">
+                        <a href="products/nexys-write/index.html" class="btn-card-action">Launch Writing Studio <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card" role="listitem">
+                    <div class="icon-box icon-steel" aria-hidden="true"><i class="fa-solid fa-trophy"></i></div>
+                    <h3>Nexys Achieva</h3>
+                    <p>Smart academic workspace for tracking target grades, subject performance, and automated study timetables.</p>
+                    <div class="card-btn-wrapper">
+                        <a href="tools/achieva/index.html" class="btn-card-action">Launch Achieva <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
             </div>
@@ -609,9 +649,8 @@
         <div class="container reveal text-center">
             <h2>Ready to try the tools?</h2>
             <p>Access our APS calculator, citation builder, mark tracker, and STEM utilities for free.</p>
-            <a href="tools/" class="btn-primary-large"
-                style="background: white; color: var(--accent); margin-top: 1rem;">
-                Explore Tools Gallery
+            <a href="tools/index.html" class="btn-final-cta">
+                Explore Tools Gallery <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
             </a>
         </div>
     </section>

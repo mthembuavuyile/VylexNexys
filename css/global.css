@@ -2,21 +2,21 @@
    VARIABLES
    ========================================= */
 :root {
-  --primary:       #4682b4;
-  --primary-dark:  #0d47a1;
-  --secondary:     #5f9ea0;
+  --primary:       #2563eb;
+  --primary-dark:  #1e40af;
+  --secondary:     #0f172a;
   --accent:        #e8491d;
-  --success:       #16a34a;
-  --bg-body:       #f0f8ff;
+  --success:       #10b981;
+  --bg-body:       #f8fafc;
   --bg-white:      #ffffff;
-  --bg-alt:        #f4f7fb;
-  --text-main:     #1e293b;
-  --text-light:    #64748b;
+  --bg-alt:        #f1f5f9;
+  --text-main:     #0f172a;
+  --text-light:    #475569;
   --text-muted:    #94a3b8;
-  --border:        rgba(13, 71, 161, 0.1);
-  --shadow-sm:     0 4px 12px rgba(13, 71, 161, 0.05);
-  --shadow:        0 12px 35px -8px rgba(13, 71, 161, 0.12);
-  --shadow-lg:     0 24px 50px -12px rgba(13, 71, 161, 0.18);
+  --border:        #e2e8f0;
+  --shadow-sm:     0 4px 12px rgba(15, 23, 42, 0.04);
+  --shadow:        0 12px 35px -8px rgba(15, 23, 42, 0.08);
+  --shadow-lg:     0 24px 50px -12px rgba(15, 23, 42, 0.14);
   --radius-sm:     10px;
   --radius:        16px;
   --radius-lg:     24px;
@@ -65,10 +65,10 @@ img {
    UTILITIES
    ========================================= */
 .container {
-  width: 90%;
-  max-width: 1200px;
+  width: 96%;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
 .section-padding {
