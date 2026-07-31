@@ -1162,4 +1162,39 @@
   box-shadow: 0 6px 18px rgba(30, 64, 175, 0.35);
 }
 
+/* ===================== MOBILE RESPONSIVE ENHANCEMENTS ===================== */
+@media (max-width: 768px) {
+  #hero-v2 {
+    text-align: left;
+    padding: 60px 0 68px 0;
+  }
+
+  .hero-content-v2 {
+    text-align: left;
+    margin: 0;
+  }
+
+  .hero-sub-v2 {
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 1.05rem;
+  }
+
+  .hero-cta-v2 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
+  }
+}
+
+
 
