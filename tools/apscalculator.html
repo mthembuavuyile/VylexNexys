@@ -1,16 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vylex Nexys - South African APS Calculator | University Admissions Tool</title>
-    <meta name="description" content="Calculate your Academic Performance Score (APS) for South African university admissions. Free tool to determine if you qualify for bachelor's, diploma, or certificate programs.">
-    <meta name="keywords" content="APS calculator, South Africa, university admissions, academic performance score, NSC, matric, university requirements">
-    <link rel="canonical" href="https://vylexnexys.co.za/tools/apscalculator.html">
-    <meta property="og:title" content="Vylex Nexys South African APS Calculator - University Admissions Tool">
-    <meta property="og:description" content="Calculate your Academic Performance Score (APS) for South African university admissions and see what programs you qualify for.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://vylexnexys.co.za/tools/apscalculator.html">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Vylex Nexys" />
+  
+  <title>Vylex Nexys - South African APS Calculator | University Admissions Tool | Vylex Nexys</title>
+  <meta name="description" content="Calculate your Academic Performance Score (APS) for South African university admissions. Free tool to determine if you qualify for bachelor" />
+  <meta name="keywords" content="tools, calculators, STEM, students, Vylex Nexys, South Africa" />
+  
+  <link rel="canonical" href="https://vylexnexys.co.za/tools/apscalculator.html" />
+  
+  <meta name="geo.region" content="ZA" />
+  <meta name="geo.placename" content="South Africa" />
+  
+    <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vylexnexys.co.za/tools/apscalculator.html" />
+  <meta property="og:title" content="Vylex Nexys - South African APS Calculator | University Admissions Tool | Vylex Nexys" />
+  <meta property="og:description" content="Calculate your Academic Performance Score (APS) for South African university admissions. Free tool to determine if you qualify for bachelor" />
+  <meta property="og:image" content="https://vylexnexys.co.za/images/AI-learning-background.jpg" />
+  <meta property="og:site_name" content="Vylex Nexys" />
+  <meta property="og:locale" content="en_ZA" />
+  
+    <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vylex Nexys - South African APS Calculator | University Admissions Tool | Vylex Nexys" />
+  <meta name="twitter:description" content="Calculate your Academic Performance Score (APS) for South African university admissions. Free tool to determine if you qualify for bachelor" />
+  <meta name="twitter:image" content="https://vylexnexys.co.za/images/AI-learning-background.jpg" />
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vylex Nexys - South African APS Calculator | University Admissions Tool | Vylex Nexys",
+    "url": "https://vylexnexys.co.za/tools/apscalculator.html",
+    "description": "Calculate your Academic Performance Score (APS) for South African university admissions. Free tool to determine if you qualify for bachelor",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Vylex Nexys",
+      "url": "https://vylexnexys.co.za"
+    }
+  }
+  </script>
+
     <!-- Use a more recent version of Tailwind if possible, or stick with 2.2.19 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script> <!-- Specific Chart.js version -->
@@ -27,17 +58,14 @@
             --dark-text: #1e293b; /* slate-800 */
             --medium-text: #475569; /* slate-600 */
         }
-
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background-color: var(--light-bg);
             color: var(--medium-text);
         }
-
         .gradient-bg {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
         }
-
         .card {
             background: white;
             border-radius: 12px; /* Slightly softer radius */
@@ -45,11 +73,9 @@
             transition: all 0.3s ease;
             border: 1px solid #e5e7eb; /* Subtle border */
         }
-
         .card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
         }
-
         .input-group {
             transition: all 0.3s ease;
             background-color: var(--light-bg); /* Lighter background for input groups */
@@ -59,32 +85,27 @@
              border-color: rgba(37, 99, 235, 0.3);
              box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
-
         select, input[type="number"], input[type="text"] {
             transition: all 0.2s ease;
             border: 1px solid #d1d5db; /* gray-300 */
             background-color: white;
             border-radius: 6px;
         }
-
         select:focus, input:focus {
             border-color: var(--primary);
             outline: none;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
         }
-
         .info-card {
             background: var(--medium-bg);
             border-left: 4px solid var(--primary);
             border-radius: 4px;
         }
-
         .btn {
             transition: all 0.3s ease;
             border-radius: 8px;
             font-weight: 500;
         }
-
         .btn:hover {
             transform: translateY(-1px);
             filter: brightness(1.05);
@@ -93,7 +114,6 @@
              transform: translateY(0px);
              filter: brightness(0.95);
         }
-
         .btn-primary {
             background-color: var(--primary);
             color: white;
@@ -101,7 +121,6 @@
         .btn-primary:hover {
             background-color: var(--primary-dark);
         }
-
         .btn-secondary {
             background-color: var(--medium-bg);
             color: var(--secondary);
@@ -110,7 +129,6 @@
         .btn-secondary:hover {
             background-color: #e2e8f0; /* slate-200 */
         }
-
         .tag {
             display: inline-block;
             padding: 0.25rem 0.75rem; /* More horizontal padding */
@@ -119,12 +137,10 @@
             font-weight: 500;
             line-height: 1; /* Ensure consistent height */
         }
-
         .tag-success { background-color: #ecfdf5; color: #059669; } /* green */
         .tag-warning { background-color: #fffbeb; color: #d97706; } /* amber */
         .tag-danger { background-color: #fef2f2; color: #dc2626; } /* red */
         .tag-info { background-color: #eff6ff; color: #2563eb; } /* blue */
-
         .progress-bar {
             height: 0.5rem;
             background-color: #e2e8f0; /* slate-200 */
@@ -139,7 +155,6 @@
         }
         .progress-value.bg-success { background-color: var(--success); }
         .progress-value.bg-warning { background-color: var(--warning); }
-
         /* Toast notification */
         .toast {
             position: fixed;
@@ -159,7 +174,6 @@
         .toast.show {
             transform: translateX(0);
         }
-
         .validation-error {
             border-color: var(--danger) !important;
             box-shadow: 0 0 0 1px var(--danger) !important;
@@ -169,7 +183,6 @@
             font-size: 0.75rem; /* 12px */
             margin-top: 0.25rem; /* 4px */
         }
-
         /* University requirements table */
         .table-container {
             overflow-x: auto;
@@ -200,8 +213,6 @@
         .university-table tr:hover {
              background-color: var(--medium-bg);
         }
-
-
         .program-card {
             border-left: 4px solid #ddd;
             transition: all 0.3s ease;
@@ -210,7 +221,6 @@
         .program-card.eligible { border-left-color: var(--success); }
         .program-card.almost { border-left-color: var(--warning); }
         .program-card.not-eligible { border-left-color: var(--danger); }
-
         /* Loading spinner */
 .spinner {
   width: 40px;
@@ -220,14 +230,11 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
-
 /* Keep as is */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-
         /* Report Modal Specific Styles */
         #report-modal {
              background-color: rgba(0, 0, 0, 0.6); /* Darker backdrop */
@@ -260,8 +267,6 @@
         .report-table th, .report-table td { padding: 0.4rem 0.5rem; border: 1px solid #e5e7eb; text-align: left; }
         .report-table th { background-color: var(--light-bg); font-weight: 600; }
         .report-table tbody tr:nth-child(even) { background-color: var(--light-bg); }
-
-
         /* Responsive adjustments */
         @media (max-width: 640px) {
             .subject-controls {
@@ -283,11 +288,9 @@
                  margin-top: -0.25rem; /* Adjust spacing */
                  margin-bottom: 0.5rem;
              }
-
             .card { padding: 1rem; }
             h1 { font-size: 1.875rem; } /* 30px */
             h2 { font-size: 1.25rem; } /* 20px */
-
             .toast {
                 left: 1rem;
                 right: 1rem;
@@ -296,7 +299,6 @@
                 transform: translateY(calc(100% + 1rem)); /* Adjust starting position */
             }
              .toast.show { transform: translateY(0); }
-
             /* Make modal full width on small screens, adjust padding */
             .report-modal-content {
                 max-width: 100%;
@@ -309,7 +311,6 @@
                  padding-right: 1rem;
              }
         }
-
          /* Print-specific styles */
         @media print {
             body > *:not(#report-modal) { display: none !important; }
@@ -338,23 +339,7 @@
              a[href]:after { content: none !important; } /* Prevent URL printing */
              .no-print { display: none !important; } /* Class to hide specific elements */
         }
-
     </style>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Vylex Nexys APS Calculator",
-      "description": "Calculate your Academic Performance Score (APS) for South African university admissions",
-      "applicationCategory": "Education",
-      "operatingSystem": "All",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "ZAR"
-      }
-    }
-    </script>
 </head>
 <body class="min-h-screen py-8 px-4">
     <div class="max-w-4xl mx-auto">

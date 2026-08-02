@@ -4,42 +4,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VyLab Virtual Science Lab | CAPS Physics & Chemistry Simulators</title>
-  <meta name="description"
-    content="Run real science experiments from home using interactive simulators. Explore Chemistry and Physics. Perfectly aligned to the South African CAPS curriculum." />
+  <meta name="author" content="Vylex Nexys" />
+  
+  <title>VyLab Virtual Science Lab | CAPS Physics & Chemistry Simulators | Vylex Nexys</title>
+  <meta name="description" content="Run real science experiments from home using interactive simulators. Explore Chemistry and Physics. Perfectly aligned to the South African CAPS curriculum." />
+  <meta name="keywords" content="software, app, virtual labs, education, Vylex Nexys, South Africa" />
+  
   <link rel="canonical" href="https://vylexnexys.co.za/products/vylab/index.html" />
-
-  <!-- Schema.org JSON-LD -->
+  
+  <meta name="geo.region" content="ZA" />
+  <meta name="geo.placename" content="South Africa" />
+  
+    <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vylexnexys.co.za/products/vylab/index.html" />
+  <meta property="og:title" content="VyLab Virtual Science Lab | CAPS Physics & Chemistry Simulators | Vylex Nexys" />
+  <meta property="og:description" content="Run real science experiments from home using interactive simulators. Explore Chemistry and Physics. Perfectly aligned to the South African CAPS curriculum." />
+  <meta property="og:image" content="https://vylexnexys.co.za/images/AI-learning-background.jpg" />
+  <meta property="og:site_name" content="Vylex Nexys" />
+  <meta property="og:locale" content="en_ZA" />
+  
+    <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VyLab Virtual Science Lab | CAPS Physics & Chemistry Simulators | Vylex Nexys" />
+  <meta name="twitter:description" content="Run real science experiments from home using interactive simulators. Explore Chemistry and Physics. Perfectly aligned to the South African CAPS curriculum." />
+  <meta name="twitter:image" content="https://vylexnexys.co.za/images/AI-learning-background.jpg" />
+  
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "VyLab Virtual Science Laboratory",
+    "@type": "SoftwareApplication",
+    "name": "VyLab Virtual Science Lab | CAPS Physics & Chemistry Simulators | Vylex Nexys",
     "url": "https://vylexnexys.co.za/products/vylab/index.html",
-    "description": "CAPS-aligned virtual laboratory platform for high school Physics and Chemistry practicals.",
-    "applicationCategory": "EducationalApplication",
-    "operatingSystem": "All",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "ZAR"
+    "description": "Run real science experiments from home using interactive simulators. Explore Chemistry and Physics. Perfectly aligned to the South African CAPS curriculum.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Vylex Nexys",
+      "url": "https://vylexnexys.co.za"
     }
   }
   </script>
 
+  <!-- Schema.org JSON-LD -->
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
     rel="stylesheet">
-
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
   <!-- Global Brand CSS -->
   <link rel="stylesheet" href="/css/global.css">
-
   <style>
     /* =========================================
        PAGE-SPECIFIC: VYLAB GATEWAY
@@ -49,7 +63,6 @@
       color: var(--text-main);
       padding-top: var(--nav-height);
     }
-
     .vylab-gateway-hero {
       padding: 40px 0;
       background: radial-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(4, 120, 87, 0.03) 100%);
@@ -58,13 +71,11 @@
       overflow: hidden;
       box-sizing: border-box;
     }
-
     @media (min-width: 993px) {
       .vylab-gateway-hero {
         padding: 40px 0;
       }
     }
-
     .vylab-gateway-hero::before {
       content: '';
       position: absolute;
@@ -76,7 +87,6 @@
       z-index: 1;
       pointer-events: none;
     }
-
     .gateway-container {
       display: grid;
       grid-template-cols: 1.1fr 0.9fr;
@@ -86,7 +96,6 @@
       z-index: 2;
       width: 100%;
     }
-
     @media (max-width: 992px) {
       .gateway-container {
         grid-template-cols: 1fr;
@@ -94,18 +103,15 @@
         gap: 28px;
       }
     }
-
     .hero-info {
       max-width: 620px;
     }
-
     @media (max-width: 992px) {
       .hero-info {
         max-width: 100%;
         margin: 0 auto;
       }
     }
-
     .hero-badge {
       display: inline-flex;
       align-items: center;
@@ -121,7 +127,6 @@
       letter-spacing: 0.5px;
       margin-bottom: 14px;
     }
-
     .hero-title {
       font-family: var(--font-head);
       font-size: clamp(1.8rem, 3.2vw, 3rem);
@@ -130,32 +135,27 @@
       line-height: 1.18;
       margin-bottom: 16px;
     }
-
     .hero-title span {
       background: linear-gradient(135deg, #10b981, #047857);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-
     .hero-desc {
       font-size: clamp(0.95rem, 1.1vw, 1.08rem);
       color: var(--text-light);
       line-height: 1.6;
       margin-bottom: 22px;
     }
-
     .hero-actions {
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
     }
-
     @media (max-width: 992px) {
       .hero-actions {
         justify-content: center;
       }
     }
-
     /* Pulsing Launch Button */
     .btn-launch {
       display: inline-flex;
@@ -172,7 +172,6 @@
       transition: var(--transition);
       position: relative;
     }
-
     .btn-launch::after {
       content: '';
       position: absolute;
@@ -184,31 +183,25 @@
       box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
       animation: pulse-border 2s infinite;
     }
-
     .btn-launch:hover {
       transform: translateY(-3px);
       box-shadow: 0 15px 30px rgba(16, 185, 129, 0.35);
       background: linear-gradient(135deg, #059669, #065f46);
     }
-
     .btn-launch:active {
       transform: translateY(-1px);
     }
-
     @keyframes pulse-border {
       0% {
         box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
       }
-
       70% {
         box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
       }
-
       100% {
         box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
       }
     }
-
     /* Secondary back to tools button */
     .btn-secondary-link {
       display: inline-flex;
@@ -224,25 +217,21 @@
       border-radius: var(--radius);
       transition: var(--transition);
     }
-
     .btn-secondary-link:hover {
       background: var(--bg-alt);
       border-color: var(--primary);
       color: var(--primary);
     }
-
     /* Premium UI Mockup illustration */
     .hero-preview {
       width: 100%;
     }
-
     @media (max-width: 992px) {
       .hero-preview {
         max-width: 520px;
         margin: 0 auto;
       }
     }
-
     .browser-mock {
       background: var(--bg-white);
       border: 1.5px solid var(--border);
@@ -254,12 +243,10 @@
       overflow: hidden;
       transition: var(--transition);
     }
-
     .browser-mock:hover {
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 30px 60px -15px rgba(13, 71, 161, 0.25);
     }
-
     .mock-header {
       background: #f8fafc;
       border-bottom: 1.5px solid var(--border);
@@ -269,30 +256,24 @@
       gap: 8px;
       flex-shrink: 0;
     }
-
     .mock-dots {
       display: flex;
       gap: 6px;
     }
-
     .mock-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
     }
-
     .mock-dot.red {
       background: #ef4444;
     }
-
     .mock-dot.yellow {
       background: #f59e0b;
     }
-
     .mock-dot.green {
       background: #10b981;
     }
-
     .mock-address {
       background: white;
       border: 1px solid var(--border);
@@ -310,7 +291,6 @@
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-
     .mock-body {
       padding: 14px;
       background: #fafbfc;
@@ -318,7 +298,6 @@
       flex-direction: column;
       gap: 10px;
     }
-
     .mock-card {
       background: white;
       border: 1px solid var(--border);
@@ -329,61 +308,50 @@
       gap: 12px;
       box-shadow: var(--shadow-sm);
     }
-
     .mock-icon {
       font-size: 1.3rem;
       flex-shrink: 0;
     }
-
     .mock-card-lines {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-
     .mock-bar {
       height: 7px;
       background: #e2e8f0;
       border-radius: 99px;
       width: 100%;
     }
-
     .mock-bar.half {
       width: 55%;
     }
-
     .mock-bar.accent {
       background: #10b981;
     }
-
     .mock-bar.blue {
       background: #3b82f6;
     }
-
     .mock-bar.amber {
       background: #f59e0b;
     }
-
     /* Features Section */
     .features-section {
       padding: 80px 0;
       background: var(--bg-white);
     }
-
     .features-grid {
       display: grid;
       grid-template-cols: repeat(3, 1fr);
       gap: 30px;
       margin-top: 40px;
     }
-
     @media (max-width: 768px) {
       .features-grid {
         grid-template-cols: 1fr;
       }
     }
-
     .feature-card {
       background: var(--bg-alt);
       border: 1.5px solid var(--border);
@@ -391,13 +359,11 @@
       padding: 40px 30px;
       transition: var(--transition);
     }
-
     .feature-card:hover {
       transform: translateY(-5px);
       border-color: #10b981;
       box-shadow: var(--shadow-sm);
     }
-
     .icon-wrapper {
       width: 60px;
       height: 60px;
@@ -410,19 +376,16 @@
       font-size: 1.5rem;
       margin-bottom: 24px;
     }
-
     .feature-card h3 {
       font-size: 1.3rem;
       color: var(--primary-dark);
       margin-bottom: 16px;
     }
-
     .feature-card p {
       color: var(--text-light);
       font-size: 0.95rem;
       line-height: 1.6;
     }
-
     /* Outro banner (minimal & gorgeous) */
     .launch-banner {
       padding: 80px 0;
@@ -431,18 +394,15 @@
       border-bottom: 1px solid var(--border);
       text-align: center;
     }
-
     .launch-banner-content {
       max-width: 700px;
       margin: 0 auto;
     }
-
     .launch-banner h2 {
       font-size: clamp(2rem, 4vw, 2.5rem);
       color: var(--primary-dark);
       margin-bottom: 16px;
     }
-
     .launch-banner p {
       color: var(--text-light);
       font-size: 1.1rem;
