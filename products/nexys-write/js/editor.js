@@ -218,6 +218,7 @@ function setupEditorEvents() {
             note.content = EDITOR_STATE.editorEl.innerHTML;
         }
         persistNotes();
+        triggerAutoSaveIndicator();
         if (typeof handleAnalysis === 'function') handleAnalysis();
     });
 
@@ -227,6 +228,7 @@ function setupEditorEvents() {
         const note = getActiveNote();
         if (note) note.content = EDITOR_STATE.editorEl.innerHTML;
         persistNotes();
+        triggerAutoSaveIndicator();
         showAlert('All notes saved to local storage.', 'success');
     });
 
@@ -249,6 +251,19 @@ function setupEditorEvents() {
             switchTab(EDITOR_STATE.notes[(idx - 1 + EDITOR_STATE.notes.length) % EDITOR_STATE.notes.length].id);
         }
     });
+}
+
+let autoSaveTimeout = null;
+function triggerAutoSaveIndicator() {
+    const badge = document.getElementById('autoSaveBadge');
+    if (!badge) return;
+    badge.textContent = 'Saving...';
+    badge.style.color = 'var(--text-muted)';
+    clearTimeout(autoSaveTimeout);
+    autoSaveTimeout = setTimeout(() => {
+        badge.textContent = 'Auto-saved';
+        badge.style.color = 'var(--text-muted)';
+    }, 400);
 }
 
 function setupFormatting() {
@@ -293,10 +308,12 @@ function setupFormatting() {
     });
 
     document.getElementById('fontFamily').addEventListener('change', function () {
-        if (this.value !== 'inherit') {
+        if (this.value === 'inherit') {
+            EDITOR_STATE.editorEl.style.fontFamily = '';
+        } else {
             EDITOR_STATE.editorEl.style.fontFamily = this.value;
-            EDITOR_STATE.editorEl.focus();
         }
+        EDITOR_STATE.editorEl.focus();
     });
 }
 

@@ -44,6 +44,7 @@
                     </a>
                     <button class="action-btn" id="saveBtn" title="Save to Local Storage"><i class="fas fa-save"></i> Save</button>
                     <button class="action-btn" id="exportPdfBtn" title="Export as PDF"><i class="fas fa-file-pdf"></i> PDF</button>
+                    <span id="autoSaveBadge" style="font-size: 0.78rem; color: var(--text-muted); margin-left: 8px;">Auto-saved</span>
                 </div>
                 <div class="header-right">
                     <div class="quick-stats" id="quickStats">0 words, 0 characters</div>
@@ -83,7 +84,9 @@
                     <select class="toolbar-select" id="fontFamily">
                         <option value="inherit">Font Family</option>
                         <option value="Inter">Inter (Sans)</option>
+                        <option value="Arial">Arial (Sans)</option>
                         <option value="Georgia">Georgia (Serif)</option>
+                        <option value="Times New Roman">Times New Roman (Serif)</option>
                         <option value="JetBrains Mono">Mono (Code)</option>
                     </select>
                 </div>
@@ -127,10 +130,14 @@
                 <!-- Stats Panel -->
                 <div class="panel active" id="stats-panel">
                     <div class="stat-card">
-                        <h4>Readability</h4>
+                        <h4>Readability & Tone</h4>
                         <div class="stat-row">
                             <span>Score</span>
                             <span id="readability-score" class="highlight">N/A</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Tone Analysis</span>
+                            <span id="tone-analysis" class="highlight">N/A</span>
                         </div>
                         <div class="stat-row">
                             <span>Time to read</span>

@@ -39,12 +39,42 @@ function handleAnalysis() {
     stats.avgSentenceLength = stats.sentenceCount > 0 ? (stats.wordCount / stats.sentenceCount).toFixed(1) : 0;
     
     const readability = calculateReadability(words, stats.wordCount, stats.sentenceCount);
+    const tone = calculateTone(words, text);
     
-    updateAnalysisUI(stats, readability);
+    updateAnalysisUI(stats, readability, tone);
+}
+
+function calculateTone(words, text) {
+    if (!words || words.length < 3) return 'N/A';
+
+    const lowerText = text.toLowerCase();
+    
+    // First-person indicators
+    const firstPersonMatches = lowerText.match(/\b(i|me|my|mine|we|us|our|ours)\b/g) || [];
+    const firstPersonRatio = firstPersonMatches.length / words.length;
+
+    // Academic / Formal indicators
+    const academicWords = lowerText.match(/\b(therefore|thus|however|consequently|furthermore|analysis|research|data|results|indicates|demonstrates|significant|methodology|hypothesis|objective|impact|transition|integration|renewable|framework|structure|evidence)\b/g) || [];
+    const longWords = words.filter(w => w.length >= 7);
+    const longWordRatio = longWords.length / words.length;
+
+    // Informal indicators
+    const informalMatches = lowerText.match(/\b(awesome|cool|yeah|gonna|wanna|stuff|guy|guys|kind of|sort of|lol|omg)\b/g) || [];
+    const exclamationCount = (text.match(/!/g) || []).length;
+
+    if (informalMatches.length > 0 || exclamationCount > 2) {
+        return 'Informal / Casual';
+    } else if (firstPersonRatio > 0.05) {
+        return 'Personal / Reflective';
+    } else if (academicWords.length > 0 || longWordRatio > 0.18) {
+        return 'Academic / Objective';
+    } else {
+        return 'Standard / Neutral';
+    }
 }
 
 function calculateReadability(words, wordCount, sentenceCount) {
-    if (wordCount === 0 || sentenceCount === 0) return { score: 'N/A', level: 'N/A' };
+    if (wordCount === 0 || sentenceCount === 0) return { score: 'N/A', level: 'N/A', gradeLevel: 'N/A' };
 
     const countSyllables = (word) => {
         word = word.toLowerCase();
@@ -56,21 +86,22 @@ function calculateReadability(words, wordCount, sentenceCount) {
 
     const syllableCount = words.reduce((acc, word) => acc + countSyllables(word), 0);
     const score = 206.835 - 1.015 * (wordCount / sentenceCount) - 84.6 * (syllableCount / wordCount);
-    const fleschScore = Math.max(0, Math.min(100, score.toFixed(1)));
+    const fleschScore = Math.max(0, Math.min(100, parseFloat(score.toFixed(1))));
 
     let level;
-    if (fleschScore >= 90) level = 'Very Easy';
-    else if (fleschScore >= 80) level = 'Easy';
-    else if (fleschScore >= 70) level = 'Fairly Easy';
-    else if (fleschScore >= 60) level = 'Standard';
-    else if (fleschScore >= 50) level = 'Fairly Difficult';
-    else if (fleschScore >= 30) level = 'Difficult';
-    else level = 'Very Difficult';
+    let gradeLevel;
+    if (fleschScore >= 90) { level = 'Very Easy'; gradeLevel = 'Grade 5'; }
+    else if (fleschScore >= 80) { level = 'Easy'; gradeLevel = 'Grade 6-7'; }
+    else if (fleschScore >= 70) { level = 'Fairly Easy'; gradeLevel = 'Grade 8-9'; }
+    else if (fleschScore >= 60) { level = 'Standard'; gradeLevel = 'Grade 10-12'; }
+    else if (fleschScore >= 50) { level = 'Fairly Difficult'; gradeLevel = 'Undergrad'; }
+    else if (fleschScore >= 30) { level = 'Difficult'; gradeLevel = 'College Grad'; }
+    else { level = 'Very Difficult'; gradeLevel = 'Professional'; }
 
-    return { score: fleschScore, level };
+    return { score: fleschScore, level, gradeLevel };
 }
 
-function updateAnalysisUI(stats, readability) {
+function updateAnalysisUI(stats, readability, tone) {
     document.getElementById('word-count').textContent = stats.wordCount;
     document.getElementById('char-count').textContent = stats.charCount;
     document.getElementById('sentence-count').textContent = stats.sentenceCount;
@@ -78,7 +109,14 @@ function updateAnalysisUI(stats, readability) {
     document.getElementById('reading-time').textContent = `~${stats.readingTime}s`;
     
     const readabilityEl = document.getElementById('readability-score');
-    readabilityEl.textContent = `${readability.score} (${readability.level})`;
+    if (readability.score === 'N/A') {
+        readabilityEl.textContent = 'N/A';
+    } else {
+        readabilityEl.textContent = `${readability.score}/100 (${readability.gradeLevel})`;
+    }
+
+    const toneEl = document.getElementById('tone-analysis');
+    if (toneEl) toneEl.textContent = tone;
     
     document.getElementById('unique-word-count').textContent = stats.uniqueWordCount;
     document.getElementById('vocab-variety-score').textContent = `${stats.vocabVariety}%`;
@@ -93,6 +131,8 @@ function resetAnalysisUI() {
     document.getElementById('paragraph-count').textContent = '0';
     document.getElementById('reading-time').textContent = '0s';
     document.getElementById('readability-score').textContent = 'N/A';
+    const toneEl = document.getElementById('tone-analysis');
+    if (toneEl) toneEl.textContent = 'N/A';
     document.getElementById('unique-word-count').textContent = '0';
     document.getElementById('vocab-variety-score').textContent = '0%';
     document.getElementById('avg-word-length').textContent = '0';
