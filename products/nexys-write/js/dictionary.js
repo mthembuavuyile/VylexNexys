@@ -58,7 +58,39 @@ async function handleDoubleClick(e) {
         const data = await response.json();
         renderDefinition(data[0]);
     } catch (error) {
-        modalBody.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 20px 0;">No definition found for "<strong>${word}</strong>".</p>`;
+        // Fallback to Wiktionary API
+        try {
+            const wikiUrl = `https://en.wiktionary.org/w/api.php?action=query&format=json&prop=extracts&titles=${encodeURIComponent(word)}&exintro&explaintext&origin=*`;
+            const wikiRes = await fetch(wikiUrl);
+            const wikiData = await wikiRes.json();
+            const pages = wikiData.query.pages;
+            const pageId = Object.keys(pages)[0];
+
+            if (pageId !== '-1' && pages[pageId].extract) {
+                const extractLines = pages[pageId].extract
+                    .split('\n')
+                    .filter(line => line.length > 10)
+                    .map(ext => ({ definition: ext }));
+
+                if (extractLines.length > 0) {
+                    const mockData = {
+                        word: word,
+                        phonetics: [],
+                        meanings: [
+                            {
+                                partOfSpeech: "Wiktionary Extract",
+                                definitions: extractLines
+                            }
+                        ]
+                    };
+                    renderDefinition(mockData);
+                    return; // Successfully rendered fallback
+                }
+            }
+            throw new Error('Fallback failed');
+        } catch (fallbackError) {
+            modalBody.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 20px 0;">No definition found for "<strong>${word}</strong>".</p>`;
+        }
     }
 }
 
