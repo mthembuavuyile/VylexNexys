@@ -643,25 +643,12 @@
 
 @media (max-width: 768px) {
   .browser-header {
-    flex-wrap: wrap;
-    padding: 10px 14px;
-    gap: 8px 0;
-  }
-
-  .browser-dots {
-    order: 1;
-  }
-
-  .browser-actions {
-    order: 2;
-    margin-left: auto;
+    padding: 8px 12px;
   }
 
   .browser-address {
-    order: 3;
     width: 100%;
     max-width: 100%;
-    margin-top: 4px;
     font-size: 0.75rem;
     padding: 6px 12px;
   }
@@ -825,12 +812,14 @@
 }
 
 .qualifier-badge {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
   font-weight: 700;
   font-size: 0.8rem;
   padding: 6px 12px;
   border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .qualifications-list {
@@ -861,10 +850,12 @@
   font-size: 0.75rem;
   padding: 4px 10px;
   border-radius: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .status-pass {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
 }
 .status-border {
   background: rgba(37, 99, 235, 0.1);
@@ -1014,6 +1005,33 @@
   }
   .target-cards-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .browser-body {
+    padding: 16px 12px;
+  }
+  .pane-main-content, .pane-editor {
+    padding: 16px 14px;
+  }
+  .aps-summary-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .qual-item {
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .qual-item > div {
+    min-width: 0;
+    flex: 1;
+  }
+  .qual-item strong {
+    font-size: 0.82rem;
+    line-height: 1.3;
+    display: block;
   }
 }
 
