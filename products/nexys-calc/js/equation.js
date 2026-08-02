@@ -45,3 +45,16 @@ function initEquationSolver() {
     document.getElementById('btn-derive').addEventListener('click', () => processExpression('derive'));
     exprInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') processExpression('evaluate'); });
 }
+
+function insertFormula(type) {
+    const input = document.getElementById('eq-expression');
+    if (!input) return;
+    
+    let formula = "";
+    if (type === 'quadratic') formula = "(-b + sqrt(b^2 - 4*a*c)) / (2*a)";
+    else if (type === 'arithmetic') formula = "a + (n - 1) * d";
+    else if (type === 'geometric') formula = "a * r^(n - 1)";
+    
+    input.value = formula;
+    input.focus();
+}

@@ -102,6 +102,13 @@ function initSequenceSolver() {
     }
 
     document.getElementById('btn-analyze-seq').addEventListener('click', () => {
+        const t1 = document.getElementById('seq-t1')?.value || '';
+        const t2 = document.getElementById('seq-t2')?.value || '';
+        const t3 = document.getElementById('seq-t3')?.value || '';
+        const t4 = document.getElementById('seq-t4')?.value || '';
+        const combined = [t1, t2, t3, t4].filter(v => v.trim() !== '').join(',');
+        if (seqInput) seqInput.value = combined;
+        
         const seq = parseSequence(seqInput.value);
         if (seq.length < 3) {
             seqState = null;

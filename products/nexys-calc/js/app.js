@@ -44,7 +44,7 @@ function switchMode(newMode) {
     const topTitleEl = document.getElementById('topPageTitle');
     if (titleEl && MODE_META[newMode]) titleEl.textContent = MODE_META[newMode].title;
     if (descEl && MODE_META[newMode]) descEl.textContent = MODE_META[newMode].desc;
-    if (topTitleEl && MODE_META[newMode]) topTitleEl.textContent = MODE_META[newMode].title + ' | Nexys Calc';
+    if (topTitleEl && MODE_META[newMode]) topTitleEl.textContent = MODE_META[newMode].title + ' | CAPS Math Engine';
 
     // Update window hash without scrolling
     if (history.replaceState) {

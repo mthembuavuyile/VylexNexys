@@ -179,3 +179,39 @@ function renderGrapher(rect) {
         ctx.restore();
     });
 }
+
+function loadCapsTemplate(templateName) {
+    if (!templateName) return;
+    
+    let expr = "";
+    switch(templateName) {
+        case "parabola":
+            expr = "1 * (x - 2)^2 - 3";
+            break;
+        case "hyperbola":
+            expr = "2 / (x - 1) + 2";
+            break;
+        case "exponential":
+            expr = "2 * 2^(x - 1) + 1";
+            break;
+        case "trig-sin":
+            expr = "2 * sin(1 * (x - 0)) + 1";
+            break;
+    }
+    
+    if (expr) {
+        // Enable slot 0 if not enabled
+        const toggle0 = document.getElementById('toggle0');
+        if (toggle0 && !toggle0.checked) {
+            toggle0.checked = true;
+            onSlotToggle(0);
+        }
+        
+        // Populate the input box and compile
+        const input0 = document.getElementById('expr0');
+        if (input0) {
+            input0.value = expr;
+            onExprChange(0);
+        }
+    }
+}
