@@ -129,7 +129,7 @@ function compileExpr(str) {
 // Grapher mode
 // ==========================================
 const slots = [
-    { enabled: true, color: '#7c3aed', fn: null },
+    { enabled: true, color: '#2563eb', fn: null },
     { enabled: false, color: '#0ea5e9', fn: null },
     { enabled: false, color: '#10b981', fn: null }
 ];

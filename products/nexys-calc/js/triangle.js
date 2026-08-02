@@ -28,8 +28,8 @@ function renderTriangle(rect) {
     const cgScreen = worldToScreen(...cg);
 
     ctx.save();
-    ctx.fillStyle = 'rgba(124, 58, 237, 0.08)';
-    ctx.strokeStyle = '#8b5cf6';
+    ctx.fillStyle = 'rgba(37, 99, 235, 0.08)';
+    ctx.strokeStyle = '#2563eb';
     ctx.lineWidth = 2.5;
     ctx.lineJoin = 'round';
     ctx.beginPath();
@@ -60,7 +60,7 @@ function renderTriangle(rect) {
         ctx.fillStyle = '#fff';
         ctx.fill();
         ctx.lineWidth = 2;
-        ctx.strokeStyle = i === dragVertexIdx ? '#f43f5e' : '#7c3aed';
+        ctx.strokeStyle = i === dragVertexIdx ? '#ef4444' : '#2563eb';
         ctx.stroke();
     });
 
@@ -125,7 +125,7 @@ function updateTriangleStats() {
     const eq = (x, y) => Math.abs(x - y) < 0.01;
 
     let sideType = 'Scalene', sideClass = '';
-    if (eq(a, b) && eq(b, c)) { sideType = 'Equilateral'; sideClass = 'bg-violet-500/20 text-violet-300'; }
+    if (eq(a, b) && eq(b, c)) { sideType = 'Equilateral'; sideClass = 'bg-blue-500/20 text-blue-300'; }
     else if (eq(a, b) || eq(b, c) || eq(a, c)) { sideType = 'Isosceles'; sideClass = 'bg-sky-500/20 text-sky-300'; }
     else { sideClass = 'bg-slate-700 text-slate-300'; }
 
