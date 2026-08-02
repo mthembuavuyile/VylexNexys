@@ -167,6 +167,11 @@ body {
     background: var(--accent);
     color: white;
 }
+#btn-read-aloud {
+    width: auto;
+    padding: 0 12px;
+    gap: 6px;
+}
 
 .toolbar-select {
     background: var(--bg-main);

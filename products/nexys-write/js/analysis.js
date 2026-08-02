@@ -40,8 +40,9 @@ function handleAnalysis() {
     
     const readability = calculateReadability(words, stats.wordCount, stats.sentenceCount);
     const tone = calculateTone(words, text);
+    const grammar = calculateGrammar(text);
     
-    updateAnalysisUI(stats, readability, tone);
+    updateAnalysisUI(stats, readability, tone, grammar);
 }
 
 function calculateTone(words, text) {
@@ -73,6 +74,31 @@ function calculateTone(words, text) {
     }
 }
 
+function calculateGrammar(text) {
+    if (!window.nlp || !text || text.trim() === '') return 'N/A';
+    
+    try {
+        const doc = window.nlp(text);
+        const adverbs = doc.adverbs().out('array');
+        const passiveMatches = doc.match('(is|are|was|were|been|be) #PastTense').out('array');
+        const termsCount = doc.terms().length;
+        
+        const feedback = [];
+        if (termsCount > 0 && adverbs.length > (termsCount * 0.08)) {
+            feedback.push(`High adverb use (${adverbs.length}).`);
+        }
+        if (passiveMatches.length > 0) {
+            feedback.push(`Passive voice used (${passiveMatches.length}x).`);
+        }
+        
+        if (feedback.length === 0) return 'Looks good!';
+        return feedback.join(' ');
+    } catch (e) {
+        console.error(e);
+        return 'Analysis error';
+    }
+}
+
 function calculateReadability(words, wordCount, sentenceCount) {
     if (wordCount === 0 || sentenceCount === 0) return { score: 'N/A', level: 'N/A', gradeLevel: 'N/A' };
 
@@ -84,24 +110,39 @@ function calculateReadability(words, wordCount, sentenceCount) {
         return syllables ? syllables.length : 1;
     };
 
-    const syllableCount = words.reduce((acc, word) => acc + countSyllables(word), 0);
+    let syllableCount = 0;
+    let complexWords = 0;
+    words.forEach(word => {
+        const syllables = countSyllables(word);
+        syllableCount += syllables;
+        if (syllables >= 3) complexWords++;
+    });
+
     const score = 206.835 - 1.015 * (wordCount / sentenceCount) - 84.6 * (syllableCount / wordCount);
     const fleschScore = Math.max(0, Math.min(100, parseFloat(score.toFixed(1))));
 
-    let level;
-    let gradeLevel;
-    if (fleschScore >= 90) { level = 'Very Easy'; gradeLevel = 'Grade 5'; }
-    else if (fleschScore >= 80) { level = 'Easy'; gradeLevel = 'Grade 6-7'; }
-    else if (fleschScore >= 70) { level = 'Fairly Easy'; gradeLevel = 'Grade 8-9'; }
-    else if (fleschScore >= 60) { level = 'Standard'; gradeLevel = 'Grade 10-12'; }
-    else if (fleschScore >= 50) { level = 'Fairly Difficult'; gradeLevel = 'Undergrad'; }
-    else if (fleschScore >= 30) { level = 'Difficult'; gradeLevel = 'College Grad'; }
-    else { level = 'Very Difficult'; gradeLevel = 'Professional'; }
+    // Composite Grade Level Calculation
+    const avgSentenceLength = wordCount / sentenceCount;
+    const avgSyllablesPerWord = syllableCount / wordCount;
+    const percentComplex = (complexWords / wordCount) * 100;
 
-    return { score: fleschScore, level, gradeLevel };
+    const fkGrade = 0.39 * avgSentenceLength + 11.8 * avgSyllablesPerWord - 15.59;
+    const gunningFog = 0.4 * (avgSentenceLength + percentComplex);
+    const smog = 1.0430 * Math.sqrt(complexWords * (30 / sentenceCount)) + 3;
+    
+    let compositeGrade = ((fkGrade + gunningFog + smog) / 3).toFixed(1);
+    if (compositeGrade < 1) compositeGrade = 1;
+
+    let level;
+    if (fleschScore >= 80) level = 'Easy';
+    else if (fleschScore >= 60) level = 'Standard';
+    else if (fleschScore >= 40) level = 'Difficult';
+    else level = 'Very Difficult';
+
+    return { score: fleschScore, level, gradeLevel: `Grade ${compositeGrade}` };
 }
 
-function updateAnalysisUI(stats, readability, tone) {
+function updateAnalysisUI(stats, readability, tone, grammar) {
     document.getElementById('word-count').textContent = stats.wordCount;
     document.getElementById('char-count').textContent = stats.charCount;
     document.getElementById('sentence-count').textContent = stats.sentenceCount;
@@ -117,6 +158,9 @@ function updateAnalysisUI(stats, readability, tone) {
 
     const toneEl = document.getElementById('tone-analysis');
     if (toneEl) toneEl.textContent = tone;
+
+    const grammarEl = document.getElementById('grammar-feedback');
+    if (grammarEl) grammarEl.textContent = grammar || 'N/A';
     
     document.getElementById('unique-word-count').textContent = stats.uniqueWordCount;
     document.getElementById('vocab-variety-score').textContent = `${stats.vocabVariety}%`;
@@ -133,6 +177,8 @@ function resetAnalysisUI() {
     document.getElementById('readability-score').textContent = 'N/A';
     const toneEl = document.getElementById('tone-analysis');
     if (toneEl) toneEl.textContent = 'N/A';
+    const grammarEl = document.getElementById('grammar-feedback');
+    if (grammarEl) grammarEl.textContent = 'N/A';
     document.getElementById('unique-word-count').textContent = '0';
     document.getElementById('vocab-variety-score').textContent = '0%';
     document.getElementById('avg-word-length').textContent = '0';
