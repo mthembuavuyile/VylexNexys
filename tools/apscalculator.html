@@ -221,6 +221,25 @@
         .program-card.eligible { border-left-color: var(--success); }
         .program-card.almost { border-left-color: var(--warning); }
         .program-card.not-eligible { border-left-color: var(--danger); }
+        .bursary-card {
+            border-left: 4px solid #ddd;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        .bursary-card.eligible { border-left-color: var(--success); }
+        .bursary-card.almost { border-left-color: var(--warning); }
+        .bursary-card.not-eligible { border-left-color: var(--danger); }
+        .upgrade-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.875rem 1rem;
+            transition: all 0.2s ease;
+        }
+        .upgrade-card:hover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
         /* Loading spinner */
 .spinner {
   width: 40px;
@@ -377,6 +396,9 @@
                 <button onclick="toggleTab('programs')" id="programs-tab" class="px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
                     Program Recommendations
                 </button>
+                <button onclick="toggleTab('bursaries')" id="bursaries-tab" class="px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
+                    Bursaries & Funding
+                </button>
                 <button onclick="toggleTab('faq')" id="faq-tab" class="px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
                     FAQ
                 </button>
@@ -422,8 +444,27 @@
 
                     <div id="total-aps" class="mt-8 p-6 bg-blue-50 rounded-lg text-center hidden transition-all duration-300 ease-in-out">
                         <h3 class="text-xl font-semibold text-gray-900 mb-2">Your Total APS Score</h3>
-                        <div id="aps-score" class="text-5xl font-bold text-blue-600 mb-4">0</div>
+                        <div id="aps-score" class="text-5xl font-bold text-blue-600 mb-2">0</div>
                         <div id="qualification-status" class="mb-4 text-md text-gray-700 font-medium">Enter subjects to see status</div>
+
+                        <!-- Institutional Score Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-5 text-left">
+                            <div class="bg-white p-3.5 rounded-lg border border-blue-200 shadow-xs">
+                                <div class="text-xs text-gray-500 font-medium">Standard NSC APS</div>
+                                <div id="inst-standard-aps" class="text-2xl font-bold text-blue-600 mt-0.5">0</div>
+                                <div class="text-[11px] text-gray-500 mt-1">Includes Life Orientation (1-7)</div>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-lg border border-indigo-200 shadow-xs">
+                                <div class="text-xs text-gray-500 font-medium">UCT Admissions Score</div>
+                                <div id="inst-uct-aps" class="text-2xl font-bold text-indigo-600 mt-0.5">0</div>
+                                <div class="text-[11px] text-gray-500 mt-1">Excludes Life Orientation (6 subjs)</div>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-lg border border-sky-200 shadow-xs">
+                                <div class="text-xs text-gray-500 font-medium">Wits University APS</div>
+                                <div id="inst-wits-aps" class="text-2xl font-bold text-sky-600 mt-0.5">0</div>
+                                <div class="text-[11px] text-gray-500 mt-1">Life Orientation max 3 pts</div>
+                            </div>
+                        </div>
 
                         <!-- Progress bars for qualification levels -->
                         <div class="space-y-4 mt-6 text-left max-w-md mx-auto">
@@ -459,11 +500,44 @@
                             </div>
                         </div>
 
-                        <div class="mt-8">
-                             <button onclick="generateDetailedReport()" class="btn btn-primary px-4 py-2">
-                                View Detailed Report
-                             </button>
-                         </div>
+                        <!-- Mark Upgrade & Impact Pathfinding Box -->
+                        <div id="upgrade-impact-section" class="mt-6 p-4 bg-white rounded-lg border border-blue-200 text-left">
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                    </svg>
+                                    <h4 class="font-bold text-sm sm:text-base text-gray-900">Mark Upgrade & Pathfinding Analysis</h4>
+                                </div>
+                                <span class="text-[11px] font-semibold bg-blue-100 text-blue-800 px-2 py-0.5 rounded">High Leverage</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Strategic mark improvements that unlock the most degree programs and bursaries:</p>
+                            <div id="upgrade-recommendations-container" class="space-y-2.5">
+                                <!-- Injected via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Quick Action Buttons -->
+                        <div class="mt-6 flex flex-wrap justify-center gap-3">
+                            <button onclick="generateDetailedReport()" class="btn btn-primary px-4 py-2 text-sm flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>Detailed Report & PDF</span>
+                            </button>
+                            <button onclick="toggleTab('programs')" class="btn btn-secondary px-4 py-2 text-sm text-blue-600 flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <span>Matched Programs</span>
+                            </button>
+                            <button onclick="toggleTab('bursaries')" class="btn btn-secondary px-4 py-2 text-sm text-emerald-600 flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>Matched Bursaries</span>
+                            </button>
+                        </div>
 
                         <div class="mt-6 border-t pt-4">
                             <h4 class="text-sm font-semibold text-gray-900 mb-2">Share Your Results</h4>
@@ -552,6 +626,25 @@
                         </div>
                     </div>
 
+                    <!-- Target Program Gap Diagnostic Box -->
+                    <div class="mb-6 p-4 bg-slate-50 border border-slate-200 rounded-lg text-left">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Target Degree Diagnostic & Prerequisite Checker
+                            </span>
+                            <span class="text-[11px] text-gray-500">Pick any course to check requirements</span>
+                        </div>
+                        <select id="target-program-select" onchange="checkTargetProgramGap(this.value)" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500" aria-label="Select target course to diagnose">
+                            <option value="">-- Select a Degree / Course to Diagnose Prerequisites --</option>
+                        </select>
+                        <div id="target-program-gap-result" class="mt-3 hidden">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
                     <!-- Search and Filter Controls -->
                     <div id="program-controls-wrapper" class="mb-6 space-y-4">
                         <div class="relative">
@@ -587,6 +680,51 @@
                         <strong>Note:</strong> Eligibility status is based on the calculated APS and general subject requirements matching common patterns. This is only a guide and does not guarantee admission. Program names, APS thresholds, and specific subject requirements (including required percentage levels) vary significantly between universities and change over time. Always check the official, detailed requirements directly with the specific university and faculty.
                     </p>
                  </section>
+            </div>
+
+            <!-- Bursaries & Funding Tab -->
+            <div id="bursaries-tab-content" class="tab-content hidden">
+                <section class="card p-6 mb-8">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-gray-900">South African Bursary & Funding Matching</h2>
+                            <p class="text-xs sm:text-sm text-gray-500">Live matching against major corporate, government (NSFAS), and foundation bursaries in South Africa.</p>
+                        </div>
+                    </div>
+
+                    <!-- Search and Filter Controls -->
+                    <div id="bursary-controls-wrapper" class="mb-6 space-y-4">
+                        <div class="relative">
+                            <input type="text" id="bursary-search" oninput="handleBursaryFilterChange()" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Search bursaries (e.g. NSFAS, Sasol, Allan Gray, Nedbank, Teaching, Engineering)...">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+
+                        <!-- Category Filters -->
+                        <div class="flex gap-2 flex-wrap" id="bursary-category-filter-buttons">
+                            <button onclick="setBursaryCategory('All')" class="bursary-cat-btn px-3 py-1 text-xs rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors" data-bursary-category="All">All Bursaries</button>
+                            <button onclick="setBursaryCategory('STEM & IT')" class="bursary-cat-btn px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors" data-bursary-category="STEM & IT">STEM & IT</button>
+                            <button onclick="setBursaryCategory('Engineering')" class="bursary-cat-btn px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors" data-bursary-category="Engineering">Engineering & Mining</button>
+                            <button onclick="setBursaryCategory('Commerce & Finance')" class="bursary-cat-btn px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors" data-bursary-category="Commerce & Finance">Commerce & Accounting</button>
+                            <button onclick="setBursaryCategory('Health Sciences')" class="bursary-cat-btn px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors" data-bursary-category="Health Sciences">Health & Medical</button>
+                            <button onclick="setBursaryCategory('Education')" class="bursary-cat-btn px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors" data-bursary-category="Education">Education & Teaching</button>
+                        </div>
+                    </div>
+
+                    <div id="bursary-warning" class="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg">
+                        <p class="text-sm text-yellow-700">
+                            To get personalized bursary recommendations, please enter your subjects and marks on the 'Calculator' tab and click 'Calculate APS'.
+                        </p>
+                    </div>
+
+                    <div id="bursary-recommendations" class="space-y-4 hidden">
+                        <!-- Bursary cards will be populated by JS -->
+                    </div>
+                     <p class="mt-4 text-xs text-gray-600 bursary-recommendations-note hidden">
+                        <strong>Disclaimer:</strong> Bursary eligibility estimates are based on minimum academic benchmarks. Actual award decisions depend on financial need criteria, citizenship, specific university acceptance, and sponsor selection interviews. Always verify details and apply before the official closing date.
+                    </p>
+                </section>
             </div>
 
             <!-- FAQ Tab -->
