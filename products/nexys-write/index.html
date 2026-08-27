@@ -63,10 +63,11 @@
                     </a>
                     <button class="action-btn" id="saveBtn" title="Save to Local Storage"><i class="fas fa-save"></i> Save</button>
                     <button class="action-btn" id="exportPdfBtn" title="Export as PDF"><i class="fas fa-file-pdf"></i> PDF</button>
-                    <span id="autoSaveBadge" style="font-size: 0.78rem; color: var(--text-muted); margin-left: 8px;">Auto-saved</span>
+                    <span id="autoSaveBadge" class="auto-save-badge">Auto-saved</span>
                 </div>
                 <div class="header-right">
                     <div class="quick-stats" id="quickStats">0 words, 0 characters</div>
+                    <div id="header-ai-badge" class="ai-badge ready" title="Nexys AI Active (Free Models)"><i class="fas fa-wand-magic-sparkles"></i> <span>AI Active</span></div>
                     <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode"><i class="fas fa-sun"></i></button>
                     <button class="action-btn sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
                         <i class="fas fa-columns"></i>
@@ -131,6 +132,10 @@
             </div>
 
             <div class="alert" id="alertMessage"></div>
+            
+            <div id="ai-floating-trigger" class="floating-ai-trigger hidden" title="Quick AI Assist on selected text">
+                <i class="fas fa-wand-magic-sparkles"></i> <span>Ask AI</span>
+            </div>
         </main>
 
         <!-- Sidebar for Tools & Analysis -->
@@ -143,6 +148,7 @@
             <div class="sidebar-nav">
                 <button class="sidebar-tab active" data-target="stats-panel">Stats</button>
                 <button class="sidebar-tab" data-target="tools-panel">Tools</button>
+                <button class="sidebar-tab" data-target="ai-panel"><i class="fas fa-wand-magic-sparkles"></i> AI Studio</button>
             </div>
 
             <div class="sidebar-content">
@@ -251,6 +257,166 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- AI Assistant Studio Panel -->
+                <div class="panel" id="ai-panel">
+                    <!-- Dynamic Loading Bar -->
+                    <div id="ai-loading-indicator" class="ai-loading-bar">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span id="ai-loading-text">Nexys AI is thinking...</span>
+                    </div>
+
+                    <!-- AI Result Preview Box -->
+                    <div id="ai-result-card" class="ai-result-container hidden">
+                        <div class="ai-result-top">
+                            <span id="ai-result-title" class="ai-result-title">AI Result</span>
+                            <span id="ai-result-model" class="ai-result-model">AI Model</span>
+                        </div>
+                        <div id="ai-result-text" class="ai-result-body"></div>
+                        <div class="ai-result-actions">
+                            <button id="ai-apply-replace-btn" class="ai-result-btn primary"><i class="fas fa-check"></i> Replace</button>
+                            <button id="ai-apply-insert-btn" class="ai-result-btn"><i class="fas fa-plus"></i> Append</button>
+                            <button id="ai-apply-copy-btn" class="ai-result-btn"><i class="fas fa-copy"></i> Copy</button>
+                            <button id="ai-apply-discard-btn" class="ai-result-btn danger"><i class="fas fa-times"></i> Close</button>
+                        </div>
+                    </div>
+
+                    <!-- AI Writing Copilot -->
+                    <div class="ai-section-title"><i class="fas fa-comments"></i> AI Copilot Chat</div>
+                    <div class="ai-chat-box">
+                        <div class="ai-chat-messages" id="ai-chat-messages">
+                            <div class="ai-chat-msg msg-assistant">
+                                <div class="msg-header">
+                                    <span class="msg-author"><i class="fas fa-wand-magic-sparkles"></i> Nexys Copilot</span>
+                                </div>
+                                <div class="msg-body">Hello! I'm your academic writing copilot. Select any action below or ask me to draft, critique, or expand your ideas.</div>
+                            </div>
+                        </div>
+                        <div class="ai-prompt-chips">
+                            <span class="ai-prompt-chip" data-prompt="Help me write a compelling introduction with a strong thesis statement.">Draft Intro</span>
+                            <span class="ai-prompt-chip" data-prompt="Find potential counterarguments and ways to address them in this document.">Counterarguments</span>
+                            <span class="ai-prompt-chip" data-prompt="Review the logical flow and transitions between paragraphs.">Check Flow</span>
+                            <span class="ai-prompt-chip" data-prompt="Write a memorable conclusion summarizing the key points.">Draft Conclusion</span>
+                        </div>
+                        <div class="ai-chat-input-wrap">
+                            <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="Ask AI Copilot anything..." autocomplete="off">
+                            <button id="ai-chat-send-btn" class="ai-chat-send-btn" title="Send"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Quick AI Actions -->
+                    <div class="ai-section-title"><i class="fas fa-bolt"></i> Quick Writing Actions</div>
+
+                    <!-- Improve & Polish Card -->
+                    <div class="ai-card">
+                        <div class="ai-card-header">
+                            <span class="ai-card-title"><i class="fas fa-magic"></i> Improve & Polish</span>
+                            <span class="ai-tag">Rewrite</span>
+                        </div>
+                        <select id="ai-tone-select" class="ai-select">
+                            <option value="academic">Academic & Scholarly Rigor</option>
+                            <option value="concise">Concise & Direct (No Fluff)</option>
+                            <option value="professional">Professional & Authoritative</option>
+                            <option value="simplify">Plain English / Simplified</option>
+                            <option value="fix_grammar">Grammar, Spelling & Punctuation</option>
+                            <option value="persuasive">Persuasive & Rhetorical</option>
+                            <option value="creative">Creative & Engaging</option>
+                        </select>
+                        <input type="text" id="ai-custom-guidelines" class="ai-input" placeholder="Optional custom guidelines...">
+                        <button id="ai-improve-btn" class="ai-action-btn"><i class="fas fa-pen-fancy"></i> Refine Writing</button>
+                    </div>
+
+                    <!-- Smart Summarizer Card -->
+                    <div class="ai-card">
+                        <div class="ai-card-header">
+                            <span class="ai-card-title"><i class="fas fa-file-lines"></i> Smart Summarizer</span>
+                            <span class="ai-tag">Key Insights</span>
+                        </div>
+                        <select id="ai-summary-format" class="ai-select">
+                            <option value="bullets">Analytical Bullet Points</option>
+                            <option value="executive">Executive Summary</option>
+                            <option value="tldr">2-Sentence TL;DR</option>
+                            <option value="abstract">Academic Abstract</option>
+                            <option value="key_arguments">Extract Core Claims & Evidence</option>
+                        </select>
+                        <button id="ai-summarize-btn" class="ai-action-btn"><i class="fas fa-compress-alt"></i> Summarize Text</button>
+                    </div>
+
+                    <!-- Continue Writing Card -->
+                    <div class="ai-card">
+                        <div class="ai-card-header">
+                            <span class="ai-card-title"><i class="fas fa-forward"></i> Continue Writing</span>
+                            <span class="ai-tag">Expansion</span>
+                        </div>
+                        <input type="text" id="ai-continue-prompt" class="ai-input" placeholder="Direction/instructions (optional)...">
+                        <button id="ai-continue-btn" class="ai-action-btn"><i class="fas fa-sparkles"></i> Continue from Here</button>
+                    </div>
+
+                    <!-- Academic Peer Review Card -->
+                    <div class="ai-card">
+                        <div class="ai-card-header">
+                            <span class="ai-card-title"><i class="fas fa-graduation-cap"></i> Academic Critique</span>
+                            <span class="ai-tag">Peer Review</span>
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Evaluates thesis strength, structural flow, diction, and provides actionable recommendations.</p>
+                        <button id="ai-critique-btn" class="ai-action-btn"><i class="fas fa-clipboard-check"></i> Run Deep Critique</button>
+                    </div>
+
+                    <!-- Outline Generator Card -->
+                    <div class="ai-card">
+                        <div class="ai-card-header">
+                            <span class="ai-card-title"><i class="fas fa-list-ol"></i> Outline Generator</span>
+                            <span class="ai-tag">Structure</span>
+                        </div>
+                        <input type="text" id="ai-outline-topic" class="ai-input" placeholder="Topic or essay title...">
+                        <select id="ai-outline-depth" class="ai-select">
+                            <option value="detailed">Hierarchical Outline (I, II, III / A, B, C)</option>
+                            <option value="essay">5-Paragraph Essay Blueprint</option>
+                            <option value="research_paper">Full Research Paper Framework</option>
+                            <option value="brief">Brief 4-Section Summary</option>
+                        </select>
+                        <button id="ai-outline-btn" class="ai-action-btn"><i class="fas fa-sitemap"></i> Generate Outline</button>
+                    </div>
+
+                    <!-- AI Model & Settings -->
+                    <div class="ai-section-title"><i class="fas fa-sliders"></i> AI Settings & Model</div>
+                    <div class="ai-card">
+                        <div class="ai-settings-group">
+                            <div class="ai-settings-label">
+                                <span>AI Model</span>
+                                <span style="color: var(--success);">Free Models</span>
+                            </div>
+                            <select id="ai-engine-select" class="ai-select"></select>
+                        </div>
+
+                        <div class="ai-settings-group">
+                            <div class="ai-settings-label">
+                                <span>Creativity / Temperature</span>
+                                <span id="ai-temp-val">0.7</span>
+                            </div>
+                            <input type="range" id="ai-settings-temp" min="0.1" max="1.0" step="0.1" value="0.7" style="width: 100%; cursor: pointer;">
+                        </div>
+
+                        <div class="ai-settings-group">
+                            <div class="ai-settings-label">
+                                <span>OpenRouter API Key (BYOK)</span>
+                            </div>
+                            <input type="password" id="ai-settings-apikey" class="ai-input" placeholder="sk-or-v1-...">
+                            <div style="display: flex; gap: 6px;">
+                                <button id="ai-save-key-btn" class="ai-result-btn"><i class="fas fa-save"></i> Save Key</button>
+                                <button id="ai-test-conn-btn" class="ai-result-btn primary"><i class="fas fa-plug"></i> Test Connection</button>
+                            </div>
+                            <div id="ai-conn-status"></div>
+                        </div>
+
+                        <div class="ai-settings-group" style="margin-bottom: 0;">
+                            <div class="ai-settings-label">
+                                <span>Backend Proxy URL (Optional)</span>
+                            </div>
+                            <input type="text" id="ai-settings-backend" class="ai-input" placeholder="e.g. /api/chat or https://api...">
+                        </div>
+                    </div>
+                </div>
             </div>
         </aside>
     </div>
@@ -286,13 +452,16 @@
 
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <!-- Modules -->
+    <script src="../../js/nexys-ai.js"></script>
     <script src="js/speech.js"></script>
     <script src="js/dictionary.js"></script>
     <script src="js/analysis.js"></script>
     <script src="js/tools.js"></script>
     <script src="js/editor.js"></script>
+    <script src="js/ai-writer.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

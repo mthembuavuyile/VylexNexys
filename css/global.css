@@ -795,20 +795,28 @@ nav {
    FEATURED TOOLS
    ========================================= */
 .tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 28px;
+  width: 100%;
 }
 
 .tool-card {
   background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 38px 30px;
+  padding: 34px 28px;
   display: flex;
   flex-direction: column;
-  transition: var(--transition);
-  box-shadow: var(--shadow-sm);
+  flex: 0 0 calc(33.333% - 19px);
+  width: calc(33.333% - 19px);
+  max-width: calc(33.333% - 19px);
+  box-sizing: border-box;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
   text-decoration: none;
   position: relative;
   overflow: hidden;
@@ -821,17 +829,17 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  height: 3px;
-  background: var(--accent);
+  height: 3.5px;
+  background: linear-gradient(90deg, var(--accent), var(--primary));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tool-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow);
-  border-color: rgba(13, 71, 161, 0.18);
+  transform: translateY(-7px);
+  box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.22);
 }
 
 .tool-card:hover::before {
@@ -847,19 +855,22 @@ nav {
   justify-content: center;
   font-size: 1.35rem;
   margin-bottom: 22px;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 /* Icon scale/bounce on hover */
 .tool-card:hover .tool-icon {
-  transform: scale(1.1) rotate(-4deg);
+  transform: scale(1.12) translateY(-2px);
 }
 
 /* Specific Badge Colors */
-.icon-blue    { background: #eff6ff; color: #2563eb; }
-.icon-emerald { background: #ecfdf5; color: #059669; }
-.icon-purple  { background: #faf5ff; color: #9333ea; }
-.icon-rose    { background: #fff1f2; color: #e11d48; }
+.tool-icon.icon-blue    { background: #eff6ff; color: #2563eb; }
+.tool-icon.icon-emerald { background: #ecfdf5; color: #059669; }
+.tool-icon.icon-purple  { background: #faf5ff; color: #9333ea; }
+.tool-icon.icon-rose    { background: #fff1f2; color: #e11d48; }
+.tool-icon.icon-achieva { background: #ecfeff; color: #0891b2; }
+.tool-icon.icon-dark    { background: #f1f5f9; color: #0f172a; }
 
 .tool-content {
   flex-grow: 1;
@@ -868,14 +879,17 @@ nav {
 }
 
 .tool-content h4 {
-  font-size: 1.15rem;
-  color: var(--primary-dark);
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
   margin-bottom: 10px;
-  transition: color 0.2s ease;
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease;
 }
 
 .tool-card:hover .tool-content h4 {
-  color: var(--accent);
+  color: var(--primary);
 }
 
 .tool-content p {
@@ -883,6 +897,7 @@ nav {
   color: var(--text-light);
   line-height: 1.6;
   margin-bottom: 24px;
+  flex-grow: 1;
 }
 
 .tool-meta {
@@ -894,6 +909,30 @@ nav {
   border-top: 1px solid var(--border);
   padding-top: 16px;
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.25s ease;
+}
+
+.tool-card:hover .tool-meta {
+  color: var(--text-light);
+}
+
+.tool-meta::after {
+  content: '\f061';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  font-size: 0.75rem;
+  color: var(--accent);
+  opacity: 0.6;
+  transform: translateX(0);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.tool-card:hover .tool-meta::after {
+  opacity: 1;
+  transform: translateX(4px);
 }
 
 .icon-box {
@@ -1206,9 +1245,31 @@ footer {
     grid-template-columns: 1fr;
     gap: 40px;
   }
+
+  .tools-grid {
+    gap: 22px;
+  }
+
+  .tool-card {
+    flex: 0 0 calc(50% - 11px);
+    width: calc(50% - 11px);
+    max-width: calc(50% - 11px);
+    padding: 30px 24px;
+  }
 }
 
 @media (max-width: 768px) {
+  .tools-grid {
+    gap: 18px;
+  }
+
+  .tool-card {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    padding: 26px 20px;
+  }
+
   .section-padding {
     padding: 72px 0;
   }
@@ -1306,6 +1367,10 @@ footer {
   .hero-stats {
     flex-direction: column;
     gap: 12px;
+  }
+
+  .tool-card {
+    padding: 24px 18px;
   }
 
   .card-lg {
