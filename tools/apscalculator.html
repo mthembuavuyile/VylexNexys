@@ -50,47 +50,57 @@
 </head>
 <body class="min-h-screen py-8 px-4">
     <div class="max-w-4xl mx-auto">
-        <!-- Top Site Navigation Bar -->
-        <nav class="flex items-center justify-between py-3 px-4 mb-6 bg-white rounded-xl shadow-sm border border-gray-200" aria-label="Site Navigation">
-            <a href="../index.html" class="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-bold transition-colors text-sm sm:text-base">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Top Site Navigation Bar (Responsive on iPhone SE through Desktop) -->
+        <nav class="flex items-center justify-between py-2.5 px-3 sm:px-4 mb-5 sm:mb-6 bg-white rounded-xl shadow-xs border border-gray-200" aria-label="Site Navigation">
+            <a href="../index.html" class="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 font-bold transition-colors text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                <span>Vylex Nexys Home</span>
+                <span class="tracking-tight"><span class="text-blue-600 font-extrabold">Vylex</span> <span class="text-gray-800 font-semibold">Nexys</span></span>
             </a>
-            <div class="flex items-center gap-3">
-                <a href="index.html" class="text-xs sm:text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+                <a href="about-aps.html" class="px-2 sm:px-2.5 py-1 text-xs font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors inline-flex items-center gap-1 whitespace-nowrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>About</span>
+                </a>
+                <a href="index.html" class="px-2 sm:px-2.5 py-1 text-xs font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors inline-flex items-center gap-1 whitespace-nowrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                     </svg>
-                    <span>Tools Gallery</span>
+                    <span>Gallery</span>
                 </a>
             </div>
         </nav>
 
         <!-- Header -->
-        <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+        <header class="text-center mb-6 sm:mb-8">
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-gray-900 mb-1.5 tracking-tight">
                 <span class="text-blue-600">Vylex Nexys</span> APS Calculator
             </h1>
-            <p class="text-gray-600 mb-4">Calculate your Academic Performance Score for South African University Admissions</p>
-            <nav class="flex justify-center gap-1 sm:gap-2 flex-wrap">
-                <button onclick="toggleTab('calculator')" id="calculator-tab" class="px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors font-semibold">
-                    Calculator
-                </button>
-                <button onclick="toggleTab('universities')" id="universities-tab" class="px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
-                    University Requirements
-                </button>
-                <button onclick="toggleTab('programs')" id="programs-tab" class="px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
-                    Program Recommendations
-                </button>
-                <button onclick="toggleTab('bursaries')" id="bursaries-tab" class="px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
-                    Bursaries & Funding
-                </button>
-                <button onclick="toggleTab('faq')" id="faq-tab" class="px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
-                    FAQ
-                </button>
-            </nav>
+            <p class="text-xs sm:text-sm text-gray-600 mb-4 max-w-xl mx-auto px-2">Calculate your Academic Performance Score for South African University Admissions</p>
+
+            <!-- Responsive Scrollable Tabs Nav -->
+            <div class="w-full overflow-x-auto no-scrollbar pb-1">
+                <nav class="flex items-center justify-start sm:justify-center gap-1 p-1 bg-gray-100/90 rounded-xl border border-gray-200/80 min-w-max mx-auto max-w-full sm:w-max" aria-label="Tool Tabs">
+                    <button onclick="toggleTab('calculator')" id="calculator-tab" class="px-3 py-1.5 text-xs sm:text-sm rounded-lg bg-blue-600 text-white font-semibold shadow-xs whitespace-nowrap transition-colors">
+                        Calculator
+                    </button>
+                    <button onclick="toggleTab('universities')" id="universities-tab" class="px-3 py-1.5 text-xs sm:text-sm rounded-lg text-gray-600 hover:text-gray-900 hover:bg-white/60 font-medium whitespace-nowrap transition-colors">
+                        University Requirements
+                    </button>
+                    <button onclick="toggleTab('programs')" id="programs-tab" class="px-3 py-1.5 text-xs sm:text-sm rounded-lg text-gray-600 hover:text-gray-900 hover:bg-white/60 font-medium whitespace-nowrap transition-colors">
+                        Program Recommendations
+                    </button>
+                    <button onclick="toggleTab('bursaries')" id="bursaries-tab" class="px-3 py-1.5 text-xs sm:text-sm rounded-lg text-gray-600 hover:text-gray-900 hover:bg-white/60 font-medium whitespace-nowrap transition-colors">
+                        Bursaries & Funding
+                    </button>
+                    <button onclick="toggleTab('faq')" id="faq-tab" class="px-3 py-1.5 text-xs sm:text-sm rounded-lg text-gray-600 hover:text-gray-900 hover:bg-white/60 font-medium whitespace-nowrap transition-colors">
+                        FAQ
+                    </button>
+                </nav>
+            </div>
         </header>
 
         <!-- Tab Container -->
@@ -530,6 +540,20 @@
                 </section>
             </div>
         </main>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-xs text-gray-500 pb-6 border-t border-gray-200 pt-6 no-print">
+            <p>© 2026 Vylex (Pty) Ltd. All rights reserved.</p>
+            <div class="flex justify-center gap-4 mt-2">
+                <a href="about-aps.html" class="hover:text-blue-600 font-medium transition-colors">About APS Calculator</a>
+                <span>•</span>
+                <a href="../about.html" class="hover:text-blue-600 transition-colors">About Company</a>
+                <span>•</span>
+                <a href="index.html" class="hover:text-blue-600 transition-colors">Tools Gallery</a>
+                <span>•</span>
+                <a href="../contact.html" class="hover:text-blue-600 transition-colors">Contact</a>
+            </div>
+        </footer>
     </div>
 
     <!-- Detailed Report Modal -->
@@ -2189,16 +2213,16 @@
         function toggleTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             document.querySelectorAll('nav button[id$="-tab"]').forEach(button => {
-                button.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
-                button.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+                button.classList.remove('bg-blue-600', 'text-white', 'font-semibold', 'shadow-xs');
+                button.classList.add('text-gray-600', 'hover:text-gray-900', 'hover:bg-white/60', 'font-medium');
             });
 
             const selectedTabContent = document.getElementById(`${tabName}-tab-content`);
             selectedTabContent?.classList.remove('hidden');
 
             const selectedTabButton = document.getElementById(`${tabName}-tab`);
-            selectedTabButton?.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-            selectedTabButton?.classList.add('bg-blue-600', 'text-white', 'font-semibold');
+            selectedTabButton?.classList.remove('text-gray-600', 'hover:text-gray-900', 'hover:bg-white/60', 'font-medium');
+            selectedTabButton?.classList.add('bg-blue-600', 'text-white', 'font-semibold', 'shadow-xs');
 
             if (tabName === 'universities') {
                 const tableBody = document.getElementById('university-requirements');
