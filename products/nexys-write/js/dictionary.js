@@ -60,32 +60,26 @@ async function handleDoubleClick(e) {
     } catch (error) {
         // Fallback to Wiktionary API
         try {
-            const wikiUrl = `https://en.wiktionary.org/w/api.php?action=query&format=json&prop=extracts&titles=${encodeURIComponent(word)}&exintro&explaintext&origin=*`;
+            const wikiUrl = `https://en.wiktionary.org/api/rest_v1/page/definition/${encodeURIComponent(word.toLowerCase())}`;
             const wikiRes = await fetch(wikiUrl);
+            if (!wikiRes.ok) throw new Error('Not found on Wiktionary');
+            
             const wikiData = await wikiRes.json();
-            const pages = wikiData.query.pages;
-            const pageId = Object.keys(pages)[0];
-
-            if (pageId !== '-1' && pages[pageId].extract) {
-                const extractLines = pages[pageId].extract
-                    .split('\n')
-                    .filter(line => line.length > 10)
-                    .map(ext => ({ definition: ext }));
-
-                if (extractLines.length > 0) {
-                    const mockData = {
-                        word: word,
-                        phonetics: [],
-                        meanings: [
-                            {
-                                partOfSpeech: "Wiktionary Extract",
-                                definitions: extractLines
-                            }
-                        ]
-                    };
-                    renderDefinition(mockData);
-                    return; // Successfully rendered fallback
-                }
+            
+            if (wikiData.en && wikiData.en.length > 0) {
+                const mockData = {
+                    word: word,
+                    phonetics: [],
+                    meanings: wikiData.en.map(entry => ({
+                        partOfSpeech: entry.partOfSpeech || 'Definition',
+                        definitions: entry.definitions.map(def => ({
+                            definition: def.definition ? def.definition.replace(/<[^>]+>/g, '') : '',
+                            example: def.examples && def.examples.length > 0 ? def.examples[0].replace(/<[^>]+>/g, '') : null
+                        }))
+                    }))
+                };
+                renderDefinition(mockData);
+                return; // Successfully rendered fallback
             }
             throw new Error('Fallback failed');
         } catch (fallbackError) {
