@@ -411,7 +411,7 @@
             <div id="calculator-tab-content" class="tab-content">
                 <!-- Main Calculator Card -->
                 <section class="card p-6 mb-8">
-                    <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-4">
                         <h2 class="text-xl font-bold text-gray-900">Add Your Subjects & Marks</h2>
                         <div class="flex gap-2 flex-shrink-0">
                             <button onclick="saveCalculation()" class="btn btn-secondary px-3 py-1 text-sm" aria-label="Save current subjects and marks">
@@ -419,6 +419,30 @@
                             </button>
                             <button onclick="loadCalculation()" class="btn btn-secondary px-3 py-1 text-sm" aria-label="Load previously saved subjects and marks">
                                 Load
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick 7-Subject Stream Presets -->
+                    <div class="mb-5 p-3.5 bg-blue-50/80 rounded-lg border border-blue-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                        <div class="text-xs font-semibold text-blue-900 flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <span>Quick 7-Subject Presets:</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" onclick="loadSubjectPreset('science')" class="px-2.5 py-1 text-xs font-medium rounded-md bg-white text-blue-700 border border-blue-200 hover:bg-blue-600 hover:text-white transition-colors shadow-2xs">
+                                Science & Engineering
+                            </button>
+                            <button type="button" onclick="loadSubjectPreset('commerce')" class="px-2.5 py-1 text-xs font-medium rounded-md bg-white text-indigo-700 border border-indigo-200 hover:bg-indigo-600 hover:text-white transition-colors shadow-2xs">
+                                Commerce & Accounting
+                            </button>
+                            <button type="button" onclick="loadSubjectPreset('humanities')" class="px-2.5 py-1 text-xs font-medium rounded-md bg-white text-purple-700 border border-purple-200 hover:bg-purple-600 hover:text-white transition-colors shadow-2xs">
+                                Humanities & Law
+                            </button>
+                            <button type="button" onclick="loadSubjectPreset('general')" class="px-2.5 py-1 text-xs font-medium rounded-md bg-white text-gray-700 border border-gray-200 hover:bg-gray-700 hover:text-white transition-colors shadow-2xs">
+                                Blank (7 Rows)
                             </button>
                         </div>
                     </div>
@@ -861,65 +885,88 @@
 
     <script>
         // --- Data Definitions ---
+        // --- Comprehensive South African CAPS NSC Subjects Database (Alphabetically Sorted) ---
         const subjectsList = [
-             // Add more languages as needed, ensuring value uniqueness
-            { value: 'english-hl', label: 'English Home Language' },
-            { value: 'english-fal', label: 'English First Additional Language' },
-            { value: 'afrikaans-hl', label: 'Afrikaans Home Language' },
-            { value: 'afrikaans-fal', label: 'Afrikaans First Additional Language' },
-            { value: 'isizulu-hl', label: 'IsiZulu Home Language' },
-            { value: 'isizulu-fal', label: 'IsiZulu First Additional Language' },
-            { value: 'isixhosa-hl', label: 'IsiXhosa Home Language' },
-            { value: 'isixhosa-fal', label: 'IsiXhosa First Additional Language' },
-            { value: 'sepedi-hl', label: 'Sepedi Home Language' },
-            { value: 'sepedi-fal', label: 'Sepedi First Additional Language' },
-            { value: 'setswana-hl', label: 'Setswana Home Language' },
-            { value: 'setswana-fal', label: 'Setswana First Additional Language' },
-            { value: 'sesotho-hl', label: 'Sesotho Home Language' },
-            { value: 'sesotho-fal', label: 'Sesotho First Additional Language' },
-            { value: 'xitsonga-hl', label: 'Xitsonga Home Language' },
-            { value: 'xitsonga-fal', label: 'Xitsonga First Additional Language' },
-            { value: 'sivswati-hl', label: 'SiSwati Home Language' },
-            { value: 'sivswati-fal', label: 'SiSwati First Additional Language' },
-             { value: 'tshivenda-hl', label: 'Tshivenda Home Language' },
-            { value: 'tshivenda-fal', label: 'Tshivenda First Additional Language' },
-            { value: 'isindebele-hl', label: 'IsiNdebele Home Language' },
-            { value: 'isindebele-fal', label: 'IsiNdebele First Additional Language' },
-            { value: 'sasl-hl', label: 'South African Sign Language (SASL) Home Language' },
-            // --- Second Additional Languages (SAL) ---
-            { value: 'french-sal', label: 'French Second Additional Language' },
-            { value: 'german-sal', label: 'German Second Additional Language' },
-            { value: 'mandarin-sal', label: 'Mandarin Second Additional Language' },
-            { value: 'portuguese-sal', label: 'Portuguese Second Additional Language' },
-            { value: 'spanish-sal', label: 'Spanish Second Additional Language' },
-            { value: 'latin-sal', label: 'Latin Second Additional Language' },
-            { value: 'other-sal', label: 'Other Second Additional Language' },
-            // --- Core & Electives ---
-            { value: 'life-orientation', label: 'Life Orientation' },
-            { value: 'mathematics', label: 'Mathematics' },
-            { value: 'mathematical-literacy', label: 'Mathematical Literacy' },
-            { value: 'physical-sciences', label: 'Physical Sciences' },
-            { value: 'life-sciences', label: 'Life Sciences' },
-            { value: 'geography', label: 'Geography' },
-            { value: 'history', label: 'History' },
             { value: 'accounting', label: 'Accounting' },
-            { value: 'business-studies', label: 'Business Studies' },
-            { value: 'economics', label: 'Economics' },
-            { value: 'computer-at', label: 'Computer Applications Technology (CAT)' },
-            { value: 'it', label: 'Information Technology (IT)' },
+            { value: 'afrikaans-fal', label: 'Afrikaans First Additional Language' },
+            { value: 'afrikaans-hl', label: 'Afrikaans Home Language' },
+            { value: 'afrikaans-sal', label: 'Afrikaans Second Additional Language' },
+            { value: 'agric-man-prac', label: 'Agricultural Management Practices' },
             { value: 'agricultural-sciences', label: 'Agricultural Sciences' },
-            { value: 'tourism', label: 'Tourism' },
+            { value: 'agric-tech', label: 'Agricultural Technology' },
+            { value: 'arabic-sal', label: 'Arabic Second Additional Language' },
+            { value: 'business-studies', label: 'Business Studies' },
+            { value: 'civil-tech', label: 'Civil Technology' },
+            { value: 'computer-at', label: 'Computer Applications Technology (CAT)' },
             { value: 'consumer-studies', label: 'Consumer Studies' },
-            { value: 'hospitality-studies', label: 'Hospitality Studies' },
+            { value: 'dance-studies', label: 'Dance Studies' },
+            { value: 'design', label: 'Design' },
             { value: 'dramatic-arts', label: 'Dramatic Arts' },
-            { value: 'visual-arts', label: 'Visual Arts' },
-            { value: 'music', label: 'Music' },
+            { value: 'economics', label: 'Economics' },
+            { value: 'electrical-tech', label: 'Electrical Technology' },
             { value: 'engineering-graphics', label: 'Engineering Graphics & Design (EGD)' },
+            { value: 'english-fal', label: 'English First Additional Language' },
+            { value: 'english-hl', label: 'English Home Language' },
+            { value: 'english-sal', label: 'English Second Additional Language' },
+            { value: 'french-sal', label: 'French Second Additional Language' },
+            { value: 'geography', label: 'Geography' },
+            { value: 'german-sal', label: 'German Second Additional Language' },
+            { value: 'gujarati-sal', label: 'Gujarati Second Additional Language' },
+            { value: 'hebrew-sal', label: 'Hebrew Second Additional Language' },
+            { value: 'hindi-sal', label: 'Hindi Second Additional Language' },
+            { value: 'history', label: 'History' },
+            { value: 'hospitality-studies', label: 'Hospitality Studies' },
+            { value: 'it', label: 'Information Technology (IT)' },
+            { value: 'isindebele-fal', label: 'IsiNdebele First Additional Language' },
+            { value: 'isindebele-hl', label: 'IsiNdebele Home Language' },
+            { value: 'isindebele-sal', label: 'IsiNdebele Second Additional Language' },
+            { value: 'isixhosa-fal', label: 'IsiXhosa First Additional Language' },
+            { value: 'isixhosa-hl', label: 'IsiXhosa Home Language' },
+            { value: 'isixhosa-sal', label: 'IsiXhosa Second Additional Language' },
+            { value: 'isizulu-fal', label: 'IsiZulu First Additional Language' },
+            { value: 'isizulu-hl', label: 'IsiZulu Home Language' },
+            { value: 'isizulu-sal', label: 'IsiZulu Second Additional Language' },
+            { value: 'italian-sal', label: 'Italian Second Additional Language' },
+            { value: 'latin-sal', label: 'Latin Second Additional Language' },
+            { value: 'life-orientation', label: 'Life Orientation' },
+            { value: 'life-sciences', label: 'Life Sciences (Biology)' },
+            { value: 'mandarin-sal', label: 'Mandarin Second Additional Language' },
+            { value: 'marine-sciences', label: 'Marine Sciences' },
+            { value: 'mathematical-literacy', label: 'Mathematical Literacy' },
+            { value: 'mathematics', label: 'Mathematics (Pure / Core)' },
+            { value: 'mechanical-tech', label: 'Mechanical Technology' },
+            { value: 'music', label: 'Music' },
+            { value: 'physical-sciences', label: 'Physical Sciences' },
+            { value: 'portuguese-sal', label: 'Portuguese Second Additional Language' },
             { value: 'religion-studies', label: 'Religion Studies' },
-            { value: 'design', label: 'Design'},
-            { value: 'agric-tech', label: 'Agricultural Technology'},
-            { value: 'agric-man-prac', label: 'Agricultural Management Practices'},
-             // Add any other relevant NSC subjects
+            { value: 'sasl-hl', label: 'South African Sign Language (SASL) Home Language' },
+            { value: 'sepedi-fal', label: 'Sepedi (Northern Sotho) First Additional Language' },
+            { value: 'sepedi-hl', label: 'Sepedi (Northern Sotho) Home Language' },
+            { value: 'sepedi-sal', label: 'Sepedi (Northern Sotho) Second Additional Language' },
+            { value: 'sesotho-fal', label: 'Sesotho First Additional Language' },
+            { value: 'sesotho-hl', label: 'Sesotho Home Language' },
+            { value: 'sesotho-sal', label: 'Sesotho Second Additional Language' },
+            { value: 'setswana-fal', label: 'Setswana First Additional Language' },
+            { value: 'setswana-hl', label: 'Setswana Home Language' },
+            { value: 'setswana-sal', label: 'Setswana Second Additional Language' },
+            { value: 'sivswati-fal', label: 'SiSwati First Additional Language' },
+            { value: 'sivswati-hl', label: 'SiSwati Home Language' },
+            { value: 'sivswati-sal', label: 'SiSwati Second Additional Language' },
+            { value: 'spanish-sal', label: 'Spanish Second Additional Language' },
+            { value: 'tamil-sal', label: 'Tamil Second Additional Language' },
+            { value: 'technical-mathematics', label: 'Technical Mathematics' },
+            { value: 'technical-sciences', label: 'Technical Sciences' },
+            { value: 'telugu-sal', label: 'Telugu Second Additional Language' },
+            { value: 'tourism', label: 'Tourism' },
+            { value: 'tshivenda-fal', label: 'Tshivenda First Additional Language' },
+            { value: 'tshivenda-hl', label: 'Tshivenda Home Language' },
+            { value: 'tshivenda-sal', label: 'Tshivenda Second Additional Language' },
+            { value: 'urdu-sal', label: 'Urdu Second Additional Language' },
+            { value: 'visual-arts', label: 'Visual Arts' },
+            { value: 'xitsonga-fal', label: 'Xitsonga First Additional Language' },
+            { value: 'xitsonga-hl', label: 'Xitsonga Home Language' },
+            { value: 'xitsonga-sal', label: 'Xitsonga Second Additional Language' },
+            { value: 'other-subject', label: 'Other Approved NSC Subject' }
         ].sort((a, b) => a.label.localeCompare(b.label)); // Sort alphabetically
 
         const scoreRanges = [
@@ -1043,95 +1090,342 @@
         ].sort((a, b) => b.apsRequired - a.apsRequired || a.name.localeCompare(b.name)); // Sort by APS desc, then name
 
 
+        // --- South African Bursary & Funding Database ---
+        const bursariesList = [
+            {
+                id: "nsfas",
+                name: "NSFAS (National Student Financial Aid Scheme)",
+                provider: "Department of Higher Education & Training (DHET)",
+                category: "All Streams",
+                minAPS: 15,
+                minAverage: 0,
+                subjects: [],
+                requiresCoreMaths: false,
+                coverage: "100% Tuition, University/TVET Accommodation, Books & Monthly Living Allowances",
+                description: "Government financial aid for South African citizens from households with combined annual income under R350,000 studying at public universities or TVET colleges.",
+                closingDate: "Annually ~31 January",
+                applicationUrl: "https://www.nsfas.org.za",
+                notes: "Must meet entry requirements for an approved public tertiary qualification."
+            },
+            {
+                id: "allan-gray",
+                name: "Allan Gray Orbis Foundation Fellowship",
+                provider: "Allan Gray Orbis Foundation",
+                category: "Commerce & Finance",
+                minAPS: 34,
+                minAverage: 70,
+                subjects: ["mathematics", "english-hl|english-fal"],
+                minMathsLevel: 5,
+                minEnglishLevel: 5,
+                requiresCoreMaths: true,
+                coverage: "Full Tuition, Residence, Meals, Monthly Living Stipend, Leadership & Entrepreneurship Mentorship",
+                description: "Prestigious entrepreneurship fellowship for high-achieving Grade 12 learners pursuing degrees in Commerce, Engineering, Science, Law, or Humanities at partner universities.",
+                closingDate: "Annually ~30 April",
+                applicationUrl: "https://www.allangrayorbis.org",
+                notes: "Requires minimum Level 5 (60%+) in Core Maths & English. Strong focus on entrepreneurial initiative."
+            },
+            {
+                id: "sasol",
+                name: "Sasol Corporate STEM Bursary",
+                provider: "Sasol Foundation",
+                category: "STEM & IT",
+                minAPS: 36,
+                minAverage: 70,
+                subjects: ["mathematics", "physical-sciences", "english-hl|english-fal"],
+                minMathsLevel: 6,
+                minPhysicsLevel: 6,
+                requiresCoreMaths: true,
+                coverage: "100% Tuition, Registration, Campus Housing, Meal Allowance, Prescribed Books & Laptop",
+                description: "Full undergraduate bursary for Engineering (Chemical, Mechanical, Electrical, Mining), Data Science, Chemistry, and Geology.",
+                closingDate: "Annually ~28 May",
+                applicationUrl: "https://www.sasolbursaries.com",
+                notes: "Strict requirement: Minimum Level 6 (70%+) in Core Maths and Physical Sciences."
+            },
+            {
+                id: "nedbank",
+                name: "Nedbank External Bursary Programme",
+                provider: "Nedbank Group",
+                category: "Commerce & Finance",
+                minAPS: 32,
+                minAverage: 65,
+                subjects: ["mathematics", "english-hl|english-fal"],
+                minMathsLevel: 5,
+                requiresCoreMaths: true,
+                coverage: "Full Tuition, Prescribed Textbooks, University Accommodation & Meal Allowance",
+                description: "Funding for critical skills fields: Computer Science, IT, Data Analytics, Actuarial Science, CA(SA) Accounting, and Economics.",
+                closingDate: "Annually ~31 July",
+                applicationUrl: "https://www.nedbank.co.za",
+                notes: "Grade 12 academic average of 65%+ and Level 5+ in Core Mathematics required."
+            },
+            {
+                id: "standard-bank",
+                name: "Standard Bank 150 Bursary & Derek Cooper Fund",
+                provider: "Standard Bank Group",
+                category: "Commerce & Finance",
+                minAPS: 33,
+                minAverage: 65,
+                subjects: ["mathematics", "english-hl|english-fal"],
+                minMathsLevel: 5,
+                requiresCoreMaths: true,
+                coverage: "Full Tuition, Accommodation, Living Allowance, Laptop, Academic Support",
+                description: "Bursaries for undergraduate study in STEM, IT, Commerce, Economics, and Statistics at designated South African public universities.",
+                closingDate: "Annually ~15 September",
+                applicationUrl: "https://www.standardbank.com",
+                notes: "Academic achievement of 65%+ with pure Mathematics."
+            },
+            {
+                id: "anglo-american",
+                name: "Anglo American Platinum Engineering Bursary",
+                provider: "Anglo American Platinum",
+                category: "Engineering",
+                minAPS: 35,
+                minAverage: 65,
+                subjects: ["mathematics", "physical-sciences", "english-hl|english-fal"],
+                minMathsLevel: 6,
+                minPhysicsLevel: 6,
+                requiresCoreMaths: true,
+                coverage: "Full Tuition, Residence, Meals, Personal Allowance, Computer Allowance, Vacation Work",
+                description: "Full mining and engineering bursary for Electrical, Mechanical, Mining, Metallurgical, Chemical Engineering, and Geology.",
+                closingDate: "Annually ~31 May",
+                applicationUrl: "https://www.angloamerican.com",
+                notes: "Level 6 (70%+) in Core Maths & Physical Sciences required."
+            },
+            {
+                id: "csir",
+                name: "CSIR Undergraduate Bursary Programme",
+                provider: "Council for Scientific and Industrial Research (CSIR)",
+                category: "STEM & IT",
+                minAPS: 34,
+                minAverage: 65,
+                subjects: ["mathematics", "physical-sciences", "english-hl|english-fal"],
+                minMathsLevel: 5,
+                minPhysicsLevel: 5,
+                requiresCoreMaths: true,
+                coverage: "Tuition Fees, Accommodation, Prescribed Books, Laptop, Monthly Living Allowance",
+                description: "Scientific development bursary for BSc Computer Science, Mechatronics, Biotechnology, Data Science, Physics, and Electronic Engineering.",
+                closingDate: "Annually ~15 August",
+                applicationUrl: "https://www.csir.co.za",
+                notes: "Science and technology focus with Level 5+ in STEM subjects."
+            },
+            {
+                id: "isfap",
+                name: "ISFAP Missing Middle Bursary",
+                provider: "Ikusasa Student Financial Aid Programme (ISFAP)",
+                category: "Health Sciences",
+                minAPS: 30,
+                minAverage: 60,
+                subjects: ["mathematics|mathematical-literacy", "english-hl|english-fal"],
+                minMathsLevel: 4,
+                requiresCoreMaths: false,
+                coverage: "Tuition, Accommodation, Living Stipend, Academic & Psychological Support",
+                description: "Supports missing middle students (household income R350k-R600k) studying Occupations of High Demand: Medicine (MBChB), Nursing, Engineering, IT, Law, Actuarial Science.",
+                closingDate: "Annually ~31 October",
+                applicationUrl: "https://www.isfap.org.za",
+                notes: "Partnered with 11 top SA public universities for professional degrees."
+            },
+            {
+                id: "thuthuka",
+                name: "Thuthuka Bursary Fund (SAICA)",
+                provider: "South African Institute of Chartered Accountants (SAICA)",
+                category: "Commerce & Finance",
+                minAPS: 32,
+                minAverage: 60,
+                subjects: ["mathematics", "english-hl|english-fal"],
+                minMathsLevel: 6,
+                minEnglishLevel: 5,
+                requiresCoreMaths: true,
+                coverage: "Full Tuition, Residence, Meals, Textbooks, Laptop, Mentoring & Academic Support",
+                description: "Premier bursary for African and Coloured learners pursuing SAICA-accredited BCom Accounting (CA stream) degrees at selected universities.",
+                closingDate: "Annually ~31 July",
+                applicationUrl: "https://www.thuthukabursaryfund.co.za",
+                notes: "Must achieve at least Level 6 (70%+) in Core Mathematics (Maths Lit not accepted)."
+            },
+            {
+                id: "funza-lushaka",
+                name: "Funza Lushaka Teaching Bursary",
+                provider: "Department of Basic Education (DBE)",
+                category: "Education",
+                minAPS: 25,
+                minAverage: 50,
+                subjects: ["english-hl|english-fal"],
+                minEnglishLevel: 4,
+                requiresCoreMaths: false,
+                coverage: "Tuition, Accommodation, Meal Allowance, Books & Learning Material",
+                description: "Service-linked bursary for Bachelor of Education (BEd) or PGCE students specializing in priority teaching subjects (Maths, Science, Foundation Phase, Languages).",
+                closingDate: "Annually ~31 January",
+                applicationUrl: "https://www.funzalushaka.doe.gov.za",
+                notes: "Obligation to teach at a public school for the number of years funded."
+            },
+            {
+                id: "vodacom",
+                name: "Vodacom Merit Bursary Scheme",
+                provider: "Vodacom Foundation",
+                category: "STEM & IT",
+                minAPS: 34,
+                minAverage: 70,
+                subjects: ["mathematics", "physical-sciences|it", "english-hl|english-fal"],
+                minMathsLevel: 6,
+                requiresCoreMaths: true,
+                coverage: "100% Tuition, University Accommodation, Books, Food Allowance, Laptop & Work Placement",
+                description: "Technology bursary supporting BSc Computer Science, Software Engineering, IT, Information Systems, and Big Data Analytics.",
+                closingDate: "Annually ~31 August",
+                applicationUrl: "https://www.vodacom.co.za",
+                notes: "Strict minimum Level 6 (70%) in Core Maths."
+            },
+            {
+                id: "absa-fellowship",
+                name: "Absa Fellowship & Scholarship Programme",
+                provider: "Absa Group Limited",
+                category: "Commerce & Finance",
+                minAPS: 33,
+                minAverage: 65,
+                subjects: ["mathematics", "english-hl|english-fal"],
+                minMathsLevel: 5,
+                requiresCoreMaths: true,
+                coverage: "Full Tuition, Campus Housing, Meal Allowance, Laptop & Leadership Training",
+                description: "Scholarships for undergraduate study in Digital & AI, Data Science, Commerce, Engineering, and Law across public universities in South Africa.",
+                closingDate: "Annually ~30 June",
+                applicationUrl: "https://www.absa.africa",
+                notes: "Minimum 65% aggregate with leadership potential."
+            }
+        ];
+
+
         // --- State Variables ---
         const subjectsContainer = document.getElementById('subjects-container');
         let subjects = [{ id: 1, name: '', score: '', manualScore: '' }]; // Start with one empty row
         let currentAPS = 0;
-        let currentSubjectData = []; // Stores { name, percentage, level, points } for report
+        let currentSubjectData = []; // Stores { name, percentage, level, points, value } for report
+        let currentInstitutionalScores = { standard: 0, uct: 0, wits: 0, average: 0 };
+        let currentUpgradeOpportunities = [];
+        let currentBursaryCategory = 'All';
+        let currentBursarySearchTerm = '';
+        let currentProgramCategory = 'All';
+        let currentProgramSearchTerm = '';
         let toastTimeoutIds = [];
         let apsChartInstance = null; // To hold the Chart.js instance
 
         // --- Core Functions ---
 
+        function loadSubjectPreset(presetName) {
+            let presetSubjects = [];
+            if (presetName === 'science') {
+                presetSubjects = [
+                    { id: 1, name: 'english-hl', score: '', manualScore: '' },
+                    { id: 2, name: 'afrikaans-fal', score: '', manualScore: '' },
+                    { id: 3, name: 'mathematics', score: '', manualScore: '' },
+                    { id: 4, name: 'physical-sciences', score: '', manualScore: '' },
+                    { id: 5, name: 'life-sciences', score: '', manualScore: '' },
+                    { id: 6, name: 'life-orientation', score: '', manualScore: '' },
+                    { id: 7, name: 'it', score: '', manualScore: '' }
+                ];
+                showToast('Loaded Science & STEM 7-subject template. Enter your marks!', 'info');
+            } else if (presetName === 'commerce') {
+                presetSubjects = [
+                    { id: 1, name: 'english-hl', score: '', manualScore: '' },
+                    { id: 2, name: 'afrikaans-fal', score: '', manualScore: '' },
+                    { id: 3, name: 'mathematics', score: '', manualScore: '' },
+                    { id: 4, name: 'accounting', score: '', manualScore: '' },
+                    { id: 5, name: 'business-studies', score: '', manualScore: '' },
+                    { id: 6, name: 'economics', score: '', manualScore: '' },
+                    { id: 7, name: 'life-orientation', score: '', manualScore: '' }
+                ];
+                showToast('Loaded Commerce & Accounting 7-subject template. Enter your marks!', 'info');
+            } else if (presetName === 'humanities') {
+                presetSubjects = [
+                    { id: 1, name: 'english-hl', score: '', manualScore: '' },
+                    { id: 2, name: 'isizulu-fal', score: '', manualScore: '' },
+                    { id: 3, name: 'mathematical-literacy', score: '', manualScore: '' },
+                    { id: 4, name: 'history', score: '', manualScore: '' },
+                    { id: 5, name: 'geography', score: '', manualScore: '' },
+                    { id: 6, name: 'life-orientation', score: '', manualScore: '' },
+                    { id: 7, name: 'tourism', score: '', manualScore: '' }
+                ];
+                showToast('Loaded Humanities & Law 7-subject template. Enter your marks!', 'info');
+            } else if (presetName === 'general') {
+                presetSubjects = [];
+                for (let i = 0; i < 7; i++) {
+                    presetSubjects.push({ id: i + 1, name: '', score: '', manualScore: '' });
+                }
+                showToast('Created 7 subject rows. Select your subjects and enter marks!', 'info');
+            }
+
+            subjects = presetSubjects;
+            renderSubjects();
+        }
+
         function renderSubjects() {
-    subjectsContainer.innerHTML = '';
-    const selectedValues = subjects.map(s => s.name).filter(Boolean);
+            subjectsContainer.innerHTML = '';
 
-    subjects.forEach((subject, index) => {
-        const subjectRow = document.createElement('div');
-        subjectRow.className = 'input-group p-4 bg-gray-50 rounded-lg border border-gray-200';
-        subjectRow.id = `subject-row-${index}`;
+            subjects.forEach((subject, index) => {
+                const subjectRow = document.createElement('div');
+                subjectRow.className = 'input-group p-3.5 sm:p-4 bg-gray-50 rounded-lg border border-gray-200';
+                subjectRow.id = `subject-row-${index}`;
 
-        const availableSubjects = subjectsList.filter(s =>
-            s.value === subject.name || !selectedValues.includes(s.value)
-        );
+                const currentAPSPoints = subject.name
+                    ? (subject.score ? Number(subject.score) : (subject.manualScore ? getAPSFromPercentage(subject.manualScore) : 0))
+                    : 0;
 
-        const currentAPSPoints = subject.name
-            ? (subject.score ? Number(subject.score) : (subject.manualScore ? getAPSFromPercentage(subject.manualScore) : 0))
-            : 0;
+                subjectRow.innerHTML = `
+                    <div class="subject-controls flex flex-wrap sm:flex-nowrap gap-2.5 sm:gap-3 items-center">
 
-        subjectRow.innerHTML = `
-            <div class="subject-controls flex flex-wrap sm:flex-nowrap gap-3 items-center">
+                        <!-- Subject Select (Sorted Alphabetically A-Z) -->
+                        <div class="flex-1 min-w-[170px]">
+                            <label for="subject-name-${index}" class="sr-only">Subject Name</label>
+                            <select id="subject-name-${index}" class="w-full p-2 rounded border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    onchange="handleSubjectChange(${index}, this.value)">
+                                <option value="">-- Select Subject (A-Z) --</option>
+                                ${subjectsList.map(subj => `<option value="${subj.value}" ${subj.value === subject.name ? 'selected' : ''}>${subj.label}</option>`).join('')}
+                            </select>
+                        </div>
 
-                <!-- Subject Select -->
-                <div class="flex-1 min-w-[150px]">
-                    <label for="subject-name-${index}" class="sr-only">Subject Name</label>
-                    <select id="subject-name-${index}" class="w-full p-2 rounded border border-gray-300"
-                            onchange="handleSubjectChange(${index}, 'name', this.value)">
-                        <option value="">-- Select Subject --</option>
-                        ${availableSubjects.map(subj => `<option value="${subj.value}" ${subj.value === subject.name ? 'selected' : ''}>${subj.label}</option>`).join('')}
-                    </select>
-                </div>
+                        <!-- Score Range Select -->
+                        <div class="flex-1 min-w-[140px]">
+                            <label for="subject-score-${index}" class="sr-only">Score Range</label>
+                            <select id="subject-score-${index}" class="w-full p-2 rounded border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    onchange="handleScoreRangeChange(${index}, this.value)"
+                                    ${subject.manualScore ? 'disabled' : ''}>
+                                <option value="">-- Score Range --</option>
+                                ${scoreRanges.map(range => `<option value="${range.value}" ${range.value === subject.score ? 'selected' : ''}>${range.label}</option>`).join('')}
+                            </select>
+                        </div>
 
-                <!-- Score Range Select -->
-                <div class="flex-1 min-w-[150px]">
-                    <label for="subject-score-${index}" class="sr-only">Score Range</label>
-                    <select id="subject-score-${index}" class="w-full p-2 rounded border border-gray-300"
-                            onchange="handleSubjectChange(${index}, 'score', this.value)"
-                            ${subject.manualScore ? 'disabled' : ''}>
-                        <option value="">-- Select Range --</option>
-                        ${scoreRanges.map(range => `<option value="${range.value}" ${range.value === subject.score ? 'selected' : ''}>${range.label}</option>`).join('')}
-                    </select>
-                </div>
+                        <!-- Manual Percentage Input -->
+                        <div class="flex-1 min-w-[110px]">
+                            <label for="subject-manual-${index}" class="sr-only">Manual Percentage</label>
+                            <input type="number" id="subject-manual-${index}"
+                                   class="w-full p-2 rounded border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="Or Enter % (e.g. 75)"
+                                   value="${subject.manualScore}"
+                                   oninput="handleManualScoreChange(${index}, this.value)"
+                                   min="0" max="100" step="1"
+                                   ${subject.score ? 'disabled' : ''}>
+                        </div>
 
-                <!-- Manual Percentage Input -->
-                <div class="flex-1 min-w-[120px]">
-                    <label for="subject-manual-${index}" class="sr-only">Manual Percentage</label>
-                    <input type="number" id="subject-manual-${index}"
-                           class="w-full p-2 rounded border border-gray-300"
-                           placeholder="Or Enter %"
-                           value="${subject.manualScore}"
-                           oninput="handleManualScoreChange(${index}, this.value)"
-                           min="0" max="100" step="1"
-                           ${subject.score ? 'disabled' : ''}>
-                </div>
+                        <!-- APS Display -->
+                        <span id="subject-aps-badge-${index}" class="text-blue-600 font-bold text-sm w-full sm:w-auto text-right sm:text-center px-2 flex-shrink-0 min-w-[65px]">
+                            APS: ${currentAPSPoints > 0 ? currentAPSPoints : '...'}
+                        </span>
 
-                <!-- APS Display -->
-                <span class="text-blue-600 font-semibold text-sm w-full sm:w-auto text-right sm:text-center px-2">
-                    APS: ${currentAPSPoints > 0 ? currentAPSPoints : '...'}
-                </span>
+                        <!-- Remove Button -->
+                        <button class="px-2.5 py-2 text-red-600 hover:bg-red-50 rounded-lg flex-shrink-0 no-print"
+                                onclick="removeSubject(${index})"
+                                ${subjects.length <= 1 ? 'disabled' : ''}
+                                title="${subjects.length <= 1 ? 'Cannot remove last subject' : 'Remove subject'}"
+                                aria-label="Remove subject row ${index + 1}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
 
-                <!-- Remove Button -->
-                <button class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg flex-shrink-0 no-print"
-                        onclick="removeSubject(${index})"
-                        ${subjects.length <= 1 ? 'disabled' : ''}
-                        title="${subjects.length <= 1 ? 'Cannot remove last subject' : 'Remove subject'}"
-                        aria-label="Remove subject row ${index + 1}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </div>
+                    <!-- Placeholder for error message -->
+                    <div id="subject-error-${index}" class="error-text text-xs text-red-600 mt-1.5 min-h-[1rem]"></div>
+                `;
 
-            <!-- Placeholder for error message -->
-            <div id="subject-error-${index}" class="error-text h-4"></div>
-        `;
-
-        subjectsContainer.appendChild(subjectRow);
-        validateSingleRow(index);
-    });
-}
-
+                subjectsContainer.appendChild(subjectRow);
+            });
+        }
 
         function getAPSFromPercentage(percentage) {
             const numericPercentage = Number(percentage);
@@ -1140,63 +1434,113 @@
             return range ? Number(range.value) : 0;
         }
 
-        function handleSubjectChange(index, field, value) {
-            const previousName = subjects[index].name;
-            subjects[index][field] = value;
+        function updateRowAPS(index) {
+            const subject = subjects[index];
+            const apsBadge = document.getElementById(`subject-aps-badge-${index}`);
+            if (!apsBadge) return;
 
-            if (field === 'name') {
-                 clearRowError(index);
-                // Check for duplicates only if a valid subject is chosen
-                if (value && subjects.filter(s => s.name === value).length > 1) {
-                     setRowError(index, 'Subject already selected.');
-                     showToast('Subject already selected.', 'warning');
-                     // Revert to previous name or empty if it was empty
-                     subjects[index].name = previousName || '';
-                     value = subjects[index].name; // Ensure value reflects the actual state
+            let pts = 0;
+            if (subject.score) {
+                pts = Number(subject.score);
+            } else if (subject.manualScore !== '' && !isNaN(Number(subject.manualScore))) {
+                pts = getAPSFromPercentage(Number(subject.manualScore));
+            }
+            apsBadge.textContent = `APS: ${pts > 0 ? pts : '...'}`;
+        }
+
+        function handleSubjectChange(index, value) {
+            subjects[index].name = value;
+            clearRowError(index);
+
+            if (value) {
+                const count = subjects.filter(s => s.name === value).length;
+                if (count > 1) {
+                    setRowError(index, 'Subject already selected in another row.');
+                    showToast('Subject already selected in another row.', 'warning');
                 }
             }
+            updateRowAPS(index);
+        }
 
-            if (field === 'score' && value !== '') {
-                subjects[index]['manualScore'] = ''; // Clear manual score
-                 clearRowError(index);
+        function handleScoreRangeChange(index, value) {
+            clearRowError(index);
+            subjects[index].score = value;
+            const manualInput = document.getElementById(`subject-manual-${index}`);
+            const apsBadge = document.getElementById(`subject-aps-badge-${index}`);
+
+            if (value !== '') {
+                subjects[index].manualScore = '';
+                if (manualInput) {
+                    manualInput.value = '';
+                    manualInput.disabled = true;
+                    manualInput.classList.remove('validation-error');
+                }
+                if (apsBadge) {
+                    apsBadge.textContent = `APS: ${value}`;
+                }
+            } else {
+                if (manualInput) {
+                    manualInput.disabled = false;
+                }
+                if (apsBadge) {
+                    apsBadge.textContent = 'APS: ...';
+                }
             }
-
-            // Re-render to update dropdowns, APS display, and potentially enable/disable fields
-            renderSubjects();
         }
 
         function handleManualScoreChange(index, value) {
-             clearRowError(index);
-            const numericValue = Number(value);
+            clearRowError(index);
+            subjects[index].manualScore = value;
+            const scoreSelect = document.getElementById(`subject-score-${index}`);
+            const apsBadge = document.getElementById(`subject-aps-badge-${index}`);
+            const manualInput = document.getElementById(`subject-manual-${index}`);
 
             if (value === '') {
-                 subjects[index]['manualScore'] = '';
-                 subjects[index]['score'] = ''; // Also clear range score if manual is cleared
-                 renderSubjects(); // Re-render to enable range select
-            } else if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 100) {
-                subjects[index]['manualScore'] = value;
-                subjects[index]['score'] = ''; // Clear range score
-                 renderSubjects(); // Re-render to update APS display and disable range select
+                subjects[index].score = '';
+                if (scoreSelect) {
+                    scoreSelect.disabled = false;
+                }
+                if (apsBadge) {
+                    apsBadge.textContent = 'APS: ...';
+                }
+                if (manualInput) {
+                    manualInput.classList.remove('validation-error');
+                }
             } else {
-                subjects[index]['manualScore'] = value; // Keep invalid value for user to see
-                 setRowError(index, 'Percentage must be between 0 and 100.');
-                 // Do not clear score here, let validation handle it
-                 renderSubjects(); // Re-render to show error state potentially
-                 // Find the input and add error class
-                 const inputElement = document.getElementById(`subject-manual-${index}`);
-                 if(inputElement) inputElement.classList.add('validation-error');
+                const numericValue = Number(value);
+                if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 100) {
+                    subjects[index].score = '';
+                    if (scoreSelect) {
+                        scoreSelect.disabled = true;
+                        scoreSelect.value = '';
+                    }
+                    const pts = getAPSFromPercentage(numericValue);
+                    if (apsBadge) {
+                        apsBadge.textContent = `APS: ${pts > 0 ? pts : '...'}`;
+                    }
+                    if (manualInput) {
+                        manualInput.classList.remove('validation-error');
+                    }
+                    clearRowError(index);
+                } else {
+                    setRowError(index, 'Percentage must be between 0 and 100.');
+                    if (apsBadge) {
+                        apsBadge.textContent = 'APS: ...';
+                    }
+                    if (manualInput) {
+                        manualInput.classList.add('validation-error');
+                    }
+                }
             }
         }
 
-
         function addSubject() {
-             if (subjects.length >= 10) { // Limit number of subjects
-                 showToast('Maximum of 10 subjects reached.', 'warning');
-                 return;
-             }
+            if (subjects.length >= 10) {
+                showToast('Maximum of 10 subjects reached.', 'warning');
+                return;
+            }
             subjects.push({ id: Date.now(), name: '', score: '', manualScore: '' });
             renderSubjects();
-            // Focus the new subject dropdown
             document.getElementById(`subject-name-${subjects.length - 1}`)?.focus();
         }
 
@@ -1204,70 +1548,64 @@
             if (subjects.length > 1) {
                 subjects.splice(index, 1);
                 renderSubjects();
-                 // Recalculate if APS was already shown
-                 if (document.getElementById('total-aps').style.display !== 'none') {
-                     calculateTotalAPS();
-                 }
+                if (document.getElementById('total-aps').style.display !== 'none') {
+                    calculateTotalAPS();
+                }
             }
         }
 
         function setRowError(index, message) {
-             const errorDiv = document.getElementById(`subject-error-${index}`);
-             if (errorDiv) errorDiv.textContent = message;
-             // Add visual cue to the row or specific inputs if desired
-             const nameSelect = document.getElementById(`subject-name-${index}`);
-             const scoreSelect = document.getElementById(`subject-score-${index}`);
-             const manualInput = document.getElementById(`subject-manual-${index}`);
+            const errorDiv = document.getElementById(`subject-error-${index}`);
+            if (errorDiv) errorDiv.textContent = message;
+            const nameSelect = document.getElementById(`subject-name-${index}`);
+            const scoreSelect = document.getElementById(`subject-score-${index}`);
+            const manualInput = document.getElementById(`subject-manual-${index}`);
 
-             if (message.includes('select a subject')) nameSelect?.classList.add('validation-error');
-             if (message.includes('select a score') || message.includes('enter a percentage')) {
-                 scoreSelect?.classList.add('validation-error');
-                 manualInput?.classList.add('validation-error');
-             }
-             if (message.includes('Percentage must be')) manualInput?.classList.add('validation-error');
-             if (message.includes('already selected')) nameSelect?.classList.add('validation-error');
-         }
+            if (message.includes('select a subject')) nameSelect?.classList.add('validation-error');
+            if (message.includes('select a score') || message.includes('enter a percentage')) {
+                scoreSelect?.classList.add('validation-error');
+                manualInput?.classList.add('validation-error');
+            }
+            if (message.includes('Percentage must be')) manualInput?.classList.add('validation-error');
+            if (message.includes('already selected')) nameSelect?.classList.add('validation-error');
+        }
 
-         function clearRowError(index) {
-             const errorDiv = document.getElementById(`subject-error-${index}`);
-             if (errorDiv) errorDiv.textContent = '';
-             // Remove validation classes
-             document.getElementById(`subject-name-${index}`)?.classList.remove('validation-error');
-             document.getElementById(`subject-score-${index}`)?.classList.remove('validation-error');
-             document.getElementById(`subject-manual-${index}`)?.classList.remove('validation-error');
-         }
+        function clearRowError(index) {
+            const errorDiv = document.getElementById(`subject-error-${index}`);
+            if (errorDiv) errorDiv.textContent = '';
+            document.getElementById(`subject-name-${index}`)?.classList.remove('validation-error');
+            document.getElementById(`subject-score-${index}`)?.classList.remove('validation-error');
+            document.getElementById(`subject-manual-${index}`)?.classList.remove('validation-error');
+        }
 
-         function validateSingleRow(index) {
-             const subject = subjects[index];
-             clearRowError(index); // Clear previous errors first
+        function validateSingleRow(index) {
+            const subject = subjects[index];
+            clearRowError(index);
 
-             let isValid = true;
-             if (subject.name && !subject.score && !subject.manualScore) {
-                 setRowError(index, 'Please select a score range or enter a percentage.');
-                 isValid = false;
-             } else if (!subject.name && (subject.score || subject.manualScore)) {
-                 setRowError(index, 'Please select a subject.');
-                 isValid = false;
-             } else if (subject.manualScore && (Number(subject.manualScore) < 0 || Number(subject.manualScore) > 100)) {
-                 setRowError(index, 'Percentage must be between 0 and 100.');
-                 isValid = false;
-             }
+            let isValid = true;
+            if (subject.name && !subject.score && !subject.manualScore) {
+                setRowError(index, 'Please select a score range or enter a percentage.');
+                isValid = false;
+            } else if (!subject.name && (subject.score || subject.manualScore)) {
+                setRowError(index, 'Please select a subject.');
+                isValid = false;
+            } else if (subject.manualScore && (Number(subject.manualScore) < 0 || Number(subject.manualScore) > 100)) {
+                setRowError(index, 'Percentage must be between 0 and 100.');
+                isValid = false;
+            }
 
-             // Check duplicates (only highlight the current row if it's the duplicate)
-             if (subject.name) {
-                 const count = subjects.filter(s => s.name === subject.name).length;
-                 if (count > 1) {
-                      // Check if this specific instance is the duplicate being added/changed
-                      const instances = subjects.map((s, i) => s.name === subject.name ? i : -1).filter(i => i !== -1);
-                      if (instances.indexOf(index) > 0) { // If this is not the first instance
-                          setRowError(index, 'Subject already selected elsewhere.');
-                           isValid = false;
-                      }
-                 }
-             }
-             return isValid;
-         }
-
+            if (subject.name) {
+                const count = subjects.filter(s => s.name === subject.name).length;
+                if (count > 1) {
+                    const instances = subjects.map((s, i) => s.name === subject.name ? i : -1).filter(i => i !== -1);
+                    if (instances.indexOf(index) > 0) {
+                        setRowError(index, 'Subject already selected elsewhere.');
+                        isValid = false;
+                    }
+                }
+            }
+            return isValid;
+        }
 
         function validateInputs() {
             let isAllValid = true;
@@ -1279,135 +1617,610 @@
             return isAllValid;
         }
 
+        // --- Multi-Institutional Scoring & Upgrade Impact Analysis ---
+
+        function calculateInstitutionalScores(subjectData) {
+            let standardTotal = 0;
+            let uctTotal = 0;
+            let witsTotal = 0;
+            let totalPercentages = 0;
+            let countPercentages = 0;
+
+            subjectData.forEach(sub => {
+                standardTotal += sub.points;
+
+                const isLifeOrientation = sub.value === 'life-orientation';
+                if (!isLifeOrientation) {
+                    uctTotal += sub.points;
+                    witsTotal += sub.points;
+                } else {
+                    // Wits caps Life Orientation points at maximum 3 points
+                    witsTotal += Math.min(sub.points, 3);
+                }
+
+                // Average calculation
+                if (sub.rawPercentage !== undefined && !isNaN(sub.rawPercentage)) {
+                    totalPercentages += sub.rawPercentage;
+                    countPercentages++;
+                } else {
+                    // Approximate from score range midpoint
+                    const approxMid = sub.points === 7 ? 85 :
+                                      sub.points === 6 ? 74 :
+                                      sub.points === 5 ? 64 :
+                                      sub.points === 4 ? 54 :
+                                      sub.points === 3 ? 44 :
+                                      sub.points === 2 ? 34 : 20;
+                    totalPercentages += approxMid;
+                    countPercentages++;
+                }
+            });
+
+            const avg = countPercentages > 0 ? Math.round(totalPercentages / countPercentages) : 0;
+
+            currentInstitutionalScores = {
+                standard: standardTotal,
+                uct: uctTotal,
+                wits: witsTotal,
+                average: avg
+            };
+
+            // Update UI
+            const standardEl = document.getElementById('inst-standard-aps');
+            const uctEl = document.getElementById('inst-uct-aps');
+            const witsEl = document.getElementById('inst-wits-aps');
+
+            if (standardEl) standardEl.textContent = standardTotal;
+            if (uctEl) uctEl.textContent = uctTotal;
+            if (witsEl) witsEl.textContent = witsTotal;
+        }
+
+        function calculateUpgradeImpact(subjectData, currentApsScore) {
+            const container = document.getElementById('upgrade-recommendations-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (subjectData.length === 0 || currentApsScore === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 italic">Enter subjects and marks above to view high-impact upgrade opportunities.</p>`;
+                return;
+            }
+
+            const selectedSubjectValues = subjectData.map(s => s.value);
+            const opportunities = [];
+
+            subjectData.forEach(sub => {
+                if (sub.points >= 7) return; // Already at max level
+
+                const currentLevel = sub.points;
+                const nextLevel = currentLevel + 1;
+                const nextMinPercentage = scoreRanges.find(r => Number(r.value) === nextLevel)?.min || 0;
+
+                let pointsNeeded = 0;
+                let targetMarkDisplay = `Level ${nextLevel}`;
+
+                if (sub.rawPercentage !== undefined && !isNaN(sub.rawPercentage)) {
+                    pointsNeeded = Math.max(nextMinPercentage - sub.rawPercentage, 1);
+                    targetMarkDisplay = `${nextMinPercentage}% (L${nextLevel})`;
+                }
+
+                // Simulate upgrade
+                const simulatedAps = currentApsScore + 1;
+                const simulatedSubjectData = subjectData.map(s => {
+                    if (s.value === sub.value) {
+                        return { ...s, points: nextLevel, level: nextLevel.toString() };
+                    }
+                    return s;
+                });
+
+                // Count newly unlocked programs
+                const currentEligibleCount = programRecommendations.filter(p => {
+                    const mathOk = !(p.requiresCoreMaths && selectedSubjectValues.includes('mathematical-literacy') && !selectedSubjectValues.includes('mathematics'));
+                    return currentApsScore >= p.apsRequired && mathOk;
+                }).length;
+
+                const simulatedEligibleCount = programRecommendations.filter(p => {
+                    const mathOk = !(p.requiresCoreMaths && selectedSubjectValues.includes('mathematical-literacy') && !selectedSubjectValues.includes('mathematics'));
+                    return simulatedAps >= p.apsRequired && mathOk;
+                }).length;
+
+                const unlockedProgramsCount = Math.max(simulatedEligibleCount - currentEligibleCount, 0);
+
+                // Find key program names unlocked
+                const unlockedPrograms = programRecommendations.filter(p => {
+                    const mathOk = !(p.requiresCoreMaths && selectedSubjectValues.includes('mathematical-literacy') && !selectedSubjectValues.includes('mathematics'));
+                    const currentlyEligible = currentApsScore >= p.apsRequired && mathOk;
+                    const willBeEligible = simulatedAps >= p.apsRequired && mathOk;
+                    return !currentlyEligible && willBeEligible;
+                }).slice(0, 2).map(p => p.name);
+
+                // Count newly unlocked bursaries
+                const currentBursaryCount = bursariesList.filter(b => currentApsScore >= b.minAPS).length;
+                const simulatedBursaryCount = bursariesList.filter(b => simulatedAps >= b.minAPS).length;
+                const unlockedBursariesCount = Math.max(simulatedBursaryCount - currentBursaryCount, 0);
+
+                // Score opportunity leverage
+                const leverageScore = (unlockedProgramsCount * 3) + (unlockedBursariesCount * 4) + (pointsNeeded > 0 && pointsNeeded <= 5 ? 5 : 1);
+
+                opportunities.push({
+                    subjectName: sub.name,
+                    subjectValue: sub.value,
+                    currentPoints: currentLevel,
+                    currentDisplay: sub.percentage,
+                    targetDisplay: targetMarkDisplay,
+                    pointsNeeded: pointsNeeded,
+                    unlockedProgramsCount,
+                    unlockedPrograms,
+                    unlockedBursariesCount,
+                    leverageScore
+                });
+            });
+
+            opportunities.sort((a, b) => b.leverageScore - a.leverageScore);
+            currentUpgradeOpportunities = opportunities;
+
+            if (opportunities.length === 0) {
+                container.innerHTML = `<div class="p-2.5 bg-emerald-50 rounded border border-emerald-200 text-xs text-emerald-800">
+                    <strong>Outstanding Profile:</strong> All your entered subjects are at Level 7 (80%+). You have maximized your APS and qualification opportunities!
+                </div>`;
+                return;
+            }
+
+            // Render top 3 highest-leverage suggestions
+            const topOpportunities = opportunities.slice(0, 3);
+            topOpportunities.forEach((opp, i) => {
+                const card = document.createElement('div');
+                card.className = 'upgrade-card';
+
+                let unlockSummary = [];
+                if (opp.unlockedProgramsCount > 0) unlockSummary.push(`<strong>+${opp.unlockedProgramsCount}</strong> degrees/diplomas`);
+                if (opp.unlockedBursariesCount > 0) unlockSummary.push(`<strong>+${opp.unlockedBursariesCount}</strong> bursary schemes`);
+                if (opp.unlockedPrograms.length > 0) unlockSummary.push(`(e.g., <em>${opp.unlockedPrograms[0]}</em>)`);
+
+                const summaryText = unlockSummary.length > 0
+                    ? `Unlocks ${unlockSummary.join(' ')}.`
+                    : `Raises overall APS to <strong>${currentApsScore + 1}</strong> across all target universities.`;
+
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-1.5">
+                        <div class="font-semibold text-xs sm:text-sm text-gray-900 flex items-center gap-1.5">
+                            <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">${i + 1}</span>
+                            <span>${opp.subjectName}</span>
+                        </div>
+                        <div class="text-xs text-gray-600">
+                            Current: <span class="font-medium text-gray-800">${opp.currentDisplay}</span> &rarr; Target: <span class="font-semibold text-blue-700">${opp.targetDisplay}</span>
+                            ${opp.pointsNeeded > 0 ? `<span class="text-emerald-700 font-medium ml-1">(+${opp.pointsNeeded}%)</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-700 mt-1.5 pt-1.5 border-t border-gray-200/60">
+                        ${summaryText}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Target Course Diagnostic & Gap Analyzer ---
+
+        function populateTargetProgramDropdown() {
+            const selectEl = document.getElementById('target-program-select');
+            if (!selectEl) return;
+
+            selectEl.innerHTML = '<option value="">-- Select a Degree / Course to Diagnose Prerequisites --</option>';
+
+            const groupedCategories = {};
+            programRecommendations.forEach(prog => {
+                if (!groupedCategories[prog.category]) groupedCategories[prog.category] = [];
+                groupedCategories[prog.category].push(prog);
+            });
+
+            Object.keys(groupedCategories).forEach(cat => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = cat;
+                groupedCategories[cat].forEach(prog => {
+                    const opt = document.createElement('option');
+                    opt.value = prog.name;
+                    opt.textContent = `${prog.name} (Min APS: ${prog.apsRequired})`;
+                    optgroup.appendChild(opt);
+                });
+                selectEl.appendChild(optgroup);
+            });
+        }
+
+        function checkTargetProgramGap(programName) {
+            const resultContainer = document.getElementById('target-program-gap-result');
+            if (!resultContainer) return;
+
+            if (!programName) {
+                resultContainer.classList.add('hidden');
+                resultContainer.innerHTML = '';
+                return;
+            }
+
+            const program = programRecommendations.find(p => p.name === programName);
+            if (!program) return;
+
+            const selectedSubjectValues = currentSubjectData.map(s => s.value);
+            const hasMathsLit = selectedSubjectValues.includes('mathematical-literacy');
+            const hasCoreMaths = selectedSubjectValues.includes('mathematics');
+
+            const apsDifference = currentAPS - program.apsRequired;
+            const apsMet = currentAPS >= program.apsRequired;
+
+            // Check subjects
+            const subjectChecks = program.subjects.map(subjRule => {
+                const isOrRule = subjRule.includes('|');
+                const options = isOrRule ? subjRule.split('|').map(s => s.trim()) : [subjRule.trim()];
+                const ruleMet = options.some(option => selectedSubjectValues.includes(option));
+                const ruleLabel = options.map(opt => subjectsList.find(s => s.value === opt)?.label || opt).join(' OR ');
+                return { label: ruleLabel, met: ruleMet };
+            });
+
+            const allSubjectsMet = subjectChecks.every(c => c.met) || program.subjects.length === 0;
+            const mathConflict = program.requiresCoreMaths && hasMathsLit && !hasCoreMaths;
+
+            let overallStatus = '';
+            let overallBg = '';
+            if (mathConflict) {
+                overallStatus = 'Ineligible: Requires Core Mathematics (Maths Lit not accepted)';
+                overallBg = 'bg-amber-50 border-amber-300 text-amber-900';
+            } else if (apsMet && allSubjectsMet) {
+                overallStatus = 'Eligible: You meet both the minimum APS threshold and core subject prerequisites.';
+                overallBg = 'bg-green-50 border-green-300 text-green-900';
+            } else if (!apsMet && allSubjectsMet) {
+                overallStatus = `APS Deficit: You need +${Math.abs(apsDifference)} more APS points to reach the ${program.apsRequired} minimum benchmark.`;
+                overallBg = 'bg-blue-50 border-blue-300 text-blue-900';
+            } else {
+                overallStatus = 'Prerequisites Missing: You need both subject combinations and additional APS points.';
+                overallBg = 'bg-red-50 border-red-300 text-red-900';
+            }
+
+            resultContainer.innerHTML = `
+                <div class="p-3.5 rounded-lg border ${overallBg} text-xs sm:text-sm">
+                    <div class="font-bold mb-2 flex items-center justify-between">
+                        <span>Diagnostic Result: ${program.name}</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-white font-semibold shadow-xs">Min APS: ${program.apsRequired} (Yours: ${currentAPS})</span>
+                    </div>
+                    <p class="mb-3 font-medium">${overallStatus}</p>
+
+                    <div class="space-y-1.5 pt-2 border-t border-current/20 text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="${apsMet ? 'text-green-700' : 'text-red-700'} font-bold">${apsMet ? '✓' : '✗'}</span>
+                            <span>APS Benchmark: Requires <strong>${program.apsRequired}</strong> | Your Score: <strong>${currentAPS}</strong> (${apsDifference >= 0 ? '+' : ''}${apsDifference})</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="${!mathConflict ? 'text-green-700' : 'text-red-700'} font-bold">${!mathConflict ? '✓' : '✗'}</span>
+                            <span>Mathematics Type: ${program.requiresCoreMaths ? 'Core Mathematics Required' : 'Mathematical Literacy Accepted'}</span>
+                        </div>
+                        ${subjectChecks.map(c => `
+                            <div class="flex items-center gap-1.5">
+                                <span class="${c.met ? 'text-green-700' : 'text-red-700'} font-bold">${c.met ? '✓' : '✗'}</span>
+                                <span>Required Subject: ${c.label} (${c.met ? 'Met' : 'Not entered'})</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            resultContainer.classList.remove('hidden');
+        }
+
+        // --- South African Bursary Matching Functions ---
+
+        function setBursaryCategory(cat) {
+            currentBursaryCategory = cat;
+            document.querySelectorAll('.bursary-cat-btn').forEach(btn => {
+                if (btn.getAttribute('data-bursary-category') === cat) {
+                    btn.className = 'bursary-cat-btn px-3 py-1 text-xs rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors';
+                } else {
+                    btn.className = 'bursary-cat-btn px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors';
+                }
+            });
+            updateBursaryMatches(currentAPS, currentSubjectData.map(s => s.value), currentSubjectData);
+        }
+
+        function handleBursaryFilterChange() {
+            const searchInput = document.getElementById('bursary-search');
+            currentBursarySearchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+            updateBursaryMatches(currentAPS, currentSubjectData.map(s => s.value), currentSubjectData);
+        }
+
+        function updateBursaryMatches(apsScore, selectedSubjectValues = [], subjectData = []) {
+            if (selectedSubjectValues.length === 0) {
+                selectedSubjectValues = subjects.map(s => s.name).filter(Boolean);
+            }
+
+            const container = document.getElementById('bursary-recommendations');
+            const warningContainer = document.getElementById('bursary-warning');
+            if (!container || !warningContainer) return;
+
+            container.innerHTML = '';
+
+            if (apsScore <= 0 && selectedSubjectValues.length === 0) {
+                warningContainer.innerHTML = `<p class="text-sm text-yellow-700">Enter your subjects and marks on the 'Calculator' tab and click 'Calculate APS' to see personalized bursary matches.</p>`;
+                warningContainer.className = 'mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg';
+                container.classList.add('hidden');
+                document.querySelector('.bursary-recommendations-note')?.classList.add('hidden');
+                return;
+            }
+
+            const hasMathsLit = selectedSubjectValues.includes('mathematical-literacy');
+            const hasCoreMaths = selectedSubjectValues.includes('mathematics');
+
+            const mathsSubject = subjectData.find(s => s.value === 'mathematics');
+            const mathsPoints = mathsSubject ? mathsSubject.points : 0;
+
+            const physicsSubject = subjectData.find(s => s.value === 'physical-sciences');
+            const physicsPoints = physicsSubject ? physicsSubject.points : 0;
+
+            const englishSubject = subjectData.find(s => s.value.startsWith('english-'));
+            const englishPoints = englishSubject ? englishSubject.points : 0;
+
+            // Filter bursaries
+            const filteredBursaries = bursariesList.filter(bursary => {
+                if (currentBursaryCategory !== 'All' && bursary.category !== 'All Streams') {
+                    if (bursary.category !== currentBursaryCategory) return false;
+                }
+                if (currentBursarySearchTerm) {
+                    const matchName = bursary.name.toLowerCase().includes(currentBursarySearchTerm);
+                    const matchProvider = bursary.provider.toLowerCase().includes(currentBursarySearchTerm);
+                    const matchCat = bursary.category.toLowerCase().includes(currentBursarySearchTerm);
+                    const matchDesc = bursary.description.toLowerCase().includes(currentBursarySearchTerm);
+                    if (!matchName && !matchProvider && !matchCat && !matchDesc) return false;
+                }
+                return true;
+            });
+
+            const evaluatedBursaries = filteredBursaries.map(bursary => {
+                let matchStatus = 'High Match / Eligible';
+                let matchClass = 'eligible';
+                let matchRelevance = 4;
+                let reasons = [];
+
+                // Math Lit conflict check
+                if (bursary.requiresCoreMaths && hasMathsLit && !hasCoreMaths) {
+                    matchStatus = 'Requires Pure Maths';
+                    matchClass = 'almost';
+                    matchRelevance = 1;
+                    reasons.push('Requires Core Mathematics (Maths Literacy not accepted).');
+                } else {
+                    // Check specific subject levels
+                    if (bursary.minMathsLevel && mathsPoints < bursary.minMathsLevel) {
+                        matchStatus = `Requires Level ${bursary.minMathsLevel} Maths`;
+                        matchClass = 'almost';
+                        matchRelevance = 2;
+                        reasons.push(`Requires Level ${bursary.minMathsLevel} in Mathematics (Your level: ${mathsPoints || 'N/A'}).`);
+                    }
+
+                    if (bursary.minPhysicsLevel && physicsPoints < bursary.minPhysicsLevel) {
+                        matchStatus = `Requires Level ${bursary.minPhysicsLevel} Physics`;
+                        matchClass = 'almost';
+                        matchRelevance = 2;
+                        reasons.push(`Requires Level ${bursary.minPhysicsLevel} in Physical Sciences (Your level: ${physicsPoints || 'N/A'}).`);
+                    }
+
+                    if (bursary.minEnglishLevel && englishPoints < bursary.minEnglishLevel) {
+                        matchStatus = `Requires Level ${bursary.minEnglishLevel} English`;
+                        matchClass = 'almost';
+                        matchRelevance = 2;
+                        reasons.push(`Requires Level ${bursary.minEnglishLevel} in English.`);
+                    }
+
+                    // Check APS threshold
+                    if (apsScore < bursary.minAPS) {
+                        const apsDiff = bursary.minAPS - apsScore;
+                        if (apsDiff <= 3 && matchClass !== 'not-eligible') {
+                            matchStatus = `Near Match (${apsDiff} pts needed)`;
+                            matchClass = 'almost';
+                            matchRelevance = 3;
+                            reasons.push(`APS is ${apsScore}, sponsor guideline benchmark is ${bursary.minAPS}.`);
+                        } else {
+                            matchStatus = 'APS Benchmark Not Met';
+                            matchClass = 'not-eligible';
+                            matchRelevance = 1;
+                            reasons.push(`Minimum APS benchmark is ${bursary.minAPS}.`);
+                        }
+                    }
+                }
+
+                return {
+                    ...bursary,
+                    matchStatus,
+                    matchClass,
+                    matchRelevance,
+                    reasons
+                };
+            }).sort((a, b) => b.matchRelevance - a.matchRelevance || b.minAPS - a.minAPS);
+
+            if (evaluatedBursaries.length > 0) {
+                evaluatedBursaries.forEach(bursary => {
+                    const card = document.createElement('div');
+                    card.className = `bursary-card p-4 bg-white rounded-lg shadow-sm ${bursary.matchClass} border-l-4 mb-4`;
+
+                    let statusTagClass = bursary.matchClass === 'eligible' ? 'tag-success' :
+                                         bursary.matchClass === 'almost' ? 'tag-warning' : 'tag-danger';
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start gap-2">
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap mb-1">
+                                    <h3 class="text-md font-semibold text-gray-900">${bursary.name}</h3>
+                                    <span class="px-2 py-0.5 text-[10px] rounded font-semibold bg-gray-100 text-gray-700 border border-gray-200">${bursary.provider}</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mb-1">${bursary.category} • Closing: <strong>${bursary.closingDate}</strong></div>
+                            </div>
+                            <span class="tag ${statusTagClass} flex-shrink-0 ml-2 whitespace-nowrap">${bursary.matchStatus}</span>
+                        </div>
+                        <p class="text-gray-700 text-sm mt-1 mb-2">${bursary.description}</p>
+                        
+                        <div class="bg-gray-50 p-2.5 rounded text-xs border border-gray-100 my-2 space-y-1">
+                            <div><strong>Coverage:</strong> ${bursary.coverage}</div>
+                            ${bursary.notes ? `<div class="text-gray-600"><em>Criteria Note: ${bursary.notes}</em></div>` : ''}
+                        </div>
+
+                        ${bursary.reasons.length > 0 ? `
+                            <div class="mt-2 text-xs text-amber-800 bg-amber-50/70 p-2 rounded border border-amber-200">
+                                <strong>Requirement Guidance:</strong> ${bursary.reasons.join(' ')}
+                            </div>
+                        ` : ''}
+
+                        <div class="mt-3 flex items-center justify-between gap-2 pt-2 border-t border-gray-100 flex-wrap">
+                            <div class="text-xs text-gray-500">
+                                Guide APS: <strong>${bursary.minAPS}+</strong> (Yours: ${apsScore})
+                            </div>
+                            <a href="${bursary.applicationUrl}" target="_blank" rel="noopener" class="text-xs font-semibold text-blue-600 hover:text-blue-800 inline-flex items-center gap-1">
+                                Official Portal / Apply <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                            </a>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+                container.classList.remove('hidden');
+                warningContainer.innerHTML = `<p class="text-sm text-green-700">Matched <strong>${evaluatedBursaries.length}</strong> funding and bursary programs for your academic profile. Check application cycles and verify terms directly with providers.</p>`;
+                warningContainer.className = 'mb-6 p-4 bg-green-50 border-l-4 border-green-400 rounded-r-lg';
+            } else {
+                warningContainer.innerHTML = `<p class="text-sm text-yellow-700">No bursaries found matching category "<strong>${currentBursaryCategory}</strong>"${currentBursarySearchTerm ? ` and search term "${currentBursarySearchTerm}"` : ''}. Try selecting "All Bursaries" or clearing your search.</p>`;
+                warningContainer.className = 'mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg';
+                container.classList.add('hidden');
+            }
+            document.querySelector('.bursary-recommendations-note')?.classList.toggle('hidden', evaluatedBursaries.length === 0);
+        }
+
+        // --- Calculate Total APS Execution ---
 
         function calculateTotalAPS() {
             if (!validateInputs()) {
-                 showToast('Please fix the errors in the subject entries before calculating.', 'error');
-                 // Focus the first invalid field (optional enhancement)
-                  const firstError = document.querySelector('.error-text:not(:empty)');
-                  firstError?.closest('.input-group')?.querySelector('select, input')?.focus();
-                 return;
+                showToast('Please fix the errors in the subject entries before calculating.', 'error');
+                const firstError = document.querySelector('.error-text:not(:empty)');
+                firstError?.closest('.input-group')?.querySelector('select, input')?.focus();
+                return;
             }
 
             let total = 0;
-            currentSubjectData = []; // Reset subject data for report
+            currentSubjectData = [];
 
             subjects.forEach(subject => {
-                if (!subject.name) return; // Skip rows without a subject selected
+                if (!subject.name) return;
 
                 let apsPoints = 0;
                 let percentageDisplay = 'N/A';
                 let levelDisplay = 'N/A';
-                let source = ''; // 'Range' or 'Manual'
+                let source = '';
+                let rawPercentage = undefined;
 
                 if (subject.manualScore) {
                     const scoreValue = Number(subject.manualScore);
-                     if (!isNaN(scoreValue) && scoreValue >= 0 && scoreValue <= 100) {
+                    if (!isNaN(scoreValue) && scoreValue >= 0 && scoreValue <= 100) {
                         apsPoints = getAPSFromPercentage(scoreValue);
                         percentageDisplay = `${scoreValue}%`;
-                        levelDisplay = scoreRanges.find(r => scoreValue >= r.min && scoreValue <= r.max)?.label.match(/\(L(\d)\)/)?.[1] || 'N/A'; // Extract Level number
+                        rawPercentage = scoreValue;
+                        levelDisplay = scoreRanges.find(r => scoreValue >= r.min && scoreValue <= r.max)?.label.match(/\(L(\d)\)/)?.[1] || 'N/A';
                         source = 'Manual';
-                     }
+                    }
                 } else if (subject.score) {
                     apsPoints = Number(subject.score);
                     const range = scoreRanges.find(r => r.value === subject.score);
-                    percentageDisplay = range ? range.label.split(' (')[0].trim() : 'N/A'; // "80-100%"
-                    levelDisplay = range ? range.value : 'N/A'; // Level number (7, 6, ...)
+                    percentageDisplay = range ? range.label.split(' (')[0].trim() : 'N/A';
+                    levelDisplay = range ? range.value : 'N/A';
                     source = 'Range';
                 }
 
-                if (apsPoints > 0 || source) { // Only add if valid points were calculated
+                if (apsPoints > 0 || source) {
                     total += apsPoints;
-                     const subjectInfo = subjectsList.find(s => s.value === subject.name);
-                     currentSubjectData.push({
+                    const subjectInfo = subjectsList.find(s => s.value === subject.name);
+                    currentSubjectData.push({
                         name: subjectInfo ? subjectInfo.label : 'Unknown Subject',
+                        value: subject.name,
                         percentage: percentageDisplay,
+                        rawPercentage: rawPercentage,
                         level: levelDisplay,
                         points: apsPoints,
                         source: source
-                     });
+                    });
                 }
             });
 
-             currentAPS = total;
+            currentAPS = total;
             document.getElementById('aps-score').textContent = total;
+
+            // Institutional conversion scores
+            calculateInstitutionalScores(currentSubjectData);
 
             // Determine qualification status (General guidelines)
             let status = '';
-            let statusColorClass = 'text-gray-700'; // Default
+            let statusColorClass = 'text-gray-700';
             if (total >= 23) {
                 status = 'Potentially qualifies for Bachelor\'s Degree consideration.';
-                 statusColorClass = 'text-green-600';
+                statusColorClass = 'text-green-600';
             } else if (total >= 19) {
                 status = 'Potentially qualifies for Diploma consideration.';
-                 statusColorClass = 'text-yellow-600';
+                statusColorClass = 'text-yellow-600';
             } else if (total >= 15) {
                 status = 'Potentially qualifies for Higher Certificate consideration.';
-                 statusColorClass = 'text-yellow-600';
+                statusColorClass = 'text-yellow-600';
             } else {
                 status = 'May not meet common minimums for Certificate/Diploma/Degree.';
-                 statusColorClass = 'text-red-600';
-            }
-            if (currentSubjectData.length === 0 && total === 0) {
-                 status = 'Enter subjects and marks to calculate status.';
-                 statusColorClass = 'text-gray-500';
+                statusColorClass = 'text-red-600';
             }
 
+            if (currentSubjectData.length === 0 && total === 0) {
+                status = 'Enter subjects and marks to calculate status.';
+                statusColorClass = 'text-gray-500';
+            }
 
             const statusElement = document.getElementById('qualification-status');
             statusElement.textContent = status;
-            statusElement.className = `mb-4 text-md font-medium ${statusColorClass}`; // Apply color
-
+            statusElement.className = `mb-4 text-md font-medium ${statusColorClass}`;
 
             document.getElementById('total-aps').style.display = 'block';
 
             // Update progress bars
             updateProgressBars(total);
 
-            // Update program recommendations (if the tab is active or will be switched to)
-            updateProgramRecommendations(total, currentSubjectData.map(s => s.value)); // Pass selected subject values
+            // Mark Upgrade & Pathfinding Analysis
+            calculateUpgradeImpact(currentSubjectData, total);
 
-             // Show recommendations note
-             const recNote = document.querySelector('.program-recommendations-note');
-             if(recNote) recNote.classList.remove('hidden');
+            // Update program recommendations
+            updateProgramRecommendations(total, currentSubjectData.map(s => s.value));
 
-             showToast(`APS Calculated: ${total}`, 'success');
+            // Update bursary matching
+            updateBursaryMatches(total, currentSubjectData.map(s => s.value), currentSubjectData);
+
+            // Update Target Program Diagnostic if currently selected
+            const targetSelect = document.getElementById('target-program-select');
+            if (targetSelect && targetSelect.value) {
+                checkTargetProgramGap(targetSelect.value);
+            }
+
+            const recNote = document.querySelector('.program-recommendations-note');
+            if (recNote) recNote.classList.remove('hidden');
+
+            showToast(`APS Calculated: ${total} | UCT: ${currentInstitutionalScores.uct} | Wits: ${currentInstitutionalScores.wits}`, 'success');
         }
 
         function updateProgressBars(total) {
-            // Qualification thresholds (adjust if needed)
             const bachelorRequired = 23;
             const diplomaRequired = 19;
             const certificateRequired = 15;
 
-             // Calculate percentage towards the goal, capped at 100%
             const bachelorProgressPercent = Math.min((total / bachelorRequired) * 100, 100);
             const diplomaProgressPercent = Math.min((total / diplomaRequired) * 100, 100);
             const certificateProgressPercent = Math.min((total / certificateRequired) * 100, 100);
 
-             // Update progress bar widths
-             const bachelorBar = document.getElementById('bachelor-progress');
-             const diplomaBar = document.getElementById('diploma-progress');
-             const certificateBar = document.getElementById('certificate-progress');
+            const bachelorBar = document.getElementById('bachelor-progress');
+            const diplomaBar = document.getElementById('diploma-progress');
+            const certificateBar = document.getElementById('certificate-progress');
 
-             bachelorBar.style.width = `${bachelorProgressPercent}%`;
-             diplomaBar.style.width = `${diplomaProgressPercent}%`;
-             certificateBar.style.width = `${certificateProgressPercent}%`;
+            bachelorBar.style.width = `${bachelorProgressPercent}%`;
+            diplomaBar.style.width = `${diplomaProgressPercent}%`;
+            certificateBar.style.width = `${certificateProgressPercent}%`;
 
-             // Update text labels
-             document.getElementById('bachelor-progress-text').textContent = total >= bachelorRequired ? `Achieved (${total}/${bachelorRequired})` : `${Math.floor(bachelorProgressPercent)}%`;
-             document.getElementById('diploma-progress-text').textContent = total >= diplomaRequired ? `Achieved (${total}/${diplomaRequired})` : `${Math.floor(diplomaProgressPercent)}%`;
-             document.getElementById('certificate-progress-text').textContent = total >= certificateRequired ? `Achieved (${total}/${certificateRequired})` : `${Math.floor(certificateProgressPercent)}%`;
+            document.getElementById('bachelor-progress-text').textContent = total >= bachelorRequired ? `Achieved (${total}/${bachelorRequired})` : `${Math.floor(bachelorProgressPercent)}%`;
+            document.getElementById('diploma-progress-text').textContent = total >= diplomaRequired ? `Achieved (${total}/${diplomaRequired})` : `${Math.floor(diplomaProgressPercent)}%`;
+            document.getElementById('certificate-progress-text').textContent = total >= certificateRequired ? `Achieved (${total}/${certificateRequired})` : `${Math.floor(certificateProgressPercent)}%`;
 
-             // Update progress bar colors based on achievement
-             bachelorBar.className = `progress-value ${total >= bachelorRequired ? 'bg-success' : ''}`;
-             diplomaBar.className = `progress-value ${total >= diplomaRequired ? 'bg-success' : ''}`;
-             certificateBar.className = `progress-value ${total >= certificateRequired ? 'bg-success' : ''}`;
+            bachelorBar.className = `progress-value ${total >= bachelorRequired ? 'bg-success' : ''}`;
+            diplomaBar.className = `progress-value ${total >= diplomaRequired ? 'bg-success' : ''}`;
+            certificateBar.className = `progress-value ${total >= certificateRequired ? 'bg-success' : ''}`;
         }
-
-        // Category & Search filter state for programs
-        let currentProgramCategory = 'All';
-        let currentProgramSearchTerm = '';
 
         function setProgramCategory(cat) {
             currentProgramCategory = cat;
@@ -1437,6 +2250,7 @@
 
             const recommendationsContainer = document.getElementById('program-recommendations');
             const warningContainer = document.getElementById('program-warning');
+            if (!recommendationsContainer || !warningContainer) return;
             recommendationsContainer.innerHTML = '';
 
             if (apsScore <= 0 && selectedSubjectValues.length === 0) {
@@ -1447,7 +2261,6 @@
                 return;
             }
 
-            // Filter programs based on category & search input
             const categoryFiltered = programRecommendations.filter(program => {
                 if (currentProgramCategory !== 'All') {
                     if (currentProgramCategory === 'Extended / Bridging') {
@@ -1465,7 +2278,6 @@
                 return true;
             });
 
-            // Map eligibility and prerequisite match status
             const filteredRecommendations = categoryFiltered
                 .map(program => {
                     let subjectMatchStatus = 'Met';
@@ -1485,7 +2297,6 @@
                         subjectMatchStatus = 'Met';
                     }
 
-                    // Check Core Maths vs Maths Lit constraint
                     let mathLitConflict = false;
                     if (program.requiresCoreMaths && hasMathsLit && !hasCoreMaths) {
                         mathLitConflict = true;
@@ -1529,7 +2340,6 @@
                 })
                 .sort((a, b) => b.relevanceScore - a.relevanceScore || b.apsRequired - a.apsRequired);
 
-            // Display recommendations
             if (filteredRecommendations.length > 0) {
                 filteredRecommendations.forEach(program => {
                     const programCard = document.createElement('div');
@@ -1538,7 +2348,6 @@
                     let statusTagClass = program.eligibilityClass === 'eligible' ? 'tag-success' :
                                          program.eligibilityClass === 'almost' ? 'tag-warning' : 'tag-danger';
 
-                    // Required subjects breakdown HTML
                     let requiredSubjectsHtml = '';
                     if (program.requiredSubjectsDetails.length > 0) {
                         requiredSubjectsHtml = program.requiredSubjectsDetails.map(detail => `
@@ -1559,7 +2368,6 @@
                                                 </div>`;
                     }
 
-                    // Special Math Lit notice
                     let mathNoticeHtml = '';
                     if (program.mathLitConflict) {
                         mathNoticeHtml = `<div class="mt-2 text-xs text-amber-700 bg-amber-50 p-2 rounded border border-amber-200">
@@ -1567,7 +2375,6 @@
                         </div>`;
                     }
 
-                    // Bridging recommendation prompt
                     let bridgingPromptHtml = '';
                     if (program.eligibilityStatus.includes('Close')) {
                         bridgingPromptHtml = `<div class="mt-2 text-xs text-blue-700 bg-blue-50 p-2 rounded border border-blue-200">
@@ -1575,7 +2382,6 @@
                         </div>`;
                     }
 
-                    // Math requirement badge
                     let mathBadge = program.requiresCoreMaths
                         ? `<span class="px-2 py-0.5 text-[10px] rounded font-semibold bg-blue-50 text-blue-700 border border-blue-200">Core Maths Req</span>`
                         : `<span class="px-2 py-0.5 text-[10px] rounded font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Maths Lit Accepted</span>`;
@@ -1625,20 +2431,19 @@
         function populateUniversityRequirements() {
             const tableBody = document.getElementById('university-requirements');
             if (!tableBody) return;
-            tableBody.innerHTML = ''; // Clear loading/previous rows
+            tableBody.innerHTML = '';
 
             if (!universityRequirements || universityRequirements.length === 0) {
-                 tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-4">University requirement data not available or failed to load.</td></tr>';
-                 return;
+                tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-4">University requirement data not available or failed to load.</td></tr>';
+                return;
             }
 
             universityRequirements.forEach(req => {
                 const row = document.createElement('tr');
-                 row.className = 'hover:bg-gray-50 transition-colors';
-                 // Add data attributes for filtering
-                 row.setAttribute('data-university', req.university.toLowerCase());
-                 row.setAttribute('data-faculty', req.faculty.toLowerCase());
-                 row.setAttribute('data-requirements', req.additionalRequirements.toLowerCase());
+                row.className = 'hover:bg-gray-50 transition-colors';
+                row.setAttribute('data-university', req.university.toLowerCase());
+                row.setAttribute('data-faculty', req.faculty.toLowerCase());
+                row.setAttribute('data-requirements', req.additionalRequirements.toLowerCase());
 
                 row.innerHTML = `
                     <td class="font-medium text-gray-800">${req.university}</td>
@@ -1657,28 +2462,25 @@
             let visibleRows = 0;
 
             rows.forEach(row => {
-                 // Check if the row contains data attributes (skip potential 'no results' row)
-                 if (!row.hasAttribute('data-university')) {
-                     row.style.display = 'none'; // Hide helper rows
-                     return;
-                 };
+                if (!row.hasAttribute('data-university')) {
+                    row.style.display = 'none';
+                    return;
+                }
 
                 const uni = row.getAttribute('data-university') || '';
                 const fac = row.getAttribute('data-faculty') || '';
                 const req = row.getAttribute('data-requirements') || '';
                 const notes = (row.querySelector('em')?.textContent || '').toLowerCase();
-
-                const rowText = `${uni} ${fac} ${req} ${notes}`; // Combine searchable text
+                const rowText = `${uni} ${fac} ${req} ${notes}`;
 
                 if (searchTerm === '' || rowText.includes(searchTerm)) {
-                    row.style.display = ''; // Show row
+                    row.style.display = '';
                     visibleRows++;
                 } else {
-                    row.style.display = 'none'; // Hide row
+                    row.style.display = 'none';
                 }
             });
 
-             // Manage "no results" message
             let noResultsRow = tableBody.querySelector('.no-results-row');
             if (visibleRows === 0 && searchTerm !== '') {
                 if (!noResultsRow) {
@@ -1687,53 +2489,46 @@
                     noResultsRow.innerHTML = `<td colspan="4" class="text-center text-gray-500 py-4">No matching requirements found for "${searchTerm}". Check university websites for confirmation.</td>`;
                     tableBody.appendChild(noResultsRow);
                 } else {
-                    noResultsRow.style.display = ''; // Show existing no-results row
+                    noResultsRow.style.display = '';
                 }
             } else if (noResultsRow) {
-                noResultsRow.style.display = 'none'; // Hide no-results row if there are results or search is empty
+                noResultsRow.style.display = 'none';
             }
         }
 
-
-        // --- UI Interaction ---
+        // --- UI Interaction & Navigation ---
 
         function toggleTab(tabName) {
-            // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-            // Reset all tab buttons style
             document.querySelectorAll('nav button[id$="-tab"]').forEach(button => {
                 button.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
                 button.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
             });
 
-            // Show selected tab content
             const selectedTabContent = document.getElementById(`${tabName}-tab-content`);
             selectedTabContent?.classList.remove('hidden');
 
-            // Highlight selected tab button
-             const selectedTabButton = document.getElementById(`${tabName}-tab`);
-             selectedTabButton?.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-             selectedTabButton?.classList.add('bg-blue-600', 'text-white', 'font-semibold');
+            const selectedTabButton = document.getElementById(`${tabName}-tab`);
+            selectedTabButton?.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+            selectedTabButton?.classList.add('bg-blue-600', 'text-white', 'font-semibold');
 
-            // Lazy load university data or update recommendations if needed
             if (tabName === 'universities') {
-                 const tableBody = document.getElementById('university-requirements');
-                  // Populate only if it seems empty or has the initial loading message
-                 if (tableBody && (!tableBody.hasChildNodes() || tableBody.textContent.includes("Loading"))) {
-                     populateUniversityRequirements();
-                 }
-                 // Add listener if not already added
-                 const searchInput = document.getElementById('university-search');
-                 if (searchInput && !searchInput.dataset.listenerAdded) {
-                      searchInput.addEventListener('input', filterUniversityTable);
-                      searchInput.dataset.listenerAdded = 'true';
-                 }
+                const tableBody = document.getElementById('university-requirements');
+                if (tableBody && (!tableBody.hasChildNodes() || tableBody.textContent.includes("Loading"))) {
+                    populateUniversityRequirements();
+                }
+                const searchInput = document.getElementById('university-search');
+                if (searchInput && !searchInput.dataset.listenerAdded) {
+                    searchInput.addEventListener('input', filterUniversityTable);
+                    searchInput.dataset.listenerAdded = 'true';
+                }
             } else if (tabName === 'programs') {
-                 // Re-run recommendations update in case APS was calculated while on another tab
-                 updateProgramRecommendations(currentAPS, subjects.map(s => s.name).filter(Boolean));
+                updateProgramRecommendations(currentAPS, subjects.map(s => s.name).filter(Boolean));
+                populateTargetProgramDropdown();
+            } else if (tabName === 'bursaries') {
+                updateBursaryMatches(currentAPS, subjects.map(s => s.name).filter(Boolean), currentSubjectData);
             }
         }
-
 
         function shareResults(platform) {
             if (currentAPS <= 0 && currentSubjectData.length === 0) {
@@ -1743,7 +2538,7 @@
             const apsScore = currentAPS;
             const qualificationStatus = document.getElementById('qualification-status').textContent;
             const pageUrl = document.querySelector('link[rel="canonical"]')?.href || window.location.href;
-            const text = `I calculated my potential SA university APS score: ${apsScore}. ${qualificationStatus.split('.')[0]}. Check yours with the Vylex Nexys APS Calculator!`;
+            const text = `I calculated my potential SA university APS score: ${apsScore} (UCT: ${currentInstitutionalScores.uct}, Wits: ${currentInstitutionalScores.wits}). ${qualificationStatus.split('.')[0]}. Check yours free on Vylex Nexys!`;
             const encodedText = encodeURIComponent(text);
             const encodedUrl = encodeURIComponent(pageUrl);
 
@@ -1752,16 +2547,15 @@
                 case 'whatsapp': url = `https://wa.me/?text=${encodedText}%20${encodedUrl}`; break;
                 case 'facebook': url = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`; break;
                 case 'twitter': url = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`; break;
-                case 'email': url = `mailto:?subject=${encodeURIComponent('My APS Score Calculation')}&body=${encodedText}%0A%0A${encodedUrl}`; break;
+                case 'email': url = `mailto:?subject=${encodeURIComponent('My SA University APS Score Calculation')}&body=${encodedText}%0A%0A${encodedUrl}`; break;
                 default: showToast('Unknown sharing platform', 'error'); return;
             }
 
             window.open(url, '_blank', 'noopener,noreferrer');
-            // showToast(`Opening share dialog for ${platform}...`, 'info');
         }
 
         function saveCalculation() {
-             const subjectsToSave = subjects.filter(s => s.name && (s.score || s.manualScore)); // Only save valid, completed rows
+            const subjectsToSave = subjects.filter(s => s.name && (s.score || s.manualScore));
             if (subjectsToSave.length === 0) {
                 showToast('Add at least one subject with a name and score/percentage to save.', 'warning');
                 return;
@@ -1772,10 +2566,10 @@
                 showToast('Calculation progress saved!', 'success');
             } catch (error) {
                 console.error('Save Error:', error);
-                 const message = error.name === 'QuotaExceededError'
-                     ? 'Could not save. Browser storage might be full.'
-                     : 'Failed to save calculation.';
-                 showToast(message, 'error');
+                const message = error.name === 'QuotaExceededError'
+                    ? 'Could not save. Browser storage might be full.'
+                    : 'Failed to save calculation.';
+                showToast(message, 'error');
             }
         }
 
@@ -1788,45 +2582,43 @@
                 }
 
                 const loadedSubjects = JSON.parse(savedData);
-                 if (!Array.isArray(loadedSubjects)) throw new Error("Invalid data format");
+                if (!Array.isArray(loadedSubjects)) throw new Error("Invalid data format");
 
-                 // Filter out any potentially invalid loaded subjects (basic check)
-                 subjects = loadedSubjects.filter(s =>
+                subjects = loadedSubjects.filter(s =>
                     typeof s.id === 'number' &&
                     typeof s.name === 'string' &&
-                    subjectsList.some(validSubj => validSubj.value === s.name) && // Check if name is valid
+                    subjectsList.some(validSubj => validSubj.value === s.name) &&
                     (typeof s.score === 'string' || s.score === '') &&
                     (typeof s.manualScore === 'string' || s.manualScore === '')
-                 );
+                );
 
                 if (subjects.length === 0) {
-                     subjects = [{ id: 1, name: '', score: '', manualScore: '' }]; // Start fresh if loaded data was empty/invalid
-                     showToast('Loaded data was empty or invalid. Starting fresh.', 'warning');
-                 } else {
-                     showToast('Calculation loaded successfully!', 'success');
-                 }
+                    subjects = [{ id: 1, name: '', score: '', manualScore: '' }];
+                    showToast('Loaded data was empty or invalid. Starting fresh.', 'warning');
+                } else {
+                    showToast('Calculation loaded successfully!', 'success');
+                }
 
                 renderSubjects();
-                calculateTotalAPS(); // Recalculate APS based on loaded data
+                calculateTotalAPS();
 
             } catch (error) {
                 console.error('Load Error:', error);
                 showToast('Failed to load calculation. Saved data might be corrupted.', 'error');
-                localStorage.removeItem('vylexNexysApsCalcV1'); // Clear potentially corrupted data
-                subjects = [{ id: 1, name: '', score: '', manualScore: '' }]; // Reset to default
+                localStorage.removeItem('vylexNexysApsCalcV1');
+                subjects = [{ id: 1, name: '', score: '', manualScore: '' }];
                 renderSubjects();
-                calculateTotalAPS(); // Reset calculation display
+                calculateTotalAPS();
             }
         }
 
-        // --- Report Modal ---
+        // --- Report Modal & Print Output ---
 
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-                // Add listener for ESC key
+                document.body.style.overflow = 'hidden';
                 document.addEventListener('keydown', handleEscKey);
             }
         }
@@ -1835,28 +2627,23 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.add('hidden');
-                document.body.style.overflow = 'auto'; // Restore background scrolling
-                // Clean up chart if it's the report modal being closed
+                document.body.style.overflow = 'auto';
                 if (modalId === 'report-modal' && apsChartInstance) {
                     apsChartInstance.destroy();
                     apsChartInstance = null;
                 }
-                 // Remove listener for ESC key
-                 document.removeEventListener('keydown', handleEscKey);
+                document.removeEventListener('keydown', handleEscKey);
             }
         }
 
-         // Global handler for ESC key to close modals
-         function handleEscKey(event) {
+        function handleEscKey(event) {
             if (event.key === 'Escape') {
-                 // Find any open modal (assuming only one is open at a time)
-                 const openModalElement = document.querySelector('.fixed.inset-0.z-50:not(.hidden)');
-                 if (openModalElement) {
-                     closeModal(openModalElement.id);
-                 }
-             }
-         }
-
+                const openModalElement = document.querySelector('.fixed.inset-0.z-50:not(.hidden)');
+                if (openModalElement) {
+                    closeModal(openModalElement.id);
+                }
+            }
+        }
 
         function generateDetailedReport() {
             if (currentAPS <= 0 && currentSubjectData.length === 0) {
@@ -1865,178 +2652,218 @@
             }
 
             const reportContentEl = document.getElementById('report-content');
-            if (!reportContentEl) {
-                console.error("Report content element not found");
-                return;
-            }
+            if (!reportContentEl) return;
 
             const qualificationStatusText = document.getElementById('qualification-status')?.textContent || 'Status not calculated';
-             const statusColorClass = document.getElementById('qualification-status')?.className.match(/text-(green|yellow|red|gray)-(\d+)/)?.[0] || 'text-gray-700';
+            const statusColorClass = document.getElementById('qualification-status')?.className.match(/text-(green|yellow|red|gray)-(\d+)/)?.[0] || 'text-gray-700';
 
+            // Top matched programs
+            const selectedSubjectValues = currentSubjectData.map(s => s.value);
+            const hasMathsLit = selectedSubjectValues.includes('mathematical-literacy');
+            const hasCoreMaths = selectedSubjectValues.includes('mathematics');
 
-             // Generate report HTML
+            const qualifiedPrograms = programRecommendations.filter(p => {
+                const mathOk = !(p.requiresCoreMaths && hasMathsLit && !hasCoreMaths);
+                return currentAPS >= p.apsRequired && mathOk;
+            }).slice(0, 6);
+
+            // Top matched bursaries
+            const matchedBursaries = bursariesList.filter(b => currentAPS >= b.minAPS).slice(0, 5);
+
             reportContentEl.innerHTML = `
-<!--Summary section -->
-
+                <!-- Summary & Institutional Scores -->
                 <section class="mb-6 pb-6 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">APS Summary</h3>
                     <div class="flex flex-col md:flex-row gap-6 items-center">
                         <div class="flex-1 text-center md:text-left">
-                            <div class="text-5xl font-bold text-blue-600 mb-1">${currentAPS}</div>
+                            <div class="text-4xl font-bold text-blue-600 mb-1">${currentAPS} <span class="text-lg font-normal text-gray-500">Standard APS</span></div>
                             <div class="text-base ${statusColorClass} font-medium">
                                 ${qualificationStatusText}
                             </div>
-                            <p class="text-xs text-gray-500 mt-1">Based on ${currentSubjectData.length} subjects entered. Verify university-specific calculations.</p>
+                            <div class="grid grid-cols-3 gap-2 mt-4 text-center">
+                                <div class="p-2 bg-gray-50 rounded border border-gray-200">
+                                    <div class="text-[11px] text-gray-500 font-medium">Standard NSC</div>
+                                    <div class="text-lg font-bold text-blue-600">${currentInstitutionalScores.standard}</div>
+                                </div>
+                                <div class="p-2 bg-gray-50 rounded border border-gray-200">
+                                    <div class="text-[11px] text-gray-500 font-medium">UCT (Excl. LO)</div>
+                                    <div class="text-lg font-bold text-indigo-600">${currentInstitutionalScores.uct}</div>
+                                </div>
+                                <div class="p-2 bg-gray-50 rounded border border-gray-200">
+                                    <div class="text-[11px] text-gray-500 font-medium">Wits (LO max 3)</div>
+                                    <div class="text-lg font-bold text-sky-600">${currentInstitutionalScores.wits}</div>
+                                </div>
+                            </div>
                         </div>
-                         <!-- Chart Container - ensure it exists for Chart.js -->
-                         <div id="aps-chart-container" class="flex-shrink-0 w-full max-w-[180px] md:max-w-[160px] h-[180px] md:h-[160px] mx-auto relative">
-                             <canvas id="aps-chart"></canvas>
-                         </div>
+                        <div id="aps-chart-container" class="flex-shrink-0 w-full max-w-[170px] h-[170px] mx-auto relative">
+                            <canvas id="aps-chart"></canvas>
+                        </div>
                     </div>
                 </section>
 
                 <!-- Subject Breakdown Section -->
-                 <section class="mb-6 pb-6 border-b border-gray-200">
-                     <h3 class="text-lg font-semibold text-gray-900 mb-3">Subject Breakdown</h3>
-                     <div class="overflow-x-auto">
-                         <table class="report-table">
-                             <thead>
-                                 <tr>
-                                     <th>Subject</th>
-                                     <th class="text-center">Mark / Range</th>
-                                     <th class="text-center">Level</th>
-                                     <th class="text-center">APS Points</th>
-                                 </tr>
-                             </thead>
-                             <tbody>
-                                 ${currentSubjectData.map(subject => `
-                                     <tr>
-                                         <td>${subject.name}</td>
-                                         <td class="text-center">${subject.percentage}</td>
-                                         <td class="text-center font-medium">${subject.level}</td>
-                                         <td class="text-center font-bold text-blue-600">${subject.points}</td>
-                                     </tr>
-                                 `).join('')}
-                                 <tr class="bg-gray-100 font-bold">
-                                     <td colspan="3" class="text-right">Total APS Points:</td>
-                                     <td class="text-center">${currentAPS}</td>
-                                 </tr>
-                             </tbody>
-                         </table>
-                     </div>
-                 </section>
+                <section class="mb-6 pb-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold text-gray-900 mb-2.5">Subject Breakdown</h3>
+                    <div class="overflow-x-auto">
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th class="text-center">Mark / Range</th>
+                                    <th class="text-center">Level</th>
+                                    <th class="text-center">APS Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${currentSubjectData.map(subject => `
+                                    <tr>
+                                        <td>${subject.name}</td>
+                                        <td class="text-center">${subject.percentage}</td>
+                                        <td class="text-center font-medium">${subject.level}</td>
+                                        <td class="text-center font-bold text-blue-600">${subject.points}</td>
+                                    </tr>
+                                `).join('')}
+                                <tr class="bg-gray-100 font-bold">
+                                    <td colspan="3" class="text-right">Total Standard APS:</td>
+                                    <td class="text-center text-blue-700">${currentAPS}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-                <!-- Qualification Thresholds Section -->
-                 <section class="mb-6 pb-6 border-b border-gray-200">
-                     <h3 class="text-lg font-semibold text-gray-900 mb-3">General Qualification Thresholds</h3>
-                     <div class="space-y-2 text-sm">
-                         ${generateThresholdHtml(23, "Bachelor's Degree Pass")}
-                         ${generateThresholdHtml(19, "Diploma Pass")}
-                         ${generateThresholdHtml(15, "Higher Certificate Pass")}
-                     </div>
-                     <p class="text-xs text-gray-500 mt-2"><strong>Note:</strong> These are general minimum guidelines. Meeting these does not guarantee admission. Specific programs often have higher APS requirements and additional subject/level criteria. Check university websites.</p>
-                 </section>
+                <!-- Top Qualified University Programs -->
+                <section class="mb-6 pb-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold text-gray-900 mb-2.5">Top Qualified University Programs (${qualifiedPrograms.length})</h3>
+                    ${qualifiedPrograms.length > 0 ? `
+                        <div class="grid sm:grid-cols-2 gap-2 text-xs">
+                            ${qualifiedPrograms.map(p => `
+                                <div class="p-2.5 bg-gray-50 rounded border border-gray-200 flex justify-between items-center">
+                                    <div>
+                                        <div class="font-semibold text-gray-800">${p.name}</div>
+                                        <div class="text-[10px] text-gray-500">${p.category}</div>
+                                    </div>
+                                    <span class="text-blue-600 font-bold">APS ${p.apsRequired}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `<p class="text-xs text-gray-500">No direct Bachelor qualifications matched yet. Check Diploma and Extended Curriculum (ECP) offerings.</p>`}
+                </section>
 
-                 <!-- Important Notes Section -->
-                 <section>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Important Considerations & Next Steps</h3>
-                    <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
-                        <li><strong>Verify Official Requirements:</strong> Always check the latest admission requirements directly on the websites of the universities and specific programs you are interested in.</li>
-                        <li><strong>Life Orientation (LO):</strong> Universities calculate APS differently, especially regarding LO. Some exclude it, some cap its points. Confirm how your target institutions handle it.</li>
-                        <li><strong>Subject & Level Requirements:</strong> Meeting the APS is not enough. Ensure you meet the specific subject requirements (e.g., Maths, Physics, English) and the minimum percentage levels for those subjects.</li>
-                        <li><strong>Competition:</strong> Admission to popular programs is competitive. Aiming well above the minimum APS increases your chances significantly.</li>
-                        <li><strong>NBTs:</strong> Some universities/programs require the National Benchmark Tests (NBTs). Check if this applies to you and prepare accordingly.</li>
-                        <li><strong>Application Deadlines:</strong> Be aware of all application opening and closing dates.</li>
+                <!-- Matched South African Bursaries -->
+                <section class="mb-6 pb-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold text-gray-900 mb-2.5">Matched Bursary Opportunities (${matchedBursaries.length})</h3>
+                    ${matchedBursaries.length > 0 ? `
+                        <div class="grid sm:grid-cols-2 gap-2 text-xs">
+                            ${matchedBursaries.map(b => `
+                                <div class="p-2.5 bg-emerald-50/60 rounded border border-emerald-200">
+                                    <div class="font-semibold text-emerald-900">${b.name}</div>
+                                    <div class="text-[10px] text-gray-600 mt-0.5">${b.provider} • Min APS: ${b.minAPS}</div>
+                                    <div class="text-[11px] text-emerald-800 mt-1">${b.coverage}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `<p class="text-xs text-gray-500">Check NSFAS and foundational aid schemes.</p>`}
+                </section>
+
+                <!-- Upgrade Pathfinding Roadmap -->
+                ${currentUpgradeOpportunities.length > 0 ? `
+                    <section class="mb-6 pb-6 border-b border-gray-200">
+                        <h3 class="text-base font-semibold text-gray-900 mb-2.5">Strategic Mark Upgrade Opportunities</h3>
+                        <div class="space-y-2 text-xs">
+                            ${currentUpgradeOpportunities.slice(0, 2).map(opp => `
+                                <div class="p-2.5 bg-blue-50/60 rounded border border-blue-200">
+                                    <strong>${opp.subjectName}:</strong> Improve from ${opp.currentDisplay} to ${opp.targetDisplay} to gain <strong>+1 APS</strong> and unlock <strong>${opp.unlockedProgramsCount}</strong> more programs and <strong>${opp.unlockedBursariesCount}</strong> bursaries.
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                ` : ''}
+
+                <!-- Important Notes Section -->
+                <section>
+                    <h3 class="text-base font-semibold text-gray-900 mb-2">Important Guidelines & Next Steps</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-xs text-gray-700">
+                        <li><strong>Official Verification:</strong> Always confirm specific faculty thresholds and NBT test requirements directly with university websites.</li>
+                        <li><strong>Life Orientation Policies:</strong> UCT excludes LO completely, whereas Wits caps it at 3 points. Ensure you track the specific calculation for each institution you apply to.</li>
+                        <li><strong>Application Deadlines:</strong> Keep note of university and bursary application closing windows (typically April through September for the following academic year).</li>
                     </ul>
-                 </section>
-             `;
+                </section>
+            `;
 
-             openModal('report-modal');
+            openModal('report-modal');
 
-             // Generate chart AFTER modal is visible
-             setTimeout(() => {
+            setTimeout(() => {
                 renderAPSChart();
-             }, 100); // Small delay to ensure canvas is rendered
+            }, 100);
         }
 
-
         function renderAPSChart() {
-             const ctx = document.getElementById('aps-chart')?.getContext('2d');
-             if (!ctx) {
-                 console.error("APS Chart canvas context not found in modal.");
-                 return;
-             }
+            const ctx = document.getElementById('aps-chart')?.getContext('2d');
+            if (!ctx) return;
 
-             // Destroy previous chart instance if it exists
-             if (apsChartInstance) {
-                 apsChartInstance.destroy();
-                 apsChartInstance = null;
-             }
+            if (apsChartInstance) {
+                apsChartInstance.destroy();
+                apsChartInstance = null;
+            }
 
-             // Define colors - use a consistent palette
-              const chartColors = [
-                 '#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899',
-                 '#6366f1', '#14b8a6', '#f97316', '#65a30d', '#0ea5e9', '#d946ef'
-              ];
+            const chartColors = [
+                '#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899',
+                '#6366f1', '#14b8a6', '#f97316', '#65a30d', '#0ea5e9', '#d946ef'
+            ];
 
-              // Prepare data, potentially grouping smaller slices
-              let chartData = currentSubjectData.map((s, i) => ({
-                 label: s.name,
-                 value: s.points,
-                 color: chartColors[i % chartColors.length]
-              }));
+            let chartData = currentSubjectData.map((s, i) => ({
+                label: s.name,
+                value: s.points,
+                color: chartColors[i % chartColors.length]
+            }));
 
-              // Group small slices into 'Other' if desired (e.g., < 2 points)
-              const threshold = 1.5; // Group subjects contributing less than 1.5 points
-              let otherPoints = 0;
-              const mainSlices = chartData.filter(d => {
-                 if (d.value < threshold) {
-                     otherPoints += d.value;
-                     return false;
-                 }
-                 return true;
-              });
+            const threshold = 1.5;
+            let otherPoints = 0;
+            const mainSlices = chartData.filter(d => {
+                if (d.value < threshold) {
+                    otherPoints += d.value;
+                    return false;
+                }
+                return true;
+            });
 
-              if (otherPoints > 0) {
-                 mainSlices.push({ label: 'Other Subjects', value: otherPoints, color: '#9ca3af' }); // gray-400
-              }
+            if (otherPoints > 0) {
+                mainSlices.push({ label: 'Other Subjects', value: otherPoints, color: '#9ca3af' });
+            }
 
+            apsChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: mainSlices.map(d => d.label),
+                    datasets: [{
+                        data: mainSlices.map(d => d.value),
+                        backgroundColor: mainSlices.map(d => d.color),
+                        hoverOffset: 4,
+                        borderWidth: 1,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) label += ': ';
+                                    if (context.parsed !== null) label += `${context.parsed} APS points`;
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
 
-             apsChartInstance = new Chart(ctx, {
-                 type: 'doughnut',
-                 data: {
-                     labels: mainSlices.map(d => d.label),
-                     datasets: [{
-                         data: mainSlices.map(d => d.value),
-                         backgroundColor: mainSlices.map(d => d.color),
-                         hoverOffset: 4,
-                         borderWidth: 1, // Add subtle border
-                         borderColor: '#fff' // White border for separation
-                     }]
-                 },
-                 options: {
-                     responsive: true,
-                     maintainAspectRatio: false, // Allow chart to fill container
-                     plugins: {
-                         legend: { display: false }, // Keep legend off for simplicity
-                         tooltip: {
-                             callbacks: {
-                                 label: function(context) {
-                                     let label = context.label || '';
-                                     if (label) label += ': ';
-                                     if (context.parsed !== null) label += `${context.parsed} APS points`;
-                                     return label;
-                                 }
-                             }
-                         }
-                     },
-                      cutout: '65%' // Adjust doughnut thickness
-                 }
-             });
-         }
-
-
-        // Helper function for report thresholds - uses currentAPS
         function generateThresholdHtml(requiredAps, levelName) {
             const difference = currentAPS - requiredAps;
             const qualified = currentAPS >= requiredAps;
@@ -2054,27 +2881,23 @@
                          ${icon} ${statusText} ${differenceText}
                     </span>
                 </div>
-             `;
-         }
-
-        function printReport() {
-             // Add a class to the body for print-specific overrides if needed
-             // document.body.classList.add('print-active');
-             window.print();
-             // Remove the class after printing
-             // document.body.classList.remove('print-active');
-             showToast('Print dialog initiated. Use "Save as PDF" option if needed.', 'info');
+            `;
         }
 
-         // --- Toast Notifications ---
-         function showToast(message, type = 'info', duration = 3500) {
+        function printReport() {
+            window.print();
+            showToast('Print dialog initiated. Use "Save as PDF" option if needed.', 'info');
+        }
+
+        // --- Toast Notifications ---
+        function showToast(message, type = 'info', duration = 3500) {
             const toastContainer = document.getElementById('toast-container');
             if (!toastContainer) return;
 
             const toastId = `toast-${Date.now()}`;
             const toast = document.createElement('div');
             toast.id = toastId;
-            toast.className = `toast ${type}`; // Add type class for potential specific styling
+            toast.className = `toast ${type}`;
 
             let iconPath = '';
             let borderColor = '';
@@ -2086,10 +2909,10 @@
                     borderColor = 'var(--success)'; iconColorClass = 'text-green-500'; break;
                 case 'error':
                     iconPath = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />';
-                    borderColor = 'var(--danger)'; iconColorClass = 'text-red-500'; duration = 5000; break; // Longer for errors
-                 case 'warning':
-                     iconPath = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />';
-                     borderColor = 'var(--warning)'; iconColorClass = 'text-yellow-500'; duration = 4000; break;
+                    borderColor = 'var(--danger)'; iconColorClass = 'text-red-500'; duration = 5000; break;
+                case 'warning':
+                    iconPath = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />';
+                    borderColor = 'var(--warning)'; iconColorClass = 'text-yellow-500'; duration = 4000; break;
                 case 'info':
                 default:
                     iconPath = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />';
@@ -2098,24 +2921,21 @@
 
             toast.style.borderLeftColor = borderColor;
             toast.innerHTML = `
-                 <div class="flex items-center">
-                     <svg class="h-6 w-6 mr-3 flex-shrink-0 ${iconColorClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor">${iconPath}</svg>
-                     <span class="text-sm text-gray-800">${message}</span>
-                      <button onclick="removeToast('${toastId}')" class="ml-auto -mr-1 -my-1 p-1 text-gray-400 hover:text-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" aria-label="Dismiss">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                      </button>
-                 </div>
-             `;
+                <div class="flex items-center">
+                    <svg class="h-6 w-6 mr-3 flex-shrink-0 ${iconColorClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor">${iconPath}</svg>
+                    <span class="text-sm text-gray-800">${message}</span>
+                    <button onclick="removeToast('${toastId}')" class="ml-auto -mr-1 -my-1 p-1 text-gray-400 hover:text-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" aria-label="Dismiss">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+            `;
 
             toastContainer.appendChild(toast);
 
-             // Trigger the transition
-             requestAnimationFrame(() => {
-                 toast.classList.add('show');
-             });
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
 
-
-            // Set timer to remove toast
             const timeoutId = setTimeout(() => {
                 removeToast(toastId);
             }, duration);
@@ -2123,39 +2943,37 @@
         }
 
         function removeToast(toastId) {
-             const toast = document.getElementById(toastId);
-             if (toast) {
-                 toast.classList.remove('show');
-                 // Remove the element after the transition ends
-                 toast.addEventListener('transitionend', () => {
-                     toast.remove();
-                 }, { once: true });
-             }
-             // Clear the corresponding timeout
-             const index = toastTimeoutIds.findIndex(t => t.id === toastId);
-             if (index > -1) {
-                 clearTimeout(toastTimeoutIds[index].timeout);
-                 toastTimeoutIds.splice(index, 1);
-             }
-         }
+            const toast = document.getElementById(toastId);
+            if (toast) {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => {
+                    toast.remove();
+                }, { once: true });
+            }
+            const index = toastTimeoutIds.findIndex(t => t.id === toastId);
+            if (index > -1) {
+                clearTimeout(toastTimeoutIds[index].timeout);
+                toastTimeoutIds.splice(index, 1);
+            }
+        }
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
-             renderSubjects();
-             toggleTab('calculator'); // Start on calculator tab
+            renderSubjects();
+            toggleTab('calculator');
 
-             // Add listener for clicks outside modal to close it (optional)
-             const reportModal = document.getElementById('report-modal');
-             if (reportModal) {
-                 reportModal.addEventListener('click', (event) => {
-                     // Close if click is directly on the backdrop
-                     if (event.target === reportModal) {
-                         closeModal('report-modal');
-                     }
-                 });
-             }
-             // Pre-populate recommendations with empty state
-              updateProgramRecommendations(0, []);
+            const reportModal = document.getElementById('report-modal');
+            if (reportModal) {
+                reportModal.addEventListener('click', (event) => {
+                    if (event.target === reportModal) {
+                        closeModal('report-modal');
+                    }
+                });
+            }
+
+            populateTargetProgramDropdown();
+            updateProgramRecommendations(0, []);
+            updateBursaryMatches(0, [], []);
         });
 
     </script>
